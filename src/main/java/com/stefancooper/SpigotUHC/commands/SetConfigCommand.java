@@ -18,7 +18,7 @@ public class SetConfigCommand extends AbstractCommand {
     public void execute() {
         Arrays.asList(getArgs()).forEach(arg -> {
             String[] splitConfig = arg.split("=");
-            if (splitConfig.length != 2 && ConfigKey.fromString(splitConfig[0]) != null) {
+            if (splitConfig.length == 2 && ConfigKey.fromString(splitConfig[0]) != null) {
                 String key = splitConfig[0];
                 String value = splitConfig[1];
                 getConfig().setProp(key, value);

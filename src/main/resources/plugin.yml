@@ -6,9 +6,9 @@ api-version: 1.14
 website: https://stefancooper.com
 commands:
   uhc:
-    description: Set a UHC config value
+    description: Configure and run a UHC
     usage: >
-      UHC Commands
+      UHC Plugin Commands
       
       Set config value:
       
@@ -16,4 +16,12 @@ commands:
       
       Set multiple config values:
       
-      /uhc set world.border.final.size=250
+      /uhc set world.border.initial.size=500 world.border.final.size=250
+      
+      View full config:
+      
+      /uhc view config
+      
+      View a specific config value:
+
+      /uhc view world.border.initial.size

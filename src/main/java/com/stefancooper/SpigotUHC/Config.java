@@ -7,8 +7,9 @@ import org.bukkit.WorldBorder;
 import java.io.*;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Stream;
 
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_INITIAL_SIZE;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.fromString;
 
 public class Config {
@@ -25,13 +26,18 @@ public class Config {
         executeConfigurables(this.config.entrySet().stream().map(prop -> propertyToConfigurable((String) prop.getKey(), (String) prop.getValue())).toList());
     }
 
-    public Object getProp(String key) {
-        return config.get(key);
+    public String getProp(String key) {
+        return (String) config.get(key);
+    }
+
+    public String getProps() {
+        Stream<String> mapped = this.config.entrySet().stream().map(prop -> prop.getKey() + "=" + prop.getValue() + "\n");
+        return mapped.reduce("", String::concat);
     }
 
     private Configurable<?> propertyToConfigurable(String key, String value) {
         return switch (fromString(key)) {
-            case WORLD_BORDER -> new Configurable<>(WORLD_BORDER, Double.parseDouble(value));
+            case WORLD_BORDER_INITIAL_SIZE -> new Configurable<>(WORLD_BORDER_INITIAL_SIZE, Double.parseDouble(value));
             case null -> null;
         };
     }
@@ -61,7 +67,7 @@ public class Config {
             return;
         }
         switch (configurable.key()) {
-            case WORLD_BORDER:
+            case WORLD_BORDER_INITIAL_SIZE:
                 Double newWorldBorderSize = (Double) configurable.value();
                 WorldBorder worldBorder = Bukkit.getWorld("world").getWorldBorder();
                 worldBorder.setSize(newWorldBorderSize);

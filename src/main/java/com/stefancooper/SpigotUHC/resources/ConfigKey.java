@@ -1,7 +1,7 @@
 package com.stefancooper.SpigotUHC.resources;
 
 public enum ConfigKey {
-    WORLD_BORDER("world.border");
+    WORLD_BORDER("world.border.initial.size");
 
     public final String configName;
 

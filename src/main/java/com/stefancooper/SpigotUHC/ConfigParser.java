@@ -27,6 +27,16 @@ public class ConfigParser {
             case WORLD_BORDER_CENTER_X -> new Configurable<>(WORLD_BORDER_CENTER_X, Double.parseDouble(value));
             case WORLD_BORDER_CENTER_Y -> new Configurable<>(WORLD_BORDER_CENTER_Y, Double.parseDouble(value));
             case WORLD_BORDER_CENTER_Z -> new Configurable<>(WORLD_BORDER_CENTER_Z, Double.parseDouble(value));
+            case RANDOM_TEAMS_ENABLED -> new Configurable<>(RANDOM_TEAMS_ENABLED, Boolean.parseBoolean((value)));
+            case RANDOM_TEAM_SIZE -> new Configurable<>(RANDOM_TEAM_SIZE, Double.parseDouble(value));
+            case TEAM_RED -> new Configurable<>(TEAM_RED, value);
+            case TEAM_YELLOW -> new Configurable<>(TEAM_YELLOW, value);
+            case TEAM_GREEN -> new Configurable<>(TEAM_GREEN, value);
+            case TEAM_BLUE -> new Configurable<>(TEAM_BLUE, value);
+            case TEAM_ORANGE -> new Configurable<>(TEAM_ORANGE, value);
+            case GRACE_PERIOD_TIMER -> new Configurable<>(GRACE_PERIOD_TIMER, Double.parseDouble(value));
+            case ON_DEATH_ACTION -> new Configurable<>(ON_DEATH_ACTION, value);
+            case COUNTDOWN_TIMER_LENGTH -> new Configurable<>(COUNTDOWN_TIMER_LENGTH, Double.parseDouble(value));
             case WORLD_NAME -> new Configurable<>(WORLD_NAME, value);
             case null -> null;
 

@@ -7,7 +7,6 @@ public enum ConfigKey {
     WORLD_BORDER_SHRINKING_PERIOD("world.border.shrinking.period"),
     WORLD_BORDER_GRACE_PERIOD("world.border.grace.period"),
     WORLD_BORDER_CENTER_X("world.border.center.x"),
-    WORLD_BORDER_CENTER_Y("world.border.center.y"),
     WORLD_BORDER_CENTER_Z("world.border.center.z"),
     //Team Enums
     RANDOM_TEAMS_ENABLED("random.teams.enabled"),

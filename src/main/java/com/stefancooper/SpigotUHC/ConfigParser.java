@@ -25,7 +25,6 @@ public class ConfigParser {
             case WORLD_BORDER_SHRINKING_PERIOD -> new Configurable<>(WORLD_BORDER_SHRINKING_PERIOD, Double.parseDouble(value));
             case WORLD_BORDER_GRACE_PERIOD -> new Configurable<>(WORLD_BORDER_GRACE_PERIOD, Double.parseDouble(value));
             case WORLD_BORDER_CENTER_X -> new Configurable<>(WORLD_BORDER_CENTER_X, Double.parseDouble(value));
-            case WORLD_BORDER_CENTER_Y -> new Configurable<>(WORLD_BORDER_CENTER_Y, Double.parseDouble(value));
             case WORLD_BORDER_CENTER_Z -> new Configurable<>(WORLD_BORDER_CENTER_Z, Double.parseDouble(value));
             case RANDOM_TEAMS_ENABLED -> new Configurable<>(RANDOM_TEAMS_ENABLED, Boolean.parseBoolean((value)));
             case RANDOM_TEAM_SIZE -> new Configurable<>(RANDOM_TEAM_SIZE, Double.parseDouble(value));
@@ -55,19 +54,14 @@ public class ConfigParser {
                 worldBorder.setSize(newWorldBorderSize);
                 break;
             case WORLD_BORDER_CENTER_X:
-                Double newWorldBorderX = (Double) configurable.value();
+                Double newWorldCenterX = (Double) configurable.value();
                 Double worldCenterX = Bukkit.getWorld(config.getProp(WORLD_NAME.configName)).getWorldBorder().getCenter().getX();
-                newWorldBorderX = worldCenterX;
-                break;
-            case WORLD_BORDER_CENTER_Y:
-                Double newWorldBorderY = (Double) configurable.value();
-                Double worldCenterY = Bukkit.getWorld(config.getProp(WORLD_NAME.configName)).getWorldBorder().getCenter().getY();
-                newWorldBorderY = worldCenterY;
+                Bukkit.getWorld(config.getProp(WORLD_NAME.configName)).getWorldBorder().setCenter(worldCenterX, newWorldCenterX);
                 break;
             case WORLD_BORDER_CENTER_Z:
-                Double newWorldBorderZ = (Double) configurable.value();
+                Double newWorldCenterZ = (Double) configurable.value();
                 Double worldCenterZ = Bukkit.getWorld(config.getProp(WORLD_NAME.configName)).getWorldBorder().getCenter().getZ();
-                newWorldBorderZ = worldCenterZ;
+                Bukkit.getWorld(config.getProp(WORLD_NAME.configName)).getWorldBorder().setCenter(worldCenterZ, newWorldCenterZ);
                 break;
             default:
                 break;

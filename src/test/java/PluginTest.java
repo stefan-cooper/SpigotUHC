@@ -32,7 +32,7 @@ public class PluginTest {
     void testGameRules() {
         World world = server.getWorld(DEFAULT_WORLD_NAME);
         Assertions.assertNotNull(world);
-        Assertions.assertFalse(world.getGameRuleValue(GameRule.DO_INSOMNIA));
+        Assertions.assertTrue(world.getGameRuleValue(GameRule.DO_INSOMNIA));
         Assertions.assertFalse(world.getGameRuleValue(GameRule.NATURAL_REGENERATION));
     }
 

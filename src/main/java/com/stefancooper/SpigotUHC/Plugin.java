@@ -8,9 +8,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Arrays;
-import org.bukkit.GameRule;
-
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME;
 
 public class Plugin extends JavaPlugin implements Listener {
 
@@ -22,6 +19,7 @@ public class Plugin extends JavaPlugin implements Listener {
         config = new Config();
         Defaults.setDefaultGameRules(this.config);
         System.out.println("UHC Plugin enabled");
+
     }
 
     // This is called when the plugin is unloaded from the server.

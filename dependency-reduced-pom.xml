@@ -5,7 +5,7 @@
   <artifactId>SpigotUHC</artifactId>
   <version>0.0.1</version>
   <build>
-    <directory>${env.PLUGIN_LOCATION}</directory>
+    <directory>build</directory>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>

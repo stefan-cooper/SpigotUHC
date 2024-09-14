@@ -2,8 +2,9 @@ package com.stefancooper.SpigotUHC;
 
 import com.stefancooper.SpigotUHC.types.Configurable;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.WorldBorder;
+import org.bukkit.WorldCreator;
 
 import java.util.List;
 
@@ -42,26 +43,28 @@ public class ConfigParser {
         };
     }
 
+
+
     public void executeConfigurable(Configurable<?> configurable) {
         if (configurable == null) {
             System.out.println("Invalid config value attempted to be executed, ignoring...");
             return;
         }
+        WorldBorder worldBorder = Utils.getWorld(WORLD_NAME.configName).getWorldBorder();
         switch (configurable.key()) {
             case WORLD_BORDER_INITIAL_SIZE:
                 Double newWorldBorderSize = (Double) configurable.value();
-                WorldBorder worldBorder = Bukkit.getWorld(config.getProp(WORLD_NAME.configName)).getWorldBorder();
                 worldBorder.setSize(newWorldBorderSize);
                 break;
             case WORLD_BORDER_CENTER_X:
                 Double newWorldCenterX = (Double) configurable.value();
-                Double worldCenterX = Bukkit.getWorld(config.getProp(WORLD_NAME.configName)).getWorldBorder().getCenter().getX();
-                Bukkit.getWorld(config.getProp(WORLD_NAME.configName)).getWorldBorder().setCenter(worldCenterX, newWorldCenterX);
+                double worldCenterX = worldBorder.getCenter().getX();
+                worldBorder.setCenter(worldCenterX, newWorldCenterX);
                 break;
             case WORLD_BORDER_CENTER_Z:
                 Double newWorldCenterZ = (Double) configurable.value();
-                Double worldCenterZ = Bukkit.getWorld(config.getProp(WORLD_NAME.configName)).getWorldBorder().getCenter().getZ();
-                Bukkit.getWorld(config.getProp(WORLD_NAME.configName)).getWorldBorder().setCenter(worldCenterZ, newWorldCenterZ);
+                double worldCenterZ = worldBorder.getCenter().getZ();
+                worldBorder.setCenter(worldCenterZ, newWorldCenterZ);
                 break;
             default:
                 break;

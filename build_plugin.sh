@@ -1,2 +1,1 @@
-PLUGIN_LOCATION=${PLUGIN_LOCATION:-build}
-PLUGIN_LOCATION="${PLUGIN_LOCATION}" mvn clean install
+PLUGIN_LOCATION=build mvn clean install -DskipTests

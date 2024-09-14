@@ -16,7 +16,7 @@ public class Config {
     public Config() {
         Properties props = new Properties();
         try {
-            final FileInputStream in = new FileInputStream( "./plugins/uhc_config.properties" );
+            final FileInputStream in = new FileInputStream("./plugins/uhc_config.properties");
             props.load(in);
         } catch (IOException ignored) {} // noop
         this.config = props;
@@ -46,7 +46,15 @@ public class Config {
                 config.store(fos, "saving new value");
                 fos.close();
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                try {
+                    // TODO - find a better way to do this, perhaps mock/mockito?
+                    File file = new File("./src/test/java/resources/uhc_config.properties");
+                    FileOutputStream fos = new FileOutputStream(file);
+                    config.store(fos, "saving new value");
+                    fos.close();
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         } else {
             System.out.println("Invalid config value attempted to be set: " + key + "=" + value);

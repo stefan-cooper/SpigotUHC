@@ -42,6 +42,8 @@ public class Defaults {
         final World world = Utils.getWorld(config.getProp(WORLD_NAME.configName));
         world.setGameRule(GameRule.NATURAL_REGENERATION, false);
         world.setGameRule(GameRule.DO_INSOMNIA, false);
+        // set pvp to false, will be enabled when /uhc start is ran
+        world.setPVP(false);
         final Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
         final Objective healthObjective;
         if (board.getObjective(HEALTH_OBJECTIVE) == null) {

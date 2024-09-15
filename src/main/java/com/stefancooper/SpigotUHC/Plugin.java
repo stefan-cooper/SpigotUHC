@@ -1,6 +1,7 @@
 package com.stefancooper.SpigotUHC;
 
 import com.stefancooper.SpigotUHC.commands.SetConfigCommand;
+import com.stefancooper.SpigotUHC.commands.StartCommand;
 import com.stefancooper.SpigotUHC.commands.ViewConfigCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -42,6 +43,9 @@ public class Plugin extends JavaPlugin implements Listener {
                     return true;
                 case ViewConfigCommand.COMMAND_KEY:
                     new ViewConfigCommand(sender, cmd, getCommandArgs(args), config).execute();
+                    return true;
+                case StartCommand.COMMAND_KEY:
+                    new StartCommand(sender, cmd, getCommandArgs(args), config).execute();
                     return true;
                 default:
                     break;

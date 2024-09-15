@@ -14,15 +14,27 @@ public class Defaults {
     public static String HEALTH_OBJECTIVE = "health";
     public static String DEFAULT_WORLD_NAME = "world";
     public static String DEFAULT_WORLD_BORDER_INITIAL_SIZE = "2000";
+    public static String DEFAULT_WORLD_BORDER_FINAL_SIZE = "500";
+    public static String DEFAULT_WORLD_BORDER_SHRINKING_PERIOD = "7200";
+    public static String DEFAULT_WORLD_BORDER_GRACE_PERIOD = "1800";
     public static String DEFAULT_WORLD_BORDER_CENTER_X = "0";
     public static String DEFAULT_WORLD_BORDER_CENTER_Z = "0";
+    public static String DEFAULT_GRACE_PERIOD_TIMER = "600";
+    public static String DEFAULT_ON_DEATH_ACTION = "spectator";
+    public static String DEFAULT_COUNTDOWN_TIMER_LENGTH = "10";
 
     public static Properties createDefaultConfig() {
         final Properties defaults = new Properties();
         defaults.setProperty(WORLD_NAME.configName, DEFAULT_WORLD_NAME);
         defaults.setProperty(WORLD_BORDER_INITIAL_SIZE.configName, DEFAULT_WORLD_BORDER_INITIAL_SIZE);
+        defaults.setProperty(WORLD_BORDER_FINAL_SIZE.configName, DEFAULT_WORLD_BORDER_FINAL_SIZE);
+        defaults.setProperty(WORLD_BORDER_SHRINKING_PERIOD.configName, DEFAULT_WORLD_BORDER_SHRINKING_PERIOD);
+        defaults.setProperty(WORLD_BORDER_GRACE_PERIOD.configName, DEFAULT_WORLD_BORDER_GRACE_PERIOD);
         defaults.setProperty(WORLD_BORDER_CENTER_X.configName, DEFAULT_WORLD_BORDER_CENTER_X);
         defaults.setProperty(WORLD_BORDER_CENTER_Z.configName, DEFAULT_WORLD_BORDER_CENTER_Z);
+        defaults.setProperty(GRACE_PERIOD_TIMER.configName, DEFAULT_GRACE_PERIOD_TIMER);
+        defaults.setProperty(ON_DEATH_ACTION.configName, DEFAULT_ON_DEATH_ACTION);
+        defaults.setProperty(COUNTDOWN_TIMER_LENGTH.configName, DEFAULT_COUNTDOWN_TIMER_LENGTH);
         return defaults;
     }
 

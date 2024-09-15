@@ -15,9 +15,9 @@ public class Plugin extends JavaPlugin implements Listener {
 
     // This is called when the plugin is loaded into the server.
     public void onEnable() {
-        Bukkit.getPluginManager().registerEvents(new Events(), this);
         config = new Config();
         Defaults.setDefaultGameRules(this.config);
+        Bukkit.getPluginManager().registerEvents(new Events(config), this);
         System.out.println("UHC Plugin enabled");
     }
 

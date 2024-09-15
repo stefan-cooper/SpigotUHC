@@ -48,6 +48,8 @@ public class StartTest {
         PlayerMock player3 = server.addPlayer();
         player3.setFoodLevel(3);
 
+        Assertions.assertFalse(world.getPVP());
+
         server.execute("uhc", admin, "start");
 
         server.getOnlinePlayers().forEach(player -> {
@@ -56,6 +58,8 @@ public class StartTest {
             Assertions.assertEquals(0, player.getExp());
             Assertions.assertEquals(0, Arrays.stream(player.getInventory().getContents()).filter(item -> item != null && item.getType() != Material.AIR).toList().size());
         });
+
+        Assertions.assertTrue(world.getPVP());
     }
 
 }

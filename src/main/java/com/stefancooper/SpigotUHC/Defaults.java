@@ -7,19 +7,22 @@ import org.bukkit.scoreboard.*;
 
 import java.util.Properties;
 
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_INITIAL_SIZE;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.*;
 
 public class Defaults {
 
     public static String HEALTH_OBJECTIVE = "health";
     public static String DEFAULT_WORLD_NAME = "world";
     public static String DEFAULT_WORLD_BORDER_INITIAL_SIZE = "2000";
+    public static String DEFAULT_WORLD_BORDER_CENTER_X = "0";
+    public static String DEFAULT_WORLD_BORDER_CENTER_Z = "0";
 
     public static Properties createDefaultConfig() {
         final Properties defaults = new Properties();
         defaults.setProperty(WORLD_NAME.configName, DEFAULT_WORLD_NAME);
         defaults.setProperty(WORLD_BORDER_INITIAL_SIZE.configName, DEFAULT_WORLD_BORDER_INITIAL_SIZE);
+        defaults.setProperty(WORLD_BORDER_CENTER_X.configName, DEFAULT_WORLD_BORDER_CENTER_X);
+        defaults.setProperty(WORLD_BORDER_CENTER_Z.configName, DEFAULT_WORLD_BORDER_CENTER_Z);
         return defaults;
     }
 

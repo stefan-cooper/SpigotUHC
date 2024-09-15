@@ -18,7 +18,18 @@ public class Config {
         try {
             final FileInputStream in = new FileInputStream("./plugins/uhc_config.properties");
             props.load(in);
-        } catch (IOException ignored) {} // noop
+            in.close();
+        } catch (IOException ignored) {
+            try {
+                // TODO - find a better way to do this, perhaps mock/mockito?
+                File file = new File("./src/test/java/resources/uhc_config.properties");
+                FileInputStream in = new FileInputStream(file);
+                props.load(in);
+                in.close();
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        } // noop
         this.config = props;
         this.defaultConfig = Defaults.createDefaultConfig();
         this.parser = new ConfigParser(this);
@@ -67,6 +78,10 @@ public class Config {
                 setProp((String) key, (String) value);
             }
         });
+    }
+
+    public void resetToDefaults() {
+        defaultConfig.forEach((key, value) -> setProp((String) key, (String) value));
     }
 
 }

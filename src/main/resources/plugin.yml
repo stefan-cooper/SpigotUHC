@@ -7,6 +7,7 @@ website: https://stefancooper.com
 commands:
   uhc:
     description: Configure and run a UHC
+    permission: op
     usage: >
       UHC Plugin Commands
       

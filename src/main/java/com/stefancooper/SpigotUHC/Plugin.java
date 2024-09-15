@@ -19,7 +19,10 @@ public class Plugin extends JavaPlugin implements Listener {
         config = new Config();
         Defaults.setDefaultGameRules(this.config);
         System.out.println("UHC Plugin enabled");
+    }
 
+    public Config getUHCConfig() {
+        return config;
     }
 
     // This is called when the plugin is unloaded from the server.

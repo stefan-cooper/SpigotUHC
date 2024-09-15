@@ -50,7 +50,7 @@ public class ConfigParser {
             System.out.println("Invalid config value attempted to be executed, ignoring...");
             return;
         }
-        WorldBorder worldBorder = Utils.getWorld(WORLD_NAME.configName).getWorldBorder();
+        WorldBorder worldBorder = Utils.getWorld(config.getProp(WORLD_NAME.configName)).getWorldBorder();
         switch (configurable.key()) {
             case WORLD_BORDER_INITIAL_SIZE:
                 Double newWorldBorderSize = (Double) configurable.value();
@@ -58,13 +58,13 @@ public class ConfigParser {
                 break;
             case WORLD_BORDER_CENTER_X:
                 Double newWorldCenterX = (Double) configurable.value();
-                double worldCenterX = worldBorder.getCenter().getX();
-                worldBorder.setCenter(worldCenterX, newWorldCenterX);
+                double worldCenterZ = worldBorder.getCenter().getZ();
+                worldBorder.setCenter(newWorldCenterX, worldCenterZ);
                 break;
             case WORLD_BORDER_CENTER_Z:
                 Double newWorldCenterZ = (Double) configurable.value();
-                double worldCenterZ = worldBorder.getCenter().getZ();
-                worldBorder.setCenter(worldCenterZ, newWorldCenterZ);
+                double worldCenterX = worldBorder.getCenter().getX();
+                worldBorder.setCenter(worldCenterX, newWorldCenterZ);
                 break;
             default:
                 break;

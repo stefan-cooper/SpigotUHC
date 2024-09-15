@@ -32,7 +32,10 @@ public class StartTest {
     }
 
     @AfterAll
-    public static void unload() { MockBukkit.unmock(); }
+    public static void unload() {
+        plugin.getUHCConfig().resetToDefaults();
+        MockBukkit.unmock();
+    }
 
     @Test
     @DisplayName("When start is ran, health, exp, hunger and inventories are rest")

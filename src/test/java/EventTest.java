@@ -3,13 +3,11 @@ import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import com.stefancooper.SpigotUHC.Plugin;
 import org.bukkit.GameMode;
-import org.bukkit.World;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
 import static com.stefancooper.SpigotUHC.Defaults.DEFAULT_WORLD_NAME;
-
 
 import org.junit.jupiter.api.*;
 
@@ -17,13 +15,11 @@ public class EventTest {
 
     private static ServerMock server;
     private static Plugin plugin;
-    private static World world;
 
     @BeforeAll
     public static void load() {
         server = MockBukkit.mock();
         plugin = MockBukkit.load(Plugin.class);
-        world = server.getWorld(DEFAULT_WORLD_NAME);
     }
 
     @BeforeEach
@@ -33,6 +29,7 @@ public class EventTest {
 
     @AfterAll
     public static void unload() {
+        plugin.getUHCConfig().resetToDefaults();
         MockBukkit.unmock();
     }
 

@@ -27,7 +27,10 @@ public class ViewConfigTest {
     }
 
     @AfterAll
-    public static void unload() { MockBukkit.unmock(); }
+    public static void unload() {
+        plugin.getUHCConfig().resetToDefaults();
+        MockBukkit.unmock();
+    }
 
     @Test
     @DisplayName("Test view full config")

@@ -1,15 +1,15 @@
 package com.stefancooper.SpigotUHC;
 
+import com.stefancooper.SpigotUHC.resources.UHCTeam;
 import com.stefancooper.SpigotUHC.types.Configurable;
 import org.bukkit.Bukkit;
-import org.bukkit.World;
+import org.bukkit.ChatColor;
 import org.bukkit.WorldBorder;
-import org.bukkit.WorldCreator;
-
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 import java.util.List;
 
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.*;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME;
 
 public class ConfigParser {
 
@@ -43,7 +43,25 @@ public class ConfigParser {
         };
     }
 
+    private void createTeam(UHCTeam uhcTeam) {
+        Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
 
+        // if team already exists, redefine it
+        if (scoreboard.getTeam(uhcTeam.getName()) != null) {
+            scoreboard.getTeam(uhcTeam.getName()).unregister();
+        }
+        Team team = scoreboard.registerNewTeam(uhcTeam.getName());
+        uhcTeam.getPlayers().forEach(player -> {
+            // if player is already on another team, remove them from that team and put them on this team
+            if (scoreboard.getEntryTeam(player) != null) {
+                scoreboard.getEntryTeam(player).removeEntry(player);
+            }
+            team.addEntry(player);
+        });
+        team.setColor(uhcTeam.getColor());
+        team.setAllowFriendlyFire(false);
+        team.setPrefix(String.format("[%s] ", uhcTeam.getName()));
+    }
 
     public void executeConfigurable(Configurable<?> configurable) {
         if (configurable == null) {
@@ -65,6 +83,21 @@ public class ConfigParser {
                 Double newWorldCenterZ = (Double) configurable.value();
                 double worldCenterX = worldBorder.getCenter().getX();
                 worldBorder.setCenter(worldCenterX, newWorldCenterZ);
+                break;
+            case TEAM_RED:
+                createTeam(new UHCTeam("Red", (String) configurable.value(), ChatColor.RED ));
+                break;
+            case TEAM_BLUE:
+                createTeam(new UHCTeam("Blue", (String) configurable.value(), ChatColor.BLUE ));
+                break;
+            case TEAM_GREEN:
+                createTeam(new UHCTeam("Green", (String) configurable.value(), ChatColor.GREEN ));
+                break;
+            case TEAM_YELLOW:
+                createTeam(new UHCTeam("Yellow", (String) configurable.value(), ChatColor.YELLOW ));
+                break;
+            case TEAM_ORANGE:
+                createTeam(new UHCTeam("Orange", (String) configurable.value(), ChatColor.GOLD ));
                 break;
             default:
                 break;

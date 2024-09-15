@@ -28,7 +28,10 @@ public class PluginTest {
     }
 
     @AfterAll
-    public static void unload() { MockBukkit.unmock(); }
+    public static void unload() {
+        plugin.getUHCConfig().resetToDefaults();
+        MockBukkit.unmock();
+    }
 
     @Test
     @DisplayName("Test correct game rules were applied")

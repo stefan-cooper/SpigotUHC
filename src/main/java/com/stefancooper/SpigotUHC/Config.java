@@ -3,6 +3,7 @@ package com.stefancooper.SpigotUHC;
 import com.stefancooper.SpigotUHC.types.Configurable;
 
 import java.io.*;
+import java.util.Comparator;
 import java.util.Properties;
 import java.util.stream.Stream;
 
@@ -42,7 +43,8 @@ public class Config {
     }
 
     public String getProps() {
-        Stream<String> mapped = this.config.entrySet().stream().map(prop -> prop.getKey() + "=" + prop.getValue() + "\n");
+        Stream<String> mapped = this.config.entrySet().stream().sorted(Comparator.comparing(i1 -> (String) i1.getKey())).map(prop -> prop.getKey() + "=" + prop.getValue() + "\n");
+
         return mapped.reduce("", String::concat);
     }
 

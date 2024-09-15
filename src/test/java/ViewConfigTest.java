@@ -36,19 +36,20 @@ public class ViewConfigTest {
         player.setOp(true);
         server.execute("uhc", player, "view", "config");
         player.assertSaid(String.format("""
-                        world.name=%s
+                        countdown.timer.length=%s
                         grace.period.timer=%s
+                        on.death.action=%s
                         world.border.center.x=%s
                         world.border.center.z=%s
-                        world.border.shrinking.period=%s
-                        world.border.initial.size=%s
-                        on.death.action=%s
-                        countdown.timer.length=%s
-                        world.border.grace.period=%s
                         world.border.final.size=%s
-                        """, DEFAULT_WORLD_NAME, DEFAULT_GRACE_PERIOD_TIMER, DEFAULT_WORLD_BORDER_CENTER_X, DEFAULT_WORLD_BORDER_CENTER_Z, DEFAULT_WORLD_BORDER_SHRINKING_PERIOD,
-                                DEFAULT_WORLD_BORDER_INITIAL_SIZE, DEFAULT_ON_DEATH_ACTION, DEFAULT_COUNTDOWN_TIMER_LENGTH, DEFAULT_WORLD_BORDER_GRACE_PERIOD, DEFAULT_WORLD_BORDER_FINAL_SIZE
-        ));
+                        world.border.grace.period=%s
+                        world.border.initial.size=%s
+                        world.border.shrinking.period=%s
+                        world.name=%s
+                        """, DEFAULT_COUNTDOWN_TIMER_LENGTH, DEFAULT_GRACE_PERIOD_TIMER, DEFAULT_ON_DEATH_ACTION, DEFAULT_WORLD_BORDER_CENTER_X, DEFAULT_WORLD_BORDER_CENTER_Z,
+                                DEFAULT_WORLD_BORDER_FINAL_SIZE, DEFAULT_WORLD_BORDER_GRACE_PERIOD, DEFAULT_WORLD_BORDER_INITIAL_SIZE, DEFAULT_WORLD_BORDER_SHRINKING_PERIOD, DEFAULT_WORLD_NAME
+                        )
+        );
     }
 
     @Test

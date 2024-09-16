@@ -72,11 +72,11 @@ public class StartCommand extends AbstractCommand {
         gracePeriod.ifPresent(s -> timer.schedule(endGracePeriod(), Long.parseLong(s) * 1000));
 
         // Spread Players
-        float centerX = Float.parseFloat(getConfig().getProp(WORLD_BORDER_CENTER_X.configName));
-        float centerZ = Float.parseFloat(getConfig().getProp(WORLD_BORDER_CENTER_Z.configName));
-        float minDistance = Float.parseFloat(getConfig().getProp(SPREAD_MIN_DISTANCE.configName));
-        float maxDistance = Float.parseFloat(getConfig().getProp(SPREAD_MIN_DISTANCE.configName));
-        String spreadCommand = String.format("spreadplayers %f %f %f %f false @a", centerX, centerZ, minDistance, maxDistance);
+        double centerX = Double.parseDouble(getConfig().getProp(WORLD_BORDER_CENTER_X.configName));
+        double centerZ =  Double.parseDouble(getConfig().getProp(WORLD_BORDER_CENTER_Z.configName));
+        double minDistance =  Double.parseDouble(getConfig().getProp(SPREAD_MIN_DISTANCE.configName));
+        double maxDistance = Double.parseDouble(getConfig().getProp(SPREAD_MIN_DISTANCE.configName));
+        String spreadCommand = String.format("spreadplayers %f %f %f %f true @a", centerX, centerZ, minDistance, maxDistance);
         getSender().getServer().dispatchCommand(getSender(), spreadCommand);
 
     }

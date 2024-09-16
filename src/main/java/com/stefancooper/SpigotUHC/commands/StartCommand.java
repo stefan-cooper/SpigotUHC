@@ -9,6 +9,9 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
+import com.stefancooper.SpigotUHC.Config;
+import com.stefancooper.SpigotUHC.Utils;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.SPREAD_MAX_DISTANCE;
 import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -75,7 +78,7 @@ public class StartCommand extends AbstractCommand {
         double centerX = Double.parseDouble(getConfig().getProp(WORLD_BORDER_CENTER_X.configName));
         double centerZ =  Double.parseDouble(getConfig().getProp(WORLD_BORDER_CENTER_Z.configName));
         double minDistance =  Double.parseDouble(getConfig().getProp(SPREAD_MIN_DISTANCE.configName));
-        double maxDistance = Double.parseDouble(getConfig().getProp(SPREAD_MIN_DISTANCE.configName));
+        double maxDistance = Double.parseDouble(getConfig().getProp(SPREAD_MAX_DISTANCE.configName));
         String spreadCommand = String.format("spreadplayers %f %f %f %f true @a", centerX, centerZ, minDistance, maxDistance);
         getSender().getServer().dispatchCommand(getSender(), spreadCommand);
 

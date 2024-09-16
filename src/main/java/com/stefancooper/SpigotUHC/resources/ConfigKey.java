@@ -20,6 +20,7 @@ public enum ConfigKey {
     GRACE_PERIOD_TIMER("grace.period.timer"),
     ON_DEATH_ACTION("on.death.action"),
     COUNTDOWN_TIMER_LENGTH("countdown.timer.length"),
+    PLAYER_HEAD_GOLDEN_APPLE("player.head.golden.apple"),
     WORLD_NAME("world.name");
 
     public final String configName;

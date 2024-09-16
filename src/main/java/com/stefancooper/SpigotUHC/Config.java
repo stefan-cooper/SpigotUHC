@@ -16,8 +16,9 @@ public class Config {
     private final Properties config;
     private final Properties defaultConfig;
     private final ConfigParser parser;
+    private final Plugin plugin;
 
-    public Config() {
+    public Config(Plugin plugin) {
         Properties props = new Properties();
         try {
             final FileInputStream in = new FileInputStream("./plugins/uhc_config.properties");
@@ -37,8 +38,13 @@ public class Config {
         this.config = props;
         this.defaultConfig = Defaults.createDefaultConfig();
         this.parser = new ConfigParser(this);
+        this.plugin = plugin;
         this.setDefaults();
         parser.executeConfigurables(this.config.entrySet().stream().map(prop -> parser.propertyToConfigurable((String) prop.getKey(), (String) prop.getValue())).toList());
+    }
+
+    public Plugin getPlugin() {
+        return plugin;
     }
 
     public String getProp(String key) {

@@ -7,8 +7,33 @@ import org.bukkit.ChatColor;
 import org.bukkit.WorldBorder;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
+import org.bukkit.*;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
+
 import java.util.List;
 
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.COUNTDOWN_TIMER_LENGTH;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.GRACE_PERIOD_TIMER;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.ON_DEATH_ACTION;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.PLAYER_HEAD_GOLDEN_APPLE;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.RANDOM_TEAMS_ENABLED;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.RANDOM_TEAM_SIZE;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.TEAM_BLUE;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.TEAM_GREEN;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.TEAM_ORANGE;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.TEAM_RED;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.TEAM_YELLOW;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_CENTER_X;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_CENTER_Z;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_FINAL_SIZE;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_GRACE_PERIOD;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_INITIAL_SIZE;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_SHRINKING_PERIOD;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.fromString;
+import static com.stefancooper.SpigotUHC.resources.DeathAction.DROP_HEADS;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.*;
 
 public class ConfigParser {
@@ -37,6 +62,7 @@ public class ConfigParser {
             case GRACE_PERIOD_TIMER -> new Configurable<>(GRACE_PERIOD_TIMER, Double.parseDouble(value));
             case ON_DEATH_ACTION -> new Configurable<>(ON_DEATH_ACTION, value);
             case COUNTDOWN_TIMER_LENGTH -> new Configurable<>(COUNTDOWN_TIMER_LENGTH, Double.parseDouble(value));
+            case PLAYER_HEAD_GOLDEN_APPLE -> new Configurable<>(PLAYER_HEAD_GOLDEN_APPLE, Boolean.parseBoolean((value)));
             case WORLD_NAME -> new Configurable<>(WORLD_NAME, value);
             case null -> null;
 
@@ -99,6 +125,14 @@ public class ConfigParser {
             case TEAM_ORANGE:
                 createTeam(new UHCTeam("Orange", (String) configurable.value(), ChatColor.GOLD ));
                 break;
+            case PLAYER_HEAD_GOLDEN_APPLE:
+                ItemStack apple = new ItemStack(Material.GOLDEN_APPLE, 1);
+                ItemMeta appleMeta = apple.getItemMeta();
+                apple.setItemMeta(appleMeta);
+                ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(config.getPlugin(), "PLAYER_HEAD"), apple);
+                recipe.shape("   ", " X ", "   ");
+                recipe.setIngredient('X', Material.PLAYER_HEAD);
+                Bukkit.addRecipe(recipe);
             default:
                 break;
         }

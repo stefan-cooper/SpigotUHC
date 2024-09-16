@@ -12,6 +12,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import java.util.Properties;
 
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.*;
+import static com.stefancooper.SpigotUHC.resources.DeathAction.SPECTATE;
 
 public class Defaults {
 
@@ -24,7 +25,7 @@ public class Defaults {
     public static String DEFAULT_WORLD_BORDER_CENTER_X = "0";
     public static String DEFAULT_WORLD_BORDER_CENTER_Z = "0";
     public static String DEFAULT_GRACE_PERIOD_TIMER = "600";
-    public static String DEFAULT_ON_DEATH_ACTION = "spectator";
+    public static String DEFAULT_ON_DEATH_ACTION = SPECTATE.name;
     public static String DEFAULT_COUNTDOWN_TIMER_LENGTH = "10";
 
     public static Properties createDefaultConfig() {

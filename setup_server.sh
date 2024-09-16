@@ -9,7 +9,9 @@ if [ -z "$MAVEN_HOME" ]; then
 fi
 
 # if you are seeing mvn not found, set this
-# export JAVA_HOME=/c/Program\ Files/Java/jdk-21
+if [ "$(uname)" != "Darwin" ]; then
+  export JAVA_HOME=/c/Program\ Files/Java/jdk-21
+fi
 
 REFRESH_BUILD=${REFRESH_BUILD:-false}
 MINECRAFT_VERSION=${MINECRAFT_VERSION:-1.21.1}

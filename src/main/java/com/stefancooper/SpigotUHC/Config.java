@@ -1,5 +1,7 @@
 package com.stefancooper.SpigotUHC;
 
+import com.stefancooper.SpigotUHC.types.Configurable;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -7,8 +9,6 @@ import java.io.IOException;
 import java.util.Comparator;
 import java.util.Properties;
 import java.util.stream.Stream;
-
-import com.stefancooper.SpigotUHC.types.Configurable;
 
 public class Config {
 

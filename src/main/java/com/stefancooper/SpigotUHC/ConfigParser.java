@@ -1,19 +1,17 @@
 package com.stefancooper.SpigotUHC;
 
-import com.stefancooper.SpigotUHC.resources.UHCTeam;
-import com.stefancooper.SpigotUHC.types.Configurable;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.WorldBorder;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.List;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.COUNTDOWN_TIMER_LENGTH;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.GRACE_PERIOD_TIMER;
@@ -21,6 +19,8 @@ import static com.stefancooper.SpigotUHC.resources.ConfigKey.ON_DEATH_ACTION;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.PLAYER_HEAD_GOLDEN_APPLE;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.RANDOM_TEAMS_ENABLED;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.RANDOM_TEAM_SIZE;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.SPREAD_MAX_DISTANCE;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.SPREAD_MIN_DISTANCE;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.TEAM_BLUE;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.TEAM_GREEN;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.TEAM_ORANGE;
@@ -32,9 +32,11 @@ import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_FINAL_
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_GRACE_PERIOD;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_INITIAL_SIZE;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_SHRINKING_PERIOD;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.fromString;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.fromString;
 import static com.stefancooper.SpigotUHC.resources.Constants.PLAYER_HEAD;
+import com.stefancooper.SpigotUHC.resources.UHCTeam;
+import com.stefancooper.SpigotUHC.types.Configurable;
 
 public class ConfigParser {
 
@@ -59,6 +61,8 @@ public class ConfigParser {
             case TEAM_GREEN -> new Configurable<>(TEAM_GREEN, value);
             case TEAM_BLUE -> new Configurable<>(TEAM_BLUE, value);
             case TEAM_ORANGE -> new Configurable<>(TEAM_ORANGE, value);
+            case SPREAD_MIN_DISTANCE -> new Configurable<>(SPREAD_MIN_DISTANCE, Double.parseDouble(value));
+            case SPREAD_MAX_DISTANCE -> new Configurable<>(SPREAD_MAX_DISTANCE, Double.parseDouble(value));
             case GRACE_PERIOD_TIMER -> new Configurable<>(GRACE_PERIOD_TIMER, Double.parseDouble(value));
             case ON_DEATH_ACTION -> new Configurable<>(ON_DEATH_ACTION, value);
             case COUNTDOWN_TIMER_LENGTH -> new Configurable<>(COUNTDOWN_TIMER_LENGTH, Double.parseDouble(value));

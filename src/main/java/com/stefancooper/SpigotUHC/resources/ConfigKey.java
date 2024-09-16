@@ -16,6 +16,9 @@ public enum ConfigKey {
     TEAM_GREEN("team.green"), // Team green players
     TEAM_BLUE("team.blue"), // Team blue players
     TEAM_ORANGE("team.orange"), // Team orange players
+    // Spread Players Enums
+    SPREAD_MIN_DISTANCE("spread.min.distance"),
+    SPREAD_MAX_DISTANCE("spread.max.distance"),
     // Misc Enums
     GRACE_PERIOD_TIMER("grace.period.timer"), // Grace period time (in seconds) before PVP is enabled
     ON_DEATH_ACTION("on.death.action"), // (optional) Action to undertake when a player dies ("spectate" | "kick")

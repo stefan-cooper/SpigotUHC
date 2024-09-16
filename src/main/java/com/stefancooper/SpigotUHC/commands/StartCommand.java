@@ -19,6 +19,9 @@ import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_FINAL_
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_GRACE_PERIOD;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_INITIAL_SIZE;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_SHRINKING_PERIOD;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.SPREAD_MIN_DISTANCE;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_CENTER_X;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_CENTER_Z;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME;
 
 public class StartCommand extends AbstractCommand {
@@ -68,10 +71,14 @@ public class StartCommand extends AbstractCommand {
         worldBorderGracePeriod.ifPresent(s -> timer.schedule(endWorldBorderGracePeriod(), Long.parseLong(s) * 1000));
         gracePeriod.ifPresent(s -> timer.schedule(endGracePeriod(), Long.parseLong(s) * 1000));
 
-        /**
-         * TODO
-         * - Spread players by team
-         */
+        // Spread Players
+        float centerX = Float.parseFloat(getConfig().getProp(WORLD_BORDER_CENTER_X.configName));
+        float centerZ = Float.parseFloat(getConfig().getProp(WORLD_BORDER_CENTER_Z.configName));
+        float minDistance = Float.parseFloat(getConfig().getProp(SPREAD_MIN_DISTANCE.configName));
+        float maxDistance = Float.parseFloat(getConfig().getProp(SPREAD_MIN_DISTANCE.configName));
+        String spreadCommand = String.format("spreadplayers %f %f %f %f false @a", centerX, centerZ, minDistance, maxDistance);
+        getSender().getServer().dispatchCommand(getSender(), spreadCommand);
+
     }
 
     private TimerTask countdown(int remaining) {

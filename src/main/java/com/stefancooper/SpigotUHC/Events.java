@@ -13,6 +13,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import java.util.List;
 
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.*;
+import static com.stefancooper.SpigotUHC.resources.Constants.PLAYER_HEAD;
 
 public class Events implements Listener {
 
@@ -41,7 +42,8 @@ public class Events implements Listener {
             Player player = event.getEntity();
             ItemStack head = new ItemStack(Material.PLAYER_HEAD,1);
             SkullMeta headMeta = (SkullMeta) head.getItemMeta();
-            headMeta.setDisplayName("PLAYER_HEAD");
+            assert headMeta != null;
+            headMeta.setDisplayName(PLAYER_HEAD);
             headMeta.setLore(List.of("Put this item in a bench", "For a Golden Apple"));
             headMeta.setOwningPlayer(player);
             head.setItemMeta(headMeta);

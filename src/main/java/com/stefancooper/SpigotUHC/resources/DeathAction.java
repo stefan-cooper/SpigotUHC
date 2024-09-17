@@ -2,8 +2,7 @@ package com.stefancooper.SpigotUHC.resources;
 
 public enum DeathAction {
     SPECTATE("spectate"),
-    KICK("kick"),
-    DROP_HEADS("drop.heads");
+    KICK("kick");
 
     public final String name;
 

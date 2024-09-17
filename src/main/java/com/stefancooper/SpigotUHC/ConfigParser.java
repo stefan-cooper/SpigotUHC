@@ -4,10 +4,11 @@ import com.stefancooper.SpigotUHC.resources.UHCTeam;
 import com.stefancooper.SpigotUHC.types.Configurable;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.WorldBorder;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
-import org.bukkit.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -32,9 +33,8 @@ import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_GRACE_
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_INITIAL_SIZE;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_SHRINKING_PERIOD;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.fromString;
-import static com.stefancooper.SpigotUHC.resources.DeathAction.DROP_HEADS;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.*;
+import static com.stefancooper.SpigotUHC.resources.Constants.PLAYER_HEAD;
 
 public class ConfigParser {
 
@@ -129,7 +129,7 @@ public class ConfigParser {
                 ItemStack apple = new ItemStack(Material.GOLDEN_APPLE, 1);
                 ItemMeta appleMeta = apple.getItemMeta();
                 apple.setItemMeta(appleMeta);
-                ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(config.getPlugin(), "PLAYER_HEAD"), apple);
+                ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(config.getPlugin(), PLAYER_HEAD), apple);
                 recipe.shape("   ", " X ", "   ");
                 recipe.setIngredient('X', Material.PLAYER_HEAD);
                 Bukkit.addRecipe(recipe);

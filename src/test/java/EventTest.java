@@ -3,10 +3,12 @@ import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import com.stefancooper.SpigotUHC.Plugin;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -74,6 +76,21 @@ public class EventTest {
 
             Assertions.assertEquals(Material.PLAYER_HEAD, droppedItem.getType());
         }
+    }
+
+    @Test
+    @DisplayName("Test the on respawn event to ensure a player respawns at their death location")
+    void testPlayerRespawnOnDeathLocation() {
+        PlayerMock player = server.addPlayer();
+        World world = player.getWorld();
+        Location deathLocation = new Location(world, 100, 65, 100);
+        player.damage(100);
+        player.setLastDeathLocation(deathLocation);
+
+        PlayerRespawnEvent respawnEvent = new PlayerRespawnEvent(player, null, false);
+        server.getPluginManager().callEvent(respawnEvent);
+
+        Assertions.assertEquals(deathLocation, respawnEvent.getRespawnLocation(), "Player should respawn at their death location");
     }
 
 

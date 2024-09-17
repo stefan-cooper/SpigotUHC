@@ -1,12 +1,17 @@
 package com.stefancooper.SpigotUHC;
 
 import com.stefancooper.SpigotUHC.resources.DeathAction;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
@@ -46,6 +51,18 @@ public class Events implements Listener {
             headMeta.setOwningPlayer(player);
             head.setItemMeta(headMeta);
             player.getWorld().dropItemNaturally(player.getLocation(), head);
+        }
+    }
+
+    @EventHandler
+    public void onRespawn(PlayerRespawnEvent event) {
+        Player player = event.getPlayer();
+        Location deathLocation = player.getLastDeathLocation();
+        if(deathLocation != null && player.getGameMode().equals(GameMode.SPECTATOR)){
+            event.setRespawnLocation(deathLocation);
+        } else {
+            Location fallbackLocation = new Location(player.getWorld(), 0, 64, 0);
+            event.setRespawnLocation(fallbackLocation);
         }
     }
 }

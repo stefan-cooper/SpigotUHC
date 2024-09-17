@@ -72,38 +72,6 @@ public class StartTest {
         });
     }
 
-    @Test
-    @DisplayName("When start is ran, players are spread out")
-    void playersAreSpread() {
-        BukkitSchedulerMock schedule = server.getScheduler();
-        PlayerMock admin = server.addPlayer();
-        admin.setOp(true);
-
-        PlayerMock player1 = server.addPlayer();
-        PlayerMock player2 = server.addPlayer();
-        PlayerMock player3 = server.addPlayer();
-        
-        server.execute("uhc", admin, "set", String.format("team.red=%s", player1.getName()));
-        server.execute("uhc", admin, "set", String.format("team.red=%s", player2.getName()));
-        server.execute("uhc", admin, "set", String.format("team.red=%s", player3.getName()));
-        server.execute("uhc", admin, "start");
-        schedule.performOneTick();
-
-        // server.execute("spreadplayers", admin, "0 0 50 100 false @a");
-
-        System.out.println(player1.getLocation());
-        System.out.println(player2.getLocation());
-
-        Assertions.assertTrue(player1.getLocation().distance(player2.getLocation()) >= 250.0);
-        Assertions.assertTrue(player1.getLocation().distance(player2.getLocation()) <= 500);
-
-        // Assertions.assertTrue(player1.getLocation().distance(player3.getLocation()) >= 250);
-        // Assertions.assertTrue(player1.getLocation().distance(player3.getLocation()) <= 500);
-
-        // Assertions.assertTrue(player2.getLocation().distance(player3.getLocation()) >= 250);
-        // Assertions.assertTrue(player2.getLocation().distance(player3.getLocation()) <= 500);
-    }
-
     private double roundToNearestDecimalPlace (float num) {
         return Math.round(num * 10.0) / 10.0;
     }

@@ -59,7 +59,7 @@ public class StartCommand extends AbstractCommand {
         double maxDistance =  Double.parseDouble(getConfig().getProp(WORLD_BORDER_INITIAL_SIZE.configName)) / 2;
         // spreadplayers <x> <z> <spreadDistance> <maxRange> <teams> <targets>
         // See: https://minecraft.fandom.com/wiki/Commands/spreadplayers
-        String spreadCommand = String.format("spreadplayers %f %f %f %f false @a", centerX, centerZ, minDistance, maxDistance);
+        String spreadCommand = String.format("spreadplayers %f %f %f %f true @a", centerX, centerZ, minDistance, maxDistance);
         getSender().getServer().dispatchCommand(getSender(), spreadCommand);
 
         // Timed actions

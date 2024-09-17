@@ -1,17 +1,23 @@
-import be.seeseemelk.mockbukkit.MockBukkit;
-import be.seeseemelk.mockbukkit.ServerMock;
-import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import com.stefancooper.SpigotUHC.Plugin;
+import java.util.Arrays;
+
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
-import org.junit.jupiter.api.*;
-
-import java.text.DecimalFormat;
-import java.util.Arrays;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import static com.stefancooper.SpigotUHC.Defaults.DEFAULT_WORLD_NAME;
+import com.stefancooper.SpigotUHC.Plugin;
+
+import be.seeseemelk.mockbukkit.MockBukkit;
+import be.seeseemelk.mockbukkit.ServerMock;
+import be.seeseemelk.mockbukkit.entity.PlayerMock;
+import be.seeseemelk.mockbukkit.scheduler.BukkitSchedulerMock;
 
 public class StartTest {
 
@@ -64,8 +70,38 @@ public class StartTest {
             Assertions.assertEquals(GameMode.SURVIVAL, player.getGameMode());
             Assertions.assertEquals(0, player.getWalkSpeed());
         });
+    }
 
-        // TODO - add spread assertions
+    @Test
+    @DisplayName("When start is ran, players are spread out")
+    void playersAreSpread() {
+        BukkitSchedulerMock schedule = server.getScheduler();
+        PlayerMock admin = server.addPlayer();
+        admin.setOp(true);
+
+        PlayerMock player1 = server.addPlayer();
+        PlayerMock player2 = server.addPlayer();
+        PlayerMock player3 = server.addPlayer();
+        
+        server.execute("uhc", admin, "set", String.format("team.red=%s", player1.getName()));
+        server.execute("uhc", admin, "set", String.format("team.red=%s", player2.getName()));
+        server.execute("uhc", admin, "set", String.format("team.red=%s", player3.getName()));
+        server.execute("uhc", admin, "start");
+        schedule.performOneTick();
+
+        // server.execute("spreadplayers", admin, "0 0 50 100 false @a");
+
+        System.out.println(player1.getLocation());
+        System.out.println(player2.getLocation());
+
+        Assertions.assertTrue(player1.getLocation().distance(player2.getLocation()) >= 250.0);
+        Assertions.assertTrue(player1.getLocation().distance(player2.getLocation()) <= 500);
+
+        // Assertions.assertTrue(player1.getLocation().distance(player3.getLocation()) >= 250);
+        // Assertions.assertTrue(player1.getLocation().distance(player3.getLocation()) <= 500);
+
+        // Assertions.assertTrue(player2.getLocation().distance(player3.getLocation()) >= 250);
+        // Assertions.assertTrue(player2.getLocation().distance(player3.getLocation()) <= 500);
     }
 
     private double roundToNearestDecimalPlace (float num) {

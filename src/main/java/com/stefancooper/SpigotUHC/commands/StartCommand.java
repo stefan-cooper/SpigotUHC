@@ -1,7 +1,9 @@
 package com.stefancooper.SpigotUHC.commands;
 
-import com.stefancooper.SpigotUHC.Config;
-import com.stefancooper.SpigotUHC.Utils;
+import java.util.Optional;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.World;
@@ -11,20 +13,16 @@ import org.bukkit.command.CommandSender;
 
 import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.Utils;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.SPREAD_MAX_DISTANCE;
-import java.util.Optional;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.COUNTDOWN_TIMER_LENGTH;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.GRACE_PERIOD_TIMER;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.SPREAD_MAX_DISTANCE;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.SPREAD_MIN_DISTANCE;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_CENTER_X;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_CENTER_Z;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_FINAL_SIZE;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_GRACE_PERIOD;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_INITIAL_SIZE;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_SHRINKING_PERIOD;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.SPREAD_MIN_DISTANCE;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_CENTER_X;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_CENTER_Z;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME;
 
 public class StartCommand extends AbstractCommand {
@@ -60,7 +58,9 @@ public class StartCommand extends AbstractCommand {
         double centerZ =  Double.parseDouble(getConfig().getProp(WORLD_BORDER_CENTER_Z.configName));
         double minDistance =  Double.parseDouble(getConfig().getProp(SPREAD_MIN_DISTANCE.configName));
         double maxDistance = Double.parseDouble(getConfig().getProp(SPREAD_MAX_DISTANCE.configName));
-        String spreadCommand = String.format("spreadplayers %f %f %f %f true @a", centerX, centerZ, minDistance, maxDistance);
+        // spreadplayers <x> <z> <spreadDistance> <maxRange> <teams> <targets>
+        // See: https://minecraft.fandom.com/wiki/Commands/spreadplayers
+        String spreadCommand = String.format("spreadplayers %f %f %f %f false @a", centerX, centerZ, minDistance, maxDistance);
         getSender().getServer().dispatchCommand(getSender(), spreadCommand);
 
         // Timed actions

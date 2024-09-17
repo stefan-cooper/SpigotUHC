@@ -15,7 +15,6 @@ import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.Utils;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.COUNTDOWN_TIMER_LENGTH;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.GRACE_PERIOD_TIMER;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.SPREAD_MAX_DISTANCE;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.SPREAD_MIN_DISTANCE;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_CENTER_X;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_CENTER_Z;
@@ -57,7 +56,7 @@ public class StartCommand extends AbstractCommand {
         double centerX = Double.parseDouble(getConfig().getProp(WORLD_BORDER_CENTER_X.configName));
         double centerZ =  Double.parseDouble(getConfig().getProp(WORLD_BORDER_CENTER_Z.configName));
         double minDistance =  Double.parseDouble(getConfig().getProp(SPREAD_MIN_DISTANCE.configName));
-        double maxDistance = Double.parseDouble(getConfig().getProp(SPREAD_MAX_DISTANCE.configName));
+        double maxDistance =  Double.parseDouble(getConfig().getProp(WORLD_BORDER_INITIAL_SIZE.configName)) / 2;
         // spreadplayers <x> <z> <spreadDistance> <maxRange> <teams> <targets>
         // See: https://minecraft.fandom.com/wiki/Commands/spreadplayers
         String spreadCommand = String.format("spreadplayers %f %f %f %f false @a", centerX, centerZ, minDistance, maxDistance);

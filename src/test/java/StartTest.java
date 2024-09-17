@@ -1,9 +1,26 @@
+import be.seeseemelk.mockbukkit.MockBukkit;
+import be.seeseemelk.mockbukkit.MockPlugin;
+import be.seeseemelk.mockbukkit.ServerMock;
+import be.seeseemelk.mockbukkit.entity.EntityMock;
+import be.seeseemelk.mockbukkit.entity.PlayerMock;
+import be.seeseemelk.mockbukkit.scheduler.BukkitSchedulerMock;
+import com.stefancooper.SpigotUHC.Plugin;
+import org.bukkit.Difficulty;
 import java.util.Arrays;
 
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
+import org.junit.jupiter.api.*;
+
+import java.text.DecimalFormat;
+import java.util.Arrays;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -57,10 +74,15 @@ public class StartTest {
         player2.getInventory().setItem(1, ItemStack.of(Material.DIAMOND_SWORD));
         PlayerMock player3 = server.addPlayer();
         player3.setFoodLevel(3);
+        world.dropItem(new Location(world, 0, 100, 0), ItemStack.of(Material.DIAMOND_SWORD));
 
+        Assertions.assertEquals(1, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
         Assertions.assertFalse(world.getPVP());
 
         server.execute("uhc", admin, "start");
+
+        Assertions.assertFalse(world.getPVP());
+        Assertions.assertEquals(0, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
 
         server.getOnlinePlayers().forEach(player -> {
             Assertions.assertEquals(20.0, player.getHealth());
@@ -68,17 +90,16 @@ public class StartTest {
             Assertions.assertEquals(0, player.getExp());
             Assertions.assertEquals(0, Arrays.stream(player.getInventory().getContents()).filter(item -> item != null && item.getType() != Material.AIR).toList().size());
             Assertions.assertEquals(GameMode.SURVIVAL, player.getGameMode());
-            Assertions.assertEquals(0, player.getWalkSpeed());
+            Assertions.assertEquals(128, player.getPotionEffect(PotionEffectType.SLOWNESS).getAmplifier());
+            Assertions.assertEquals(128, player.getPotionEffect(PotionEffectType.JUMP_BOOST).getAmplifier());
+            Assertions.assertEquals(3, player.getPotionEffect(PotionEffectType.MINING_FATIGUE).getAmplifier());
         });
-    }
-
-    private double roundToNearestDecimalPlace (float num) {
-        return Math.round(num * 10.0) / 10.0;
     }
 
     @Test
     @DisplayName("When start is ran, the timers set everything appropriately")
     void startCommandTimers() throws InterruptedException {
+        BukkitSchedulerMock schedule = server.getScheduler();
         PlayerMock admin = server.addPlayer();
         admin.setOp(true);
 
@@ -95,36 +116,62 @@ public class StartTest {
 
         // Initial start
         Assertions.assertFalse(world.getPVP());
+        Assertions.assertEquals(Difficulty.PEACEFUL, world.getDifficulty());
         Assertions.assertEquals(50, world.getWorldBorder().getSize());
-        server.getOnlinePlayers().forEach(player -> Assertions.assertEquals(0, roundToNearestDecimalPlace(player.getWalkSpeed())));
+        server.getOnlinePlayers().forEach(player -> {
+            Assertions.assertEquals(128, player.getPotionEffect(PotionEffectType.SLOWNESS).getAmplifier());
+            Assertions.assertEquals(128, player.getPotionEffect(PotionEffectType.JUMP_BOOST).getAmplifier());
+            Assertions.assertEquals(3, player.getPotionEffect(PotionEffectType.MINING_FATIGUE).getAmplifier());
+        });
 
         Thread.sleep(3000);
+        schedule.performTicks(41L); // advance ticks for potion effect
 
         // Countdown finished
+        Assertions.assertEquals(Difficulty.EASY, world.getDifficulty());
         Assertions.assertFalse(world.getPVP());
-        server.getOnlinePlayers().forEach(player -> Assertions.assertEquals(0.2, roundToNearestDecimalPlace(player.getWalkSpeed())));
+        server.getOnlinePlayers().forEach(player -> {
+            Assertions.assertNull(player.getPotionEffect(PotionEffectType.SLOWNESS));
+            Assertions.assertNull(player.getPotionEffect(PotionEffectType.JUMP_BOOST));
+            Assertions.assertNull(player.getPotionEffect(PotionEffectType.MINING_FATIGUE));
+        });
         Assertions.assertEquals(50, world.getWorldBorder().getSize());
 
         Thread.sleep(2000);
 
         // Grace period finished
+        Assertions.assertEquals(Difficulty.EASY, world.getDifficulty());
         Assertions.assertTrue(world.getPVP());
-        server.getOnlinePlayers().forEach(player -> Assertions.assertEquals(0.2, roundToNearestDecimalPlace(player.getWalkSpeed())));
+        server.getOnlinePlayers().forEach(player -> {
+            Assertions.assertNull(player.getPotionEffect(PotionEffectType.SLOWNESS));
+            Assertions.assertNull(player.getPotionEffect(PotionEffectType.JUMP_BOOST));
+            Assertions.assertNull(player.getPotionEffect(PotionEffectType.MINING_FATIGUE));
+        });
         Assertions.assertEquals(50, world.getWorldBorder().getSize());
 
         Thread.sleep(2000);
 
         // World border grace period finished
+        Assertions.assertEquals(Difficulty.EASY, world.getDifficulty());
         Assertions.assertTrue(world.getPVP());
-        server.getOnlinePlayers().forEach(player -> Assertions.assertEquals(0.2, roundToNearestDecimalPlace(player.getWalkSpeed())));
+        server.getOnlinePlayers().forEach(player -> {
+            Assertions.assertNull(player.getPotionEffect(PotionEffectType.SLOWNESS));
+            Assertions.assertNull(player.getPotionEffect(PotionEffectType.JUMP_BOOST));
+            Assertions.assertNull(player.getPotionEffect(PotionEffectType.MINING_FATIGUE));
+        });
         Assertions.assertEquals(50, world.getWorldBorder().getSize());
 
         Thread.sleep(2000);
+        schedule.performTicks(41L); // advance ticks for shrinking border
 
         // World border shrinking finished
+        Assertions.assertEquals(Difficulty.EASY, world.getDifficulty());
         Assertions.assertTrue(world.getPVP());
-        server.getOnlinePlayers().forEach(player -> Assertions.assertEquals(0.2, roundToNearestDecimalPlace(player.getWalkSpeed())));
-        // For some reason, the border size is still 50 here, even though I can verify that the code has been run to set it to smaller. Skipping this step for now.
-        // Assertions.assertEquals(10, world.getWorldBorder().getSize());
+        server.getOnlinePlayers().forEach(player -> {
+            Assertions.assertNull(player.getPotionEffect(PotionEffectType.SLOWNESS));
+            Assertions.assertNull(player.getPotionEffect(PotionEffectType.JUMP_BOOST));
+            Assertions.assertNull(player.getPotionEffect(PotionEffectType.MINING_FATIGUE));
+        });
+        Assertions.assertEquals(10, world.getWorldBorder().getSize());
     }
 }

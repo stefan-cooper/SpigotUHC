@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
@@ -19,12 +20,14 @@ public class Events implements Listener {
 
     private final Config config;
 
-    public Events(Config config) {
+    public Events (Config config) {
         this.config = config;
     }
 
+    // View docs for various events https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/event/package-summary.html
+
     @EventHandler
-    public void onDeath(PlayerDeathEvent event) {
+    public void onDeath (PlayerDeathEvent event) {
         switch (DeathAction.fromString(config.getProp(ON_DEATH_ACTION.configName))){
             case SPECTATE:
                 event.getEntity().setGameMode(GameMode.SPECTATOR);
@@ -32,11 +35,12 @@ public class Events implements Listener {
             case KICK:
                 event.getEntity().kickPlayer("GG, you suck");
                 break;
+            case null:
             default:
                 break;
         }
 
-        if(Boolean.parseBoolean(config.getProp(PLAYER_HEAD_GOLDEN_APPLE.configName))){
+        if (Boolean.parseBoolean(config.getProp(PLAYER_HEAD_GOLDEN_APPLE.configName))){
             Player player = event.getEntity();
             ItemStack head = new ItemStack(Material.PLAYER_HEAD,1);
             SkullMeta headMeta = (SkullMeta) head.getItemMeta();
@@ -49,5 +53,3 @@ public class Events implements Listener {
         }
     }
 }
-
-// View docs for various events https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/event/package-summary.html

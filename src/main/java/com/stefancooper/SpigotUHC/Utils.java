@@ -11,4 +11,9 @@ public class Utils {
         else return Bukkit.getWorld(name);
     }
 
+    // Some things are managed in Minecraft ticks. Use this to convert from seconds to ticks
+    public static int secondsToTicks (int seconds) {
+        return seconds * 20;
+    }
+
 }

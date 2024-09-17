@@ -66,7 +66,7 @@ public class EventTest {
     void testHeadDropOnDeath() {
         PlayerMock player = server.addPlayer();
         player.setOp(true);
-        server.execute("uhc", player, "set", "on.death.action=drop.heads");
+        server.execute("uhc", player, "set", "player.head.golden.apple=true");
         player.damage(100);
         if(!world.getEntities().stream().filter(entity -> entity.getType() == EntityType.ITEM && entity.getName().equals("PLAYER_HEAD")).toList().isEmpty()){
             Item droppedItem = (Item) world.getEntities().get(0);

@@ -32,8 +32,6 @@ public class Events implements Listener {
             case KICK:
                 event.getEntity().kickPlayer("GG, you suck");
                 break;
-            case null:
-                break;
             default:
                 break;
         }

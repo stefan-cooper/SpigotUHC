@@ -1,8 +1,16 @@
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
+import be.seeseemelk.mockbukkit.inventory.InventoryMock;
 import com.stefancooper.SpigotUHC.Plugin;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.World;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scoreboard.Scoreboard;
 import org.junit.jupiter.api.*;
 
@@ -93,5 +101,40 @@ public class SetConfigTest {
         server.execute("uhc", admin, "set", "team.yellow=jawad");
         Assertions.assertTrue(scoreboard.getEntityTeam(stefan).getName().equals("Red"));
         Assertions.assertTrue(scoreboard.getEntityTeam(jawad).getName().equals("Yellow"));
+    }
+
+    @Test
+    @DisplayName("Test that the recipe for creating a golden apple from a player head works")
+    void testPlayerCanCraftGoldenAppleFromPlayerHead() {
+        PlayerMock player = server.addPlayer();
+        player.setOp(true);
+        server.execute("uhc", player, "set", "player.head.golden.apple=true");
+        ItemStack apple = new ItemStack(Material.GOLDEN_APPLE);
+        NamespacedKey key = new NamespacedKey(plugin, "golden_apple");
+        ShapedRecipe recipe = new ShapedRecipe(key, apple)
+                .shape("   ", " X ", "   ")
+                .setIngredient('X', Material.PLAYER_HEAD);
+        Bukkit.addRecipe(recipe);
+        InventoryMock craftingInventory = server.createInventory(null, 9, "Crafting");
+        craftingInventory.setItem(4, new ItemStack(Material.PLAYER_HEAD));
+
+        Assertions.assertTrue(isMatchingRecipe(craftingInventory, recipe));
+        Assertions.assertEquals(apple.getType(), recipe.getResult().getType());
+    }
+
+    private boolean isMatchingRecipe(InventoryMock inventory, ShapedRecipe recipe) {
+        String[] shape = recipe.getShape();
+        for (int row = 0; row < shape.length; row++) {
+            for (int col = 0; col < shape[row].length(); col++) {
+                int slotIndex = row * 3 + col;
+                char ingredientChar = shape[row].charAt(col);
+                ItemStack expected = recipe.getIngredientMap().get(ingredientChar);
+                ItemStack actual = inventory.getItem(slotIndex);
+
+                if (ingredientChar == ' ' && actual != null) return false;
+                if (expected != null && (actual == null || expected.getType() != actual.getType())) return false;
+            }
+        }
+        return true;
     }
 }

@@ -64,6 +64,8 @@ public class StartTest {
             Assertions.assertEquals(GameMode.SURVIVAL, player.getGameMode());
             Assertions.assertEquals(0, player.getWalkSpeed());
         });
+
+        // TODO - add spread assertions
     }
 
     private double roundToNearestDecimalPlace (float num) {

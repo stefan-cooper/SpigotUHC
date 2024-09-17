@@ -27,6 +27,8 @@ public class Defaults {
     public static String DEFAULT_GRACE_PERIOD_TIMER = "600";
     public static String DEFAULT_ON_DEATH_ACTION = SPECTATE.name;
     public static String DEFAULT_COUNTDOWN_TIMER_LENGTH = "10";
+    public static String DEFAULT_MIN_SPREAD_DISTANCE = "250";
+    public static String DEFAULT_MAX_SPREAD_DISTANCE = "500";
 
     public static Properties createDefaultConfig() {
         final Properties defaults = new Properties();
@@ -40,6 +42,8 @@ public class Defaults {
         defaults.setProperty(GRACE_PERIOD_TIMER.configName, DEFAULT_GRACE_PERIOD_TIMER);
         defaults.setProperty(ON_DEATH_ACTION.configName, DEFAULT_ON_DEATH_ACTION);
         defaults.setProperty(COUNTDOWN_TIMER_LENGTH.configName, DEFAULT_COUNTDOWN_TIMER_LENGTH);
+        defaults.setProperty(SPREAD_MIN_DISTANCE.configName, DEFAULT_MIN_SPREAD_DISTANCE);
+        defaults.setProperty(SPREAD_MAX_DISTANCE.configName, DEFAULT_MAX_SPREAD_DISTANCE);
         return defaults;
     }
 

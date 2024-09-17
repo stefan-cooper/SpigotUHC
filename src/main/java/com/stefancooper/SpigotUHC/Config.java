@@ -1,7 +1,6 @@
 package com.stefancooper.SpigotUHC;
 
 import com.stefancooper.SpigotUHC.types.Configurable;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -9,7 +8,7 @@ import java.io.IOException;
 import java.util.Comparator;
 import java.util.Properties;
 import java.util.stream.Stream;
-
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME;
 
 public class Config {
 
@@ -93,6 +92,7 @@ public class Config {
 
     public void resetToDefaults() {
         config.clear();
+        setProp(WORLD_NAME.configName, (String) defaultConfig.get(WORLD_NAME.configName));
         defaultConfig.forEach((key, value) -> setProp((String) key, (String) value));
         Defaults.setDefaultGameRules(this);
     }

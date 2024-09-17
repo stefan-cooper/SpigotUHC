@@ -55,6 +55,14 @@ public class StartCommand extends AbstractCommand {
         world.getWorldBorder().setSize(Double.parseDouble(getConfig().getProp(WORLD_BORDER_INITIAL_SIZE.configName)));
         world.setTime(1000);
 
+        // Spread Players
+        double centerX = Double.parseDouble(getConfig().getProp(WORLD_BORDER_CENTER_X.configName));
+        double centerZ =  Double.parseDouble(getConfig().getProp(WORLD_BORDER_CENTER_Z.configName));
+        double minDistance =  Double.parseDouble(getConfig().getProp(SPREAD_MIN_DISTANCE.configName));
+        double maxDistance = Double.parseDouble(getConfig().getProp(SPREAD_MAX_DISTANCE.configName));
+        String spreadCommand = String.format("spreadplayers %f %f %f %f true @a", centerX, centerZ, minDistance, maxDistance);
+        getSender().getServer().dispatchCommand(getSender(), spreadCommand);
+
         // Timed actions
         Timer timer = new Timer();
         Optional<String> gracePeriod = Optional.ofNullable(getConfig().getProp(GRACE_PERIOD_TIMER.configName));
@@ -73,15 +81,6 @@ public class StartCommand extends AbstractCommand {
         });
         worldBorderGracePeriod.ifPresent(s -> timer.schedule(endWorldBorderGracePeriod(), Long.parseLong(s) * 1000));
         gracePeriod.ifPresent(s -> timer.schedule(endGracePeriod(), Long.parseLong(s) * 1000));
-
-        // Spread Players
-        double centerX = Double.parseDouble(getConfig().getProp(WORLD_BORDER_CENTER_X.configName));
-        double centerZ =  Double.parseDouble(getConfig().getProp(WORLD_BORDER_CENTER_Z.configName));
-        double minDistance =  Double.parseDouble(getConfig().getProp(SPREAD_MIN_DISTANCE.configName));
-        double maxDistance = Double.parseDouble(getConfig().getProp(SPREAD_MAX_DISTANCE.configName));
-        String spreadCommand = String.format("spreadplayers %f %f %f %f true @a", centerX, centerZ, minDistance, maxDistance);
-        getSender().getServer().dispatchCommand(getSender(), spreadCommand);
-
     }
 
     private TimerTask countdown(int remaining) {

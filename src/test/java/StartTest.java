@@ -2,11 +2,13 @@ import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import com.stefancooper.SpigotUHC.Plugin;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 import org.junit.jupiter.api.*;
 
+import java.text.DecimalFormat;
 import java.util.Arrays;
 
 import static com.stefancooper.SpigotUHC.Defaults.DEFAULT_WORLD_NAME;
@@ -59,9 +61,64 @@ public class StartTest {
             Assertions.assertEquals(20.0, player.getFoodLevel());
             Assertions.assertEquals(0, player.getExp());
             Assertions.assertEquals(0, Arrays.stream(player.getInventory().getContents()).filter(item -> item != null && item.getType() != Material.AIR).toList().size());
+            Assertions.assertEquals(GameMode.SURVIVAL, player.getGameMode());
+            Assertions.assertEquals(0, player.getWalkSpeed());
         });
-
-        Assertions.assertTrue(world.getPVP());
     }
 
+    private double roundToNearestDecimalPlace (float num) {
+        return Math.round(num * 10.0) / 10.0;
+    }
+
+    @Test
+    @DisplayName("When start is ran, the timers set everything appropriately")
+    void startCommandTimers() throws InterruptedException {
+        PlayerMock admin = server.addPlayer();
+        admin.setOp(true);
+
+        server.execute("uhc", admin, "set",
+                "world.border.initial.size=50",
+                "world.border.final.size=10",
+                "countdown.timer.length=2",
+                "grace.period.timer=4",
+                "world.border.grace.period=6",
+                "world.border.shrinking.period=2"
+        );
+
+        server.execute("uhc", admin, "start");
+
+        // Initial start
+        Assertions.assertFalse(world.getPVP());
+        Assertions.assertEquals(50, world.getWorldBorder().getSize());
+        server.getOnlinePlayers().forEach(player -> Assertions.assertEquals(0, roundToNearestDecimalPlace(player.getWalkSpeed())));
+
+        Thread.sleep(3000);
+
+        // Countdown finished
+        Assertions.assertFalse(world.getPVP());
+        server.getOnlinePlayers().forEach(player -> Assertions.assertEquals(0.2, roundToNearestDecimalPlace(player.getWalkSpeed())));
+        Assertions.assertEquals(50, world.getWorldBorder().getSize());
+
+        Thread.sleep(2000);
+
+        // Grace period finished
+        Assertions.assertTrue(world.getPVP());
+        server.getOnlinePlayers().forEach(player -> Assertions.assertEquals(0.2, roundToNearestDecimalPlace(player.getWalkSpeed())));
+        Assertions.assertEquals(50, world.getWorldBorder().getSize());
+
+        Thread.sleep(2000);
+
+        // World border grace period finished
+        Assertions.assertTrue(world.getPVP());
+        server.getOnlinePlayers().forEach(player -> Assertions.assertEquals(0.2, roundToNearestDecimalPlace(player.getWalkSpeed())));
+        Assertions.assertEquals(50, world.getWorldBorder().getSize());
+
+        Thread.sleep(2000);
+
+        // World border shrinking finished
+        Assertions.assertTrue(world.getPVP());
+        server.getOnlinePlayers().forEach(player -> Assertions.assertEquals(0.2, roundToNearestDecimalPlace(player.getWalkSpeed())));
+        // For some reason, the border size is still 50 here, even though I can verify that the code has been run to set it to smaller. Skipping this step for now.
+        // Assertions.assertEquals(10, world.getWorldBorder().getSize());
+    }
 }

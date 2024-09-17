@@ -47,8 +47,9 @@ public class SetConfigTest {
     void testPlayerSetInitialWorldBorderSize() {
         PlayerMock player = server.addPlayer();
         player.setOp(true);
-        server.execute("uhc", player, "set", "world.border.initial.size=500");
-        Assertions.assertEquals(Double.parseDouble("500"), world.getWorldBorder().getSize());
+        Assertions.assertEquals(Double.parseDouble("2000"), world.getWorldBorder().getSize());
+        server.execute("uhc", player, "set", "world.border.initial.size=50");
+        Assertions.assertEquals(Double.parseDouble("50"), world.getWorldBorder().getSize());
     }
 
     @Test

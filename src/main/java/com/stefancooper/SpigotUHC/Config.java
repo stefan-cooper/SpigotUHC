@@ -94,6 +94,7 @@ public class Config {
     public void resetToDefaults() {
         config.clear();
         defaultConfig.forEach((key, value) -> setProp((String) key, (String) value));
+        Defaults.setDefaultGameRules(this);
     }
 
 }

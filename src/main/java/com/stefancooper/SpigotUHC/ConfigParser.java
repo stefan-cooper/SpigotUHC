@@ -19,7 +19,6 @@ import static com.stefancooper.SpigotUHC.resources.ConfigKey.ON_DEATH_ACTION;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.PLAYER_HEAD_GOLDEN_APPLE;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.RANDOM_TEAMS_ENABLED;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.RANDOM_TEAM_SIZE;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.SPREAD_MAX_DISTANCE;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.SPREAD_MIN_DISTANCE;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.TEAM_BLUE;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.TEAM_GREEN;
@@ -62,7 +61,6 @@ public class ConfigParser {
             case TEAM_BLUE -> new Configurable<>(TEAM_BLUE, value);
             case TEAM_ORANGE -> new Configurable<>(TEAM_ORANGE, value);
             case SPREAD_MIN_DISTANCE -> new Configurable<>(SPREAD_MIN_DISTANCE, Double.parseDouble(value));
-            case SPREAD_MAX_DISTANCE -> new Configurable<>(SPREAD_MAX_DISTANCE, Double.parseDouble(value));
             case GRACE_PERIOD_TIMER -> new Configurable<>(GRACE_PERIOD_TIMER, Double.parseDouble(value));
             case ON_DEATH_ACTION -> new Configurable<>(ON_DEATH_ACTION, value);
             case COUNTDOWN_TIMER_LENGTH -> new Configurable<>(COUNTDOWN_TIMER_LENGTH, Double.parseDouble(value));

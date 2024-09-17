@@ -91,11 +91,6 @@ public class StartCommand extends AbstractCommand {
                 timer.schedule(countdown(curr, world), curr * 1000L);
             }
         }
-
-        /**
-         * TODO
-         * - Spread players by team
-         */
     }
 
     private TimerTask countdown(int remaining, World world) {

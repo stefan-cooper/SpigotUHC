@@ -1,18 +1,14 @@
 package com.stefancooper.SpigotUHC;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Difficulty;
 import org.bukkit.GameRule;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.RenderType;
-import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
 
 import java.util.Properties;
 
@@ -67,19 +63,5 @@ public class Defaults {
         }
         healthObjective.setDisplaySlot(DisplaySlot.PLAYER_LIST);
         healthObjective.setRenderType(RenderType.HEARTS);
-        if (Boolean.parseBoolean(config.getProp(KILLERS_IN_SCOREBOARD.configName))){
-            ScoreboardManager manager = Bukkit.getScoreboardManager();
-            Scoreboard killsScoreboard = manager.getNewScoreboard();
-
-            // Create an objective for the scoreboard
-            Objective objective = killsScoreboard.registerNewObjective("Kills", "dummy");
-            objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-            objective.setDisplayName(ChatColor.GREEN + "Player Kills");
-
-//            // Set initial kill count (0 if the player is new)
-//            int kills = playerKills.getOrDefault(player.getUniqueId(), 0);
-//            Score killScore = objective.getScore(ChatColor.YELLOW + player.getName());
-//            killScore.setScore(kills);
-        }
     }
 }

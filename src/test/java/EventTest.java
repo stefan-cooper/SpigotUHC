@@ -107,41 +107,4 @@ public class EventTest {
 
         Assertions.assertEquals(deathLocation, respawnEvent.getRespawnLocation(), "Player should respawn at their death location");
     }
-
-    @Test
-    @DisplayName("Test the on respawn event to ensure a player respawns at their death location")
-    void testKillTracking() {
-        // Create two mock players
-        PlayerMock killer = server.addPlayer("Killer");
-        PlayerMock victim = server.addPlayer("Victim");
-        World world = killer.getWorld();
-        BukkitSchedulerMock schedule = server.getScheduler();
-
-
-        //Sets Diamond sword to killer's main hand
-        ItemStack bow = new ItemStack(Material.BOW);
-        killer.getInventory().setItemInMainHand(bow);
-        Location location = new Location(world, 116, 64, 118);
-
-        DamageSource damageSource = new DamageSourceMock(DamageType.ARROW, killer, victim, location);
-        // Simulate the killer killing the victim
-        victim.setKiller(killer);
-        PlayerDeathEvent deathEvent = new PlayerDeathEvent((Player) victim, damageSource, Collections.singletonList(bow), 0, killer.getName() + " killed " + victim.getName());
-        server.getPluginManager().callEvent(deathEvent);
-        schedule.performOneTick();
-
-        // Check if the killer's kills were incremented and shown on their scoreboard
-        Scoreboard scoreboard = killer.getScoreboard();
-        Objective objective = scoreboard.getObjective("Kills");
-        Assertions.assertEquals("§aPlayer Kills", objective.getDisplayName(), "The display name should be 'Player Kills'");
-
-        int kills = objective.getScore(killer.getName()).getScore();
-        Assertions.assertEquals(1, kills, "Killer should have 1 kill on the scoreboard");
-
-        // Victim's scoreboard should not change
-        int victimKills = objective.getScore(victim.getName()).getScore();
-        Assertions.assertEquals(0, victimKills, "Victim should have 0 kills on the scoreboard");
-    }
-
-
 }

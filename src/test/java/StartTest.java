@@ -3,6 +3,7 @@ import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import be.seeseemelk.mockbukkit.scheduler.BukkitSchedulerMock;
 import com.stefancooper.SpigotUHC.Plugin;
+import com.stefancooper.SpigotUHC.resources.Constants;
 import org.bukkit.Difficulty;
 import java.util.Arrays;
 import org.bukkit.GameMode;
@@ -12,6 +13,9 @@ import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Score;
+import org.bukkit.scoreboard.Scoreboard;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -76,7 +80,7 @@ public class StartTest {
             Assertions.assertEquals(0, Arrays.stream(player.getInventory().getContents()).filter(item -> item != null && item.getType() != Material.AIR).toList().size());
             Assertions.assertEquals(GameMode.SURVIVAL, player.getGameMode());
             Assertions.assertEquals(128, player.getPotionEffect(PotionEffectType.SLOWNESS).getAmplifier());
-            Assertions.assertEquals(128, player.getPotionEffect(PotionEffectType.JUMP_BOOST).getAmplifier());
+            Assertions.assertEquals(255, player.getPotionEffect(PotionEffectType.JUMP_BOOST).getAmplifier());
             Assertions.assertEquals(3, player.getPotionEffect(PotionEffectType.MINING_FATIGUE).getAmplifier());
         });
     }
@@ -106,7 +110,7 @@ public class StartTest {
         Assertions.assertEquals(50, world.getWorldBorder().getSize());
         server.getOnlinePlayers().forEach(player -> {
             Assertions.assertEquals(128, player.getPotionEffect(PotionEffectType.SLOWNESS).getAmplifier());
-            Assertions.assertEquals(128, player.getPotionEffect(PotionEffectType.JUMP_BOOST).getAmplifier());
+            Assertions.assertEquals(255, player.getPotionEffect(PotionEffectType.JUMP_BOOST).getAmplifier());
             Assertions.assertEquals(3, player.getPotionEffect(PotionEffectType.MINING_FATIGUE).getAmplifier());
         });
 
@@ -159,5 +163,33 @@ public class StartTest {
             Assertions.assertNull(player.getPotionEffect(PotionEffectType.MINING_FATIGUE));
         });
         Assertions.assertEquals(10, world.getWorldBorder().getSize());
+    }
+    @Test
+    @DisplayName("When start is ran, the scoreboard updates the current world border")
+    void worldBorderScoreboard() throws InterruptedException {
+        PlayerMock admin = server.addPlayer();
+        admin.setOp(true);
+        BukkitSchedulerMock schedule = server.getScheduler();
+
+        server.execute("uhc", admin, "set",
+                "world.border.initial.size=500",
+                "world.border.final.size=100",
+                "countdown.timer.length=3",
+                "world.border.grace.period=3",
+                "world.border.shrinking.period=10",
+                "world.border.in.scoreboard=true"
+        );
+        server.execute("uhc", admin, "start");
+        server.execute("uhc", admin, "set", "world.border.in.scoreboard=true");
+
+        Score score = server.getScoreboardManager().getMainScoreboard().getObjective(Constants.WORLD_BORDER_OBJECTIVE).getScore("Border Size:");
+        Assertions.assertEquals(500, score.getScore());
+        Assertions.assertEquals(500, world.getWorldBorder().getSize());
+
+        // 1 second passes
+        Thread.sleep(11000);
+        schedule.performTicks(2000L);
+
+        Assertions.assertEquals(100, world.getWorldBorder().getSize());
     }
 }

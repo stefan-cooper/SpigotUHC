@@ -1,9 +1,10 @@
 package com.stefancooper.SpigotUHC;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import com.stefancooper.SpigotUHC.resources.Constants;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Difficulty;
@@ -11,22 +12,18 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.COUNTDOWN_TIMER_LENGTH;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.DIFFICULTY;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.GRACE_PERIOD_TIMER;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.KILLERS_IN_SCOREBOARD;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.ON_DEATH_ACTION;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.PLAYER_HEAD_GOLDEN_APPLE;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.RANDOM_TEAMS_ENABLED;
@@ -53,10 +50,6 @@ import com.stefancooper.SpigotUHC.types.Configurable;
 public class ConfigParser {
 
     private final Config config;
-    private ScoreboardManager borderScoreboardManager;
-    private Scoreboard borderScoreboard;
-    private Objective borderObjective;
-    private HashMap<UUID, Integer> playerKills = new HashMap<>();
 
     public ConfigParser(Config config) {
         this.config = config;
@@ -84,7 +77,6 @@ public class ConfigParser {
             case COUNTDOWN_TIMER_LENGTH -> new Configurable<>(COUNTDOWN_TIMER_LENGTH, Double.parseDouble(value));
             case PLAYER_HEAD_GOLDEN_APPLE -> new Configurable<>(PLAYER_HEAD_GOLDEN_APPLE, Boolean.parseBoolean(value));
             case WORLD_NAME -> new Configurable<>(WORLD_NAME, value);
-            case KILLERS_IN_SCOREBOARD ->  new Configurable<>(KILLERS_IN_SCOREBOARD, Boolean.parseBoolean(value));
             case DIFFICULTY -> new Configurable<>(DIFFICULTY, Difficulty.valueOf(value));
             case null -> null;
         };
@@ -110,16 +102,17 @@ public class ConfigParser {
         team.setPrefix(String.format("[%s] ", uhcTeam.getName()));
     }
 
-    private void updateWorldBorder(){
-        if (Boolean.parseBoolean(config.getProp(WORLD_BORDER_IN_SCOREBOARD.configName))){
-            World world = Utils.getWorld(config.getProp(WORLD_NAME.configName));
-            if(world == null) return;
-
-            double borderSize = world.getWorldBorder().getSize();
-            borderObjective.getScore("Border Size:").setScore((int) borderSize);
-
-            Bukkit.getOnlinePlayers().forEach(player -> player.setScoreboard(borderScoreboard));
-        }
+    private TimerTask updateWorldBorder(Objective objective) {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                if (Boolean.parseBoolean(config.getProp(WORLD_BORDER_IN_SCOREBOARD.configName))) {
+                    World world = Utils.getWorld(config.getProp(WORLD_NAME.configName));
+                    double borderSize = world.getWorldBorder().getSize();
+                    objective.getScore("Border Size:").setScore((int) borderSize);
+                }
+            }
+        };
     }
 
     public void executeConfigurable(Configurable<?> configurable) {
@@ -159,27 +152,30 @@ public class ConfigParser {
                 createTeam(new UHCTeam("Orange", (String) configurable.value(), ChatColor.GOLD ));
                 break;
             case PLAYER_HEAD_GOLDEN_APPLE:
-                ItemStack apple = new ItemStack(Material.GOLDEN_APPLE, 1);
-                ItemMeta appleMeta = apple.getItemMeta();
-                apple.setItemMeta(appleMeta);
-                ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(config.getPlugin(), PLAYER_HEAD), apple);
-                recipe.shape("   ", " X ", "   ");
-                recipe.setIngredient('X', Material.PLAYER_HEAD);
-                Bukkit.addRecipe(recipe);
+                if ((Boolean) configurable.value()) {
+                    ItemStack apple = new ItemStack(Material.GOLDEN_APPLE, 1);
+                    ItemMeta appleMeta = apple.getItemMeta();
+                    apple.setItemMeta(appleMeta);
+                    ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(config.getPlugin(), PLAYER_HEAD), apple);
+                    recipe.shape("   ", " X ", "   ");
+                    recipe.setIngredient('X', Material.PLAYER_HEAD);
+                    Bukkit.addRecipe(recipe);
+                }
                 break;
             case WORLD_BORDER_IN_SCOREBOARD:
-                borderScoreboardManager = Bukkit.getScoreboardManager();
-                borderScoreboard = borderScoreboardManager.getNewScoreboard();
-                borderObjective = borderScoreboard.registerNewObjective("World Border", "dummy",  ChatColor.GOLD + "World Border Size");
-                borderObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
-                updateWorldBorder();
-
-                new BukkitRunnable(){
-                    @Override
-                    public void run(){
-                        updateWorldBorder();
-                    }
-                }.runTaskTimer(config.getPlugin(), 0L, 20L);
+                Objective borderObjective;
+                Scoreboard borderScoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+                if (borderScoreboard.getObjective(Constants.WORLD_BORDER_OBJECTIVE) == null) {
+                    borderObjective = borderScoreboard.registerNewObjective(Constants.WORLD_BORDER_OBJECTIVE, Criteria.DUMMY, ChatColor.GOLD + "World Border Size");
+                } else {
+                    borderObjective = borderScoreboard.getObjective(Constants.WORLD_BORDER_OBJECTIVE);
+                }
+                if ((Boolean) configurable.value()) {
+                    borderObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
+                    new Timer().scheduleAtFixedRate(updateWorldBorder(borderObjective), 0, 1000L);
+                } else {
+                    borderObjective.unregister();
+                }
                 break;
             default:
                 break;

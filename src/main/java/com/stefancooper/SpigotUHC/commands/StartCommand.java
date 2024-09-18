@@ -45,25 +45,6 @@ public class StartCommand extends AbstractCommand {
         World world = Utils.getWorld(getConfig().getProp(WORLD_NAME.configName));
         int countdownTimer = Integer.parseInt(getConfig().getProp(COUNTDOWN_TIMER_LENGTH.configName));
 
-        // Actions on the player
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            double maxHealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue();
-            player.setHealth(maxHealth);
-            player.setFoodLevel(20);
-            player.getInventory().clear();
-            player.setExp(0);
-            player.setGameMode(GameMode.SURVIVAL);
-            player.addPotionEffect(PotionEffectType.JUMP_BOOST.createEffect(Utils.secondsToTicks(countdownTimer), 128));
-            player.addPotionEffect(PotionEffectType.MINING_FATIGUE.createEffect(Utils.secondsToTicks(countdownTimer), 3));
-            player.addPotionEffect(PotionEffectType.SLOWNESS.createEffect(Utils.secondsToTicks(countdownTimer), 128));
-        });
-
-        // Actions on the world
-        world.getWorldBorder().setSize(Double.parseDouble(getConfig().getProp(WORLD_BORDER_INITIAL_SIZE.configName)));
-        world.setTime(1000);
-        world.setDifficulty(Difficulty.PEACEFUL);
-        world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).forEach(Entity::remove);
-
         // Spread Players
         double centerX = Double.parseDouble(getConfig().getProp(WORLD_BORDER_CENTER_X.configName));
         double centerZ =  Double.parseDouble(getConfig().getProp(WORLD_BORDER_CENTER_Z.configName));
@@ -73,6 +54,25 @@ public class StartCommand extends AbstractCommand {
         // See: https://minecraft.fandom.com/wiki/Commands/spreadplayers
         String spreadCommand = String.format("spreadplayers %f %f %f %f true @a", centerX, centerZ, minDistance, maxDistance);
         getSender().getServer().dispatchCommand(getSender(), spreadCommand);
+
+        // Actions on the player
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            double maxHealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue();
+            player.setHealth(maxHealth);
+            player.setFoodLevel(20);
+            player.getInventory().clear();
+            player.setExp(0);
+            player.setGameMode(GameMode.SURVIVAL);
+            player.addPotionEffect(PotionEffectType.JUMP_BOOST.createEffect(Utils.secondsToTicks(countdownTimer), 255));
+            player.addPotionEffect(PotionEffectType.MINING_FATIGUE.createEffect(Utils.secondsToTicks(countdownTimer), 3));
+            player.addPotionEffect(PotionEffectType.SLOWNESS.createEffect(Utils.secondsToTicks(countdownTimer), 128));
+        });
+
+        // Actions on the world
+        world.getWorldBorder().setSize(Double.parseDouble(getConfig().getProp(WORLD_BORDER_INITIAL_SIZE.configName)));
+        world.setTime(1000);
+        world.setDifficulty(Difficulty.PEACEFUL);
+        world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).forEach(Entity::remove);
 
         // Timed actions
         Timer timer = new Timer();

@@ -1,6 +1,7 @@
 package com.stefancooper.SpigotUHC;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Difficulty;
 import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.scoreboard.Criteria;
@@ -28,6 +29,7 @@ public class Defaults {
     public static String DEFAULT_ON_DEATH_ACTION = SPECTATE.name;
     public static String DEFAULT_COUNTDOWN_TIMER_LENGTH = "10";
     public static String DEFAULT_MIN_SPREAD_DISTANCE = "250";
+    public static Difficulty DEFAULT_DIFFICULTY = Difficulty.EASY;
 
     public static Properties createDefaultConfig() {
         final Properties defaults = new Properties();
@@ -42,6 +44,7 @@ public class Defaults {
         defaults.setProperty(ON_DEATH_ACTION.configName, DEFAULT_ON_DEATH_ACTION);
         defaults.setProperty(COUNTDOWN_TIMER_LENGTH.configName, DEFAULT_COUNTDOWN_TIMER_LENGTH);
         defaults.setProperty(SPREAD_MIN_DISTANCE.configName, DEFAULT_MIN_SPREAD_DISTANCE);
+        defaults.setProperty(DIFFICULTY.configName, DEFAULT_DIFFICULTY.name());
         return defaults;
     }
 

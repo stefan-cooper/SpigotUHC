@@ -19,6 +19,7 @@ import org.bukkit.potion.PotionEffectType;
 import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.Utils;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.COUNTDOWN_TIMER_LENGTH;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.DIFFICULTY;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.GRACE_PERIOD_TIMER;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.SPREAD_MIN_DISTANCE;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_CENTER_X;
@@ -106,7 +107,7 @@ public class StartCommand extends AbstractCommand {
                 } else if (timeLeft == 0) {
                     // Countdown over!
                     Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle(Integer.toString(timeLeft), "Go!"));
-                    world.setDifficulty(Difficulty.EASY);
+                    world.setDifficulty(Difficulty.valueOf(getConfig().getProp(DIFFICULTY.configName)));
                 } else {
                     Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle(Integer.toString(timeLeft), "Starting soon..."));
                 }

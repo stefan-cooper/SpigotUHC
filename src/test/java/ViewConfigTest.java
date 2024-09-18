@@ -40,6 +40,7 @@ public class ViewConfigTest {
         server.execute("uhc", player, "view", "config");
         player.assertSaid(String.format("""
                         countdown.timer.length=%s
+                        difficulty=%s
                         grace.period.timer=%s
                         on.death.action=%s
                         spread.min.distance=%s
@@ -50,7 +51,7 @@ public class ViewConfigTest {
                         world.border.initial.size=%s
                         world.border.shrinking.period=%s
                         world.name=%s
-                        """, DEFAULT_COUNTDOWN_TIMER_LENGTH, DEFAULT_GRACE_PERIOD_TIMER, DEFAULT_ON_DEATH_ACTION, DEFAULT_MIN_SPREAD_DISTANCE, DEFAULT_WORLD_BORDER_CENTER_X, DEFAULT_WORLD_BORDER_CENTER_Z,
+                        """, DEFAULT_COUNTDOWN_TIMER_LENGTH, DEFAULT_DIFFICULTY, DEFAULT_GRACE_PERIOD_TIMER, DEFAULT_ON_DEATH_ACTION, DEFAULT_MIN_SPREAD_DISTANCE, DEFAULT_WORLD_BORDER_CENTER_X, DEFAULT_WORLD_BORDER_CENTER_Z,
                 DEFAULT_WORLD_BORDER_FINAL_SIZE, DEFAULT_WORLD_BORDER_GRACE_PERIOD, DEFAULT_WORLD_BORDER_INITIAL_SIZE, DEFAULT_WORLD_BORDER_SHRINKING_PERIOD, DEFAULT_WORLD_NAME
                         )
         );

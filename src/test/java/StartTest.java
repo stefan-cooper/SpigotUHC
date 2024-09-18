@@ -94,7 +94,8 @@ public class StartTest {
                 "countdown.timer.length=2",
                 "grace.period.timer=4",
                 "world.border.grace.period=6",
-                "world.border.shrinking.period=2"
+                "world.border.shrinking.period=2",
+                "difficulty=HARD"
         );
 
         server.execute("uhc", admin, "start");
@@ -113,7 +114,7 @@ public class StartTest {
         schedule.performTicks(41L); // advance ticks for potion effect
 
         // Countdown finished
-        Assertions.assertEquals(Difficulty.EASY, world.getDifficulty());
+        Assertions.assertEquals(Difficulty.HARD, world.getDifficulty());
         Assertions.assertFalse(world.getPVP());
         server.getOnlinePlayers().forEach(player -> {
             Assertions.assertNull(player.getPotionEffect(PotionEffectType.SLOWNESS));
@@ -125,7 +126,7 @@ public class StartTest {
         Thread.sleep(2000);
 
         // Grace period finished
-        Assertions.assertEquals(Difficulty.EASY, world.getDifficulty());
+        Assertions.assertEquals(Difficulty.HARD, world.getDifficulty());
         Assertions.assertTrue(world.getPVP());
         server.getOnlinePlayers().forEach(player -> {
             Assertions.assertNull(player.getPotionEffect(PotionEffectType.SLOWNESS));
@@ -137,7 +138,7 @@ public class StartTest {
         Thread.sleep(2000);
 
         // World border grace period finished
-        Assertions.assertEquals(Difficulty.EASY, world.getDifficulty());
+        Assertions.assertEquals(Difficulty.HARD, world.getDifficulty());
         Assertions.assertTrue(world.getPVP());
         server.getOnlinePlayers().forEach(player -> {
             Assertions.assertNull(player.getPotionEffect(PotionEffectType.SLOWNESS));
@@ -150,7 +151,7 @@ public class StartTest {
         schedule.performTicks(41L); // advance ticks for shrinking border
 
         // World border shrinking finished
-        Assertions.assertEquals(Difficulty.EASY, world.getDifficulty());
+        Assertions.assertEquals(Difficulty.HARD, world.getDifficulty());
         Assertions.assertTrue(world.getPVP());
         server.getOnlinePlayers().forEach(player -> {
             Assertions.assertNull(player.getPotionEffect(PotionEffectType.SLOWNESS));

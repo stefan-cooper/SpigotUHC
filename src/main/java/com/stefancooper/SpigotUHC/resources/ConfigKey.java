@@ -23,7 +23,8 @@ public enum ConfigKey {
     ON_DEATH_ACTION("on.death.action"), // (optional) Action to undertake when a player dies ("spectate" | "kick")
     COUNTDOWN_TIMER_LENGTH("countdown.timer.length"), // Countdown to start the game after UHC start command issued
     PLAYER_HEAD_GOLDEN_APPLE("player.head.golden.apple"), // (optional) drop player heads who are killed that can be crafted into golden apples
-    WORLD_NAME("world.name"); // Name of the minecraft world
+    WORLD_NAME("world.name"), // Name of the minecraft world
+    DIFFICULTY("difficulty");
 
 
 

@@ -8,6 +8,7 @@ public enum ConfigKey {
     WORLD_BORDER_GRACE_PERIOD("world.border.grace.period"), // Grace period time (in seconds) before the border will begin to shrink
     WORLD_BORDER_CENTER_X("world.border.center.x"), // World border center X coord
     WORLD_BORDER_CENTER_Z("world.border.center.z"), // World border center Z coord
+    WORLD_BORDER_IN_SCOREBOARD("world.border.in.scoreboard"), // World border size in the scoreboard
     // Team Enums
     RANDOM_TEAMS_ENABLED("random.teams.enabled"), // (optional) Enable random teams
     RANDOM_TEAM_SIZE("random.team.size"), // (optional) Random team size
@@ -24,6 +25,7 @@ public enum ConfigKey {
     COUNTDOWN_TIMER_LENGTH("countdown.timer.length"), // Countdown to start the game after UHC start command issued
     PLAYER_HEAD_GOLDEN_APPLE("player.head.golden.apple"), // (optional) drop player heads who are killed that can be crafted into golden apples
     WORLD_NAME("world.name"), // Name of the minecraft world
+    KILLERS_IN_SCOREBOARD("killers.in.scoreboard"), //The players with kills in a scoreboard
     DIFFICULTY("difficulty");
 
 

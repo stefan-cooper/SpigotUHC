@@ -1,22 +1,32 @@
 package com.stefancooper.SpigotUHC;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Difficulty;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.World;
 import org.bukkit.WorldBorder;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.COUNTDOWN_TIMER_LENGTH;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.DIFFICULTY;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.GRACE_PERIOD_TIMER;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.KILLERS_IN_SCOREBOARD;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.ON_DEATH_ACTION;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.PLAYER_HEAD_GOLDEN_APPLE;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.RANDOM_TEAMS_ENABLED;
@@ -32,6 +42,7 @@ import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_CENTER
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_FINAL_SIZE;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_GRACE_PERIOD;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_INITIAL_SIZE;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_IN_SCOREBOARD;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_SHRINKING_PERIOD;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.fromString;
@@ -42,6 +53,10 @@ import com.stefancooper.SpigotUHC.types.Configurable;
 public class ConfigParser {
 
     private final Config config;
+    private ScoreboardManager borderScoreboardManager;
+    private Scoreboard borderScoreboard;
+    private Objective borderObjective;
+    private HashMap<UUID, Integer> playerKills = new HashMap<>();
 
     public ConfigParser(Config config) {
         this.config = config;
@@ -55,7 +70,8 @@ public class ConfigParser {
             case WORLD_BORDER_GRACE_PERIOD -> new Configurable<>(WORLD_BORDER_GRACE_PERIOD, Double.parseDouble(value));
             case WORLD_BORDER_CENTER_X -> new Configurable<>(WORLD_BORDER_CENTER_X, Double.parseDouble(value));
             case WORLD_BORDER_CENTER_Z -> new Configurable<>(WORLD_BORDER_CENTER_Z, Double.parseDouble(value));
-            case RANDOM_TEAMS_ENABLED -> new Configurable<>(RANDOM_TEAMS_ENABLED, Boolean.parseBoolean((value)));
+            case WORLD_BORDER_IN_SCOREBOARD ->  new Configurable<>(WORLD_BORDER_IN_SCOREBOARD, Boolean.parseBoolean(value));
+            case RANDOM_TEAMS_ENABLED -> new Configurable<>(RANDOM_TEAMS_ENABLED, Boolean.parseBoolean(value));
             case RANDOM_TEAM_SIZE -> new Configurable<>(RANDOM_TEAM_SIZE, Double.parseDouble(value));
             case TEAM_RED -> new Configurable<>(TEAM_RED, value);
             case TEAM_YELLOW -> new Configurable<>(TEAM_YELLOW, value);
@@ -66,11 +82,11 @@ public class ConfigParser {
             case GRACE_PERIOD_TIMER -> new Configurable<>(GRACE_PERIOD_TIMER, Double.parseDouble(value));
             case ON_DEATH_ACTION -> new Configurable<>(ON_DEATH_ACTION, value);
             case COUNTDOWN_TIMER_LENGTH -> new Configurable<>(COUNTDOWN_TIMER_LENGTH, Double.parseDouble(value));
-            case PLAYER_HEAD_GOLDEN_APPLE -> new Configurable<>(PLAYER_HEAD_GOLDEN_APPLE, Boolean.parseBoolean((value)));
+            case PLAYER_HEAD_GOLDEN_APPLE -> new Configurable<>(PLAYER_HEAD_GOLDEN_APPLE, Boolean.parseBoolean(value));
             case WORLD_NAME -> new Configurable<>(WORLD_NAME, value);
+            case KILLERS_IN_SCOREBOARD ->  new Configurable<>(KILLERS_IN_SCOREBOARD, Boolean.parseBoolean(value));
             case DIFFICULTY -> new Configurable<>(DIFFICULTY, Difficulty.valueOf(value));
             case null -> null;
-
         };
     }
 
@@ -92,6 +108,18 @@ public class ConfigParser {
         team.setColor(uhcTeam.getColor());
         team.setAllowFriendlyFire(false);
         team.setPrefix(String.format("[%s] ", uhcTeam.getName()));
+    }
+
+    private void updateWorldBorder(){
+        if (Boolean.parseBoolean(config.getProp(WORLD_BORDER_IN_SCOREBOARD.configName))){
+            World world = Utils.getWorld(config.getProp(WORLD_NAME.configName));
+            if(world == null) return;
+
+            double borderSize = world.getWorldBorder().getSize();
+            borderObjective.getScore("Border Size:").setScore((int) borderSize);
+
+            Bukkit.getOnlinePlayers().forEach(player -> player.setScoreboard(borderScoreboard));
+        }
     }
 
     public void executeConfigurable(Configurable<?> configurable) {
@@ -138,6 +166,21 @@ public class ConfigParser {
                 recipe.shape("   ", " X ", "   ");
                 recipe.setIngredient('X', Material.PLAYER_HEAD);
                 Bukkit.addRecipe(recipe);
+                break;
+            case WORLD_BORDER_IN_SCOREBOARD:
+                borderScoreboardManager = Bukkit.getScoreboardManager();
+                borderScoreboard = borderScoreboardManager.getNewScoreboard();
+                borderObjective = borderScoreboard.registerNewObjective("World Border", "dummy",  ChatColor.GOLD + "World Border Size");
+                borderObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
+                updateWorldBorder();
+
+                new BukkitRunnable(){
+                    @Override
+                    public void run(){
+                        updateWorldBorder();
+                    }
+                }.runTaskTimer(config.getPlugin(), 0L, 20L);
+                break;
             default:
                 break;
         }

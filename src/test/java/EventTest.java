@@ -1,14 +1,26 @@
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
+import be.seeseemelk.mockbukkit.damage.DamageSourceMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
+import be.seeseemelk.mockbukkit.scheduler.BukkitSchedulerMock;
 import com.stefancooper.SpigotUHC.Plugin;
+import net.kyori.adventure.text.Component;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.damage.DamageSource;
+import org.bukkit.damage.DamageType;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +28,9 @@ import org.junit.jupiter.api.BeforeEach;
 import static com.stefancooper.SpigotUHC.Defaults.DEFAULT_WORLD_NAME;
 
 import org.junit.jupiter.api.*;
+
+import java.util.Collections;
+import java.util.List;
 
 public class EventTest {
 
@@ -91,6 +106,41 @@ public class EventTest {
         server.getPluginManager().callEvent(respawnEvent);
 
         Assertions.assertEquals(deathLocation, respawnEvent.getRespawnLocation(), "Player should respawn at their death location");
+    }
+
+    @Test
+    @DisplayName("Test the on respawn event to ensure a player respawns at their death location")
+    void testKillTracking() {
+        // Create two mock players
+        PlayerMock killer = server.addPlayer("Killer");
+        PlayerMock victim = server.addPlayer("Victim");
+        World world = killer.getWorld();
+        BukkitSchedulerMock schedule = server.getScheduler();
+
+
+        //Sets Diamond sword to killer's main hand
+        ItemStack bow = new ItemStack(Material.BOW);
+        killer.getInventory().setItemInMainHand(bow);
+        Location location = new Location(world, 116, 64, 118);
+
+        DamageSource damageSource = new DamageSourceMock(DamageType.ARROW, killer, victim, location);
+        // Simulate the killer killing the victim
+        victim.setKiller(killer);
+        PlayerDeathEvent deathEvent = new PlayerDeathEvent((Player) victim, damageSource, Collections.singletonList(bow), 0, killer.getName() + " killed " + victim.getName());
+        server.getPluginManager().callEvent(deathEvent);
+        schedule.performOneTick();
+
+        // Check if the killer's kills were incremented and shown on their scoreboard
+        Scoreboard scoreboard = killer.getScoreboard();
+        Objective objective = scoreboard.getObjective("Kills");
+        Assertions.assertEquals("§aPlayer Kills", objective.getDisplayName(), "The display name should be 'Player Kills'");
+
+        int kills = objective.getScore(killer.getName()).getScore();
+        Assertions.assertEquals(1, kills, "Killer should have 1 kill on the scoreboard");
+
+        // Victim's scoreboard should not change
+        int victimKills = objective.getScore(victim.getName()).getScore();
+        Assertions.assertEquals(0, victimKills, "Victim should have 0 kills on the scoreboard");
     }
 
 

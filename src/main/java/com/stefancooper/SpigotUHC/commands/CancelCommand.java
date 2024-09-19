@@ -16,5 +16,6 @@ public class CancelCommand extends AbstractCommand {
     public void execute() {
         getConfig().getPlugin().setStarted(false);
         getConfig().trigger();
+        getConfig().cancelTimer();
     }
 }

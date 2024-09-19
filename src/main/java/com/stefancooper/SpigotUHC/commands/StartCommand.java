@@ -75,7 +75,7 @@ public class StartCommand extends AbstractCommand {
         getSender().getServer().dispatchCommand(getSender(), spreadCommand);
 
         // Timed actions
-        Timer timer = new Timer();
+        Timer timer = getConfig().getTimer();
         Optional<String> gracePeriod = Optional.ofNullable(getConfig().getProp(GRACE_PERIOD_TIMER.configName));
         Optional<String> worldBorderGracePeriod = Optional.ofNullable(getConfig().getProp(WORLD_BORDER_GRACE_PERIOD.configName));
 

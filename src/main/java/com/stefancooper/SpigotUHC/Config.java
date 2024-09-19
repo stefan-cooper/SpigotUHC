@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Comparator;
 import java.util.Properties;
+import java.util.Timer;
 import java.util.stream.Stream;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME;
 
@@ -16,6 +17,7 @@ public class Config {
     private final Properties defaultConfig;
     private final ConfigParser parser;
     private final Plugin plugin;
+    private Timer timer;
 
     public Config(Plugin plugin) {
         Properties props = new Properties();
@@ -39,11 +41,21 @@ public class Config {
         this.parser = new ConfigParser(this);
         this.plugin = plugin;
         this.setDefaults();
+        timer = new Timer();
         parser.executeConfigurables(this.config.entrySet().stream().map(prop -> parser.propertyToConfigurable((String) prop.getKey(), (String) prop.getValue())).toList());
     }
 
     public Plugin getPlugin() {
         return plugin;
+    }
+
+    public Timer getTimer() {
+        return timer;
+    }
+
+    public void cancelTimer() {
+        timer.cancel();
+        timer = new Timer();
     }
 
     public String getProp(String key) {

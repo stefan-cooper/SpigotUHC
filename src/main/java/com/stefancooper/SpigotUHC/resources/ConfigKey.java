@@ -8,6 +8,7 @@ public enum ConfigKey {
     WORLD_BORDER_GRACE_PERIOD("world.border.grace.period"), // Grace period time (in seconds) before the border will begin to shrink
     WORLD_BORDER_CENTER_X("world.border.center.x"), // World border center X coord
     WORLD_BORDER_CENTER_Z("world.border.center.z"), // World border center Z coord
+    WORLD_BORDER_IN_BOSSBAR("world.border.in.bossbar"),
     // Team Enums
     RANDOM_TEAMS_ENABLED("random.teams.enabled"), // (optional) Enable random teams
     RANDOM_TEAM_SIZE("random.team.size"), // (optional) Random team size

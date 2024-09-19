@@ -129,7 +129,54 @@ public class EventTest {
         player.reconnect();
 
         Assertions.assertEquals(GameMode.ADVENTURE, player.getGameMode());
+    }
 
+    @Test
+    void preventMovementDuringCountdown() throws InterruptedException {
+        PlayerMock admin = server.addPlayer();
+        admin.setOp(true);
+
+        PlayerMock player = server.addPlayer();
+
+        server.execute("uhc", admin, "set", "countdown.timer.length=5");
+
+        Location initialLocation = player.getLocation();
+        Location newLocation1 = initialLocation.clone();
+        Location newLocation2 = initialLocation.clone();
+        Location newLocation3 = initialLocation.clone();
+        newLocation1.setX(initialLocation.x() + 1);
+        newLocation2.setY(initialLocation.y() + 1);
+        newLocation3.setZ(initialLocation.z() + 1);
+
+        // Assert that they can move in all directions and they get moved
+        player.simulatePlayerMove(newLocation1);
+        Assertions.assertEquals(player.getLocation(), newLocation1);
+        player.simulatePlayerMove(newLocation2);
+        Assertions.assertEquals(player.getLocation(), newLocation2);
+        player.simulatePlayerMove(newLocation3);
+        Assertions.assertEquals(player.getLocation(), newLocation3);
+
+        // Reset back to original location
+        player.simulatePlayerMove(initialLocation);
+        server.execute("uhc", admin, "start");
+
+        Assertions.assertEquals(player.getLocation(), initialLocation);
+        player.simulatePlayerMove(newLocation1);
+        Assertions.assertEquals(player.getLocation(), initialLocation);
+        player.simulatePlayerMove(newLocation2);
+        Assertions.assertEquals(player.getLocation(), initialLocation);
+        player.simulatePlayerMove(newLocation3);
+        Assertions.assertEquals(player.getLocation(), initialLocation);
+
+        // even though we set the countdown to 5 seconds, we count 0 as an extra second so wait for 6 seconds
+        Thread.sleep(6000);
+
+        player.simulatePlayerMove(newLocation1);
+        Assertions.assertEquals(player.getLocation(), newLocation1);
+        player.simulatePlayerMove(newLocation2);
+        Assertions.assertEquals(player.getLocation(), newLocation2);
+        player.simulatePlayerMove(newLocation3);
+        Assertions.assertEquals(player.getLocation(), newLocation3);
     }
 
 

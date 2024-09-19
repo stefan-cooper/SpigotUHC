@@ -53,9 +53,7 @@ public class StartCommand extends AbstractCommand {
             player.getInventory().clear();
             player.setExp(0);
             player.setGameMode(GameMode.SURVIVAL);
-            player.addPotionEffect(PotionEffectType.JUMP_BOOST.createEffect(Utils.secondsToTicks(countdownTimer), 128));
             player.addPotionEffect(PotionEffectType.MINING_FATIGUE.createEffect(Utils.secondsToTicks(countdownTimer), 3));
-            player.addPotionEffect(PotionEffectType.SLOWNESS.createEffect(Utils.secondsToTicks(countdownTimer), 128));
         });
 
         Bukkit.setDefaultGameMode(GameMode.SURVIVAL);
@@ -89,6 +87,7 @@ public class StartCommand extends AbstractCommand {
         // Countdown timer
         for (int curr = 0; curr <= countdownTimer; curr++) {
             if (curr == 0) {
+                getConfig().getPlugin().setCountingDown(true);
                 timer.schedule(countdown(curr, world), 0L);
             } else {
                 timer.schedule(countdown(curr, world), curr * 1000L);
@@ -112,6 +111,7 @@ public class StartCommand extends AbstractCommand {
                     // Countdown over!
                     Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle(Integer.toString(timeLeft), "Go!"));
                     world.setDifficulty(Difficulty.valueOf(getConfig().getProp(DIFFICULTY.configName)));
+                    getConfig().getPlugin().setCountingDown(false);
                 } else {
                     Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle(Integer.toString(timeLeft), "Starting soon..."));
                 }

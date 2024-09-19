@@ -15,6 +15,7 @@ public class Plugin extends JavaPlugin implements Listener {
 
     private Config config;
     private boolean started;
+    private boolean countingDown;
 
     // This is called when the plugin is loaded into the server.
     public void onEnable() {
@@ -66,5 +67,9 @@ public class Plugin extends JavaPlugin implements Listener {
 
     // Has the UHC started?
     public boolean getStarted() { return started; }
+
+    public boolean isCountingDown() { return countingDown; }
+
+    public void setCountingDown(boolean countingDown) { this.countingDown = countingDown; }
 }
 

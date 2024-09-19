@@ -55,6 +55,7 @@ public class Defaults {
         world.setGameRule(GameRule.DO_INSOMNIA, false);
         // set pvp to false, will be enabled when /uhc start is ran
         world.setPVP(false);
+        config.getPlugin().setCountingDown(false);
         Bukkit.getOnlinePlayers().forEach(player -> player.setGameMode(GameMode.ADVENTURE));
         final Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
         final Objective healthObjective;

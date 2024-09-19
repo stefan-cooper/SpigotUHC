@@ -75,8 +75,6 @@ public class StartTest {
             Assertions.assertEquals(0, player.getExp());
             Assertions.assertEquals(0, Arrays.stream(player.getInventory().getContents()).filter(item -> item != null && item.getType() != Material.AIR).toList().size());
             Assertions.assertEquals(GameMode.SURVIVAL, player.getGameMode());
-            Assertions.assertEquals(128, player.getPotionEffect(PotionEffectType.SLOWNESS).getAmplifier());
-            Assertions.assertEquals(128, player.getPotionEffect(PotionEffectType.JUMP_BOOST).getAmplifier());
             Assertions.assertEquals(3, player.getPotionEffect(PotionEffectType.MINING_FATIGUE).getAmplifier());
         });
     }
@@ -100,8 +98,6 @@ public class StartTest {
 
         server.getOnlinePlayers().forEach(player -> {
             Assertions.assertEquals(GameMode.ADVENTURE, player.getGameMode());
-            Assertions.assertNull(player.getPotionEffect(PotionEffectType.SLOWNESS));
-            Assertions.assertNull(player.getPotionEffect(PotionEffectType.JUMP_BOOST));
             Assertions.assertNull(player.getPotionEffect(PotionEffectType.MINING_FATIGUE));
         });
 
@@ -113,11 +109,10 @@ public class StartTest {
         Assertions.assertEquals(50, world.getWorldBorder().getSize());
         server.getOnlinePlayers().forEach(player -> {
             Assertions.assertEquals(GameMode.SURVIVAL, player.getGameMode());
-            Assertions.assertEquals(128, player.getPotionEffect(PotionEffectType.SLOWNESS).getAmplifier());
-            Assertions.assertEquals(128, player.getPotionEffect(PotionEffectType.JUMP_BOOST).getAmplifier());
             Assertions.assertEquals(3, player.getPotionEffect(PotionEffectType.MINING_FATIGUE).getAmplifier());
         });
 
+        // even though we set the countdown to 2 seconds, we count 0 as an extra second so wait for 3 seconds
         Thread.sleep(3000);
         schedule.performTicks(41L); // advance ticks for potion effect
 
@@ -125,8 +120,6 @@ public class StartTest {
         Assertions.assertEquals(Difficulty.HARD, world.getDifficulty());
         Assertions.assertFalse(world.getPVP());
         server.getOnlinePlayers().forEach(player -> {
-            Assertions.assertNull(player.getPotionEffect(PotionEffectType.SLOWNESS));
-            Assertions.assertNull(player.getPotionEffect(PotionEffectType.JUMP_BOOST));
             Assertions.assertNull(player.getPotionEffect(PotionEffectType.MINING_FATIGUE));
         });
         Assertions.assertEquals(50, world.getWorldBorder().getSize());
@@ -137,8 +130,6 @@ public class StartTest {
         Assertions.assertEquals(Difficulty.HARD, world.getDifficulty());
         Assertions.assertTrue(world.getPVP());
         server.getOnlinePlayers().forEach(player -> {
-            Assertions.assertNull(player.getPotionEffect(PotionEffectType.SLOWNESS));
-            Assertions.assertNull(player.getPotionEffect(PotionEffectType.JUMP_BOOST));
             Assertions.assertNull(player.getPotionEffect(PotionEffectType.MINING_FATIGUE));
         });
         Assertions.assertEquals(50, world.getWorldBorder().getSize());
@@ -149,8 +140,6 @@ public class StartTest {
         Assertions.assertEquals(Difficulty.HARD, world.getDifficulty());
         Assertions.assertTrue(world.getPVP());
         server.getOnlinePlayers().forEach(player -> {
-            Assertions.assertNull(player.getPotionEffect(PotionEffectType.SLOWNESS));
-            Assertions.assertNull(player.getPotionEffect(PotionEffectType.JUMP_BOOST));
             Assertions.assertNull(player.getPotionEffect(PotionEffectType.MINING_FATIGUE));
         });
         Assertions.assertEquals(50, world.getWorldBorder().getSize());
@@ -162,8 +151,6 @@ public class StartTest {
         Assertions.assertEquals(Difficulty.HARD, world.getDifficulty());
         Assertions.assertTrue(world.getPVP());
         server.getOnlinePlayers().forEach(player -> {
-            Assertions.assertNull(player.getPotionEffect(PotionEffectType.SLOWNESS));
-            Assertions.assertNull(player.getPotionEffect(PotionEffectType.JUMP_BOOST));
             Assertions.assertNull(player.getPotionEffect(PotionEffectType.MINING_FATIGUE));
         });
         Assertions.assertEquals(10, world.getWorldBorder().getSize());

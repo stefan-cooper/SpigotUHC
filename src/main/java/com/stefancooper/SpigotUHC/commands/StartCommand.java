@@ -58,6 +58,8 @@ public class StartCommand extends AbstractCommand {
             player.addPotionEffect(PotionEffectType.SLOWNESS.createEffect(Utils.secondsToTicks(countdownTimer), 128));
         });
 
+        Bukkit.setDefaultGameMode(GameMode.SURVIVAL);
+
         // Actions on the world
         world.getWorldBorder().setSize(Double.parseDouble(getConfig().getProp(WORLD_BORDER_INITIAL_SIZE.configName)));
         world.setTime(1000);
@@ -92,6 +94,8 @@ public class StartCommand extends AbstractCommand {
                 timer.schedule(countdown(curr, world), curr * 1000L);
             }
         }
+
+        getConfig().getPlugin().setStarted(true);
     }
 
     private TimerTask countdown(int remaining, World world) {

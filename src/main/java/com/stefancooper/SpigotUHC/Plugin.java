@@ -1,5 +1,6 @@
 package com.stefancooper.SpigotUHC;
 
+import com.stefancooper.SpigotUHC.commands.CancelCommand;
 import com.stefancooper.SpigotUHC.commands.SetConfigCommand;
 import com.stefancooper.SpigotUHC.commands.StartCommand;
 import com.stefancooper.SpigotUHC.commands.ViewConfigCommand;
@@ -13,12 +14,14 @@ import java.util.Arrays;
 public class Plugin extends JavaPlugin implements Listener {
 
     private Config config;
+    private boolean started;
 
     // This is called when the plugin is loaded into the server.
     public void onEnable() {
         config = new Config(this);
         Defaults.setDefaultGameRules(this.config);
         Bukkit.getPluginManager().registerEvents(new Events(config), this);
+        started = false;
         System.out.println("UHC Plugin enabled");
     }
 
@@ -47,11 +50,21 @@ public class Plugin extends JavaPlugin implements Listener {
                 case StartCommand.COMMAND_KEY:
                     new StartCommand(sender, cmd, getCommandArgs(args), config).execute();
                     return true;
+                case CancelCommand.COMMAND_KEY:
+                    new CancelCommand(sender, cmd, getCommandArgs(args), config).execute();
+                    return true;
                 default:
                     break;
             }
         }
         return false;
     }
+
+    public void setStarted(boolean started) {
+        this.started = started;
+    }
+
+    // Has the UHC started?
+    public boolean getStarted() { return started; }
 }
 

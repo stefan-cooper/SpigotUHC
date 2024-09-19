@@ -93,5 +93,44 @@ public class EventTest {
         Assertions.assertEquals(deathLocation, respawnEvent.getRespawnLocation(), "Player should respawn at their death location");
     }
 
+    @Test
+    @DisplayName("Correct game mode is set when joining the server")
+    void testGameModeSet() {
+        PlayerMock admin = server.addPlayer();
+        admin.setOp(true);
+
+        PlayerMock player = server.addPlayer();
+        Assertions.assertEquals(GameMode.ADVENTURE, player.getGameMode());
+
+        server.execute("uhc", admin, "start");
+
+        Assertions.assertEquals(GameMode.SURVIVAL, player.getGameMode());
+
+        player.disconnect();
+        player.reconnect();
+
+        Assertions.assertEquals(GameMode.SURVIVAL, player.getGameMode());
+
+        player.damage(100);
+        player.respawn();
+
+        Assertions.assertEquals(GameMode.SPECTATOR, player.getGameMode());
+
+        player.disconnect();
+        player.reconnect();
+
+        Assertions.assertEquals(GameMode.SPECTATOR, player.getGameMode());
+
+        server.execute("uhc", admin, "cancel");
+
+        Assertions.assertEquals(GameMode.ADVENTURE, player.getGameMode());
+
+        player.disconnect();
+        player.reconnect();
+
+        Assertions.assertEquals(GameMode.ADVENTURE, player.getGameMode());
+
+    }
+
 
 }

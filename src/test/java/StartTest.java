@@ -98,6 +98,13 @@ public class StartTest {
                 "difficulty=HARD"
         );
 
+        server.getOnlinePlayers().forEach(player -> {
+            Assertions.assertEquals(GameMode.ADVENTURE, player.getGameMode());
+            Assertions.assertNull(player.getPotionEffect(PotionEffectType.SLOWNESS));
+            Assertions.assertNull(player.getPotionEffect(PotionEffectType.JUMP_BOOST));
+            Assertions.assertNull(player.getPotionEffect(PotionEffectType.MINING_FATIGUE));
+        });
+
         server.execute("uhc", admin, "start");
 
         // Initial start
@@ -105,6 +112,7 @@ public class StartTest {
         Assertions.assertEquals(Difficulty.PEACEFUL, world.getDifficulty());
         Assertions.assertEquals(50, world.getWorldBorder().getSize());
         server.getOnlinePlayers().forEach(player -> {
+            Assertions.assertEquals(GameMode.SURVIVAL, player.getGameMode());
             Assertions.assertEquals(128, player.getPotionEffect(PotionEffectType.SLOWNESS).getAmplifier());
             Assertions.assertEquals(128, player.getPotionEffect(PotionEffectType.JUMP_BOOST).getAmplifier());
             Assertions.assertEquals(3, player.getPotionEffect(PotionEffectType.MINING_FATIGUE).getAmplifier());

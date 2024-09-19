@@ -2,6 +2,7 @@ package com.stefancooper.SpigotUHC;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
+import org.bukkit.GameMode;
 import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.scoreboard.Criteria;
@@ -54,6 +55,7 @@ public class Defaults {
         world.setGameRule(GameRule.DO_INSOMNIA, false);
         // set pvp to false, will be enabled when /uhc start is ran
         world.setPVP(false);
+        Bukkit.getOnlinePlayers().forEach(player -> player.setGameMode(GameMode.ADVENTURE));
         final Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
         final Objective healthObjective;
         if (board.getObjective(HEALTH_OBJECTIVE) == null) {

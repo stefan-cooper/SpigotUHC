@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -63,6 +64,18 @@ public class Events implements Listener {
         Location deathLocation = player.getLastDeathLocation();
         if (deathLocation != null && player.getGameMode().equals(GameMode.SPECTATOR)) {
             event.setRespawnLocation(deathLocation);
+        }
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+        GameMode currentGamemode = event.getPlayer().getGameMode();
+        if (currentGamemode == GameMode.SPECTATOR) {
+            return;
+        } else if (config.getPlugin().getStarted()) {
+            event.getPlayer().setGameMode(GameMode.SURVIVAL);
+        } else {
+            event.getPlayer().setGameMode(GameMode.ADVENTURE);
         }
     }
 }

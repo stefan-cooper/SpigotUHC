@@ -97,4 +97,10 @@ public class Config {
         Defaults.setDefaultGameRules(this);
     }
 
+    public void trigger() {
+        setProp(WORLD_NAME.configName, (String) defaultConfig.get(WORLD_NAME.configName));
+        config.forEach((key, value) -> setProp((String) key, (String) value));
+        Defaults.setDefaultGameRules(this);
+    }
+
 }

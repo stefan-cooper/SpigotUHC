@@ -2,6 +2,7 @@ import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import com.stefancooper.SpigotUHC.Plugin;
+import org.bukkit.GameMode;
 import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.junit.jupiter.api.*;
@@ -36,10 +37,12 @@ public class PluginTest {
     @Test
     @DisplayName("Test correct game rules were applied")
     void testGameRules() {
+        PlayerMock player = server.addPlayer();
         Assertions.assertNotNull(world);
         Assertions.assertFalse(world.getGameRuleValue(GameRule.DO_INSOMNIA));
         Assertions.assertFalse(world.getGameRuleValue(GameRule.NATURAL_REGENERATION));
         Assertions.assertFalse(world.getPVP());
+        Assertions.assertEquals(GameMode.ADVENTURE, player.getGameMode());
     }
 
     @Test

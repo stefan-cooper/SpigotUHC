@@ -26,3 +26,11 @@ commands:
       View a specific config value:
 
       /uhc view world.border.initial.size
+      
+      Start the UHC:
+      
+      /uhc start
+      
+      End/cancel the UHC:
+      
+      /uhc cancel

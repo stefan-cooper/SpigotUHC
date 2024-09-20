@@ -58,6 +58,8 @@ team.green=chuckle
 team.yellow=StetoGuy
 # (optional) drop player heads who are killed that can be crafted into golden apples
 player.head.golden.apple=false|true
+# (optional) show the current progress of the world border in the boss bar
+world.border.in.bossbar=false|true
 ```
 
 ## Commands

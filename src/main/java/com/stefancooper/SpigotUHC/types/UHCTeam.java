@@ -1,4 +1,4 @@
-package com.stefancooper.SpigotUHC.resources;
+package com.stefancooper.SpigotUHC.types;
 
 import org.bukkit.ChatColor;
 

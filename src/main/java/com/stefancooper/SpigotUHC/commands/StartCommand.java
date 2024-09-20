@@ -4,6 +4,8 @@ import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.stefancooper.SpigotUHC.resources.ConfigKey;
+import com.stefancooper.SpigotUHC.types.BossBarBorder;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.GameMode;
@@ -75,7 +77,7 @@ public class StartCommand extends AbstractCommand {
         getSender().getServer().dispatchCommand(getSender(), spreadCommand);
 
         // Timed actions
-        Timer timer = getConfig().getTimer();
+        Timer timer = getConfig().getManagedResources().getTimer();
         Optional<String> gracePeriod = Optional.ofNullable(getConfig().getProp(GRACE_PERIOD_TIMER.configName));
         Optional<String> worldBorderGracePeriod = Optional.ofNullable(getConfig().getProp(WORLD_BORDER_GRACE_PERIOD.configName));
 
@@ -92,6 +94,13 @@ public class StartCommand extends AbstractCommand {
             } else {
                 timer.schedule(countdown(curr, world), curr * 1000L);
             }
+        }
+
+        if (Boolean.parseBoolean(getConfig().getProp(ConfigKey.WORLD_BORDER_IN_BOSSBAR.configName))) {
+            BossBarBorder bossBarBorder = getConfig().getManagedResources().getBossBarBorder();
+            Bukkit.getOnlinePlayers().forEach(player -> bossBarBorder.getBossBar().addPlayer(player));
+            bossBarBorder.getBossBar().setVisible(true);
+            timer.scheduleAtFixedRate(bossBarBorder.updateProgress(), 0, 1000L);
         }
 
         getConfig().getPlugin().setStarted(true);

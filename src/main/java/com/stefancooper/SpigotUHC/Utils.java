@@ -16,4 +16,19 @@ public class Utils {
         return seconds * 20;
     }
 
+    /**
+     * Calculation:
+     *  Required fields: Initial Size, Final Size, Current Size
+     *  -
+     *  Shrink Total Distance = Initial - Final
+     *  Shrink Progress = Initial - Current
+     *  -
+     *  Percentage = ( Total - Progress ) / Total
+     */
+    public static double calculateWorldBorderProgress (int initialSize, int finalSize, int currentSize) {
+        int distanceToShrink = initialSize - finalSize;
+        int progress = initialSize - currentSize;
+        return (double) (distanceToShrink - progress) / distanceToShrink;
+    }
+
 }

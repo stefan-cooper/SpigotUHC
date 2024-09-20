@@ -14,11 +14,11 @@ import org.bukkit.scoreboard.Scoreboard;
 import java.util.Properties;
 
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.*;
+import static com.stefancooper.SpigotUHC.resources.Constants.HEALTH_SCOREBOARD_OBJECTIVE;
 import static com.stefancooper.SpigotUHC.resources.DeathAction.SPECTATE;
 
 public class Defaults {
 
-    public static String HEALTH_OBJECTIVE = "health";
     public static String DEFAULT_WORLD_NAME = "world";
     public static String DEFAULT_WORLD_BORDER_INITIAL_SIZE = "2000";
     public static String DEFAULT_WORLD_BORDER_FINAL_SIZE = "500";
@@ -59,12 +59,14 @@ public class Defaults {
         Bukkit.getOnlinePlayers().forEach(player -> player.setGameMode(GameMode.ADVENTURE));
         final Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
         final Objective healthObjective;
-        if (board.getObjective(HEALTH_OBJECTIVE) == null) {
-            healthObjective = board.registerNewObjective(HEALTH_OBJECTIVE, Criteria.HEALTH, "Health");
+        if (board.getObjective(HEALTH_SCOREBOARD_OBJECTIVE) == null) {
+            healthObjective = board.registerNewObjective(HEALTH_SCOREBOARD_OBJECTIVE, Criteria.HEALTH, "Health");
         } else {
-            healthObjective = board.getObjective(HEALTH_OBJECTIVE);
+            healthObjective = board.getObjective(HEALTH_SCOREBOARD_OBJECTIVE);
         }
         healthObjective.setDisplaySlot(DisplaySlot.PLAYER_LIST);
         healthObjective.setRenderType(RenderType.HEARTS);
+
+
     }
 }

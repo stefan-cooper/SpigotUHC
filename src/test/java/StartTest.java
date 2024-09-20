@@ -2,6 +2,7 @@ import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import be.seeseemelk.mockbukkit.scheduler.BukkitSchedulerMock;
+import be.seeseemelk.mockbukkit.scoreboard.ObjectiveMock;
 import com.stefancooper.SpigotUHC.Plugin;
 import org.bukkit.Difficulty;
 import java.util.Arrays;
@@ -22,6 +23,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static com.stefancooper.SpigotUHC.Defaults.DEFAULT_WORLD_NAME;
+import static com.stefancooper.SpigotUHC.resources.Constants.KILLER_SCOREBOARD_OBJECTIVE;
 
 
 public class StartTest {
@@ -157,5 +159,38 @@ public class StartTest {
             Assertions.assertNull(player.getPotionEffect(PotionEffectType.MINING_FATIGUE));
         });
         Assertions.assertEquals(10, world.getWorldBorder().getSize());
+    }
+
+    @Test
+    @DisplayName("When a player is killed, the killer has their score increased")
+    void killerScoreboard() throws InterruptedException {
+        BukkitSchedulerMock schedule = server.getScheduler();
+        PlayerMock admin = server.addPlayer();
+        admin.setOp(true);
+
+        PlayerMock player1 = server.addPlayer();
+        PlayerMock player2 = server.addPlayer();
+
+        server.execute("uhc", admin, "set",
+                "countdown.timer.length=2",
+                "grace.period.timer=0",
+                "player.kills.scoreboard=true"
+        );
+
+        server.execute("uhc", admin, "start");
+
+        Thread.sleep(3000);
+
+        ObjectiveMock objective = server.getScoreboardManager().getMainScoreboard().getObjective(KILLER_SCOREBOARD_OBJECTIVE);
+
+        Assertions.assertEquals(0, objective.getScore(player1.getName()).getScore());
+        Assertions.assertEquals(0, objective.getScore(player2.getName()).getScore());
+
+        player1.setKiller(player2);
+        player1.simulateDamage(100, player2);
+        Assertions.assertTrue(player1.isDead());
+
+        Assertions.assertEquals(0, objective.getScore(player1.getName()).getScore());
+        Assertions.assertEquals(1, objective.getScore(player2.getName()).getScore());
     }
 }

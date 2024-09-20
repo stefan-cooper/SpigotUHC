@@ -1,6 +1,7 @@
 package com.stefancooper.SpigotUHC.commands;
 
 import com.stefancooper.SpigotUHC.Config;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
@@ -17,5 +18,6 @@ public class CancelCommand extends AbstractCommand {
         getConfig().getPlugin().setStarted(false);
         getConfig().trigger();
         getConfig().getManagedResources().cancelTimer();
+        Bukkit.getScoreboardManager().getMainScoreboard().resetScores(getConfig().getManagedResources().getKillerScoreboard().getObjective().getName());
     }
 }

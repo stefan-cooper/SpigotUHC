@@ -13,10 +13,12 @@ public class ManagedResources {
     final BossBarBorder bossBarBorder;
     Timer timer;
     final NamespacedKey playerHead;
+    final KillerScoreboard killerScoreboard;
 
     public ManagedResources(Config config) {
         this.config = config;
         this.bossBarBorder = new BossBarBorder(config);
+        this.killerScoreboard = new KillerScoreboard();
         this.timer = new Timer();
         this.playerHead = new NamespacedKey(config.getPlugin(), PLAYER_HEAD);
     }
@@ -27,6 +29,10 @@ public class ManagedResources {
 
     public Timer getTimer() {
         return timer;
+    }
+
+    public KillerScoreboard getKillerScoreboard() {
+        return killerScoreboard;
     }
 
     public NamespacedKey getPlayerHeadKey() {

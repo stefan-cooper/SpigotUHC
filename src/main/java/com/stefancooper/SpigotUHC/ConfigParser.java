@@ -22,6 +22,7 @@ import static com.stefancooper.SpigotUHC.resources.ConfigKey.DIFFICULTY;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.GRACE_PERIOD_TIMER;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.ON_DEATH_ACTION;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.PLAYER_HEAD_GOLDEN_APPLE;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.PLAYER_KILLS_SCOREBOARD;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.RANDOM_TEAMS_ENABLED;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.RANDOM_TEAM_SIZE;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.SPREAD_MIN_DISTANCE;
@@ -75,6 +76,7 @@ public class ConfigParser {
             case WORLD_NAME -> new Configurable<>(WORLD_NAME, value);
             case DIFFICULTY -> new Configurable<>(DIFFICULTY, Difficulty.valueOf(value));
             case WORLD_BORDER_IN_BOSSBAR -> new Configurable<>(WORLD_BORDER_IN_BOSSBAR, Boolean.parseBoolean(value));
+            case PLAYER_KILLS_SCOREBOARD -> new Configurable<>(PLAYER_KILLS_SCOREBOARD, Boolean.parseBoolean(value));
             case null -> null;
 
         };

@@ -57,6 +57,13 @@ public class Events implements Listener {
             head.setItemMeta(headMeta);
             player.getWorld().dropItemNaturally(player.getLocation(), head);
         }
+
+        if (Boolean.parseBoolean(config.getProp(PLAYER_KILLS_SCOREBOARD.configName))) {
+            Player killer = event.getEntity().getKiller();
+            if ( killer != null ) {
+                config.getManagedResources().getKillerScoreboard().updateScoreboard(killer);
+            }
+        }
     }
 
     @EventHandler

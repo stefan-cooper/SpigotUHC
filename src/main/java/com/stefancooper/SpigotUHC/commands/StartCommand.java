@@ -20,6 +20,8 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.Utils;
+import org.bukkit.scoreboard.DisplaySlot;
+
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.COUNTDOWN_TIMER_LENGTH;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.DIFFICULTY;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.GRACE_PERIOD_TIMER;
@@ -101,6 +103,12 @@ public class StartCommand extends AbstractCommand {
             Bukkit.getOnlinePlayers().forEach(player -> bossBarBorder.getBossBar().addPlayer(player));
             bossBarBorder.getBossBar().setVisible(true);
             timer.scheduleAtFixedRate(bossBarBorder.updateProgress(), 0, 1000L);
+        }
+
+        if (Boolean.parseBoolean(getConfig().getProp(ConfigKey.PLAYER_KILLS_SCOREBOARD.configName))) {
+            getConfig().getManagedResources().getKillerScoreboard().getObjective().setDisplaySlot(DisplaySlot.SIDEBAR);
+        } else {
+            Bukkit.getScoreboardManager().getMainScoreboard().clearSlot(DisplaySlot.SIDEBAR);
         }
 
         getConfig().getPlugin().setStarted(true);

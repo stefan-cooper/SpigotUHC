@@ -8,6 +8,7 @@ import org.bukkit.World;
 import org.junit.jupiter.api.*;
 
 import static com.stefancooper.SpigotUHC.Defaults.*;
+import static com.stefancooper.SpigotUHC.resources.Constants.HEALTH_SCOREBOARD_OBJECTIVE;
 
 public class PluginTest {
 
@@ -49,7 +50,7 @@ public class PluginTest {
     @DisplayName("Test player scoreboard objective is added")
     void testPlayerScoreboard() {
         PlayerMock player = server.addPlayer();
-        Assertions.assertNotNull(player.getScoreboard().getObjective(HEALTH_OBJECTIVE));
+        Assertions.assertNotNull(player.getScoreboard().getObjective(HEALTH_SCOREBOARD_OBJECTIVE));
     }
 
     @Test

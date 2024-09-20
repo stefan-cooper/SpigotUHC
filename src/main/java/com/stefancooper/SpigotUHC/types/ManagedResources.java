@@ -1,6 +1,10 @@
 package com.stefancooper.SpigotUHC.types;
 
 import com.stefancooper.SpigotUHC.Config;
+import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.NamespacedKey;
 
 import java.util.Timer;
@@ -31,12 +35,10 @@ public class ManagedResources {
         return timer;
     }
 
+    public NamespacedKey getPlayerHeadKey() { return playerHead; }
+
     public KillerScoreboard getKillerScoreboard() {
         return killerScoreboard;
-    }
-
-    public NamespacedKey getPlayerHeadKey() {
-        return playerHead;
     }
 
     public void cancelTimer() {

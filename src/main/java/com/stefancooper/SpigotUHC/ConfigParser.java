@@ -137,13 +137,23 @@ public class ConfigParser {
                 createTeam(new UHCTeam("Orange", (String) configurable.value(), ChatColor.GOLD ));
                 break;
             case PLAYER_HEAD_GOLDEN_APPLE:
-                ItemStack apple = new ItemStack(Material.GOLDEN_APPLE, 1);
-                ItemMeta appleMeta = apple.getItemMeta();
-                apple.setItemMeta(appleMeta);
-                ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(config.getPlugin(), PLAYER_HEAD), apple);
-                recipe.shape("   ", " X ", "   ");
-                recipe.setIngredient('X', Material.PLAYER_HEAD);
-                Bukkit.addRecipe(recipe);
+                NamespacedKey playerHeadKey = config.getManagedResources().getPlayerHeadKey();
+                if (Boolean.parseBoolean(config.getProp(PLAYER_HEAD_GOLDEN_APPLE.configName))) {
+                    if (Bukkit.getRecipe(playerHeadKey) == null) {
+                        ItemStack apple = new ItemStack(Material.GOLDEN_APPLE, 1);
+                        ItemMeta appleMeta = apple.getItemMeta();
+                        apple.setItemMeta(appleMeta);
+                        ShapedRecipe recipe = new ShapedRecipe(playerHeadKey, apple);
+                        recipe.shape("   ", " X ", "   ");
+                        recipe.setIngredient('X', Material.PLAYER_HEAD);
+                        Bukkit.addRecipe(recipe);
+                    }
+                } else {
+                    if (Bukkit.getRecipe(playerHeadKey) != null) {
+                        Bukkit.removeRecipe(playerHeadKey);
+                    }
+                }
+
             default:
                 break;
         }

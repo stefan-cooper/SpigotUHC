@@ -56,6 +56,8 @@ team.red=badTHREEEK
 team.green=chuckle
 # Team Yellow players (comma seperated e.g team.orange=player1,player2) - Note: This is caps sensitive
 team.yellow=StetoGuy
+# Team Pink players (comma seperated e.g team.orange=player1,player2) - Note: This is caps sensitive
+team.pink=SimplySqare
 # (optional) drop player heads who are killed that can be crafted into golden apples
 player.head.golden.apple=false|true
 # (optional) show the current progress of the world border in the boss bar

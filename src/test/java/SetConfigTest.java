@@ -86,11 +86,14 @@ public class SetConfigTest {
         sean.setName("sean");
         PlayerMock pavey = server.addPlayer();
         pavey.setName("pavey");
+        PlayerMock luke = server.addPlayer();
+        luke.setName("luke");
 
         server.execute("uhc", admin, "set", "team.red=stefan,jawad");
         server.execute("uhc", admin, "set", "team.blue=shurf");
         server.execute("uhc", admin, "set", "team.green=sean");
         server.execute("uhc", admin, "set", "team.orange=pavey");
+        server.execute("uhc", admin, "set", "team.pink=luke");
 
         Scoreboard scoreboard = admin.getScoreboard();
 
@@ -99,6 +102,7 @@ public class SetConfigTest {
         Assertions.assertTrue(scoreboard.getEntityTeam(shurf).getName().equals("Blue"));
         Assertions.assertTrue(scoreboard.getEntityTeam(sean).getName().equals("Green"));
         Assertions.assertTrue(scoreboard.getEntityTeam(pavey).getName().equals("Orange"));
+        Assertions.assertTrue(scoreboard.getEntityTeam(luke).getName().equals("Pink"));
 
         server.execute("uhc", admin, "set", "team.yellow=jawad");
         Assertions.assertTrue(scoreboard.getEntityTeam(stefan).getName().equals("Red"));

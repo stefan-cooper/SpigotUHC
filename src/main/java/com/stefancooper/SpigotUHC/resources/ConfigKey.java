@@ -17,6 +17,7 @@ public enum ConfigKey {
     TEAM_GREEN("team.green"), // Team green players
     TEAM_BLUE("team.blue"), // Team blue players
     TEAM_ORANGE("team.orange"), // Team orange players
+    TEAM_PINK("team.pink"), // Team pink players
     // Spread Players Enums
     SPREAD_MIN_DISTANCE("spread.min.distance"),
     // Misc Enums

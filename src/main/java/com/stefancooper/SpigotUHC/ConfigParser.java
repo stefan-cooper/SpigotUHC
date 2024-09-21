@@ -1,8 +1,6 @@
 package com.stefancooper.SpigotUHC;
 
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import com.stefancooper.SpigotUHC.types.BossBarBorder;
 import org.bukkit.Bukkit;
@@ -28,6 +26,7 @@ import static com.stefancooper.SpigotUHC.resources.ConfigKey.SPREAD_MIN_DISTANCE
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.TEAM_BLUE;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.TEAM_GREEN;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.TEAM_ORANGE;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.TEAM_PINK;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.TEAM_RED;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.TEAM_YELLOW;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_CENTER_X;
@@ -39,7 +38,6 @@ import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_IN_BOS
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_SHRINKING_PERIOD;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.fromString;
-import static com.stefancooper.SpigotUHC.resources.Constants.PLAYER_HEAD;
 import com.stefancooper.SpigotUHC.types.UHCTeam;
 import com.stefancooper.SpigotUHC.types.Configurable;
 
@@ -67,6 +65,7 @@ public class ConfigParser {
             case TEAM_GREEN -> new Configurable<>(TEAM_GREEN, value);
             case TEAM_BLUE -> new Configurable<>(TEAM_BLUE, value);
             case TEAM_ORANGE -> new Configurable<>(TEAM_ORANGE, value);
+            case TEAM_PINK -> new Configurable<>(TEAM_PINK, value);
             case SPREAD_MIN_DISTANCE -> new Configurable<>(SPREAD_MIN_DISTANCE, Double.parseDouble(value));
             case GRACE_PERIOD_TIMER -> new Configurable<>(GRACE_PERIOD_TIMER, Double.parseDouble(value));
             case ON_DEATH_ACTION -> new Configurable<>(ON_DEATH_ACTION, value);
@@ -125,7 +124,7 @@ public class ConfigParser {
                 createTeam(new UHCTeam("Red", (String) configurable.value(), ChatColor.RED ));
                 break;
             case TEAM_BLUE:
-                createTeam(new UHCTeam("Blue", (String) configurable.value(), ChatColor.BLUE ));
+                createTeam(new UHCTeam("Blue", (String) configurable.value(), ChatColor.AQUA ));
                 break;
             case TEAM_GREEN:
                 createTeam(new UHCTeam("Green", (String) configurable.value(), ChatColor.GREEN ));
@@ -135,6 +134,9 @@ public class ConfigParser {
                 break;
             case TEAM_ORANGE:
                 createTeam(new UHCTeam("Orange", (String) configurable.value(), ChatColor.GOLD ));
+                break;
+            case TEAM_PINK:
+                createTeam(new UHCTeam("Pink", (String) configurable.value(), ChatColor.LIGHT_PURPLE ));
                 break;
             case PLAYER_HEAD_GOLDEN_APPLE:
                 NamespacedKey playerHeadKey = config.getManagedResources().getPlayerHeadKey();

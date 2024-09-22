@@ -1,7 +1,10 @@
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
+import be.seeseemelk.mockbukkit.scheduler.BukkitSchedulerMock;
 import com.stefancooper.SpigotUHC.Plugin;
+import com.stefancooper.SpigotUHC.Utils;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -133,6 +136,7 @@ public class EventTest {
 
     @Test
     void preventMovementDuringCountdown() throws InterruptedException {
+        BukkitSchedulerMock scheduler = server.getScheduler();
         PlayerMock admin = server.addPlayer();
         admin.setOp(true);
 
@@ -168,8 +172,7 @@ public class EventTest {
         player.simulatePlayerMove(newLocation3);
         Assertions.assertEquals(player.getLocation(), initialLocation);
 
-        // even though we set the countdown to 5 seconds, we count 0 as an extra second so wait for 6 seconds
-        Thread.sleep(6000);
+        scheduler.performTicks(Utils.secondsToTicks(5));
 
         player.simulatePlayerMove(newLocation1);
         Assertions.assertEquals(player.getLocation(), newLocation1);

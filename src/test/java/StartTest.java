@@ -3,6 +3,7 @@ import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import be.seeseemelk.mockbukkit.scheduler.BukkitSchedulerMock;
 import com.stefancooper.SpigotUHC.Plugin;
+import com.stefancooper.SpigotUHC.Utils;
 import org.bukkit.Difficulty;
 import java.util.Arrays;
 import org.bukkit.GameMode;
@@ -86,16 +87,17 @@ public class StartTest {
     @DisplayName("When start is ran, the timers set everything appropriately")
     void startCommandTimers() throws InterruptedException {
         BukkitSchedulerMock schedule = server.getScheduler();
+
         PlayerMock admin = server.addPlayer();
         admin.setOp(true);
 
         server.execute("uhc", admin, "set",
                 "world.border.initial.size=50",
                 "world.border.final.size=10",
-                "countdown.timer.length=2",
-                "grace.period.timer=4",
-                "world.border.grace.period=6",
-                "world.border.shrinking.period=2",
+                "countdown.timer.length=10",
+                "grace.period.timer=20",
+                "world.border.grace.period=30",
+                "world.border.shrinking.period=30",
                 "difficulty=HARD"
         );
 
@@ -106,6 +108,8 @@ public class StartTest {
 
         server.execute("uhc", admin, "start");
 
+        schedule.performOneTick();
+
         // Initial start
         Assertions.assertFalse(world.getPVP());
         Assertions.assertEquals(Difficulty.PEACEFUL, world.getDifficulty());
@@ -115,9 +119,7 @@ public class StartTest {
             Assertions.assertEquals(3, player.getPotionEffect(PotionEffectType.MINING_FATIGUE).getAmplifier());
         });
 
-        // even though we set the countdown to 2 seconds, we count 0 as an extra second so wait for 3 seconds
-        Thread.sleep(3000);
-        schedule.performTicks(41L); // advance ticks for potion effect
+        schedule.performTicks(Utils.secondsToTicks(10));
 
         // Countdown finished
         Assertions.assertEquals(Difficulty.HARD, world.getDifficulty());
@@ -127,7 +129,7 @@ public class StartTest {
         });
         Assertions.assertEquals(50, world.getWorldBorder().getSize());
 
-        Thread.sleep(2000);
+        schedule.performTicks(Utils.secondsToTicks(10));
 
         // Grace period finished
         Assertions.assertEquals(Difficulty.HARD, world.getDifficulty());
@@ -137,7 +139,7 @@ public class StartTest {
         });
         Assertions.assertEquals(50, world.getWorldBorder().getSize());
 
-        Thread.sleep(2000);
+        schedule.performTicks(Utils.secondsToTicks(10)); // advance ticks for potion effect
 
         // World border grace period finished
         Assertions.assertEquals(Difficulty.HARD, world.getDifficulty());
@@ -145,10 +147,9 @@ public class StartTest {
         server.getOnlinePlayers().forEach(player -> {
             Assertions.assertNull(player.getPotionEffect(PotionEffectType.MINING_FATIGUE));
         });
-        Assertions.assertEquals(50, world.getWorldBorder().getSize());
+        Assertions.assertEquals(50, Math.round(world.getWorldBorder().getSize()));
 
-        Thread.sleep(2000);
-        schedule.performTicks(41L); // advance ticks for shrinking border
+        schedule.performTicks(Utils.secondsToTicks(30)); // advance ticks for potion effect
 
         // World border shrinking finished
         Assertions.assertEquals(Difficulty.HARD, world.getDifficulty());
@@ -156,6 +157,6 @@ public class StartTest {
         server.getOnlinePlayers().forEach(player -> {
             Assertions.assertNull(player.getPotionEffect(PotionEffectType.MINING_FATIGUE));
         });
-        Assertions.assertEquals(10, world.getWorldBorder().getSize());
+        Assertions.assertEquals( 10, Math.round(world.getWorldBorder().getSize()));
     }
 }

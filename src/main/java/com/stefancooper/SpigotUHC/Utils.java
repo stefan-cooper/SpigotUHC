@@ -12,8 +12,8 @@ public class Utils {
     }
 
     // Some things are managed in Minecraft ticks. Use this to convert from seconds to ticks
-    public static int secondsToTicks (int seconds) {
-        return seconds * 20;
+    public static long secondsToTicks (int seconds) {
+        return (long) seconds * 20;
     }
 
     /**

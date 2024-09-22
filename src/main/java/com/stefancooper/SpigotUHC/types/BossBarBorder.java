@@ -20,15 +20,12 @@ public class BossBarBorder {
         this.config = config;
     }
 
-    public TimerTask updateProgress() {
-        return new TimerTask() {
-            @Override
-            public void run() {
-                int finalBorder = Integer.parseInt(config.getProp(ConfigKey.WORLD_BORDER_FINAL_SIZE.configName));
-                int initialBorder = Integer.parseInt(config.getProp(ConfigKey.WORLD_BORDER_INITIAL_SIZE.configName));
-                int currentSize = (int) Math.round(Utils.getWorld(config.getProp(ConfigKey.WORLD_NAME.configName)).getWorldBorder().getSize());
-                bossBar.setProgress(Utils.calculateWorldBorderProgress(initialBorder, finalBorder, currentSize));
-            }
+    public Runnable updateProgress() {
+        return () -> {
+            int finalBorder = Integer.parseInt(config.getProp(ConfigKey.WORLD_BORDER_FINAL_SIZE.configName));
+            int initialBorder = Integer.parseInt(config.getProp(ConfigKey.WORLD_BORDER_INITIAL_SIZE.configName));
+            int currentSize = (int) Math.round(Utils.getWorld(config.getProp(ConfigKey.WORLD_NAME.configName)).getWorldBorder().getSize());
+            bossBar.setProgress(Utils.calculateWorldBorderProgress(initialBorder, finalBorder, currentSize));
         };
     }
 

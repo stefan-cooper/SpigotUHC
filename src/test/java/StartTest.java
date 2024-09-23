@@ -59,6 +59,7 @@ public class StartTest {
         PlayerMock player1 = server.addPlayer();
         player1.setHealth(10);
         player1.giveExp(100);
+        player1.setLevel(12);
         PlayerMock player2 = server.addPlayer();
         player2.getInventory().setItem(1, ItemStack.of(Material.DIAMOND_SWORD));
         PlayerMock player3 = server.addPlayer();
@@ -77,6 +78,7 @@ public class StartTest {
             Assertions.assertEquals(20.0, player.getHealth());
             Assertions.assertEquals(20.0, player.getFoodLevel());
             Assertions.assertEquals(0, player.getExp());
+            Assertions.assertEquals(0, player.getLevel());
             Assertions.assertEquals(0, Arrays.stream(player.getInventory().getContents()).filter(item -> item != null && item.getType() != Material.AIR).toList().size());
             Assertions.assertEquals(GameMode.SURVIVAL, player.getGameMode());
             Assertions.assertEquals(3, player.getPotionEffect(PotionEffectType.MINING_FATIGUE).getAmplifier());

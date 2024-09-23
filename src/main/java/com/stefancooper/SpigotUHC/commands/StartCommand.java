@@ -53,7 +53,7 @@ public class StartCommand extends AbstractCommand {
             player.setFoodLevel(20);
             player.getInventory().clear();
             player.setExp(0);
-            player.setTotalExperience(0);
+            player.setLevel(0);
             player.setGameMode(GameMode.SURVIVAL);
             player.addPotionEffect(PotionEffectType.MINING_FATIGUE.createEffect((int) Utils.secondsToTicks(countdownTimer), 3));
         });

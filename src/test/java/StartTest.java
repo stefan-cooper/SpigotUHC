@@ -51,7 +51,7 @@ public class StartTest {
     }
 
     @Test
-    @DisplayName("When start is ran, health, exp, hunger and inventories are rest")
+    @DisplayName("When start is ran, health, exp, hunger and inventories are reset")
     void playerInitialValuesForUHC() {
         PlayerMock admin = server.addPlayer();
         admin.setOp(true);

@@ -92,6 +92,12 @@ The following commands are available in game:
 
 `/uhc start`
 
+#### Start a UHC midway/resume a UHC
+
+`/uhc resume <minutes>`
+
+e.g: `/uhc resume 30`
+
 #### End/cancel the UHC:
 
 `/uhc cancel`

@@ -1,5 +1,6 @@
 package com.stefancooper.SpigotUHC.commands;
 
+import java.util.Date;
 import java.util.Optional;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -50,6 +51,7 @@ public class StartCommand extends AbstractCommand {
         Bukkit.getOnlinePlayers().forEach(player -> {
             double maxHealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue();
             player.setHealth(maxHealth);
+            player.setSaturation(20);
             player.setFoodLevel(20);
             player.getInventory().clear();
             player.setExp(0);
@@ -105,7 +107,7 @@ public class StartCommand extends AbstractCommand {
         getConfig().getPlugin().setStarted(true);
     }
 
-    private Runnable countdown(int remaining, World world) {
+    protected Runnable countdown(int remaining, World world) {
         String countdownTimer = getConfig().getProp(COUNTDOWN_TIMER_LENGTH.configName);
         return () -> {
             int timeLeft = Integer.parseInt(countdownTimer) - remaining;
@@ -124,7 +126,7 @@ public class StartCommand extends AbstractCommand {
         };
     }
 
-    private Runnable endGracePeriod () {
+    protected Runnable endGracePeriod () {
         return () -> {
             System.out.println("PVP GRACE PERIOD OVER");
             Utils.getWorld(getConfig().getProp(WORLD_NAME.configName)).setPVP(true);
@@ -132,7 +134,7 @@ public class StartCommand extends AbstractCommand {
         };
     }
 
-    private Runnable endWorldBorderGracePeriod () {
+    protected Runnable endWorldBorderGracePeriod () {
         return () -> {
             System.out.println("BORDER GRACE PERIOD OVER");
             String finalWorldBorderSize = getConfig().getProp(WORLD_BORDER_FINAL_SIZE.configName);
@@ -140,5 +142,13 @@ public class StartCommand extends AbstractCommand {
             Utils.getWorld(getConfig().getProp(WORLD_NAME.configName)).getWorldBorder().setSize(Double.parseDouble(finalWorldBorderSize), Long.parseLong(shrinkingTime));
             Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle("World border shrinking", "Don't get caught..."));
         };
+    }
+
+    protected void endWorldBorderGracePeriod (int progressedSeconds) {
+        System.out.println("BORDER GRACE PERIOD OVER");
+        String finalWorldBorderSize = getConfig().getProp(WORLD_BORDER_FINAL_SIZE.configName);
+        String shrinkingTime = getConfig().getProp(WORLD_BORDER_SHRINKING_PERIOD.configName);
+        Utils.getWorld(getConfig().getProp(WORLD_NAME.configName)).getWorldBorder().setSize(Double.parseDouble(finalWorldBorderSize), Long.parseLong(shrinkingTime) - progressedSeconds);
+        Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle("World border shrinking", "Don't get caught..."));
     }
 }

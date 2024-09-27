@@ -12,3 +12,5 @@ build
 null/
 ${env.PLUGIN_LOCATION}
 *.iml
+
+timestamps.txt

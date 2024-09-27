@@ -103,6 +103,9 @@ public class StartCommand extends AbstractCommand {
             bossBarBorder.getBossBar().setVisible(true);
             getConfig().getManagedResources().runRepeatingTask(bossBarBorder.updateProgress(), 1);
         }
+        if (Boolean.parseBoolean(getConfig().getProp(ConfigKey.ENABLE_TIMESTAMPS.configName))) {
+            getConfig().getManagedResources().addTimestamp("UHC Started", false);
+        }
 
         getConfig().getPlugin().setStarted(true);
     }

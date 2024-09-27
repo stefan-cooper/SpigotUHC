@@ -7,8 +7,9 @@ import org.bukkit.WorldCreator;
 public class Utils {
 
     public static World getWorld (String name) {
-        if (Bukkit.getWorld(name) == null) return Bukkit.createWorld(WorldCreator.name(name).environment(World.Environment.NORMAL));
-        else return Bukkit.getWorld(name);
+        final String worldName = name != null ? name : Defaults.DEFAULT_WORLD_NAME;
+        if (Bukkit.getWorld(worldName) == null) return Bukkit.createWorld(WorldCreator.name(worldName).environment(World.Environment.NORMAL));
+        else return Bukkit.getWorld(worldName);
     }
 
     // Some things are managed in Minecraft ticks. Use this to convert from seconds to ticks
@@ -29,6 +30,23 @@ public class Utils {
         int distanceToShrink = initialSize - finalSize;
         int progress = initialSize - currentSize;
         return (double) (distanceToShrink - progress) / distanceToShrink;
+    }
+
+    private static boolean testMode() {
+        for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
+            if (element.getClassName().startsWith("org.junit.")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static String getResourceLocation(final String fileName) {
+        if (testMode()) {
+            return String.format("./src/test/java/resources/%s", fileName);
+        } else {
+            return String.format("./plugins/%s", fileName);
+        }
     }
 
 }

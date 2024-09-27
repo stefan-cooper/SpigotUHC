@@ -6,15 +6,16 @@ import com.stefancooper.SpigotUHC.types.ManagedResources;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Comparator;
 import java.util.Properties;
 import java.util.stream.Stream;
+
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME;
+import static com.stefancooper.SpigotUHC.resources.Constants.CONFIG_LOCATION;
 
 public class Config {
 
-    private final Properties config;
+    private Properties config;
     private final Properties defaultConfig;
     private final ConfigParser parser;
     private final Plugin plugin;
@@ -22,9 +23,10 @@ public class Config {
 
     public Config(Plugin plugin) {
         this.plugin = plugin;
-        this.config = loadInitialProperties();
-        this.defaultConfig = Defaults.createDefaultConfig();
+        this.config = new Properties();
         this.parser = new ConfigParser(this);
+        this.defaultConfig = Defaults.createDefaultConfig();
+        this.config = loadInitialProperties();
         this.managedResources = new ManagedResources(this);
         this.setDefaults();
         parser.executeConfigurables(this.config.entrySet().stream().map(prop -> parser.propertyToConfigurable((String) prop.getKey(), (String) prop.getValue())).toList());
@@ -33,20 +35,17 @@ public class Config {
     private Properties loadInitialProperties() {
         final Properties props = new Properties();
         try {
-            final FileInputStream in = new FileInputStream("./plugins/uhc_config.properties");
-            props.load(in);
-            in.close();
-        } catch (IOException ignored) {
-            try {
-                // TODO - find a better way to do this, perhaps mock/mockito?
-                File file = new File("./src/test/java/resources/uhc_config.properties");
-                FileInputStream in = new FileInputStream(file);
+            boolean file = new File(CONFIG_LOCATION).createNewFile();
+            // if file had to be created, go and set the defaults
+            if (file) setDefaults();
+            else {
+                final FileInputStream in = new FileInputStream(CONFIG_LOCATION);
                 props.load(in);
                 in.close();
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
             }
-        } // noop
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return props;
     }
 
@@ -74,20 +73,12 @@ public class Config {
             config.setProperty(key, value);
             parser.executeConfigurable(configurable);
             try {
-                File file = new File("./plugins/uhc_config.properties");
+                File file = new File(CONFIG_LOCATION);
                 FileOutputStream fos = new FileOutputStream(file);
                 config.store(fos, "saving new value");
                 fos.close();
             } catch (Exception e) {
-                try {
-                    // TODO - find a better way to do this, perhaps mock/mockito?
-                    File file = new File("./src/test/java/resources/uhc_config.properties");
-                    FileOutputStream fos = new FileOutputStream(file);
-                    config.store(fos, "saving new value");
-                    fos.close();
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
-                }
+                throw new RuntimeException(e);
             }
         } else {
             System.out.println("Invalid config value attempted to be set: " + key + "=" + value);

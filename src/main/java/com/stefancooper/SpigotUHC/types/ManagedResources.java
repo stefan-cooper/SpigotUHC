@@ -6,7 +6,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.util.Date;
+
 import static com.stefancooper.SpigotUHC.resources.Constants.PLAYER_HEAD;
+import static com.stefancooper.SpigotUHC.resources.Constants.TIMESTAMPS_LOCATION;
 
 public class ManagedResources {
 
@@ -15,7 +20,7 @@ public class ManagedResources {
     final BukkitScheduler scheduler;
     final NamespacedKey playerHead;
 
-    public ManagedResources(Config config) {
+    public ManagedResources(final Config config) {
         this.config = config;
         this.bossBarBorder = new BossBarBorder(config);
         this.scheduler = Bukkit.getScheduler();
@@ -40,6 +45,19 @@ public class ManagedResources {
 
     public void cancelTimer() {
         scheduler.cancelTasks(config.getPlugin());
+    }
+
+    public void addTimestamp(String event) {
+        addTimestamp(event, true);
+    }
+
+    public void addTimestamp(String event, boolean append) {
+        try {
+            new File(TIMESTAMPS_LOCATION).createNewFile();
+            FileWriter writer = new FileWriter(TIMESTAMPS_LOCATION, append);
+            writer.write(String.format("%s : %s\n", new Date(), event));
+            writer.close();
+        } catch (Exception ignored) {}
     }
 
 }

@@ -1,6 +1,7 @@
 package com.stefancooper.SpigotUHC;
 
 import com.stefancooper.SpigotUHC.commands.CancelCommand;
+import com.stefancooper.SpigotUHC.commands.LateStartCommand;
 import com.stefancooper.SpigotUHC.commands.ResumeCommand;
 import com.stefancooper.SpigotUHC.commands.SetConfigCommand;
 import com.stefancooper.SpigotUHC.commands.StartCommand;
@@ -57,6 +58,9 @@ public class Plugin extends JavaPlugin implements Listener {
                     return true;
                 case ResumeCommand.COMMAND_KEY:
                     new ResumeCommand(sender, cmd, getCommandArgs(args), config).execute();
+                    return true;
+                case LateStartCommand.COMMAND_KEY:
+                    new LateStartCommand(sender, cmd, getCommandArgs(args), config).execute();
                     return true;
                 default:
                     break;

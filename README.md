@@ -100,6 +100,12 @@ The following commands are available in game:
 
 e.g: `/uhc resume 30`
 
+#### Late start player midway during a UHC
+
+`/uhc latestart <username>`
+
+e.g: `/uhc latestart shurf`
+
 #### End/cancel the UHC:
 
 `/uhc cancel`

@@ -35,6 +35,10 @@ commands:
 
       `/uhc resume <minutes>`
       
+      Late start a specific user:
+
+      /uhc latestart <username>
+      
       End/cancel the UHC:
       
       /uhc cancel

@@ -108,11 +108,16 @@ public class StartTest {
             Assertions.assertNull(player.getPotionEffect(PotionEffectType.MINING_FATIGUE));
         });
 
+        Assertions.assertEquals(0, world.getWorldBorder().getDamageAmount());
+        Assertions.assertEquals(5, world.getWorldBorder().getDamageBuffer());
+
         server.execute("uhc", admin, "start");
 
         schedule.performOneTick();
 
         // Initial start
+        Assertions.assertEquals(0, world.getWorldBorder().getDamageAmount());
+        Assertions.assertEquals(5, world.getWorldBorder().getDamageBuffer());
         Assertions.assertFalse(world.getPVP());
         Assertions.assertEquals(Difficulty.PEACEFUL, world.getDifficulty());
         Assertions.assertEquals(50, world.getWorldBorder().getSize());
@@ -129,6 +134,8 @@ public class StartTest {
         server.getOnlinePlayers().forEach(player -> {
             Assertions.assertNull(player.getPotionEffect(PotionEffectType.MINING_FATIGUE));
         });
+        Assertions.assertEquals(0, world.getWorldBorder().getDamageAmount());
+        Assertions.assertEquals(5, world.getWorldBorder().getDamageBuffer());
         Assertions.assertEquals(50, world.getWorldBorder().getSize());
 
         schedule.performTicks(Utils.secondsToTicks(10));
@@ -139,6 +146,8 @@ public class StartTest {
         server.getOnlinePlayers().forEach(player -> {
             Assertions.assertNull(player.getPotionEffect(PotionEffectType.MINING_FATIGUE));
         });
+        Assertions.assertEquals(0, world.getWorldBorder().getDamageAmount());
+        Assertions.assertEquals(5, world.getWorldBorder().getDamageBuffer());
         Assertions.assertEquals(50, world.getWorldBorder().getSize());
 
         schedule.performTicks(Utils.secondsToTicks(10)); // advance ticks for potion effect
@@ -149,6 +158,8 @@ public class StartTest {
         server.getOnlinePlayers().forEach(player -> {
             Assertions.assertNull(player.getPotionEffect(PotionEffectType.MINING_FATIGUE));
         });
+        Assertions.assertEquals(0.2, world.getWorldBorder().getDamageAmount());
+        Assertions.assertEquals(5, world.getWorldBorder().getDamageBuffer());
         Assertions.assertEquals(50, Math.round(world.getWorldBorder().getSize()));
 
         schedule.performTicks(Utils.secondsToTicks(30)); // advance ticks for potion effect
@@ -159,6 +170,8 @@ public class StartTest {
         server.getOnlinePlayers().forEach(player -> {
             Assertions.assertNull(player.getPotionEffect(PotionEffectType.MINING_FATIGUE));
         });
+        Assertions.assertEquals(0.2, world.getWorldBorder().getDamageAmount());
+        Assertions.assertEquals(5, world.getWorldBorder().getDamageBuffer());
         Assertions.assertEquals( 10, Math.round(world.getWorldBorder().getSize()));
     }
 }

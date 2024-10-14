@@ -111,6 +111,7 @@ public class ConfigParser {
             case WORLD_BORDER_INITIAL_SIZE:
                 Double newWorldBorderSize = (Double) configurable.value();
                 worldBorder.setSize(newWorldBorderSize);
+                worldBorder.setDamageAmount(0);
                 break;
             case WORLD_BORDER_CENTER_X:
                 Double newWorldCenterX = (Double) configurable.value();

@@ -122,6 +122,9 @@ public class ResumeTest {
                 "difficulty=HARD"
         );
 
+        Assertions.assertEquals(0, world.getWorldBorder().getDamageAmount());
+        Assertions.assertEquals(5, world.getWorldBorder().getDamageBuffer());
+
         server.getOnlinePlayers().forEach(player -> {
             Assertions.assertEquals(GameMode.ADVENTURE, player.getGameMode());
         });
@@ -188,12 +191,18 @@ public class ResumeTest {
 
         if (secondsProgressed > worldBorderGracePeriodTimer + worldBorderShrinkingPeriod) {
             schedule.performTicks(Utils.secondsToTicks(secondsProgressed));
+            Assertions.assertEquals(0.2, world.getWorldBorder().getDamageAmount());
+            Assertions.assertEquals(5, world.getWorldBorder().getDamageBuffer());
             Assertions.assertEquals(finalSize, world.getWorldBorder().getSize());
         } else if (secondsProgressed > worldBorderGracePeriodTimer) {
             schedule.performTicks(Utils.secondsToTicks(secondsProgressed));
+            Assertions.assertEquals(0.2, world.getWorldBorder().getDamageAmount());
+            Assertions.assertEquals(5, world.getWorldBorder().getDamageBuffer());
             Assertions.assertTrue(world.getWorldBorder().getSize() < initialSize && world.getWorldBorder().getSize() > finalSize);
         } else {
             schedule.performTicks(Utils.secondsToTicks(secondsProgressed));
+            Assertions.assertEquals(0, world.getWorldBorder().getDamageAmount());
+            Assertions.assertEquals(5, world.getWorldBorder().getDamageBuffer());
             Assertions.assertEquals(initialSize, world.getWorldBorder().getSize());
         }
     }

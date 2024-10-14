@@ -56,6 +56,8 @@ public class PluginTest {
     @DisplayName("World border configs are set to the default")
     void testWorldBorderDefaults() {
         Assertions.assertNotNull(world.getWorldBorder());
+        Assertions.assertEquals(0, world.getWorldBorder().getDamageAmount());
+        Assertions.assertEquals(5, world.getWorldBorder().getDamageBuffer());
         Assertions.assertEquals(Double.parseDouble(DEFAULT_WORLD_BORDER_INITIAL_SIZE), world.getWorldBorder().getSize());
         Assertions.assertEquals(Double.parseDouble(DEFAULT_WORLD_BORDER_CENTER_X), world.getWorldBorder().getCenter().getX());
         Assertions.assertEquals(Double.parseDouble(DEFAULT_WORLD_BORDER_CENTER_Z), world.getWorldBorder().getCenter().getZ());

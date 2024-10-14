@@ -1,9 +1,6 @@
 package com.stefancooper.SpigotUHC.commands;
 
-import java.util.Date;
 import java.util.Optional;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import com.stefancooper.SpigotUHC.resources.ConfigKey;
 import com.stefancooper.SpigotUHC.types.BossBarBorder;
@@ -11,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.GameMode;
 import org.bukkit.World;
+import org.bukkit.WorldBorder;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -142,7 +140,10 @@ public class StartCommand extends AbstractCommand {
             System.out.println("BORDER GRACE PERIOD OVER");
             String finalWorldBorderSize = getConfig().getProp(WORLD_BORDER_FINAL_SIZE.configName);
             String shrinkingTime = getConfig().getProp(WORLD_BORDER_SHRINKING_PERIOD.configName);
-            Utils.getWorld(getConfig().getProp(WORLD_NAME.configName)).getWorldBorder().setSize(Double.parseDouble(finalWorldBorderSize), Long.parseLong(shrinkingTime));
+            WorldBorder wb = Utils.getWorld(getConfig().getProp(WORLD_NAME.configName)).getWorldBorder();
+            wb.setDamageBuffer(5);
+            wb.setDamageAmount(0.2);
+            wb.setSize(Double.parseDouble(finalWorldBorderSize), Long.parseLong(shrinkingTime));
             Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle("World border shrinking", "Don't get caught..."));
         };
     }
@@ -151,7 +152,10 @@ public class StartCommand extends AbstractCommand {
         System.out.println("BORDER GRACE PERIOD OVER");
         String finalWorldBorderSize = getConfig().getProp(WORLD_BORDER_FINAL_SIZE.configName);
         String shrinkingTime = getConfig().getProp(WORLD_BORDER_SHRINKING_PERIOD.configName);
-        Utils.getWorld(getConfig().getProp(WORLD_NAME.configName)).getWorldBorder().setSize(Double.parseDouble(finalWorldBorderSize), Long.parseLong(shrinkingTime) - progressedSeconds);
+        WorldBorder wb = Utils.getWorld(getConfig().getProp(WORLD_NAME.configName)).getWorldBorder();
+        wb.setDamageBuffer(5);
+        wb.setDamageAmount(0.2);
+        wb.setSize(Double.parseDouble(finalWorldBorderSize), Long.parseLong(shrinkingTime) - progressedSeconds);
         Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle("World border shrinking", "Don't get caught..."));
     }
 }

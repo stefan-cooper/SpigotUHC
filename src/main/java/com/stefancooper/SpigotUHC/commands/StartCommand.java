@@ -1,5 +1,6 @@
 package com.stefancooper.SpigotUHC.commands;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.stefancooper.SpigotUHC.resources.ConfigKey;
@@ -29,20 +30,27 @@ import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_GRACE_
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_INITIAL_SIZE;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_SHRINKING_PERIOD;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME_END;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME_NETHER;
 
 public class StartCommand extends AbstractCommand {
 
     public static final String COMMAND_KEY = "start";
+    public World world;
+    public World nether;
+    public World end;
 
     public StartCommand(CommandSender sender, Command cmd, String[] args, Config config) {
         super(sender, cmd, args, config);
+        world = Utils.getWorld(getConfig().getProp(WORLD_NAME.configName));
+        nether = Utils.getWorld(getConfig().getProp(WORLD_NAME_NETHER.configName));
+        end = Utils.getWorld(getConfig().getProp(WORLD_NAME_END.configName));
     }
 
     @Override
     public void execute() {
 
         // World and Countdown timer are both configs that will always be set
-        World world = Utils.getWorld(getConfig().getProp(WORLD_NAME.configName));
         int countdownTimer = Integer.parseInt(getConfig().getProp(COUNTDOWN_TIMER_LENGTH.configName));
 
         // Actions on the player
@@ -61,7 +69,9 @@ public class StartCommand extends AbstractCommand {
         Bukkit.setDefaultGameMode(GameMode.SURVIVAL);
 
         // Actions on the world
-        world.getWorldBorder().setSize(Double.parseDouble(getConfig().getProp(WORLD_BORDER_INITIAL_SIZE.configName)));
+        Utils.setWorldEffects(List.of(world, nether, end), (cbWorld) -> {
+            world.getWorldBorder().setSize(Double.parseDouble(getConfig().getProp(WORLD_BORDER_INITIAL_SIZE.configName)));
+        });
         world.setTime(1000);
         world.setDifficulty(Difficulty.PEACEFUL);
         world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).forEach(Entity::remove);
@@ -130,7 +140,7 @@ public class StartCommand extends AbstractCommand {
     protected Runnable endGracePeriod () {
         return () -> {
             System.out.println("PVP GRACE PERIOD OVER");
-            Utils.getWorld(getConfig().getProp(WORLD_NAME.configName)).setPVP(true);
+            Utils.setWorldEffects(List.of(world, nether, end), (cbWorld) -> cbWorld.setPVP(true));
             Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle("Grace period over", "\uD83D\uDC40 Watch your back \uD83D\uDC40"));
         };
     }
@@ -140,10 +150,13 @@ public class StartCommand extends AbstractCommand {
             System.out.println("BORDER GRACE PERIOD OVER");
             String finalWorldBorderSize = getConfig().getProp(WORLD_BORDER_FINAL_SIZE.configName);
             String shrinkingTime = getConfig().getProp(WORLD_BORDER_SHRINKING_PERIOD.configName);
-            WorldBorder wb = Utils.getWorld(getConfig().getProp(WORLD_NAME.configName)).getWorldBorder();
-            wb.setDamageBuffer(5);
-            wb.setDamageAmount(0.2);
-            wb.setSize(Double.parseDouble(finalWorldBorderSize), Long.parseLong(shrinkingTime));
+            Utils.setWorldEffects(List.of(world, nether, end), (cbWorld) -> {
+                WorldBorder wb = cbWorld.getWorldBorder();
+                wb.setDamageBuffer(5);
+                wb.setDamageAmount(0.2);
+                wb.setSize(Double.parseDouble(finalWorldBorderSize), Long.parseLong(shrinkingTime));
+            });
+
             Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle("World border shrinking", "Don't get caught..."));
         };
     }
@@ -152,10 +165,12 @@ public class StartCommand extends AbstractCommand {
         System.out.println("BORDER GRACE PERIOD OVER");
         String finalWorldBorderSize = getConfig().getProp(WORLD_BORDER_FINAL_SIZE.configName);
         String shrinkingTime = getConfig().getProp(WORLD_BORDER_SHRINKING_PERIOD.configName);
-        WorldBorder wb = Utils.getWorld(getConfig().getProp(WORLD_NAME.configName)).getWorldBorder();
-        wb.setDamageBuffer(5);
-        wb.setDamageAmount(0.2);
-        wb.setSize(Double.parseDouble(finalWorldBorderSize), Long.parseLong(shrinkingTime) - progressedSeconds);
+        Utils.setWorldEffects(List.of(world, nether, end), (cbWorld) -> {
+            WorldBorder wb = cbWorld.getWorldBorder();
+            wb.setDamageBuffer(5);
+            wb.setDamageAmount(0.2);
+            wb.setSize(Double.parseDouble(finalWorldBorderSize), Long.parseLong(shrinkingTime) - progressedSeconds);
+        });
         Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle("World border shrinking", "Don't get caught..."));
     }
 }

@@ -10,25 +10,34 @@ import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+
+import java.util.List;
 import java.util.Optional;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.DIFFICULTY;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.GRACE_PERIOD_TIMER;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_GRACE_PERIOD;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_INITIAL_SIZE;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME_END;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME_NETHER;
 
 public class ResumeCommand extends StartCommand {
 
     public static final String COMMAND_KEY = "resume";
+    public World world;
+    public World nether;
+    public World end;
 
     public ResumeCommand(CommandSender sender, Command cmd, String[] args, Config config) {
         super(sender, cmd, args, config);
+        world = Utils.getWorld(getConfig().getProp(WORLD_NAME.configName));
+        nether = Utils.getWorld(getConfig().getProp(WORLD_NAME_NETHER.configName));
+        end = Utils.getWorld(getConfig().getProp(WORLD_NAME_END.configName));
     }
 
 
     @Override
     public void execute() {
-        World world = Utils.getWorld(getConfig().getProp(WORLD_NAME.configName));
         getConfig().getManagedResources().cancelTimer();
 
         int minutesProgressed;
@@ -46,7 +55,7 @@ public class ResumeCommand extends StartCommand {
         Bukkit.setDefaultGameMode(GameMode.SURVIVAL);
 
         // Actions on the world
-        world.getWorldBorder().setSize(Double.parseDouble(getConfig().getProp(WORLD_BORDER_INITIAL_SIZE.configName)));
+        Utils.setWorldEffects(List.of(world, nether, end), (cbWorld) -> world.getWorldBorder().setSize(Double.parseDouble(getConfig().getProp(WORLD_BORDER_INITIAL_SIZE.configName))) );
         world.setDifficulty(Difficulty.valueOf(getConfig().getProp(DIFFICULTY.configName)));
 
         if (Boolean.parseBoolean(getConfig().getProp(ConfigKey.WORLD_BORDER_IN_BOSSBAR.configName))) {

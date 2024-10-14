@@ -20,6 +20,8 @@ public class Defaults {
 
     public static String HEALTH_OBJECTIVE = "health";
     public static String DEFAULT_WORLD_NAME = "world";
+    public static String DEFAULT_NETHER_WORLD_NAME = "world";
+    public static String DEFAULT_END_WORLD_NAME = "world";
     public static String DEFAULT_WORLD_BORDER_INITIAL_SIZE = "2000";
     public static String DEFAULT_WORLD_BORDER_FINAL_SIZE = "500";
     public static String DEFAULT_WORLD_BORDER_SHRINKING_PERIOD = "7200";
@@ -35,6 +37,8 @@ public class Defaults {
     public static Properties createDefaultConfig() {
         final Properties defaults = new Properties();
         defaults.setProperty(WORLD_NAME.configName, DEFAULT_WORLD_NAME);
+        defaults.setProperty(WORLD_NAME_NETHER.configName, DEFAULT_NETHER_WORLD_NAME);
+        defaults.setProperty(WORLD_NAME_END.configName, DEFAULT_END_WORLD_NAME);
         defaults.setProperty(WORLD_BORDER_INITIAL_SIZE.configName, DEFAULT_WORLD_BORDER_INITIAL_SIZE);
         defaults.setProperty(WORLD_BORDER_FINAL_SIZE.configName, DEFAULT_WORLD_BORDER_FINAL_SIZE);
         defaults.setProperty(WORLD_BORDER_SHRINKING_PERIOD.configName, DEFAULT_WORLD_BORDER_SHRINKING_PERIOD);

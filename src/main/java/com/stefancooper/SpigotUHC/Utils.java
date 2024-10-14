@@ -4,12 +4,22 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 
+import java.util.List;
+
 public class Utils {
 
     public static World getWorld (String name) {
         final String worldName = name != null ? name : Defaults.DEFAULT_WORLD_NAME;
         if (Bukkit.getWorld(worldName) == null) return Bukkit.createWorld(WorldCreator.name(worldName).environment(World.Environment.NORMAL));
         else return Bukkit.getWorld(worldName);
+    }
+
+    public interface WorldBorderCallback {
+        void execute(World world);
+    }
+
+    public static void setWorldEffects(List<World> worlds, WorldBorderCallback callback) {
+        worlds.forEach(callback::execute);
     }
 
     // Some things are managed in Minecraft ticks. Use this to convert from seconds to ticks

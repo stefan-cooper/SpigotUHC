@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Difficulty;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
@@ -38,6 +39,8 @@ import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_INITIA
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_IN_BOSSBAR;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_SHRINKING_PERIOD;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME_END;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME_NETHER;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.fromString;
 import com.stefancooper.SpigotUHC.types.UHCTeam;
 import com.stefancooper.SpigotUHC.types.Configurable;
@@ -73,6 +76,8 @@ public class ConfigParser {
             case COUNTDOWN_TIMER_LENGTH -> new Configurable<>(COUNTDOWN_TIMER_LENGTH, Double.parseDouble(value));
             case PLAYER_HEAD_GOLDEN_APPLE -> new Configurable<>(PLAYER_HEAD_GOLDEN_APPLE, Boolean.parseBoolean((value)));
             case WORLD_NAME -> new Configurable<>(WORLD_NAME, value);
+            case WORLD_NAME_NETHER -> new Configurable<>(WORLD_NAME_NETHER, value);
+            case WORLD_NAME_END -> new Configurable<>(WORLD_NAME_END, value);
             case DIFFICULTY -> new Configurable<>(DIFFICULTY, Difficulty.valueOf(value));
             case WORLD_BORDER_IN_BOSSBAR -> new Configurable<>(WORLD_BORDER_IN_BOSSBAR, Boolean.parseBoolean(value));
             case ENABLE_TIMESTAMPS -> new Configurable<>(ENABLE_TIMESTAMPS, Boolean.parseBoolean(value));
@@ -106,22 +111,33 @@ public class ConfigParser {
             System.out.println("Invalid config value attempted to be executed, ignoring...");
             return;
         }
-        WorldBorder worldBorder = Utils.getWorld(config.getProp(WORLD_NAME.configName)).getWorldBorder();
+        World overworld = Utils.getWorld(config.getProp(WORLD_NAME.configName));
+        World nether = Utils.getWorld(config.getProp(WORLD_NAME_NETHER.configName));
+        World end = Utils.getWorld(config.getProp(WORLD_NAME_END.configName));
         switch (configurable.key()) {
             case WORLD_BORDER_INITIAL_SIZE:
                 Double newWorldBorderSize = (Double) configurable.value();
-                worldBorder.setSize(newWorldBorderSize);
-                worldBorder.setDamageAmount(0);
+                Utils.setWorldEffects(List.of(overworld, nether, end), (world) -> {
+                    WorldBorder worldBorder = world.getWorldBorder();
+                    worldBorder.setSize(newWorldBorderSize);
+                    worldBorder.setDamageAmount(0);
+                });
                 break;
             case WORLD_BORDER_CENTER_X:
                 Double newWorldCenterX = (Double) configurable.value();
-                double worldCenterZ = worldBorder.getCenter().getZ();
-                worldBorder.setCenter(newWorldCenterX, worldCenterZ);
+                Utils.setWorldEffects(List.of(overworld, nether, end), (world) -> {
+                    WorldBorder worldBorder = world.getWorldBorder();
+                    double worldCenterZ = worldBorder.getCenter().getZ();
+                    worldBorder.setCenter(newWorldCenterX, worldCenterZ);
+                });
                 break;
             case WORLD_BORDER_CENTER_Z:
                 Double newWorldCenterZ = (Double) configurable.value();
-                double worldCenterX = worldBorder.getCenter().getX();
-                worldBorder.setCenter(worldCenterX, newWorldCenterZ);
+                Utils.setWorldEffects(List.of(overworld, nether, end), (world) -> {
+                    WorldBorder worldBorder = world.getWorldBorder();
+                    double worldCenterX = worldBorder.getCenter().getX();
+                    worldBorder.setCenter(worldCenterX, newWorldCenterZ);
+                });
                 break;
             case TEAM_RED:
                 createTeam(new UHCTeam("Red", (String) configurable.value(), ChatColor.RED ));

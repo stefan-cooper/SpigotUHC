@@ -34,7 +34,6 @@ public class LateStartCommand extends StartCommand {
 
     @Override
     public void execute() {
-        World world = Utils.getWorld(getConfig().getProp(WORLD_NAME.configName));
         getConfig().getManagedResources().cancelTimer();
 
         Player player;

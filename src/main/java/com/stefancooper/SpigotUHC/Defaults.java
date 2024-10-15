@@ -11,6 +11,7 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.RenderType;
 import org.bukkit.scoreboard.Scoreboard;
 
+import java.util.List;
 import java.util.Properties;
 
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.*;
@@ -20,8 +21,8 @@ public class Defaults {
 
     public static String HEALTH_OBJECTIVE = "health";
     public static String DEFAULT_WORLD_NAME = "world";
-    public static String DEFAULT_NETHER_WORLD_NAME = "world";
-    public static String DEFAULT_END_WORLD_NAME = "world";
+    public static String DEFAULT_NETHER_WORLD_NAME = "world_nether";
+    public static String DEFAULT_END_WORLD_NAME = "world_the_end";
     public static String DEFAULT_WORLD_BORDER_INITIAL_SIZE = "2000";
     public static String DEFAULT_WORLD_BORDER_FINAL_SIZE = "500";
     public static String DEFAULT_WORLD_BORDER_SHRINKING_PERIOD = "7200";
@@ -54,11 +55,12 @@ public class Defaults {
     }
 
     public static void setDefaultGameRules(Config config) {
-        final World world = Utils.getWorld(config.getProp(WORLD_NAME.configName));
-        world.setGameRule(GameRule.NATURAL_REGENERATION, false);
-        world.setGameRule(GameRule.DO_INSOMNIA, false);
-        // set pvp to false, will be enabled when /uhc start is ran
-        world.setPVP(false);
+        Utils.setWorldEffects(List.of(config.getWorlds().getOverworld(), config.getWorlds().getNether(), config.getWorlds().getEnd()), (world) -> {
+            world.setGameRule(GameRule.NATURAL_REGENERATION, false);
+            world.setGameRule(GameRule.DO_INSOMNIA, false);
+            // set pvp to false, will be enabled when /uhc start is ran
+            world.setPVP(false);
+        });
         config.getPlugin().setCountingDown(false);
         Bukkit.getOnlinePlayers().forEach(player -> player.setGameMode(GameMode.ADVENTURE));
         final Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();

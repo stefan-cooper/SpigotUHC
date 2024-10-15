@@ -29,26 +29,20 @@ import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_FINAL_
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_GRACE_PERIOD;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_INITIAL_SIZE;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_SHRINKING_PERIOD;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME_END;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME_NETHER;
 
 public class StartCommand extends AbstractCommand {
 
     public static final String COMMAND_KEY = "start";
-    public World world;
-    public World nether;
-    public World end;
 
     public StartCommand(CommandSender sender, Command cmd, String[] args, Config config) {
         super(sender, cmd, args, config);
-        world = Utils.getWorld(getConfig().getProp(WORLD_NAME.configName));
-        nether = Utils.getWorld(getConfig().getProp(WORLD_NAME_NETHER.configName));
-        end = Utils.getWorld(getConfig().getProp(WORLD_NAME_END.configName));
     }
 
     @Override
     public void execute() {
+        final World world = getConfig().getWorlds().getOverworld();
+        final World nether = getConfig().getWorlds().getNether();
+        final World end = getConfig().getWorlds().getEnd();
 
         // World and Countdown timer are both configs that will always be set
         int countdownTimer = Integer.parseInt(getConfig().getProp(COUNTDOWN_TIMER_LENGTH.configName));
@@ -140,7 +134,7 @@ public class StartCommand extends AbstractCommand {
     protected Runnable endGracePeriod () {
         return () -> {
             System.out.println("PVP GRACE PERIOD OVER");
-            Utils.setWorldEffects(List.of(world, nether, end), (cbWorld) -> cbWorld.setPVP(true));
+            Utils.setWorldEffects(List.of(getConfig().getWorlds().getOverworld(), getConfig().getWorlds().getNether(), getConfig().getWorlds().getEnd()), (cbWorld) -> cbWorld.setPVP(true));
             Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle("Grace period over", "\uD83D\uDC40 Watch your back \uD83D\uDC40"));
         };
     }
@@ -150,7 +144,7 @@ public class StartCommand extends AbstractCommand {
             System.out.println("BORDER GRACE PERIOD OVER");
             String finalWorldBorderSize = getConfig().getProp(WORLD_BORDER_FINAL_SIZE.configName);
             String shrinkingTime = getConfig().getProp(WORLD_BORDER_SHRINKING_PERIOD.configName);
-            Utils.setWorldEffects(List.of(world, nether, end), (cbWorld) -> {
+            Utils.setWorldEffects(List.of(getConfig().getWorlds().getOverworld(), getConfig().getWorlds().getNether(), getConfig().getWorlds().getEnd()), (cbWorld) -> {
                 WorldBorder wb = cbWorld.getWorldBorder();
                 wb.setDamageBuffer(5);
                 wb.setDamageAmount(0.2);
@@ -159,18 +153,5 @@ public class StartCommand extends AbstractCommand {
 
             Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle("World border shrinking", "Don't get caught..."));
         };
-    }
-
-    protected void endWorldBorderGracePeriod (int progressedSeconds) {
-        System.out.println("BORDER GRACE PERIOD OVER");
-        String finalWorldBorderSize = getConfig().getProp(WORLD_BORDER_FINAL_SIZE.configName);
-        String shrinkingTime = getConfig().getProp(WORLD_BORDER_SHRINKING_PERIOD.configName);
-        Utils.setWorldEffects(List.of(world, nether, end), (cbWorld) -> {
-            WorldBorder wb = cbWorld.getWorldBorder();
-            wb.setDamageBuffer(5);
-            wb.setDamageAmount(0.2);
-            wb.setSize(Double.parseDouble(finalWorldBorderSize), Long.parseLong(shrinkingTime) - progressedSeconds);
-        });
-        Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle("World border shrinking", "Don't get caught..."));
     }
 }

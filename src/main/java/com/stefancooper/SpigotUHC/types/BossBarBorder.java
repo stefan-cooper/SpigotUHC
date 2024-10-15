@@ -24,7 +24,7 @@ public class BossBarBorder {
         return () -> {
             int finalBorder = Integer.parseInt(config.getProp(ConfigKey.WORLD_BORDER_FINAL_SIZE.configName));
             int initialBorder = Integer.parseInt(config.getProp(ConfigKey.WORLD_BORDER_INITIAL_SIZE.configName));
-            int currentSize = (int) Math.round(Utils.getWorld(config.getProp(ConfigKey.WORLD_NAME.configName)).getWorldBorder().getSize());
+            int currentSize = (int) Math.round(config.getWorlds().getOverworld().getWorldBorder().getSize());
             bossBar.setProgress(Utils.calculateWorldBorderProgress(initialBorder, finalBorder, currentSize));
         };
     }

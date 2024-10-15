@@ -111,9 +111,9 @@ public class ConfigParser {
             System.out.println("Invalid config value attempted to be executed, ignoring...");
             return;
         }
-        World overworld = Utils.getWorld(config.getProp(WORLD_NAME.configName));
-        World nether = Utils.getWorld(config.getProp(WORLD_NAME_NETHER.configName));
-        World end = Utils.getWorld(config.getProp(WORLD_NAME_END.configName));
+        World overworld = config.getWorlds().getOverworld();
+        World nether = config.getWorlds().getNether();
+        World end = config.getWorlds().getEnd();
         switch (configurable.key()) {
             case WORLD_BORDER_INITIAL_SIZE:
                 Double newWorldBorderSize = (Double) configurable.value();
@@ -174,6 +174,10 @@ public class ConfigParser {
                         Bukkit.removeRecipe(playerHeadKey);
                     }
                 }
+            case WORLD_NAME:
+            case WORLD_NAME_NETHER:
+            case WORLD_NAME_END:
+                config.getWorlds().updateWorlds();
 
             default:
                 break;

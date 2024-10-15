@@ -41,7 +41,9 @@ public class ViewConfigTest {
         player.assertSaid(String.format("""
                         countdown.timer.length=%s
                         difficulty=%s
+                        end.world.name=%s
                         grace.period.timer=%s
+                        nether.world.name=%s
                         on.death.action=%s
                         spread.min.distance=%s
                         world.border.center.x=%s
@@ -51,7 +53,7 @@ public class ViewConfigTest {
                         world.border.initial.size=%s
                         world.border.shrinking.period=%s
                         world.name=%s
-                        """, DEFAULT_COUNTDOWN_TIMER_LENGTH, DEFAULT_DIFFICULTY, DEFAULT_GRACE_PERIOD_TIMER, DEFAULT_ON_DEATH_ACTION, DEFAULT_MIN_SPREAD_DISTANCE, DEFAULT_WORLD_BORDER_CENTER_X, DEFAULT_WORLD_BORDER_CENTER_Z,
+                        """, DEFAULT_COUNTDOWN_TIMER_LENGTH, DEFAULT_DIFFICULTY, DEFAULT_END_WORLD_NAME, DEFAULT_GRACE_PERIOD_TIMER, DEFAULT_NETHER_WORLD_NAME, DEFAULT_ON_DEATH_ACTION, DEFAULT_MIN_SPREAD_DISTANCE, DEFAULT_WORLD_BORDER_CENTER_X, DEFAULT_WORLD_BORDER_CENTER_Z,
                 DEFAULT_WORLD_BORDER_FINAL_SIZE, DEFAULT_WORLD_BORDER_GRACE_PERIOD, DEFAULT_WORLD_BORDER_INITIAL_SIZE, DEFAULT_WORLD_BORDER_SHRINKING_PERIOD, DEFAULT_WORLD_NAME
                         )
         );

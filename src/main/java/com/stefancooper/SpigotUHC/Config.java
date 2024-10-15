@@ -2,6 +2,7 @@ package com.stefancooper.SpigotUHC;
 
 import com.stefancooper.SpigotUHC.types.Configurable;
 import com.stefancooper.SpigotUHC.types.ManagedResources;
+import com.stefancooper.SpigotUHC.types.Worlds;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,6 +12,8 @@ import java.util.Properties;
 import java.util.stream.Stream;
 
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME_END;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME_NETHER;
 import static com.stefancooper.SpigotUHC.resources.Constants.CONFIG_LOCATION;
 
 public class Config {
@@ -20,6 +23,7 @@ public class Config {
     private final ConfigParser parser;
     private final Plugin plugin;
     private final ManagedResources managedResources;
+    private final Worlds worlds;
 
     public Config(Plugin plugin) {
         this.plugin = plugin;
@@ -28,6 +32,7 @@ public class Config {
         this.defaultConfig = Defaults.createDefaultConfig();
         this.config = loadInitialProperties();
         this.managedResources = new ManagedResources(this);
+        this.worlds = new Worlds(this);
         this.setDefaults();
         parser.executeConfigurables(this.config.entrySet().stream().map(prop -> parser.propertyToConfigurable((String) prop.getKey(), (String) prop.getValue())).toList());
     }
@@ -52,6 +57,8 @@ public class Config {
     public ManagedResources getManagedResources() {
         return managedResources;
     }
+
+    public Worlds getWorlds() { return worlds; }
 
     public Plugin getPlugin() {
         return plugin;
@@ -96,6 +103,8 @@ public class Config {
     public void resetToDefaults() {
         config.clear();
         setProp(WORLD_NAME.configName, (String) defaultConfig.get(WORLD_NAME.configName));
+        setProp(WORLD_NAME_NETHER.configName, (String) defaultConfig.get(WORLD_NAME_NETHER.configName));
+        setProp(WORLD_NAME_END.configName, (String) defaultConfig.get(WORLD_NAME_END.configName));
         defaultConfig.forEach((key, value) -> setProp((String) key, (String) value));
         Defaults.setDefaultGameRules(this);
     }

@@ -2,6 +2,7 @@ package com.stefancooper.SpigotUHC;
 
 import com.stefancooper.SpigotUHC.commands.CancelCommand;
 import com.stefancooper.SpigotUHC.commands.LateStartCommand;
+import com.stefancooper.SpigotUHC.commands.PvpCommand;
 import com.stefancooper.SpigotUHC.commands.ResumeCommand;
 import com.stefancooper.SpigotUHC.commands.SetConfigCommand;
 import com.stefancooper.SpigotUHC.commands.StartCommand;
@@ -62,6 +63,9 @@ public class Plugin extends JavaPlugin implements Listener {
                 case LateStartCommand.COMMAND_KEY:
                     new LateStartCommand(sender, cmd, getCommandArgs(args), config).execute();
                     return true;
+                case PvpCommand.COMMAND_KEY:
+                    new PvpCommand(sender, cmd, getCommandArgs(args), config).execute();
+                    break;
                 default:
                     break;
             }

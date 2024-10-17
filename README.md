@@ -17,8 +17,12 @@ You can configure your UHC in the server (see [Configuring](#configuring)) or yo
 The following configurations are available for managing your UHC:
 
 ```properties
-# Name of the minecraft world
+# Name of the minecraft overworld
 world.name=world
+# Name of the minecraft nether world
+nether.world.name=world_nether
+# Name of the minecraft end world
+end.world.name=world_end
 # Difficulty of the game when UHC is live
 difficulty=EASY
 # Countdown to start the game after UHC start command issued
@@ -99,6 +103,12 @@ The following commands are available in game:
 `/uhc resume <minutes>`
 
 e.g: `/uhc resume 30`
+
+#### Manually enable/disable PVP:
+
+`/uhc pvp <true|false>`
+
+e.g: `/uhc pvp true`
 
 #### Late start player midway during a UHC
 

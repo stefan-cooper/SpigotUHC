@@ -33,7 +33,7 @@ commands:
       
       Start a UHC midway/resume a UHC
 
-      `/uhc resume <minutes>`
+      /uhc resume <minutes>
       
       Late start a specific user:
 
@@ -42,3 +42,7 @@ commands:
       End/cancel the UHC:
       
       /uhc cancel
+      
+      Manually enable/disable pvp:
+      
+      /uhc pvp true

@@ -64,6 +64,8 @@ public class Revive {
             reviveCallback.callback();
             // TODO - concerns:
             // - does this remove all heads? or just the one we care about
+            // - prevent explosions within 10 blocks of revive location
+            // - fix on drop not cancelling revive
             reviver.getInventory().remove(playerHead);
             // Revivee effects
             revivee.getInventory().clear();

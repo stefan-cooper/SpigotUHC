@@ -12,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDamageEvent;
+import org.bukkit.event.block.BlockFormEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -160,6 +161,15 @@ public class Events implements Listener {
     public void onEntityExplode(EntityExplodeEvent event) {
         if (Boolean.parseBoolean(config.getProp(REVIVE_ENABLED.configName))) {
             if (Revive.isInsideReviveZone(config, event.getLocation())) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onBlockForm(BlockFormEvent event) {
+        if (Boolean.parseBoolean(config.getProp(REVIVE_ENABLED.configName))) {
+            if (Revive.isInsideReviveZone(config, event.getBlock().getLocation())) {
                 event.setCancelled(true);
             }
         }

@@ -1,6 +1,8 @@
 package com.stefancooper.SpigotUHC;
 
 import com.stefancooper.SpigotUHC.resources.DeathAction;
+import com.stefancooper.SpigotUHC.types.Revive;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -8,6 +10,9 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockDamageEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -16,9 +21,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.*;
-import static com.stefancooper.SpigotUHC.resources.Constants.PLAYER_HEAD;
 
 public class Events implements Listener {
 
@@ -51,7 +56,7 @@ public class Events implements Listener {
             ItemStack head = new ItemStack(Material.PLAYER_HEAD,1);
             SkullMeta headMeta = (SkullMeta) head.getItemMeta();
             assert headMeta != null;
-            headMeta.setDisplayName(PLAYER_HEAD);
+            headMeta.setDisplayName(String.format("%s's head", player.getDisplayName()));
             headMeta.setLore(List.of("Put this item in a bench", "For a Golden Apple"));
             headMeta.setOwningPlayer(player);
             head.setItemMeta(headMeta);
@@ -98,6 +103,54 @@ public class Events implements Listener {
         final Location getFrom = event.getFrom();
         if (config.getPlugin().isCountingDown() && getTo != null && (getTo.getY() > getFrom.getY() || getTo.getX() != getFrom.getX() || getTo.getZ() != getFrom.getZ())) {
             event.setCancelled(true);
+        }
+        if (Boolean.parseBoolean(config.getProp(REVIVE_ENABLED.configName))) {
+            Optional<Revive> revive = config.getManagedResources().getRevive();
+            boolean insideReviveZone = Revive.isInsideReviveZone(config, event.getTo());
+            if (revive.isEmpty() && event.getPlayer().getInventory().contains(Material.PLAYER_HEAD)) {
+                int playerHeadIndex = event.getPlayer().getInventory().first(Material.PLAYER_HEAD);
+                ItemStack playerHead = event.getPlayer().getInventory().getItem(playerHeadIndex);
+
+                assert playerHead.getItemMeta() != null;
+                SkullMeta meta = (SkullMeta) playerHead.getItemMeta();
+                boolean isTeammate = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(meta.getOwningPlayer().getName()).hasEntry(event.getPlayer().getName());
+
+                if (isTeammate && insideReviveZone) {
+                    config.getManagedResources().startReviving(event.getPlayer(), meta.getOwningPlayer().getPlayer(), playerHead);
+                }
+            } else if (revive.isPresent() && revive.get().reviver.getEntityId() == event.getPlayer().getEntityId()) {
+                if (!insideReviveZone || !event.getPlayer().getInventory().contains(revive.get().playerHead)) {
+                    System.out.println("Revive cancelled");
+                    config.getManagedResources().cancelRevive();
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent event) {
+        if (Boolean.parseBoolean(config.getProp(REVIVE_ENABLED.configName))) {
+            if (Revive.isInsideReviveZone(config, event.getBlock().getLocation())) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent event) {
+        if (Boolean.parseBoolean(config.getProp(REVIVE_ENABLED.configName))) {
+            if (Revive.isInsideReviveZone(config, event.getBlock().getLocation())) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onBlockDamage(BlockDamageEvent event) {
+        if (Boolean.parseBoolean(config.getProp(REVIVE_ENABLED.configName))) {
+            if (Revive.isInsideReviveZone(config, event.getBlock().getLocation())) {
+                event.setCancelled(true);
+            }
         }
     }
 }

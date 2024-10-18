@@ -29,7 +29,16 @@ public enum ConfigKey {
     WORLD_NAME_NETHER("nether.world.name"), // Name of the nether world
     WORLD_NAME_END("end.world.name"), // Name of the end world
     ENABLE_TIMESTAMPS("enable.timestamps"), // Get timestamps in txt file of notable events
-    DIFFICULTY("difficulty");
+    DIFFICULTY("difficulty"), // Difficulty during the UHC
+
+    // Optional Revive config
+    REVIVE_ENABLED("revive.enabled"),
+    REVIVE_TIME("revive.time"),
+    REVIVE_LOCATION_SIZE("revive.location.size"),
+    REVIVE_LOCATION_X("revive.location.x"),
+    REVIVE_LOCATION_Y("revive.location.y"),
+    REVIVE_LOCATION_Z("revive.location.z"),
+    REVIVE_HEALTH("revive.health");
 
 
 

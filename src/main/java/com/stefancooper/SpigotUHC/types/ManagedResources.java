@@ -4,11 +4,15 @@ import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.util.Date;
+import java.util.Optional;
 
 import static com.stefancooper.SpigotUHC.resources.Constants.PLAYER_HEAD;
 import static com.stefancooper.SpigotUHC.resources.Constants.TIMESTAMPS_LOCATION;
@@ -19,6 +23,7 @@ public class ManagedResources {
     final BossBarBorder bossBarBorder;
     final BukkitScheduler scheduler;
     final NamespacedKey playerHead;
+    Revive currentRevive = null;
 
     public ManagedResources(final Config config) {
         this.config = config;
@@ -27,12 +32,25 @@ public class ManagedResources {
         this.playerHead = new NamespacedKey(config.getPlugin(), PLAYER_HEAD);
     }
 
+    public Optional<Revive> getRevive() {
+        return Optional.ofNullable(currentRevive);
+    }
+
+    public void startReviving(Player reviver, Player revivee, ItemStack playerHead) {
+        currentRevive = new Revive(config, reviver, revivee, playerHead, () -> currentRevive = null );
+    }
+
+    public void cancelRevive() {
+        currentRevive.cancelRevive();
+        currentRevive = null;
+    }
+
     public BossBarBorder getBossBarBorder() {
         return bossBarBorder;
     }
 
-    public void runTaskLater(Runnable runnable, int time) {
-        scheduler.runTaskLater(config.getPlugin(), runnable, Utils.secondsToTicks(time));
+    public BukkitTask runTaskLater(Runnable runnable, int time) {
+        return scheduler.runTaskLater(config.getPlugin(), runnable, Utils.secondsToTicks(time));
     }
 
     public void runRepeatingTask(Runnable runnable, int interval ) {

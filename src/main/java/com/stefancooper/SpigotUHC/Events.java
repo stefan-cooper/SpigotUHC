@@ -169,7 +169,7 @@ public class Events implements Listener {
     public void onDropItem(PlayerDropItemEvent event) {
         if (Boolean.parseBoolean(config.getProp(REVIVE_ENABLED.configName))) {
             Optional<Revive> revive = config.getManagedResources().getRevive();
-            if (revive.isPresent() && revive.get().reviver.getEntityId() == event.getPlayer().getEntityId() && event.getItemDrop().getItemStack().hashCode() == revive.get().playerHead.hashCode()) {
+            if (revive.isPresent() && revive.get().reviver.getEntityId() == event.getPlayer().getEntityId() && event.getItemDrop().getItemStack().getItemMeta().getDisplayName().equals(revive.get().playerHead.getItemMeta().getDisplayName())) {
                 config.getManagedResources().cancelRevive();
             }
         }

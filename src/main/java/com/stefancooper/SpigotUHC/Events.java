@@ -15,6 +15,7 @@ import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -160,6 +161,16 @@ public class Events implements Listener {
         if (Boolean.parseBoolean(config.getProp(REVIVE_ENABLED.configName))) {
             if (Revive.isInsideReviveZone(config, event.getLocation())) {
                 event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onDropItem(PlayerDropItemEvent event) {
+        if (Boolean.parseBoolean(config.getProp(REVIVE_ENABLED.configName))) {
+            Optional<Revive> revive = config.getManagedResources().getRevive();
+            if (revive.isPresent() && revive.get().reviver.getEntityId() == event.getPlayer().getEntityId() && event.getItemDrop().getItemStack().hashCode() == revive.get().playerHead.hashCode()) {
+                config.getManagedResources().cancelRevive();
             }
         }
     }

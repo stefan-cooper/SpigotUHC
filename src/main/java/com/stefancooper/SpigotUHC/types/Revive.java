@@ -62,10 +62,10 @@ public class Revive {
         return () -> {
             Bukkit.broadcastMessage(String.format("%s has been revived!", revivee.getDisplayName()));
             reviveCallback.callback();
-            // TODO - concerns:
-            // - does this remove all heads? or just the one we care about
-            // - prevent explosions within 10 blocks of revive location
-            // - fix on drop not cancelling revive
+            // TODO - q's:
+            // - only revivable if death was non-pvp (?)
+            // - only revivable one time (?)
+            // - reviver takes damage for reviving (?)
             reviver.getInventory().remove(playerHead);
             // Revivee effects
             revivee.getInventory().clear();
@@ -99,6 +99,23 @@ public class Revive {
         return (newPositionX >= minReviveX && newPositionX <= maxReviveX) &&
                (newPositionZ >= minReviveZ && newPositionZ <= maxReviveZ) &&
                (newPositionY <= reviveY + 2 && newPositionY >= reviveY - 2);
+    }
+
+    public static boolean isNearReviveZone(Config config, Location location) {
+        int reviveX = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_LOCATION_X.configName)).orElse("0"));
+        int reviveY = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_LOCATION_Y.configName)).orElse("100"));
+        int reviveZ = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_LOCATION_Z.configName)).orElse("0"));
+        int size = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_LOCATION_SIZE.configName)).orElse("10"));
+        int minReviveX = reviveX - Math.round((float) size / 2);
+        int maxReviveX = reviveX + Math.round((float) size / 2);;
+        int minReviveZ = reviveZ - Math.round((float) size / 2);;
+        int maxReviveZ = reviveZ + Math.round((float) size / 2);;
+        long newPositionX = Math.round(location.getX());
+        long newPositionY = Math.round(location.getY());
+        long newPositionZ = Math.round(location.getZ());
+        return (newPositionX >= minReviveX - 8 && newPositionX <= maxReviveX + 8) &&
+                (newPositionZ >= minReviveZ - 8 && newPositionZ <= maxReviveZ + 8) &&
+                (newPositionY >= reviveY - 8 && newPositionY <= reviveY + 8);
     }
 
 }

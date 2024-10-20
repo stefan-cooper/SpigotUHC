@@ -82,7 +82,11 @@ public class Revive {
                 revivee.setExp(0);
                 revivee.setLevel(0);
 
-                revivee.setMaxHealth(revivee.getMaxHealth() - reviveLoseMaxHealth);
+                if (revivee.getMaxHealth() > reviveLoseMaxHealth) {
+                    revivee.setMaxHealth(revivee.getMaxHealth() - reviveLoseMaxHealth);
+                } else {
+                    revivee.setMaxHealth(1);
+                }
 
                 // reviver effects
                 reviver.getInventory().remove(playerHead);

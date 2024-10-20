@@ -24,6 +24,8 @@ public class ManagedResources {
     final BukkitScheduler scheduler;
     final NamespacedKey playerHead;
     Revive currentRevive = null;
+    BukkitTask reviveDebounce = null;
+
 
     public ManagedResources(final Config config) {
         this.config = config;
@@ -37,7 +39,10 @@ public class ManagedResources {
     }
 
     public void startReviving(Player reviver, Player revivee, ItemStack playerHead) {
-        currentRevive = new Revive(config, reviver, revivee, playerHead, () -> currentRevive = null );
+        currentRevive = new Revive(config, reviver, revivee, playerHead, () -> currentRevive = null, reviveDebounce == null || reviveDebounce.isCancelled() );
+        if (reviveDebounce == null || reviveDebounce.isCancelled()) {
+            reviveDebounce = runTaskLater(() -> reviveDebounce.cancel(), 10);
+        }
     }
 
     public void cancelRevive() {

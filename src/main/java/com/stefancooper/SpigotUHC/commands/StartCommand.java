@@ -50,6 +50,7 @@ public class StartCommand extends AbstractCommand {
         // Actions on the player
         Bukkit.getOnlinePlayers().forEach(player -> {
             double maxHealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue();
+            player.resetMaxHealth();
             player.setHealth(maxHealth);
             player.setSaturation(20);
             player.setFoodLevel(20);

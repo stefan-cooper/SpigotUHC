@@ -25,11 +25,12 @@ import static com.stefancooper.SpigotUHC.resources.ConfigKey.PLAYER_HEAD_GOLDEN_
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.RANDOM_TEAMS_ENABLED;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.RANDOM_TEAM_SIZE;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.REVIVE_ENABLED;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.REVIVE_HEALTH;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.REVIVE_HP;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.REVIVE_LOCATION_SIZE;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.REVIVE_LOCATION_X;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.REVIVE_LOCATION_Y;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.REVIVE_LOCATION_Z;
+import static com.stefancooper.SpigotUHC.resources.ConfigKey.REVIVE_LOSE_MAX_HEALTH;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.REVIVE_TIME;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.SPREAD_MIN_DISTANCE;
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.TEAM_BLUE;
@@ -91,11 +92,12 @@ public class ConfigParser {
             // Revive config
             case REVIVE_ENABLED -> new Configurable<>(REVIVE_ENABLED, Boolean.parseBoolean(value));
             case REVIVE_TIME -> new Configurable<>(REVIVE_TIME, Integer.parseInt(value));
-            case REVIVE_HEALTH -> new Configurable<>(REVIVE_HEALTH, Integer.parseInt(value));
+            case REVIVE_HP -> new Configurable<>(REVIVE_HP, Integer.parseInt(value));
             case REVIVE_LOCATION_SIZE -> new Configurable<>(REVIVE_LOCATION_SIZE, Integer.parseInt(value));
             case REVIVE_LOCATION_X -> new Configurable<>(REVIVE_LOCATION_X, Integer.parseInt(value));
             case REVIVE_LOCATION_Y -> new Configurable<>(REVIVE_LOCATION_Y, Integer.parseInt(value));
             case REVIVE_LOCATION_Z -> new Configurable<>(REVIVE_LOCATION_Z, Integer.parseInt(value));
+            case REVIVE_LOSE_MAX_HEALTH -> new Configurable<>(REVIVE_LOSE_MAX_HEALTH, Integer.parseInt(value));
             case null -> null;
         };
     }

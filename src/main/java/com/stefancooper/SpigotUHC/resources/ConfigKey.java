@@ -38,7 +38,8 @@ public enum ConfigKey {
     REVIVE_LOCATION_X("revive.location.x"),
     REVIVE_LOCATION_Y("revive.location.y"),
     REVIVE_LOCATION_Z("revive.location.z"),
-    REVIVE_HEALTH("revive.health");
+    REVIVE_HP("revive.hp"),
+    REVIVE_LOSE_MAX_HEALTH("revive.lose.max.health");
 
 
 

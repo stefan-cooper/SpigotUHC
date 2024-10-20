@@ -76,7 +76,11 @@ public class Revive {
                 revivee.spigot().respawn();
                 revivee.teleport(new Location(world, reviveX, reviveY, reviveZ));
                 revivee.setGameMode(GameMode.SURVIVAL);
-                revivee.setHealth(reviveHealth);
+                if (revivee.getMaxHealth() < reviveHealth) {
+                    revivee.setHealth(revivee.getMaxHealth());
+                } else {
+                    revivee.setHealth(reviveHealth);
+                }
                 revivee.setSaturation(20);
                 revivee.setFoodLevel(20);
                 revivee.setExp(0);

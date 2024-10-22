@@ -48,6 +48,12 @@ public class ReviveTest {
     @BeforeEach
     public void cleanUp() {
         plugin.getUHCConfig().resetToDefaults();
+        world.getEntities().forEach(entity -> {
+            if (!(entity instanceof PlayerMock)) {
+                entity.remove();
+            }
+        } );
+//        world.getEntities();
     }
 
     @AfterAll
@@ -56,16 +62,9 @@ public class ReviveTest {
         MockBukkit.unmock();
     }
 
-
-    private void assertWorldValues(WorldAssertion assertion) {
-        assertion.execute(world);
-        assertion.execute(nether);
-        assertion.execute(end);
-    }
-
     @Test
-    @DisplayName("When player dies, they can be revived")
-    void revive() throws InterruptedException {
+    @DisplayName("When a player dies, they can be revived")
+    void revive() {
         BukkitSchedulerMock schedule = server.getScheduler();
 
         PlayerMock admin = server.addPlayer();
@@ -124,5 +123,66 @@ public class ReviveTest {
         assertEquals(0, player1.getLevel());
         assertEquals(0, player1.getExp());
         assertEquals(0, Arrays.stream(player1.getInventory().getStorageContents()).filter(item -> item != null && !item.getType().equals(Material.AIR)).toList().size());
+
+        assertFalse(player2.getInventory().contains(Material.PLAYER_HEAD));
+    }
+
+    @Test
+    @DisplayName("When a player dies, if someone starts reviving, it can be cancelled")
+    void reviveCancel() {
+        BukkitSchedulerMock schedule = server.getScheduler();
+
+        PlayerMock admin = server.addPlayer();
+        admin.setOp(true);
+
+        RespawnPlayerMock player1 = server.addPlayer("pavey");
+        RespawnPlayerMock player2 = server.addPlayer("luke");
+
+        server.execute("uhc", admin, "set",
+                "team.red=pavey,luke",
+                "player.head.golden.apple=true",
+                "revive.enabled=true",
+                "revive.hp=4",
+                "revive.lose.max.health=4",
+                "revive.time=5",
+                "revive.location.x=0",
+                "revive.location.y=64",
+                "revive.location.z=0",
+                "revive.location.size=10"
+        );
+
+        player1.setHealth(10);
+        player1.setFoodLevel(12);
+        player1.setLevel(13);
+        player1.setExp(0.9f);
+        player1.getInventory().setItem(1, ItemStack.of(Material.DIAMOND_SWORD));
+
+        assertEquals( 20, player1.getMaxHealth());
+        assertEquals(10, player1.getHealth() );
+        assertEquals(12, player1.getFoodLevel());
+        assertEquals(13, player1.getLevel());
+        assertEquals(0.9f, player1.getExp());
+        assertEquals(1, Arrays.stream(player1.getInventory().getStorageContents()).filter(item -> item != null && !item.getType().equals(Material.AIR)).toList().size());
+        assertEquals(0, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
+
+        player1.teleport(new Location(world, 100, 64, 100));
+        player1.damage(20);
+
+        schedule.performOneTick();
+
+        assertEquals(1, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
+        assertFalse(player2.getInventory().contains(Material.PLAYER_HEAD));
+
+        player2.getInventory().addItem(((ItemEntityMock) world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().getFirst()).getItemStack());
+        assertTrue(player2.getInventory().contains(Material.PLAYER_HEAD));
+        player2.simulatePlayerMove(new Location(world, 0, 64, 0));
+        assertTrue(player1.isDead());
+
+        schedule.performTicks(Utils.secondsToTicks(3));
+
+        player2.simulatePlayerMove(new Location(world, 100, 64, 0));
+
+        assertTrue(player1.isDead());
+        assertTrue(player2.getInventory().contains(Material.PLAYER_HEAD));
     }
 }

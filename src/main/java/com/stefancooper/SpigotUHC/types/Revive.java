@@ -53,13 +53,14 @@ public class Revive {
         this.reviveTask = config.getManagedResources().runTaskLater(revivePlayer(), reviveTime);
         this.reviveCallback = reviveCallback;
 
-        if (revivee == null) {
+        if (this.revivee == null) {
             reviver.sendMessage(String.format("%s is offline, so cannot be revived", revivee));
-            config.getManagedResources().cancelRevive();
             return;
         } else {
             Bukkit.broadcastMessage(String.format("%s is being revived!", this.revivee.getDisplayName()));
         }
+
+        // TODO - add event to cancel revive if revivee leaves mid revive
 
         if (playSound) {
             Bukkit.getOnlinePlayers().forEach(player -> {
@@ -141,5 +142,4 @@ public class Revive {
                 (newPositionZ >= minReviveZ - 8 && newPositionZ <= maxReviveZ + 8) &&
                 (newPositionY >= reviveY - 8 && newPositionY <= reviveY + 8);
     }
-
 }

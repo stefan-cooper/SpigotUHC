@@ -21,6 +21,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scoreboard.Team;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.*;
@@ -42,16 +44,37 @@ public class ReviveEvents implements Listener {
             Optional<Revive> revive = config.getManagedResources().getRevive();
             boolean insideReviveZone = Revive.isInsideReviveZone(config, event.getTo());
             if (revive.isEmpty() && event.getPlayer().getInventory().contains(Material.PLAYER_HEAD)) {
-                int playerHeadIndex = event.getPlayer().getInventory().first(Material.PLAYER_HEAD);
-                ItemStack playerHead = event.getPlayer().getInventory().getItem(playerHeadIndex);
+                List<ItemStack> playerHeads = Arrays.stream(event.getPlayer().getInventory().getStorageContents()).filter(itemStack -> itemStack.getType().equals(Material.PLAYER_HEAD)).toList();
+                for (ItemStack playerHead : playerHeads) {
+                    assert playerHead.getItemMeta() != null;
+                    SkullMeta meta = (SkullMeta) playerHead.getItemMeta();
+                    Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(meta.getOwningPlayer().getName());
 
-                assert playerHead.getItemMeta() != null;
-                SkullMeta meta = (SkullMeta) playerHead.getItemMeta();
-                Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(meta.getOwningPlayer().getName());
-
-                if (team != null && team.hasEntry(event.getPlayer().getName()) && insideReviveZone) {
-                    config.getManagedResources().startReviving(event.getPlayer(), meta.getOwningPlayer().getName(), playerHead.clone());
+                    if (team != null && team.hasEntry(event.getPlayer().getName()) && insideReviveZone) {
+                        config.getManagedResources().startReviving(event.getPlayer(), meta.getOwningPlayer().getName(), playerHead.clone());
+                        break;
+                    }
                 }
+//                Arrays.stream(event.getPlayer().getInventory().getStorageContents()).filter(itemStack -> itemStack.getType().equals(Material.PLAYER_HEAD)).forEach(playerHead -> {
+//                    assert playerHead.getItemMeta() != null;
+//                    SkullMeta meta = (SkullMeta) playerHead.getItemMeta();
+//                    Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(meta.getOwningPlayer().getName());
+//
+//                    if (team != null && team.hasEntry(event.getPlayer().getName()) && insideReviveZone) {
+//                        config.getManagedResources().startReviving(event.getPlayer(), meta.getOwningPlayer().getName(), playerHead.clone());
+//                        break;
+//                    }
+//                });
+//                int playerHeadIndex = event.getPlayer().getInventory().first(Material.PLAYER_HEAD);
+//                ItemStack playerHead = event.getPlayer().getInventory().getItem(playerHeadIndex);
+//
+//                assert playerHead.getItemMeta() != null;
+//                SkullMeta meta = (SkullMeta) playerHead.getItemMeta();
+//                Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(meta.getOwningPlayer().getName());
+//
+//                if (team != null && team.hasEntry(event.getPlayer().getName()) && insideReviveZone) {
+//                    config.getManagedResources().startReviving(event.getPlayer(), meta.getOwningPlayer().getName(), playerHead.clone());
+//                }
             } else if (revive.isPresent() && revive.get().reviver.getEntityId() == event.getPlayer().getEntityId()) {
                 if (!insideReviveZone || !event.getPlayer().getInventory().contains(revive.get().playerHead)) {
                     System.out.println("Revive cancelled");

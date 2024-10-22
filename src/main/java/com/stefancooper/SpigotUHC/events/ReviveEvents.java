@@ -44,7 +44,7 @@ public class ReviveEvents implements Listener {
             Optional<Revive> revive = config.getManagedResources().getRevive();
             boolean insideReviveZone = Revive.isInsideReviveZone(config, event.getTo());
             if (revive.isEmpty() && event.getPlayer().getInventory().contains(Material.PLAYER_HEAD)) {
-                List<ItemStack> playerHeads = Arrays.stream(event.getPlayer().getInventory().getStorageContents()).filter(itemStack -> itemStack.getType().equals(Material.PLAYER_HEAD)).toList();
+                List<ItemStack> playerHeads = Arrays.stream(event.getPlayer().getInventory().getStorageContents()).filter(itemStack -> itemStack != null && itemStack.getType().equals(Material.PLAYER_HEAD)).toList();
                 for (ItemStack playerHead : playerHeads) {
                     assert playerHead.getItemMeta() != null;
                     SkullMeta meta = (SkullMeta) playerHead.getItemMeta();

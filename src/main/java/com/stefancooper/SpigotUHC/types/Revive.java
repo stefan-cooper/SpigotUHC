@@ -38,11 +38,9 @@ public class Revive {
     private final int reviveZ;
     private final World world;
 
-    public Revive(Config config, Player reviver, Player revivee, ItemStack playerHead, ReviveCallback reviveCallback, boolean playSound) {
-        Bukkit.broadcastMessage(String.format("%s is being revived!", revivee.getDisplayName()));
-
+    public Revive(Config config, Player reviver, String revivee, ItemStack playerHead, ReviveCallback reviveCallback, boolean playSound) {
         this.reviver = reviver;
-        this.revivee = revivee;
+        this.revivee = Bukkit.getPlayer(revivee);
         this.world = config.getWorlds().getOverworld();
         this.reviveHealth = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_HP.configName)).orElse("2"));
         this.reviveX = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_LOCATION_X.configName)).orElse("0"));
@@ -51,8 +49,17 @@ public class Revive {
         this.reviveLoseMaxHealth = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_LOSE_MAX_HEALTH.configName)).orElse("2"));
         this.playerHead = playerHead;
         int reviveTime = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_TIME.configName)).orElse("5"));
+
         this.reviveTask = config.getManagedResources().runTaskLater(revivePlayer(), reviveTime);
         this.reviveCallback = reviveCallback;
+
+        if (revivee == null) {
+            reviver.sendMessage(String.format("%s is offline, so cannot be revived", revivee));
+            config.getManagedResources().cancelRevive();
+            return;
+        } else {
+            Bukkit.broadcastMessage(String.format("%s is being revived!", this.revivee.getDisplayName()));
+        }
 
         if (playSound) {
             Bukkit.getOnlinePlayers().forEach(player -> {
@@ -81,7 +88,6 @@ public class Revive {
                 } else {
                     revivee.setHealth(reviveHealth);
                 }
-                revivee.setSaturation(20);
                 revivee.setFoodLevel(20);
                 revivee.setExp(0);
                 revivee.setLevel(0);
@@ -94,7 +100,6 @@ public class Revive {
 
                 // reviver effects
                 reviver.getInventory().remove(playerHead);
-//                reviver.(reviveDamage);
             }
         };
     }

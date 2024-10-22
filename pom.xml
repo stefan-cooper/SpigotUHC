@@ -93,7 +93,7 @@
         <dependency>
             <groupId>com.github.seeseemelk</groupId>
             <artifactId>MockBukkit-v1.21</artifactId>
-            <version>3.127.1</version>
+            <version>3.133.2</version>
             <scope>test</scope>
         </dependency>
         <!--This adds the Spigot API artifact to the build -->

@@ -38,7 +38,7 @@ public class ManagedResources {
         return Optional.ofNullable(currentRevive);
     }
 
-    public void startReviving(Player reviver, Player revivee, ItemStack playerHead) {
+    public void startReviving(Player reviver, String revivee, ItemStack playerHead) {
         currentRevive = new Revive(config, reviver, revivee, playerHead, () -> currentRevive = null, reviveDebounce == null || reviveDebounce.isCancelled() );
         if (reviveDebounce == null || reviveDebounce.isCancelled()) {
             reviveDebounce = runTaskLater(() -> reviveDebounce.cancel(), 10);

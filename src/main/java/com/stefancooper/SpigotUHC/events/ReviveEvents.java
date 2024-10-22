@@ -4,12 +4,14 @@ import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.types.Revive;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -17,6 +19,8 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.scoreboard.Team;
+
 import java.util.Optional;
 
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.*;
@@ -33,6 +37,7 @@ public class ReviveEvents implements Listener {
 
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
+
         if (Boolean.parseBoolean(config.getProp(REVIVE_ENABLED.configName))) {
             Optional<Revive> revive = config.getManagedResources().getRevive();
             boolean insideReviveZone = Revive.isInsideReviveZone(config, event.getTo());
@@ -42,10 +47,10 @@ public class ReviveEvents implements Listener {
 
                 assert playerHead.getItemMeta() != null;
                 SkullMeta meta = (SkullMeta) playerHead.getItemMeta();
-                boolean isTeammate = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(meta.getOwningPlayer().getName()).hasEntry(event.getPlayer().getName());
+                Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(meta.getOwningPlayer().getName());
 
-                if (isTeammate && insideReviveZone) {
-                    config.getManagedResources().startReviving(event.getPlayer(), meta.getOwningPlayer().getPlayer(), playerHead.clone());
+                if (team != null && team.hasEntry(event.getPlayer().getName()) && insideReviveZone) {
+                    config.getManagedResources().startReviving(event.getPlayer(), meta.getOwningPlayer().getName(), playerHead.clone());
                 }
             } else if (revive.isPresent() && revive.get().reviver.getEntityId() == event.getPlayer().getEntityId()) {
                 if (!insideReviveZone || !event.getPlayer().getInventory().contains(revive.get().playerHead)) {
@@ -106,6 +111,17 @@ public class ReviveEvents implements Listener {
         if (Boolean.parseBoolean(config.getProp(REVIVE_ENABLED.configName))) {
             if (Revive.isInsideReviveZone(config, event.getBlock().getLocation()) || Revive.isInsideReviveZone(config, event.getToBlock().getLocation())) {
                 event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onBlockFall(EntityChangeBlockEvent event) {
+        if (Boolean.parseBoolean(config.getProp(REVIVE_ENABLED.configName))) {
+            if (event.getEntity() instanceof FallingBlock) {
+                if (Revive.isInsideReviveZone(config, event.getBlock().getLocation())) {
+                    event.setCancelled(true);
+                }
             }
         }
     }

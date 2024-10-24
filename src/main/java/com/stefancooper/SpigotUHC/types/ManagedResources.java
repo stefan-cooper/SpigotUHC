@@ -45,7 +45,7 @@ public class ManagedResources {
             currentRevive = null;
         }
         if (reviveDebounce == null || reviveDebounce.isCancelled()) {
-            reviveDebounce = runTaskLater(() -> reviveDebounce.cancel(), 10);
+            reviveDebounce = runTaskLater(() -> reviveDebounce.cancel(), 30);
         }
     }
 

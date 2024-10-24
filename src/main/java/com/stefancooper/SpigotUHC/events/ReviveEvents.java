@@ -13,6 +13,7 @@ import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -69,7 +70,17 @@ public class ReviveEvents implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         if (Boolean.parseBoolean(config.getProp(REVIVE_ENABLED.configName)) && config.getManagedResources().getRevive().isPresent()) {
             Revive revive = config.getManagedResources().getRevive().get();
-            if (revive.revivee.getEntityId() == event.getPlayer().getEntityId()) {
+            if (revive.revivee.getEntityId() == event.getPlayer().getEntityId() || revive.reviver.getEntityId() == event.getPlayer().getEntityId()) {
+                config.getManagedResources().cancelRevive();
+            }
+        }
+    }
+
+    @EventHandler
+    public void onReviverDeath (PlayerDeathEvent event) {
+        if (Boolean.parseBoolean(config.getProp(REVIVE_ENABLED.configName)) && config.getManagedResources().getRevive().isPresent()) {
+            Revive revive = config.getManagedResources().getRevive().get();
+            if (revive.reviver.getEntityId() == event.getEntity().getEntityId()) {
                 config.getManagedResources().cancelRevive();
             }
         }

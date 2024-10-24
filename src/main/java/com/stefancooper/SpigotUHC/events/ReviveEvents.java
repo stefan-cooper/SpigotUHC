@@ -16,6 +16,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -55,31 +56,21 @@ public class ReviveEvents implements Listener {
                         break;
                     }
                 }
-//                Arrays.stream(event.getPlayer().getInventory().getStorageContents()).filter(itemStack -> itemStack.getType().equals(Material.PLAYER_HEAD)).forEach(playerHead -> {
-//                    assert playerHead.getItemMeta() != null;
-//                    SkullMeta meta = (SkullMeta) playerHead.getItemMeta();
-//                    Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(meta.getOwningPlayer().getName());
-//
-//                    if (team != null && team.hasEntry(event.getPlayer().getName()) && insideReviveZone) {
-//                        config.getManagedResources().startReviving(event.getPlayer(), meta.getOwningPlayer().getName(), playerHead.clone());
-//                        break;
-//                    }
-//                });
-//                int playerHeadIndex = event.getPlayer().getInventory().first(Material.PLAYER_HEAD);
-//                ItemStack playerHead = event.getPlayer().getInventory().getItem(playerHeadIndex);
-//
-//                assert playerHead.getItemMeta() != null;
-//                SkullMeta meta = (SkullMeta) playerHead.getItemMeta();
-//                Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(meta.getOwningPlayer().getName());
-//
-//                if (team != null && team.hasEntry(event.getPlayer().getName()) && insideReviveZone) {
-//                    config.getManagedResources().startReviving(event.getPlayer(), meta.getOwningPlayer().getName(), playerHead.clone());
-//                }
             } else if (revive.isPresent() && revive.get().reviver.getEntityId() == event.getPlayer().getEntityId()) {
                 if (!insideReviveZone || !event.getPlayer().getInventory().contains(revive.get().playerHead)) {
                     System.out.println("Revive cancelled");
                     config.getManagedResources().cancelRevive();
                 }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        if (Boolean.parseBoolean(config.getProp(REVIVE_ENABLED.configName)) && config.getManagedResources().getRevive().isPresent()) {
+            Revive revive = config.getManagedResources().getRevive().get();
+            if (revive.revivee.getEntityId() == event.getPlayer().getEntityId()) {
+                config.getManagedResources().cancelRevive();
             }
         }
     }

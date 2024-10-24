@@ -40,6 +40,10 @@ public class ManagedResources {
 
     public void startReviving(Player reviver, String revivee, ItemStack playerHead) {
         currentRevive = new Revive(config, reviver, revivee, playerHead, () -> currentRevive = null, reviveDebounce == null || reviveDebounce.isCancelled() );
+        if (currentRevive.revivee == null) {
+            currentRevive.cancelRevive();
+            currentRevive = null;
+        }
         if (reviveDebounce == null || reviveDebounce.isCancelled()) {
             reviveDebounce = runTaskLater(() -> reviveDebounce.cancel(), 10);
         }

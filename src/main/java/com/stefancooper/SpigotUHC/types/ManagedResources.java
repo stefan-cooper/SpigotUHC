@@ -62,8 +62,12 @@ public class ManagedResources {
         return scheduler.runTaskLater(config.getPlugin(), runnable, Utils.secondsToTicks(time));
     }
 
-    public void runRepeatingTask(Runnable runnable, int interval ) {
-        scheduler.scheduleSyncRepeatingTask(config.getPlugin(), runnable, 0, Utils.secondsToTicks(interval));
+    public int runRepeatingTask(Runnable runnable, int interval) {
+        return scheduler.scheduleSyncRepeatingTask(config.getPlugin(), runnable, 0, Utils.secondsToTicks(interval));
+    }
+
+    public void cancelRepeatingTask(int id) {
+        scheduler.cancelTask(id);
     }
 
     public NamespacedKey getPlayerHeadKey() {

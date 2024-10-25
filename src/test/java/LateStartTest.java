@@ -57,6 +57,7 @@ public class LateStartTest {
         player1.setLevel(12);
         player1.getInventory().setItem(1, ItemStack.of(Material.DIAMOND_SWORD));
         player1.setFoodLevel(3);
+        player1.setMaxHealth(12);
 
         world.dropItem(new Location(world, 0, 100, 0), ItemStack.of(Material.DIAMOND_SWORD));
 
@@ -71,6 +72,7 @@ public class LateStartTest {
         server.getOnlinePlayers().forEach(player -> {
             Assertions.assertEquals(20.0, player.getHealth());
             Assertions.assertEquals(20.0, player.getFoodLevel());
+            Assertions.assertEquals(20, player.getMaxHealth());
             Assertions.assertEquals(0, player.getExp());
             Assertions.assertEquals(0, player.getLevel());
             Assertions.assertEquals(0, Arrays.stream(player.getInventory().getContents()).filter(item -> item != null && item.getType() != Material.AIR).toList().size());

@@ -45,8 +45,6 @@ public class ReviveTest {
         server = MockBukkit.mock(new RespawnPlayerServerMock());
         plugin = MockBukkit.load(Plugin.class);
         world = server.getWorld(DEFAULT_WORLD_NAME);
-        nether = server.getWorld(DEFAULT_NETHER_WORLD_NAME);
-        end = server.getWorld(DEFAULT_END_WORLD_NAME);
         revivee = server.addPlayer("pavey");
         reviver = server.addPlayer("luke");
     }

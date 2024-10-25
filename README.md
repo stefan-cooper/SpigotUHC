@@ -47,9 +47,9 @@ world.border.shrinking.period=7200
 
 Optional properties:
 
+Teams:
+
 ```properties
-# Action to undertake when a player dies ("spectate" | "kick")
-on.death.action=spectate
 # Team Blue players (comma seperated e.g team.orange=player1,player2) - Note: This is caps sensitive
 team.blue=shurf
 # Team Orange players (comma seperated e.g team.orange=player1,player2) - Note: This is caps sensitive
@@ -61,7 +61,36 @@ team.green=chuckle
 # Team Yellow players (comma seperated e.g team.orange=player1,player2) - Note: This is caps sensitive
 team.yellow=StetoGuy
 # Team Pink players (comma seperated e.g team.orange=player1,player2) - Note: This is caps sensitive
-team.pink=SimplySqare
+team.pink=SimplySquare
+```
+
+Revive:
+
+```properties
+# Enable revive
+revive.enabled=true
+# HP that the revived player will start on (default: 2 hearts)
+revive.hp=4
+# HP that the revived player will lose permanently on each revive (default 2 hearts)
+revive.lose.max.health=4
+# How long it takes for the revive to happen
+revive.time=90
+# X coordinate for the center of the revive location
+revive.location.x=-30
+# Y coordinate for the center of the revive location
+revive.location.y=64
+# Z coordinate for the center of the revive location
+revive.location.z=11
+# Diameter/size of the revive location
+revive.location.size=10
+```
+
+Miscellaneous:
+
+```properties
+# Action to undertake when a player dies ("spectate" | "kick")
+on.death.action=spectate
+
 # (optional) drop player heads who are killed that can be crafted into golden apples
 player.head.golden.apple=false|true
 # (optional) show the current progress of the world border in the boss bar

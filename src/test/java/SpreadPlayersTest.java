@@ -2,7 +2,7 @@ import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import com.stefancooper.SpigotUHC.Plugin;
-import mocks.SpreadServerMock;
+import mocks.servers.SpreadServerMock;
 import org.bukkit.World;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;

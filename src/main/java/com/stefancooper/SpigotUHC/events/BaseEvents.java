@@ -1,6 +1,8 @@
-package com.stefancooper.SpigotUHC;
+package com.stefancooper.SpigotUHC.events;
 
+import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.resources.DeathAction;
+
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -14,17 +16,14 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-
 import java.util.List;
-
 import static com.stefancooper.SpigotUHC.resources.ConfigKey.*;
-import static com.stefancooper.SpigotUHC.resources.Constants.PLAYER_HEAD;
 
-public class Events implements Listener {
+public class BaseEvents implements Listener {
 
     private final Config config;
 
-    public Events (Config config) {
+    public BaseEvents (Config config) {
         this.config = config;
     }
 
@@ -51,7 +50,7 @@ public class Events implements Listener {
             ItemStack head = new ItemStack(Material.PLAYER_HEAD,1);
             SkullMeta headMeta = (SkullMeta) head.getItemMeta();
             assert headMeta != null;
-            headMeta.setDisplayName(PLAYER_HEAD);
+            headMeta.setDisplayName(String.format("%s's head", player.getDisplayName()));
             headMeta.setLore(List.of("Put this item in a bench", "For a Golden Apple"));
             headMeta.setOwningPlayer(player);
             head.setItemMeta(headMeta);
@@ -61,7 +60,7 @@ public class Events implements Listener {
         if (Boolean.parseBoolean(config.getProp(ENABLE_TIMESTAMPS.configName))) {
             if (event.getEntity().getLastDamageCause() != null &&
                     event.getEntity().getLastDamageCause().getDamageSource().getDirectEntity() != null &&
-                        event.getEntity().getLastDamageCause().getDamageSource().getDirectEntity().getType() == EntityType.PLAYER
+                    event.getEntity().getLastDamageCause().getDamageSource().getDirectEntity().getType() == EntityType.PLAYER
             ) {
                 Player player = (Player) event.getEntity().getLastDamageCause().getDamageSource().getDirectEntity();
                 config.getManagedResources().addTimestamp(String.format("%s kills %s", player.getDisplayName(), event.getEntity().getDisplayName()));

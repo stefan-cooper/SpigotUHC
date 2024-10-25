@@ -1,4 +1,4 @@
-package mocks;
+package mocks.servers;
 
 import be.seeseemelk.mockbukkit.AsyncCatcher;
 import be.seeseemelk.mockbukkit.ServerMock;

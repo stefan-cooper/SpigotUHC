@@ -43,6 +43,8 @@ world.border.grace.period=3600
 world.border.initial.size=2000
 # Time (in seconds) to shrink from the initial size to the final size
 world.border.shrinking.period=7200
+# Action to undertake when a player dies ("spectate" | "kick")
+on.death.action=spectate
 ```
 
 Optional properties:
@@ -88,15 +90,14 @@ revive.location.size=10
 Miscellaneous:
 
 ```properties
-# Action to undertake when a player dies ("spectate" | "kick")
-on.death.action=spectate
-
 # (optional) drop player heads who are killed that can be crafted into golden apples
 player.head.golden.apple=false|true
 # (optional) show the current progress of the world border in the boss bar
 world.border.in.bossbar=false|true
 # (optional) enable timestamps of notable events
-enable.timestamps=boolean
+enable.timestamps=false|true
+# (optional) generate a random final location within the initial world border
+random.final.location=false|true
 ```
 
 ## Commands

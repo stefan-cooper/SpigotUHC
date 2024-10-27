@@ -1,4 +1,4 @@
-import com.stefancooper.SpigotUHC.Utils;
+import com.stefancooper.SpigotUHC.utils.Utils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;

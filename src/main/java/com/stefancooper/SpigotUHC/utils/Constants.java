@@ -1,6 +1,4 @@
-package com.stefancooper.SpigotUHC.resources;
-
-import com.stefancooper.SpigotUHC.Utils;
+package com.stefancooper.SpigotUHC.utils;
 
 public final class Constants {
 

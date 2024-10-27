@@ -2,10 +2,8 @@ package com.stefancooper.SpigotUHC.types;
 
 import com.stefancooper.SpigotUHC.Config;
 import org.bukkit.Bukkit;
-import org.bukkit.Effect;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.World;
@@ -13,13 +11,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 import java.util.Optional;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.REVIVE_HP;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.REVIVE_LOCATION_SIZE;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.REVIVE_LOCATION_X;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.REVIVE_LOCATION_Y;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.REVIVE_LOCATION_Z;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.REVIVE_LOSE_MAX_HEALTH;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.REVIVE_TIME;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_HP;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_LOCATION_SIZE;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_LOCATION_X;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_LOCATION_Y;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_LOCATION_Z;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_LOSE_MAX_HEALTH;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_TIME;
 
 
 public class Revive {

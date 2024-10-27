@@ -1,7 +1,8 @@
-package com.stefancooper.SpigotUHC.types;
+package com.stefancooper.SpigotUHC;
 
-import com.stefancooper.SpigotUHC.Config;
-import com.stefancooper.SpigotUHC.Utils;
+import com.stefancooper.SpigotUHC.types.BossBarBorder;
+import com.stefancooper.SpigotUHC.types.Revive;
+import com.stefancooper.SpigotUHC.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -14,8 +15,8 @@ import java.io.FileWriter;
 import java.util.Date;
 import java.util.Optional;
 
-import static com.stefancooper.SpigotUHC.resources.Constants.PLAYER_HEAD;
-import static com.stefancooper.SpigotUHC.resources.Constants.TIMESTAMPS_LOCATION;
+import static com.stefancooper.SpigotUHC.utils.Constants.PLAYER_HEAD;
+import static com.stefancooper.SpigotUHC.utils.Constants.TIMESTAMPS_LOCATION;
 
 public class ManagedResources {
 

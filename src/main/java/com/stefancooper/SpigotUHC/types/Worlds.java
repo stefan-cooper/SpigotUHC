@@ -1,12 +1,12 @@
 package com.stefancooper.SpigotUHC.types;
 
 import com.stefancooper.SpigotUHC.Config;
-import com.stefancooper.SpigotUHC.Utils;
+import com.stefancooper.SpigotUHC.utils.Utils;
 import org.bukkit.World;
 
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME_END;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME_NETHER;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_NAME;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_NAME_END;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_NAME_NETHER;
 
 public class Worlds {
 

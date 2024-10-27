@@ -1,7 +1,7 @@
 package com.stefancooper.SpigotUHC.events;
 
 import com.stefancooper.SpigotUHC.Config;
-import com.stefancooper.SpigotUHC.resources.DeathAction;
+import com.stefancooper.SpigotUHC.enums.DeathAction;
 
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -17,7 +17,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import java.util.List;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.*;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.*;
 
 public class BaseEvents implements Listener {
 

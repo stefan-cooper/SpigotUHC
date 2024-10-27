@@ -3,7 +3,7 @@ import be.seeseemelk.mockbukkit.entity.ItemEntityMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import be.seeseemelk.mockbukkit.scheduler.BukkitSchedulerMock;
 import com.stefancooper.SpigotUHC.Plugin;
-import com.stefancooper.SpigotUHC.Utils;
+import com.stefancooper.SpigotUHC.utils.Utils;
 import mocks.types.RespawnPlayerMock;
 import mocks.servers.RespawnPlayerServerMock;
 import org.bukkit.Location;
@@ -24,11 +24,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-import static com.stefancooper.SpigotUHC.Defaults.DEFAULT_END_WORLD_NAME;
-import static com.stefancooper.SpigotUHC.Defaults.DEFAULT_NETHER_WORLD_NAME;
 import static com.stefancooper.SpigotUHC.Defaults.DEFAULT_WORLD_NAME;
 import static org.junit.jupiter.api.Assertions.*;
-import static utils.TestUtils.WorldAssertion;
 
 
 public class ReviveTest {

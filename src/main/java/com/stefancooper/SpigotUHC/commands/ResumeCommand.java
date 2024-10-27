@@ -1,8 +1,8 @@
 package com.stefancooper.SpigotUHC.commands;
 
 import com.stefancooper.SpigotUHC.Config;
-import com.stefancooper.SpigotUHC.Utils;
-import com.stefancooper.SpigotUHC.resources.ConfigKey;
+import com.stefancooper.SpigotUHC.utils.Utils;
+import com.stefancooper.SpigotUHC.enums.ConfigKey;
 import com.stefancooper.SpigotUHC.types.BossBarBorder;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
@@ -13,12 +13,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import java.util.List;
 import java.util.Optional;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.DIFFICULTY;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.GRACE_PERIOD_TIMER;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_FINAL_SIZE;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_GRACE_PERIOD;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_INITIAL_SIZE;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_BORDER_SHRINKING_PERIOD;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.DIFFICULTY;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.GRACE_PERIOD_TIMER;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_FINAL_SIZE;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_GRACE_PERIOD;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_INITIAL_SIZE;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_SHRINKING_PERIOD;
 
 public class ResumeCommand extends StartCommand {
 

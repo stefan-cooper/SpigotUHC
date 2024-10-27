@@ -1,4 +1,4 @@
-package com.stefancooper.SpigotUHC.resources;
+package com.stefancooper.SpigotUHC.enums;
 
 public enum DeathAction {
     SPECTATE("spectate"),

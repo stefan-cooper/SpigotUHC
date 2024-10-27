@@ -1,4 +1,4 @@
-package com.stefancooper.SpigotUHC.resources;
+package com.stefancooper.SpigotUHC.enums;
 
 public enum ConfigKey {
     // World Border Enums
@@ -30,7 +30,6 @@ public enum ConfigKey {
     WORLD_NAME_END("end.world.name"), // Name of the end world
     ENABLE_TIMESTAMPS("enable.timestamps"), // Get timestamps in txt file of notable events
     DIFFICULTY("difficulty"), // Difficulty during the UHC
-
     // Optional Revive config
     REVIVE_ENABLED("revive.enabled"),
     REVIVE_TIME("revive.time"),
@@ -39,9 +38,9 @@ public enum ConfigKey {
     REVIVE_LOCATION_Y("revive.location.y"),
     REVIVE_LOCATION_Z("revive.location.z"),
     REVIVE_HP("revive.hp"),
-    REVIVE_LOSE_MAX_HEALTH("revive.lose.max.health");
-
-
+    REVIVE_LOSE_MAX_HEALTH("revive.lose.max.health"),
+    // Random final location
+    RANDOM_FINAL_LOCATION("random.final.location");
 
     public final String configName;
 

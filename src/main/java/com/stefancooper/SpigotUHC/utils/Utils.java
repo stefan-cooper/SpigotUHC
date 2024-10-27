@@ -1,5 +1,6 @@
-package com.stefancooper.SpigotUHC;
+package com.stefancooper.SpigotUHC.utils;
 
+import com.stefancooper.SpigotUHC.Defaults;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;

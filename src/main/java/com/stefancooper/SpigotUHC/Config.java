@@ -1,7 +1,6 @@
 package com.stefancooper.SpigotUHC;
 
-import com.stefancooper.SpigotUHC.types.Configurable;
-import com.stefancooper.SpigotUHC.types.ManagedResources;
+import com.stefancooper.SpigotUHC.utils.Configurable;
 import com.stefancooper.SpigotUHC.types.Worlds;
 
 import java.io.File;
@@ -11,10 +10,10 @@ import java.util.Comparator;
 import java.util.Properties;
 import java.util.stream.Stream;
 
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME_END;
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.WORLD_NAME_NETHER;
-import static com.stefancooper.SpigotUHC.resources.Constants.CONFIG_LOCATION;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_NAME;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_NAME_END;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_NAME_NETHER;
+import static com.stefancooper.SpigotUHC.utils.Constants.CONFIG_LOCATION;
 
 public class Config {
 

@@ -1,7 +1,7 @@
 package com.stefancooper.SpigotUHC.commands;
 
 import com.stefancooper.SpigotUHC.Config;
-import com.stefancooper.SpigotUHC.Utils;
+import com.stefancooper.SpigotUHC.utils.Utils;
 import com.stefancooper.SpigotUHC.types.Worlds;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

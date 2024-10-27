@@ -7,15 +7,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scoreboard.Scoreboard;
 import org.junit.jupiter.api.*;
 
 import static com.stefancooper.SpigotUHC.Defaults.DEFAULT_WORLD_NAME;
-import static com.stefancooper.SpigotUHC.resources.Constants.PLAYER_HEAD;
+import static com.stefancooper.SpigotUHC.utils.Constants.PLAYER_HEAD;
 
 public class SetConfigTest {
 

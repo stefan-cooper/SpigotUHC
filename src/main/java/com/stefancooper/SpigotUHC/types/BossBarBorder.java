@@ -1,14 +1,12 @@
 package com.stefancooper.SpigotUHC.types;
 
 import com.stefancooper.SpigotUHC.Config;
-import com.stefancooper.SpigotUHC.Utils;
-import com.stefancooper.SpigotUHC.resources.ConfigKey;
+import com.stefancooper.SpigotUHC.utils.Utils;
+import com.stefancooper.SpigotUHC.enums.ConfigKey;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
-
-import java.util.TimerTask;
 
 public class BossBarBorder {
 

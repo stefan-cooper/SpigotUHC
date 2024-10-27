@@ -1,10 +1,10 @@
 package com.stefancooper.SpigotUHC;
 
+import com.stefancooper.SpigotUHC.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.GameMode;
 import org.bukkit.GameRule;
-import org.bukkit.World;
 import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -14,8 +14,8 @@ import org.bukkit.scoreboard.Scoreboard;
 import java.util.List;
 import java.util.Properties;
 
-import static com.stefancooper.SpigotUHC.resources.ConfigKey.*;
-import static com.stefancooper.SpigotUHC.resources.DeathAction.SPECTATE;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.*;
+import static com.stefancooper.SpigotUHC.enums.DeathAction.SPECTATE;
 
 public class Defaults {
 

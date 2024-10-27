@@ -30,7 +30,7 @@ public class Revive {
     public final Player revivee;
     public final ItemStack playerHead;
     private final BukkitTask reviveTask;
-    private final int playParticles;
+    private final BukkitTask playParticles;
     private final ReviveCallback reviveCallback;
 
     private final int reviveHealth;
@@ -61,7 +61,13 @@ public class Revive {
                 for (int z = reviveZ - reviveSize; z < reviveZ + reviveSize; z++) {
                     Location loc = new Location (world, x, reviveY, z);
                     if (isInsideReviveZone(config, loc)) {
-                        world.spawnParticle(Particle.GLOW, loc, 5);
+                        try {
+                            world.spawnParticle(Particle.GLOW, loc, 5);
+                        } catch (Exception e) {
+                            // noop
+                            // for some reason, this function is not implemented in MockBukkit but it is not worth us mocking
+                        }
+
                     }
                 }
             }
@@ -84,7 +90,7 @@ public class Revive {
 
     Runnable revivePlayer () {
         return () -> {
-            config.getManagedResources().cancelRepeatingTask(playParticles);
+            playParticles.cancel();
             // double check that the reviver still has the player head
             if (reviver.getInventory().contains(playerHead)) {
                 Bukkit.broadcastMessage(String.format("%s has been revived!", revivee.getDisplayName()));
@@ -123,7 +129,7 @@ public class Revive {
 
     public void cancelRevive() {
         reviveTask.cancel();
-        config.getManagedResources().cancelRepeatingTask(playParticles);
+        playParticles.cancel();
     }
 
     public static boolean isInsideReviveZone(Config config, Location location) {

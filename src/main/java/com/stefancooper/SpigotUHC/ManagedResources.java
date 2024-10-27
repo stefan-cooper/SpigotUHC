@@ -63,8 +63,8 @@ public class ManagedResources {
         return scheduler.runTaskLater(config.getPlugin(), runnable, Utils.secondsToTicks(time));
     }
 
-    public int runRepeatingTask(Runnable runnable, int interval) {
-        return scheduler.scheduleSyncRepeatingTask(config.getPlugin(), runnable, 0, Utils.secondsToTicks(interval));
+    public BukkitTask runRepeatingTask(Runnable runnable, int interval) {
+        return scheduler.runTaskTimer(config.getPlugin(), runnable, 0, Utils.secondsToTicks(interval));
     }
 
     public void cancelRepeatingTask(int id) {

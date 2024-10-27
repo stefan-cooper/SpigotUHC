@@ -4,7 +4,6 @@ import be.seeseemelk.mockbukkit.AsyncCatcher;
 import be.seeseemelk.mockbukkit.ServerMock;
 import mocks.types.RespawnPlayerMock;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.UUID;
 
 public class RespawnPlayerServerMock extends ServerMock  {

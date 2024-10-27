@@ -15,7 +15,7 @@ public class CancelCommand extends AbstractCommand {
         super(sender, cmd, args, config);
     }
 
-    @Deprecated
+    @Override
     public void execute() {
         getConfig().getPlugin().setStarted(false);
         getConfig().trigger();

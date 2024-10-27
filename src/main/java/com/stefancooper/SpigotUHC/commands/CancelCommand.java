@@ -1,8 +1,11 @@
 package com.stefancooper.SpigotUHC.commands;
 
-import com.stefancooper.SpigotUHC.Config;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import com.stefancooper.SpigotUHC.Config;
+
 
 public class CancelCommand extends AbstractCommand {
 
@@ -12,10 +15,13 @@ public class CancelCommand extends AbstractCommand {
         super(sender, cmd, args, config);
     }
 
-    @Override
+    @Deprecated
     public void execute() {
         getConfig().getPlugin().setStarted(false);
         getConfig().trigger();
         getConfig().getManagedResources().cancelTimer();
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.sendTitle("MATCH HAS ENDED","");
+        }
     }
 }

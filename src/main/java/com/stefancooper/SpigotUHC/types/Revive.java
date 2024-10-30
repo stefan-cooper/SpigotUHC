@@ -128,6 +128,7 @@ public class Revive {
     }
 
     public void cancelRevive() {
+        reviver.sendMessage(String.format("Revive of %s has been cancelled", revivee.getDisplayName()));
         reviveTask.cancel();
         playParticles.cancel();
     }

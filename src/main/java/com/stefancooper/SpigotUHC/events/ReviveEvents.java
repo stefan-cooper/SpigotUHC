@@ -59,7 +59,6 @@ public class ReviveEvents implements Listener {
                 }
             } else if (revive.isPresent() && revive.get().reviver.getEntityId() == event.getPlayer().getEntityId()) {
                 if (!insideReviveZone || !event.getPlayer().getInventory().contains(revive.get().playerHead)) {
-                    System.out.println("Revive cancelled");
                     config.getManagedResources().cancelRevive();
                 }
             }

@@ -14,6 +14,7 @@ import org.junit.jupiter.api.*;
 
 import static com.stefancooper.SpigotUHC.Defaults.DEFAULT_WORLD_NAME;
 import static com.stefancooper.SpigotUHC.utils.Constants.PLAYER_HEAD;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SetConfigTest {
 
@@ -86,25 +87,29 @@ public class SetConfigTest {
         pavey.setName("pavey");
         PlayerMock luke = server.addPlayer();
         luke.setName("luke");
+        PlayerMock tim = server.addPlayer();
+        tim.setName("tim");
 
         server.execute("uhc", admin, "set", "team.red=stefan,jawad");
         server.execute("uhc", admin, "set", "team.blue=shurf");
         server.execute("uhc", admin, "set", "team.green=sean");
         server.execute("uhc", admin, "set", "team.orange=pavey");
         server.execute("uhc", admin, "set", "team.pink=luke");
+        server.execute("uhc", admin, "set", "team.purple=tim");
 
         Scoreboard scoreboard = admin.getScoreboard();
 
-        Assertions.assertTrue(scoreboard.getEntityTeam(stefan).getName().equals("Red"));
-        Assertions.assertTrue(scoreboard.getEntityTeam(jawad).getName().equals("Red"));
-        Assertions.assertTrue(scoreboard.getEntityTeam(shurf).getName().equals("Blue"));
-        Assertions.assertTrue(scoreboard.getEntityTeam(sean).getName().equals("Green"));
-        Assertions.assertTrue(scoreboard.getEntityTeam(pavey).getName().equals("Orange"));
-        Assertions.assertTrue(scoreboard.getEntityTeam(luke).getName().equals("Pink"));
+        assertTrue(scoreboard.getEntityTeam(stefan).getName().equals("Red"));
+        assertTrue(scoreboard.getEntityTeam(jawad).getName().equals("Red"));
+        assertTrue(scoreboard.getEntityTeam(shurf).getName().equals("Blue"));
+        assertTrue(scoreboard.getEntityTeam(sean).getName().equals("Green"));
+        assertTrue(scoreboard.getEntityTeam(pavey).getName().equals("Orange"));
+        assertTrue(scoreboard.getEntityTeam(luke).getName().equals("Pink"));
+        assertTrue(scoreboard.getEntityTeam(tim).getName().equals("Purple"));
 
         server.execute("uhc", admin, "set", "team.yellow=jawad");
-        Assertions.assertTrue(scoreboard.getEntityTeam(stefan).getName().equals("Red"));
-        Assertions.assertTrue(scoreboard.getEntityTeam(jawad).getName().equals("Yellow"));
+        assertTrue(scoreboard.getEntityTeam(stefan).getName().equals("Red"));
+        assertTrue(scoreboard.getEntityTeam(jawad).getName().equals("Yellow"));
     }
 
     @Test
@@ -122,7 +127,7 @@ public class SetConfigTest {
         InventoryMock craftingInventory = server.createInventory(null, 9, "Crafting");
         craftingInventory.setItem(4, new ItemStack(Material.PLAYER_HEAD));
 
-        Assertions.assertTrue(isMatchingRecipe(craftingInventory, recipe), "Inventory should match the recipe.");
+        assertTrue(isMatchingRecipe(craftingInventory, recipe), "Inventory should match the recipe.");
         Assertions.assertEquals(apple.getType(), recipe.getResult().getType(), "Crafted item should be a golden apple.");
     }
 

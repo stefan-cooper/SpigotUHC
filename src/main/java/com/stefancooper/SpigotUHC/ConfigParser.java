@@ -39,6 +39,7 @@ import static com.stefancooper.SpigotUHC.enums.ConfigKey.TEAM_BLUE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.TEAM_GREEN;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.TEAM_ORANGE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.TEAM_PINK;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.TEAM_PURPLE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.TEAM_RED;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.TEAM_YELLOW;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_CENTER_X;
@@ -80,6 +81,7 @@ public class ConfigParser {
             case TEAM_BLUE -> new Configurable<>(TEAM_BLUE, value);
             case TEAM_ORANGE -> new Configurable<>(TEAM_ORANGE, value);
             case TEAM_PINK -> new Configurable<>(TEAM_PINK, value);
+            case TEAM_PURPLE -> new Configurable<>(TEAM_PURPLE, value);
             case SPREAD_MIN_DISTANCE -> new Configurable<>(SPREAD_MIN_DISTANCE, Double.parseDouble(value));
             case GRACE_PERIOD_TIMER -> new Configurable<>(GRACE_PERIOD_TIMER, Double.parseDouble(value));
             case ON_DEATH_ACTION -> new Configurable<>(ON_DEATH_ACTION, value);
@@ -175,6 +177,9 @@ public class ConfigParser {
                 break;
             case TEAM_PINK:
                 createTeam(new UHCTeam("Pink", (String) configurable.value(), ChatColor.LIGHT_PURPLE ));
+                break;
+            case TEAM_PURPLE:
+                createTeam(new UHCTeam("Purple", (String) configurable.value(), ChatColor.DARK_PURPLE ));
                 break;
             case PLAYER_HEAD_GOLDEN_APPLE:
                 NamespacedKey playerHeadKey = config.getManagedResources().getPlayerHeadKey();

@@ -64,6 +64,8 @@ team.green=chuckle
 team.yellow=StetoGuy
 # Team Pink players (comma seperated e.g team.orange=player1,player2) - Note: This is caps sensitive
 team.pink=SimplySquare
+# Team Purple players (comma seperated e.g team.orange=player1,player2) - Note: This is caps sensitive
+team.purple=Rking42
 ```
 
 Revive:

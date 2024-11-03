@@ -52,6 +52,9 @@ import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_SHRINKING_
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_NAME;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_NAME_END;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_NAME_NETHER;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_SPAWN_X;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_SPAWN_Y;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_SPAWN_Z;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.fromString;
 import com.stefancooper.SpigotUHC.types.UHCTeam;
 import com.stefancooper.SpigotUHC.utils.Configurable;
@@ -103,6 +106,9 @@ public class ConfigParser {
             case REVIVE_LOCATION_Z -> new Configurable<>(REVIVE_LOCATION_Z, Integer.parseInt(value));
             case REVIVE_LOSE_MAX_HEALTH -> new Configurable<>(REVIVE_LOSE_MAX_HEALTH, Integer.parseInt(value));
             case RANDOM_FINAL_LOCATION -> new Configurable<>(RANDOM_FINAL_LOCATION, Boolean.parseBoolean(value));
+            case WORLD_SPAWN_X -> new Configurable<>(WORLD_SPAWN_X, Integer.parseInt(value));
+            case WORLD_SPAWN_Y -> new Configurable<>(WORLD_SPAWN_Y, Integer.parseInt(value));
+            case WORLD_SPAWN_Z -> new Configurable<>(WORLD_SPAWN_Z, Integer.parseInt(value));
             case null -> null;
         };
     }

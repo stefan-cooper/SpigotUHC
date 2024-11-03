@@ -16,7 +16,11 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.*;
 
 public class BaseEvents implements Listener {
@@ -88,6 +92,17 @@ public class BaseEvents implements Listener {
             event.getPlayer().setGameMode(GameMode.SURVIVAL);
         } else {
             event.getPlayer().setGameMode(GameMode.ADVENTURE);
+            Optional<String> worldSpawnX = Optional.ofNullable(config.getProp(WORLD_SPAWN_X.configName));
+            Optional<String> worldSpawnY = Optional.ofNullable(config.getProp(WORLD_SPAWN_Y.configName));
+            Optional<String> worldSpawnZ = Optional.ofNullable(config.getProp(WORLD_SPAWN_Z.configName));
+            int inventorySize = Arrays.stream(event.getPlayer().getInventory().getContents()).filter(item -> item != null && item.getType() != Material.AIR).toList().size();
+            // don't teleport them if their inventory has something inside it (this suggests that the uhc has started and maybe the server crashed)
+            if (inventorySize == 0 && worldSpawnX.isPresent() && worldSpawnY.isPresent() && worldSpawnZ.isPresent()) {
+                int x = Integer.parseInt(worldSpawnX.get());
+                int y = Integer.parseInt(worldSpawnY.get());
+                int z = Integer.parseInt(worldSpawnZ.get());
+                event.getPlayer().teleport(new Location(config.getWorlds().getOverworld(), x, y, z));
+            }
         }
     }
 

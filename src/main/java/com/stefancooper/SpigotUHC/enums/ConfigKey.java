@@ -31,7 +31,7 @@ public enum ConfigKey {
     WORLD_NAME_END("end.world.name"), // Name of the end world
     ENABLE_TIMESTAMPS("enable.timestamps"), // Get timestamps in txt file of notable events
     DIFFICULTY("difficulty"), // Difficulty during the UHC
-    // Optional Revive config
+    // (Optional) Revive config
     REVIVE_ENABLED("revive.enabled"),
     REVIVE_TIME("revive.time"),
     REVIVE_LOCATION_SIZE("revive.location.size"),
@@ -40,7 +40,11 @@ public enum ConfigKey {
     REVIVE_LOCATION_Z("revive.location.z"),
     REVIVE_HP("revive.hp"),
     REVIVE_LOSE_MAX_HEALTH("revive.lose.max.health"),
-    // Random final location
+    // (Optional) World spawn - this is the spawn of all players before the UHC has started
+    WORLD_SPAWN_X("world.spawn.x"),
+    WORLD_SPAWN_Y("world.spawn.y"),
+    WORLD_SPAWN_Z("world.spawn.z"),
+    // (Optional) Random final location
     RANDOM_FINAL_LOCATION("random.final.location");
 
     public final String configName;

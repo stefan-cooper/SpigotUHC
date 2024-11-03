@@ -6,7 +6,7 @@ Want to contribute? See [Contributing](#contributing)
 
 ## Installing
 
-1. Download the plugin - we don't currently have any accessible download links. Contact @stefan.cooper or any other contributor to retrieve a .jar file
+1. Download the plugin - we don't currently have any accessible download links. Contact @stefan-cooper or any other contributor to retrieve a .jar file
 
 2. Add the plugin to your `plugins` folder in your Spigot server
 
@@ -152,9 +152,13 @@ e.g: `/uhc latestart shurf`
 
 `/uhc cancel`
 
+### Notes on running your UHC smoothly
+
+We recommend using a plugin like [Chunky](https://www.spigotmc.org/resources/chunky.81534/) to pre-load your world chunks. This will hopefully mean less lag at the beginning of your UHC.
+
 ## Contributing
 
-Contact @stefan.cooper for information about contributing. This is an open source project so if you feel like you want to add something, just raise a PR!
+Contact @stefan-cooper for information about contributing. This is an open source project so if you feel like you want to add something, just raise a PR!
 
 ### Prereqs
 
@@ -181,3 +185,4 @@ Contact @stefan.cooper for information about contributing. This is an open sourc
    ```
    ./run_server.sh
    ```
+   

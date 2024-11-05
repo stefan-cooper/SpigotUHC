@@ -1,0 +1,101 @@
+package com.stefancooper.SpigotUHC.utils;
+
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+public class UHCCommandTabCompleter implements TabCompleter {
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+        List<String> suggestions = new ArrayList<>();
+
+        if (command.getName().equalsIgnoreCase("uhc")) {
+            // First argument
+            if (args.length == 1) {
+                suggestions.addAll(Arrays.asList("set", "view", "start", "resume", "latestart", "cancel", "pvp"));
+            }
+            // Second argument for "set" command
+            else if (args.length >= 2 && args[0].equalsIgnoreCase("set")) {
+                suggestions.addAll(Arrays.asList(
+                        "countdown.timer.length=",
+                        "difficulty=",
+                        "enable.timestamps=",
+                        "end.world.name=",
+                        "grace.period.timer=",
+                        "nether.world.name=",
+                        "on.death.action=",
+                        "player.head.golden.apple=",
+                        "random.final.location=",
+                        "revive.enabled=",
+                        "revive.hp=",
+                        "revive.location.size=",
+                        "revive.location.x=",
+                        "revive.location.y=",
+                        "revive.location.z=",
+                        "revive.lose.max.health=",
+                        "revive.time=",
+                        "spread.min.distance=",
+                        "team.blue=",
+                        "team.green=",
+                        "team.orange=",
+                        "team.pink=",
+                        "team.purple=",
+                        "team.red=",
+                        "team.yellow=",
+                        "world.border.center.x=",
+                        "world.border.center.z=",
+                        "world.border.final.size=",
+                        "world.border.final.size=",
+                        "world.border.grace.period=",
+                        "world.border.in.bossbar=",
+                        "world.border.initial.size=",
+                        "world.border.initial.size=",
+                        "world.border.shrinking.period",
+                        "world.name=",
+                        "world.spawn.x=",
+                        "world.spawn.y=",
+                        "world.spawn.z="
+                ));
+            }
+            // Third argument for "set team.<colour>="
+            else if (args.length == 3 && args[0].equalsIgnoreCase("set") && args[1].startsWith("team.")) {
+                String color = args[1].substring(5); // Extract the color part after "team."
+
+                // Validate color
+                if (Arrays.asList("red", "blue", "green", "yellow", "orange", "pink").contains(color)) {
+                    // Check if the input ends with '=' to suggest player names
+                    if (args[1].endsWith("=")) {
+                        // Suggest all online player names
+                        for (Player player : Bukkit.getOnlinePlayers()) {
+                            suggestions.add(player.getName());
+                        }
+                    } else if (args[1].contains("=")) {
+                        // If there's text after '=', suggest based on the input after it
+                        String prefix = args[1].substring(args[1].indexOf('=') + 1); // Get text after '='
+                        for (Player player : Bukkit.getOnlinePlayers()) {
+                            if (player.getName().toLowerCase().startsWith(prefix.toLowerCase())) {
+                                suggestions.add(player.getName());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Filter suggestions based on the last argument typed
+        List<String> filteredSuggestions = new ArrayList<>();
+        for (String suggestion : suggestions) {
+            if (suggestion.toLowerCase().startsWith(args[args.length - 1].toLowerCase())) {
+                filteredSuggestions.add(suggestion);
+            }
+        }
+
+        return filteredSuggestions;
+    }
+}

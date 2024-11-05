@@ -10,6 +10,8 @@ import com.stefancooper.SpigotUHC.commands.ViewConfigCommand;
 import com.stefancooper.SpigotUHC.events.BaseEvents;
 import com.stefancooper.SpigotUHC.events.ReviveEvents;
 import com.stefancooper.SpigotUHC.events.UHCLootEvents;
+import com.stefancooper.SpigotUHC.utils.UHCCommandTabCompleter;
+import com.stefancooper.SpigotUHC.utils.Win;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -30,8 +32,10 @@ public class Plugin extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(new BaseEvents(config), this);
         Bukkit.getPluginManager().registerEvents(new ReviveEvents(config), this);
         Bukkit.getPluginManager().registerEvents(new UHCLootEvents(config), this);
+        Bukkit.getPluginManager().registerEvents(new Win(config), this);
         started = false;
         System.out.println("UHC Plugin enabled");
+        getCommand("uhc").setTabCompleter(new UHCCommandTabCompleter());
     }
 
     public Config getUHCConfig() {

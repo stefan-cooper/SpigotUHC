@@ -16,6 +16,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
 import static com.stefancooper.SpigotUHC.Defaults.DEFAULT_WORLD_NAME;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.jupiter.api.*;
 
@@ -49,7 +51,7 @@ public class EventTest {
         PlayerMock player = server.addPlayer();
         player.damage(100);
         player.getGameMode();
-        Assertions.assertEquals(GameMode.SPECTATOR, player.getGameMode());
+        assertEquals(GameMode.SPECTATOR, player.getGameMode());
     }
 
     @Test
@@ -59,10 +61,10 @@ public class EventTest {
         PlayerMock player = server.addPlayer();
         player.setOp(true);
         server.execute("uhc", player, "set", "on.death.action=kick");
-        Assertions.assertEquals(16, server.getOnlinePlayers().size());
+        assertEquals(16, server.getOnlinePlayers().size());
         player.damage(100);
         server.getOnlinePlayers();
-        Assertions.assertEquals(15, server.getOnlinePlayers().size());
+        assertEquals(15, server.getOnlinePlayers().size());
     }
 
     @Test
@@ -76,7 +78,7 @@ public class EventTest {
             Item droppedItem = (Item) world.getEntities().get(0);
             droppedItem.getItemStack();
 
-            Assertions.assertEquals(Material.PLAYER_HEAD, droppedItem.getType());
+            assertEquals(Material.PLAYER_HEAD, droppedItem.getType());
         }
     }
 
@@ -92,7 +94,7 @@ public class EventTest {
         PlayerRespawnEvent respawnEvent = new PlayerRespawnEvent(player, null, false);
         server.getPluginManager().callEvent(respawnEvent);
 
-        Assertions.assertEquals(deathLocation, respawnEvent.getRespawnLocation(), "Player should respawn at their death location");
+        assertEquals(deathLocation, respawnEvent.getRespawnLocation(), "Player should respawn at their death location");
     }
 
     @Test
@@ -102,35 +104,35 @@ public class EventTest {
         admin.setOp(true);
 
         PlayerMock player = server.addPlayer();
-        Assertions.assertEquals(GameMode.ADVENTURE, player.getGameMode());
+        assertEquals(GameMode.ADVENTURE, player.getGameMode());
 
         server.execute("uhc", admin, "start");
 
-        Assertions.assertEquals(GameMode.SURVIVAL, player.getGameMode());
+        assertEquals(GameMode.SURVIVAL, player.getGameMode());
 
         player.disconnect();
         player.reconnect();
 
-        Assertions.assertEquals(GameMode.SURVIVAL, player.getGameMode());
+        assertEquals(GameMode.SURVIVAL, player.getGameMode());
 
         player.damage(100);
         player.respawn();
 
-        Assertions.assertEquals(GameMode.SPECTATOR, player.getGameMode());
+        assertEquals(GameMode.SPECTATOR, player.getGameMode());
 
         player.disconnect();
         player.reconnect();
 
-        Assertions.assertEquals(GameMode.SPECTATOR, player.getGameMode());
+        assertEquals(GameMode.SPECTATOR, player.getGameMode());
 
         server.execute("uhc", admin, "cancel");
 
-        Assertions.assertEquals(GameMode.ADVENTURE, player.getGameMode());
+        assertEquals(GameMode.ADVENTURE, player.getGameMode());
 
         player.disconnect();
         player.reconnect();
 
-        Assertions.assertEquals(GameMode.ADVENTURE, player.getGameMode());
+        assertEquals(GameMode.ADVENTURE, player.getGameMode());
     }
 
     @Test
@@ -153,33 +155,31 @@ public class EventTest {
 
         // Assert that they can move in all directions and they get moved
         player.simulatePlayerMove(newLocation1);
-        Assertions.assertEquals(player.getLocation(), newLocation1);
+        assertEquals(player.getLocation(), newLocation1);
         player.simulatePlayerMove(newLocation2);
-        Assertions.assertEquals(player.getLocation(), newLocation2);
+        assertEquals(player.getLocation(), newLocation2);
         player.simulatePlayerMove(newLocation3);
-        Assertions.assertEquals(player.getLocation(), newLocation3);
+        assertEquals(player.getLocation(), newLocation3);
 
         // Reset back to original location
         player.simulatePlayerMove(initialLocation);
         server.execute("uhc", admin, "start");
 
-        Assertions.assertEquals(player.getLocation(), initialLocation);
+        assertEquals(player.getLocation(), initialLocation);
         player.simulatePlayerMove(newLocation1);
-        Assertions.assertEquals(player.getLocation(), initialLocation);
+        assertEquals(player.getLocation(), initialLocation);
         player.simulatePlayerMove(newLocation2);
-        Assertions.assertEquals(player.getLocation(), initialLocation);
+        assertEquals(player.getLocation(), initialLocation);
         player.simulatePlayerMove(newLocation3);
-        Assertions.assertEquals(player.getLocation(), initialLocation);
+        assertEquals(player.getLocation(), initialLocation);
 
         scheduler.performTicks(Utils.secondsToTicks(5));
 
         player.simulatePlayerMove(newLocation1);
-        Assertions.assertEquals(player.getLocation(), newLocation1);
+        assertEquals(player.getLocation(), newLocation1);
         player.simulatePlayerMove(newLocation2);
-        Assertions.assertEquals(player.getLocation(), newLocation2);
+        assertEquals(player.getLocation(), newLocation2);
         player.simulatePlayerMove(newLocation3);
-        Assertions.assertEquals(player.getLocation(), newLocation3);
+        assertEquals(player.getLocation(), newLocation3);
     }
-
-
 }

@@ -100,6 +100,12 @@ world.border.in.bossbar=false|true
 enable.timestamps=false|true
 # (optional) generate a random final location within the initial world border
 random.final.location=false|true
+# (optional) X coordinate for world spawn when a UHC is not active
+world.spawn.x=0
+# (optional) Y coordinate for world spawn when a UHC is not active
+world.spawn.y=64
+# (optional) Z coordinate for world spawn when a UHC is not active
+world.spawn.z=0
 ```
 
 ## Commands

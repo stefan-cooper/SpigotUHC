@@ -1,6 +1,7 @@
-package com.stefancooper.SpigotUHC.utils;
+package com.stefancooper.SpigotUHC.events;
 
 import com.stefancooper.SpigotUHC.Config;
+import com.stefancooper.SpigotUHC.utils.Utils;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,11 +18,11 @@ import java.util.Optional;
 
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.*;
 
-public class Win implements Listener {
+public class WinEvents implements Listener {
 
     private final Config config;
 
-    public Win(Config config) {
+    public WinEvents(Config config) {
         this.config = config;
     }
 

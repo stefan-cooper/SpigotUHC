@@ -21,6 +21,11 @@ import static com.stefancooper.SpigotUHC.enums.ConfigKey.COUNTDOWN_TIMER_LENGTH;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DIFFICULTY;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.ENABLE_TIMESTAMPS;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.GRACE_PERIOD_TIMER;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_ENABLED;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_X;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_Y;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_Z;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_FREQUENCY;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.ON_DEATH_ACTION;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.PLAYER_HEAD_GOLDEN_APPLE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_FINAL_LOCATION;
@@ -106,9 +111,16 @@ public class ConfigParser {
             case REVIVE_LOCATION_Z -> new Configurable<>(REVIVE_LOCATION_Z, Integer.parseInt(value));
             case REVIVE_LOSE_MAX_HEALTH -> new Configurable<>(REVIVE_LOSE_MAX_HEALTH, Integer.parseInt(value));
             case RANDOM_FINAL_LOCATION -> new Configurable<>(RANDOM_FINAL_LOCATION, Boolean.parseBoolean(value));
+            // World spawn
             case WORLD_SPAWN_X -> new Configurable<>(WORLD_SPAWN_X, Integer.parseInt(value));
             case WORLD_SPAWN_Y -> new Configurable<>(WORLD_SPAWN_Y, Integer.parseInt(value));
             case WORLD_SPAWN_Z -> new Configurable<>(WORLD_SPAWN_Z, Integer.parseInt(value));
+            // UHC Loot
+            case LOOT_CHEST_ENABLED -> new Configurable<>(LOOT_CHEST_ENABLED, Boolean.parseBoolean(value));
+            case LOOT_CHEST_X -> new Configurable<>(LOOT_CHEST_X, Integer.parseInt(value));
+            case LOOT_CHEST_Y -> new Configurable<>(LOOT_CHEST_Y, Integer.parseInt(value));
+            case LOOT_CHEST_Z -> new Configurable<>(LOOT_CHEST_Z, Integer.parseInt(value));
+            case LOOT_FREQUENCY -> new Configurable<>(LOOT_FREQUENCY, Integer.parseInt(value));
             case null -> null;
         };
     }

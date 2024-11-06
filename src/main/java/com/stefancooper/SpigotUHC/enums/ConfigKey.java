@@ -46,9 +46,15 @@ public enum ConfigKey {
     REVIVE_LOCATION_Z("revive.location.z"), // Revive z center location
     REVIVE_TIME("revive.time"), // How many seconds it takes to revive
     REVIVE_LOCATION_SIZE("revive.location.size"), // Diameter of revive location
-    // Optional Revive config
     REVIVE_HP("revive.hp"), // Revivee starting hp
-    REVIVE_LOSE_MAX_HEALTH("revive.lose.max.health") // Revivee max hp loss
+    REVIVE_LOSE_MAX_HEALTH("revive.lose.max.health"), // Revivee max hp loss
+
+    // UHC Loot
+    LOOT_CHEST_ENABLED("loot.chest.enabled"),
+    LOOT_CHEST_X("loot.chest.x"),
+    LOOT_CHEST_Y("loot.chest.y"),
+    LOOT_CHEST_Z("loot.chest.z"),
+    LOOT_FREQUENCY("loot.frequency"),
     ;
 
     public final String configName;

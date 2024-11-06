@@ -8,6 +8,7 @@ import java.util.Random;
 import com.stefancooper.SpigotUHC.enums.ConfigKey;
 import com.stefancooper.SpigotUHC.types.BossBarBorder;
 import com.stefancooper.SpigotUHC.types.RandomFinalLocation;
+import com.stefancooper.SpigotUHC.types.UHCLoot;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Difficulty;
@@ -30,6 +31,7 @@ import com.stefancooper.SpigotUHC.utils.Utils;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.COUNTDOWN_TIMER_LENGTH;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DIFFICULTY;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.GRACE_PERIOD_TIMER;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_ENABLED;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_FINAL_LOCATION;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.SPREAD_MIN_DISTANCE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_CENTER_X;
@@ -137,6 +139,10 @@ public class StartCommand extends AbstractCommand {
         // Timestamps
         if (Boolean.parseBoolean(getConfig().getProp(ConfigKey.ENABLE_TIMESTAMPS.configName))) {
             getConfig().getManagedResources().addTimestamp("UHC Started", false);
+        }
+
+        if (getConfig().getProperty(LOOT_CHEST_ENABLED)) {
+            UHCLoot loot = new UHCLoot(getConfig());
         }
 
         getConfig().getPlugin().setStarted(true);

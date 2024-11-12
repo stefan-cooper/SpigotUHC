@@ -89,6 +89,20 @@ revive.location.z=11
 revive.location.size=10
 ```
 
+Loot Chest:
+```properties
+# Enable loot chest
+loot.chest.enabled=true
+# X coordinate for the loot chest
+loot.chest.x=100
+# Y coordinate for the loot chest
+loot.chest.y=64
+# Z coordinate for the loot chest
+loot.chest.z=100
+# How frequently loot is regenerated (in seconds)
+loot.chest.frequency=300
+```
+
 Miscellaneous:
 
 ```properties

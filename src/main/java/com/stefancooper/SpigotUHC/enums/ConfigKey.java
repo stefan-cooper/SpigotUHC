@@ -50,11 +50,11 @@ public enum ConfigKey {
     REVIVE_LOSE_MAX_HEALTH("revive.lose.max.health"), // Revivee max hp loss
 
     // UHC Loot
-    LOOT_CHEST_ENABLED("loot.chest.enabled"),
-    LOOT_CHEST_X("loot.chest.x"),
-    LOOT_CHEST_Y("loot.chest.y"),
-    LOOT_CHEST_Z("loot.chest.z"),
-    LOOT_CHEST_FREQUENCY("loot.chest.frequency"),
+    LOOT_CHEST_ENABLED("loot.chest.enabled"), // Enable loot chest
+    LOOT_CHEST_X("loot.chest.x"), // Chest x
+    LOOT_CHEST_Y("loot.chest.y"), // Chest y
+    LOOT_CHEST_Z("loot.chest.z"), // Chest z
+    LOOT_CHEST_FREQUENCY("loot.chest.frequency"), // Frequency of loot gen (in seconds)
     ;
 
     public final String configName;

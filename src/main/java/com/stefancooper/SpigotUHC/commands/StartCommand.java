@@ -141,8 +141,8 @@ public class StartCommand extends AbstractCommand {
             getConfig().getManagedResources().addTimestamp("UHC Started", false);
         }
 
-        if (getConfig().getProperty(LOOT_CHEST_ENABLED)) {
-            UHCLoot loot = new UHCLoot(getConfig());
+        if (UHCLoot.isConfigured(getConfig())) {
+            new UHCLoot(getConfig());
         }
 
         getConfig().getPlugin().setStarted(true);

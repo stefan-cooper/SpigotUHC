@@ -54,7 +54,7 @@ public enum ConfigKey {
     LOOT_CHEST_X("loot.chest.x"),
     LOOT_CHEST_Y("loot.chest.y"),
     LOOT_CHEST_Z("loot.chest.z"),
-    LOOT_FREQUENCY("loot.frequency"),
+    LOOT_CHEST_FREQUENCY("loot.chest.frequency"),
     ;
 
     public final String configName;

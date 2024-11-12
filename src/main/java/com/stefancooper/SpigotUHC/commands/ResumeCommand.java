@@ -1,6 +1,7 @@
 package com.stefancooper.SpigotUHC.commands;
 
 import com.stefancooper.SpigotUHC.Config;
+import com.stefancooper.SpigotUHC.types.UHCLoot;
 import com.stefancooper.SpigotUHC.utils.Utils;
 import com.stefancooper.SpigotUHC.enums.ConfigKey;
 import com.stefancooper.SpigotUHC.types.BossBarBorder;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DIFFICULTY;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.GRACE_PERIOD_TIMER;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_ENABLED;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_FINAL_SIZE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_GRACE_PERIOD;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_INITIAL_SIZE;
@@ -84,6 +86,10 @@ public class ResumeCommand extends StartCommand {
 
             }
         });
+
+        if (UHCLoot.isConfigured(getConfig())) {
+            new UHCLoot(getConfig());
+        }
 
         getConfig().getPlugin().setStarted(true);
     }

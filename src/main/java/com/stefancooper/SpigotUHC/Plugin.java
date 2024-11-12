@@ -9,6 +9,7 @@ import com.stefancooper.SpigotUHC.commands.StartCommand;
 import com.stefancooper.SpigotUHC.commands.ViewConfigCommand;
 import com.stefancooper.SpigotUHC.events.BaseEvents;
 import com.stefancooper.SpigotUHC.events.ReviveEvents;
+import com.stefancooper.SpigotUHC.events.UHCLootEvents;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -28,6 +29,7 @@ public class Plugin extends JavaPlugin implements Listener {
         Defaults.setDefaultGameRules(this.config);
         Bukkit.getPluginManager().registerEvents(new BaseEvents(config), this);
         Bukkit.getPluginManager().registerEvents(new ReviveEvents(config), this);
+        Bukkit.getPluginManager().registerEvents(new UHCLootEvents(config), this);
         started = false;
         System.out.println("UHC Plugin enabled");
     }

@@ -25,7 +25,7 @@ import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_ENABLED;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_X;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_Y;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_Z;
-import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_FREQUENCY;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_FREQUENCY;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.ON_DEATH_ACTION;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.PLAYER_HEAD_GOLDEN_APPLE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_FINAL_LOCATION;
@@ -117,10 +117,10 @@ public class ConfigParser {
             case WORLD_SPAWN_Z -> new Configurable<>(WORLD_SPAWN_Z, Integer.parseInt(value));
             // UHC Loot
             case LOOT_CHEST_ENABLED -> new Configurable<>(LOOT_CHEST_ENABLED, Boolean.parseBoolean(value));
-            case LOOT_CHEST_X -> new Configurable<>(LOOT_CHEST_X, Integer.parseInt(value));
-            case LOOT_CHEST_Y -> new Configurable<>(LOOT_CHEST_Y, Integer.parseInt(value));
-            case LOOT_CHEST_Z -> new Configurable<>(LOOT_CHEST_Z, Integer.parseInt(value));
-            case LOOT_FREQUENCY -> new Configurable<>(LOOT_FREQUENCY, Integer.parseInt(value));
+            case LOOT_CHEST_X -> new Configurable<>(LOOT_CHEST_X, Integer.valueOf(value));
+            case LOOT_CHEST_Y -> new Configurable<>(LOOT_CHEST_Y, Integer.valueOf(value));
+            case LOOT_CHEST_Z -> new Configurable<>(LOOT_CHEST_Z, Integer.valueOf(value));
+            case LOOT_CHEST_FREQUENCY -> new Configurable<>(LOOT_CHEST_FREQUENCY, Integer.valueOf(value));
             case null -> null;
         };
     }

@@ -70,8 +70,13 @@ public class Config {
     }
 
     /** improved version of getProp, this will use the parsing that we've already done */
+    @Nullable
     public <T> T getProperty(ConfigKey key) {
-        return (T) parser.propertyToConfigurable(key.configName, getProp(key.configName)).value();
+        final String value = getProp(key.configName);
+        if (value != null) {
+            return (T) parser.propertyToConfigurable(key.configName, value).value();
+        }
+        return null;
     }
 
     public String getProps() {

@@ -1,20 +1,16 @@
 package com.stefancooper.SpigotUHC.commands;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 import com.stefancooper.SpigotUHC.enums.ConfigKey;
 import com.stefancooper.SpigotUHC.types.BossBarBorder;
 import com.stefancooper.SpigotUHC.types.RandomFinalLocation;
 import com.stefancooper.SpigotUHC.types.UHCLoot;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Difficulty;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.attribute.Attribute;
@@ -22,8 +18,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.utils.Utils;
@@ -31,7 +25,6 @@ import com.stefancooper.SpigotUHC.utils.Utils;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.COUNTDOWN_TIMER_LENGTH;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DIFFICULTY;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.GRACE_PERIOD_TIMER;
-import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_ENABLED;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_FINAL_LOCATION;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.SPREAD_MIN_DISTANCE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_CENTER_X;
@@ -74,6 +67,9 @@ public class StartCommand extends AbstractCommand {
         } else {
             finalLocation = new Location(world, centerX, 64, centerZ);
         }
+
+        // Wipe existing achievements
+        getSender().getServer().dispatchCommand(getSender(), "advancement revoke @a everything");
 
         // Actions on the world
         Bukkit.setDefaultGameMode(GameMode.SURVIVAL);

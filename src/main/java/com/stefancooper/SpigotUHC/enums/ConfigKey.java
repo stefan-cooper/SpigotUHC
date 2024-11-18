@@ -48,6 +48,7 @@ public enum ConfigKey {
     REVIVE_LOCATION_SIZE("revive.location.size"), // Diameter of revive location
     REVIVE_HP("revive.hp"), // Revivee starting hp
     REVIVE_LOSE_MAX_HEALTH("revive.lose.max.health"), // Revivee max hp loss
+    REVIVE_ANY_HEAD("revive.any.head"), // Revive-able with any player head
 
     // UHC Loot
     LOOT_CHEST_ENABLED("loot.chest.enabled"), // Enable loot chest

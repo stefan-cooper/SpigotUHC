@@ -3,8 +3,10 @@ package com.stefancooper.SpigotUHC.events;
 import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.types.Revive;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.FallingBlock;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -48,14 +50,29 @@ public class ReviveEvents implements Listener {
             if (revive.isEmpty() && event.getPlayer().getInventory().contains(Material.PLAYER_HEAD)) {
                 List<ItemStack> playerHeads = Arrays.stream(event.getPlayer().getInventory().getStorageContents()).filter(itemStack -> itemStack != null && itemStack.getType().equals(Material.PLAYER_HEAD)).toList();
                 for (ItemStack playerHead : playerHeads) {
-                    assert playerHead.getItemMeta() != null;
-                    SkullMeta meta = (SkullMeta) playerHead.getItemMeta();
-                    Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(meta.getOwningPlayer().getName());
+                    if (Boolean.TRUE.equals(config.getProperty(REVIVE_ANY_HEAD))) {
+                        // Any head revive mode
+                        Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(event.getPlayer().getDisplayName());
+                        if (team != null) {
+                            List<Player> teammates = team.getEntries().stream().map(Bukkit::getPlayer).toList();
+                            List<Player> deadTeammates  = teammates.stream().filter(player -> player.isDead() || player.getGameMode() == GameMode.SPECTATOR).toList();
+                            if (!deadTeammates.isEmpty()) {
+                                config.getManagedResources().startReviving(event.getPlayer(), deadTeammates.getFirst().getName(), playerHead.clone());
+                                break;
+                            }
+                        }
+                    } else {
+                        // Only teammates head revive mode
+                        assert playerHead.getItemMeta() != null;
+                        SkullMeta meta = (SkullMeta) playerHead.getItemMeta();
+                        Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(meta.getOwningPlayer().getName());
 
-                    if (team != null && team.hasEntry(event.getPlayer().getName()) && insideReviveZone) {
-                        config.getManagedResources().startReviving(event.getPlayer(), meta.getOwningPlayer().getName(), playerHead.clone());
-                        break;
+                        if (team != null && team.hasEntry(event.getPlayer().getName()) && insideReviveZone) {
+                            config.getManagedResources().startReviving(event.getPlayer(), meta.getOwningPlayer().getName(), playerHead.clone());
+                            break;
+                        }
                     }
+
                 }
             } else if (revive.isPresent() && revive.get().reviver.getEntityId() == event.getPlayer().getEntityId()) {
                 if (!insideReviveZone || !event.getPlayer().getInventory().contains(revive.get().playerHead)) {

@@ -56,7 +56,7 @@ public class ReviveEvents implements Listener {
                         if (team != null) {
                             List<Player> teammates = team.getEntries().stream().map(Bukkit::getPlayer).toList();
                             List<Player> deadTeammates  = teammates.stream().filter(player -> player.isDead() || player.getGameMode() == GameMode.SPECTATOR).toList();
-                            if (!deadTeammates.isEmpty()) {
+                            if (!deadTeammates.isEmpty() && insideReviveZone) {
                                 config.getManagedResources().startReviving(event.getPlayer(), deadTeammates.getFirst().getName(), playerHead.clone());
                                 break;
                             }

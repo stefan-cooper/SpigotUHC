@@ -63,13 +63,13 @@ public class ReviveEvents implements Listener {
                         }
                     } else {
                         // Only teammates head revive mode
-                        assert playerHead.getItemMeta() != null;
                         SkullMeta meta = (SkullMeta) playerHead.getItemMeta();
-                        Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(meta.getOwningPlayer().getName());
-
-                        if (team != null && team.hasEntry(event.getPlayer().getName()) && insideReviveZone) {
-                            config.getManagedResources().startReviving(event.getPlayer(), meta.getOwningPlayer().getName(), playerHead.clone());
-                            break;
+                        if (meta != null && meta.getOwningPlayer() != null && meta.getOwningPlayer() != null && meta.getOwningPlayer().getName() != null) {
+                            Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(meta.getOwningPlayer().getName());
+                            if (team != null && team.hasEntry(event.getPlayer().getName()) && insideReviveZone) {
+                                config.getManagedResources().startReviving(event.getPlayer(), meta.getOwningPlayer().getName(), playerHead.clone());
+                                break;
+                            }
                         }
                     }
 

@@ -87,6 +87,8 @@ revive.location.y=64
 revive.location.z=11
 # Diameter/size of the revive location
 revive.location.size=10
+# reive with any player head
+revive.any.head=false
 ```
 
 Loot Chest:

@@ -12,6 +12,8 @@ import org.bukkit.block.Chest;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import java.util.List;
 import java.util.Optional;
@@ -172,7 +174,7 @@ public class UHCLoot {
             final List<PotionType> effects = List.of(
                     PotionType.HARMING,
                     PotionType.SLOWNESS,
-                    PotionType.WEAKNESS
+                    PotionType.WEAKNESS // TODO - make this slowness 4
             );
             PotionType effect = effects.get(random.nextInt(effects.size()));
             PotionMeta potionMeta = (PotionMeta) item.getItemMeta();

@@ -82,7 +82,9 @@ public class ReviveTest {
                 "revive.location.x=0",
                 "revive.location.y=64",
                 "revive.location.z=0",
-                "revive.location.size=10"
+                "revive.location.size=10",
+                "revive.any.head=false"
+
         );
 
         revivee.setHealth(10);
@@ -124,6 +126,124 @@ public class ReviveTest {
         assertEquals(0, Arrays.stream(revivee.getInventory().getStorageContents()).filter(item -> item != null && !item.getType().equals(Material.AIR)).toList().size());
 
         assertFalse(reviver.getInventory().contains(Material.PLAYER_HEAD));
+    }
+
+    @Test
+    @DisplayName("When a player dies, they can be revived with any head (with revive.any.head=true)")
+    void reviveAnyHead() {
+        BukkitSchedulerMock schedule = server.getScheduler();
+
+        PlayerMock admin = server.addPlayer();
+        admin.setOp(true);
+
+        server.execute("uhc", admin, "set",
+                "team.red=pavey,luke",
+                "player.head.golden.apple=true",
+                "revive.enabled=true",
+                "revive.hp=4",
+                "revive.lose.max.health=4",
+                "revive.time=5",
+                "revive.location.x=0",
+                "revive.location.y=64",
+                "revive.location.z=0",
+                "revive.location.size=10",
+                "revive.any.head=true"
+        );
+
+        revivee.setHealth(10);
+        revivee.setFoodLevel(12);
+        revivee.setLevel(13);
+        revivee.setExp(0.9f);
+        revivee.getInventory().setItem(1, ItemStack.of(Material.DIAMOND_SWORD));
+
+        assertEquals( 20, revivee.getMaxHealth());
+        assertEquals(10, revivee.getHealth() );
+        assertEquals(12, revivee.getFoodLevel());
+        assertEquals(13, revivee.getLevel());
+        assertEquals(0.9f, revivee.getExp());
+        assertEquals(1, Arrays.stream(revivee.getInventory().getStorageContents()).filter(item -> item != null && !item.getType().equals(Material.AIR)).toList().size());
+        assertEquals(0, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
+
+        revivee.teleport(new Location(world, 100, 64, 100));
+        revivee.damage(20);
+
+        schedule.performOneTick();
+
+        assertEquals(1, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
+        assertFalse(reviver.getInventory().contains(Material.PLAYER_HEAD));
+
+        reviver.getInventory().addItem(new ItemStack(Material.PLAYER_HEAD)); // random player head
+        assertTrue(reviver.getInventory().contains(Material.PLAYER_HEAD));
+        reviver.simulatePlayerMove(new Location(world, 0, 64, 0));
+        reviver.assertSoundHeard(Sound.BLOCK_END_PORTAL_SPAWN);
+        assertTrue(revivee.isDead());
+
+        schedule.performTicks(Utils.secondsToTicks(5));
+
+        assertFalse(revivee.isDead());
+        assertEquals( 16, revivee.getMaxHealth());
+        assertEquals(4, revivee.getHealth());
+        assertEquals(20, revivee.getFoodLevel());
+        assertEquals(0, revivee.getLevel());
+        assertEquals(0, revivee.getExp());
+        assertEquals(0, Arrays.stream(revivee.getInventory().getStorageContents()).filter(item -> item != null && !item.getType().equals(Material.AIR)).toList().size());
+
+        assertFalse(reviver.getInventory().contains(Material.PLAYER_HEAD));
+    }
+
+    @Test
+    @DisplayName("When a player dies, they can NOT be revived with any head (with revive.any.head=false)")
+    void reviveAnyHeadFalse() {
+        BukkitSchedulerMock schedule = server.getScheduler();
+
+        PlayerMock admin = server.addPlayer();
+        admin.setOp(true);
+
+        server.execute("uhc", admin, "set",
+                "team.red=pavey,luke",
+                "player.head.golden.apple=true",
+                "revive.enabled=true",
+                "revive.hp=4",
+                "revive.lose.max.health=4",
+                "revive.time=5",
+                "revive.location.x=0",
+                "revive.location.y=64",
+                "revive.location.z=0",
+                "revive.location.size=10",
+                "revive.any.head=false"
+        );
+
+        revivee.setHealth(10);
+        revivee.setFoodLevel(12);
+        revivee.setLevel(13);
+        revivee.setExp(0.9f);
+        revivee.getInventory().setItem(1, ItemStack.of(Material.DIAMOND_SWORD));
+
+        assertEquals( 20, revivee.getMaxHealth());
+        assertEquals(10, revivee.getHealth() );
+        assertEquals(12, revivee.getFoodLevel());
+        assertEquals(13, revivee.getLevel());
+        assertEquals(0.9f, revivee.getExp());
+        assertEquals(1, Arrays.stream(revivee.getInventory().getStorageContents()).filter(item -> item != null && !item.getType().equals(Material.AIR)).toList().size());
+        assertEquals(0, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
+
+        revivee.teleport(new Location(world, 100, 64, 100));
+        revivee.damage(20);
+
+        schedule.performOneTick();
+
+        assertEquals(1, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
+        assertFalse(reviver.getInventory().contains(Material.PLAYER_HEAD));
+
+        reviver.getInventory().addItem(new ItemStack(Material.PLAYER_HEAD)); // random player head
+        assertTrue(reviver.getInventory().contains(Material.PLAYER_HEAD));
+        reviver.simulatePlayerMove(new Location(world, 0, 64, 0));
+        assertTrue(revivee.isDead());
+
+        schedule.performTicks(Utils.secondsToTicks(5));
+
+        assertTrue(revivee.isDead());
+        assertTrue(reviver.getInventory().contains(Material.PLAYER_HEAD));
     }
 
     public interface CancelCallback {

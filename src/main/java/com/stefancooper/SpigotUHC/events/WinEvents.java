@@ -1,13 +1,14 @@
 package com.stefancooper.SpigotUHC.events;
 
 import com.stefancooper.SpigotUHC.Config;
-import com.stefancooper.SpigotUHC.utils.Utils;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 import com.stefancooper.SpigotUHC.types.UHCTeam;
 import org.bukkit.scoreboard.Team;
@@ -15,6 +16,7 @@ import org.bukkit.scoreboard.Team;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
 
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.*;
 
@@ -31,55 +33,36 @@ public class WinEvents implements Listener {
         Player player = event.getEntity();
         String playerName = player.getName();
 
-        Bukkit.getLogger().info("Player Death Event triggered for: " + playerName);
-
-        Team playerTeam = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(playerName);
-        if (playerTeam != null) {
-
-            Bukkit.getLogger().info(ChatColor.RED + playerName + " has died!");
-        }
+        Bukkit.getLogger().log(Level.FINE, "Player Death Event triggered for: " + playerName);
 
         List<UHCTeam> teamsWithSurvivors = getTeamsWithSurvivors();
 
         if (teamsWithSurvivors.size() == 1) {
-            UHCTeam winningTeam = teamsWithSurvivors.get(0);
+            UHCTeam winningTeam = teamsWithSurvivors.getFirst();
             String winningTeamName = winningTeam.getName();
             List<String> winningTeamMembers = new ArrayList<>(Bukkit.getScoreboardManager().getMainScoreboard().getTeam(winningTeamName).getEntries());
 
             String formattedWinningMembers;
             if (winningTeamMembers.size() > 1) {
                 formattedWinningMembers = String.join(", ", winningTeamMembers.subList(0, winningTeamMembers.size() - 1))
-                        + " and " + winningTeamMembers.get(winningTeamMembers.size() - 1);
+                        + " and " + winningTeamMembers.getLast();
             } else {
-                formattedWinningMembers = winningTeamMembers.get(0);
+                formattedWinningMembers = winningTeamMembers.getFirst();
             }
 
             for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
                 onlinePlayer.sendTitle(ChatColor.GOLD + "Congratulations to Team " + winningTeamName + "!", "GG " + formattedWinningMembers + "!", 10, 100, 10);
             }
 
-
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                        onlinePlayer.sendTitle(ChatColor.GOLD + "Thank you all for playing!", "Hope it was fun!", 10, 40, 10);
-                    }
-                    endGame();
+            config.getManagedResources().runTaskLater(() -> {
+                for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                    onlinePlayer.sendTitle(ChatColor.GOLD + "Thank you all for playing!", "Hope it was fun!", 10, 40, 10);
                 }
-            }.runTaskLater(config.getPlugin(), 100L);
-
-//            new BukkitRunnable() {
-//                @Override
-//                public void run() {
-//                    for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-//                        onlinePlayer.sendTitle(ChatColor.GOLD + "Flip " + winningTeamMemers, "", 2, 2, 2);
-//                    }
-//                }
-//            }.runTaskLater(config.getPlugin(), 100L);
+                endGame();
+            }, 5);
         }
 
-        Bukkit.getLogger().info("Updated teams with survivors after " + playerName + "'s death.");
+        Bukkit.getLogger().log(Level.FINE,"Updated teams with survivors after " + playerName + "'s death.");
     }
 
     private void endGame() {
@@ -92,31 +75,12 @@ public class WinEvents implements Listener {
         Optional<String> worldSpawnZ = Optional.ofNullable(config.getProp(WORLD_SPAWN_Z.configName));
 
         if (worldSpawnX.isPresent() && worldSpawnZ.isPresent()) {
-
-            World world = Utils.getWorld(config.getProp(WORLD_NAME.configName));
-
             int x = Integer.parseInt(worldSpawnX.get());
             int y = Integer.parseInt(worldSpawnY.get());
             int z = Integer.parseInt(worldSpawnZ.get());
 
-//            int y = world.getHighestBlockYAt(x, z);
-//
-//            for(Player player : Bukkit.getOnlinePlayers()) {
-//                Block blockAtHighestY = world.getBlockAt(x, y, z);
-//                if (blockAtHighestY.getType().isSolid()) {
-//                    player.teleport(new Location(player.getWorld(), x, y, z));
-//                } else {
-//                    while (!blockAtHighestY.getType().isSolid()) {
-//                        blockAtHighestY = world.getBlockAt(x, y, z);
-//                        y--;
-//                    }
-//                    y++;
-//                    player.teleport(new Location(player.getWorld(), x, y, z));
-//                }
-//            }
-
             for(Player player : Bukkit.getOnlinePlayers()) {
-                player.teleport(new Location(player.getWorld(), x, y, z));
+                player.teleport(new Location(config.getWorlds().getOverworld(), x, y, z));
             }
         }
     }
@@ -146,6 +110,4 @@ public class WinEvents implements Listener {
 
         return teamsWithSurvivors;
     }
-
-
 }

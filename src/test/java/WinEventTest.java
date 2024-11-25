@@ -52,9 +52,9 @@ public class WinEventTest {
 
         BukkitSchedulerMock schedule = server.getScheduler();
 
-        PlayerMock winner = server.addPlayer("reece");
-        PlayerMock loser1 = server.addPlayer("jawad");
-        PlayerMock loser2 = server.addPlayer("pavey");
+        PlayerMock winner = server.addPlayer("almer");
+        PlayerMock loser1 = server.addPlayer("po");
+        PlayerMock loser2 = server.addPlayer("lozz");
 
         PlayerMock admin = server.addPlayer();
         admin.setOp(true);
@@ -71,9 +71,9 @@ public class WinEventTest {
                 "world.border.grace.period=10",
                 "world.border.shrinking.period=30",
                 "difficulty=HARD",
-                "team.red=reece",
-                "team.yellow=pavey",
-                "team.blue=jawad",
+                "team.red=almer",
+                "team.yellow=po",
+                "team.blue=lozz",
                 String.format("world.spawn.x=%s", newX),
                 String.format("world.spawn.y=%s", newY),
                 String.format("world.spawn.z=%s", newZ)
@@ -119,14 +119,20 @@ public class WinEventTest {
     }
 
     @Test
-    @DisplayName("When a team wins UHC, everyone sees title")
+    @DisplayName("When a team wins UHC (3 players per team), everyone sees title")
     void titleSentManyMen() {
 
         BukkitSchedulerMock schedule = server.getScheduler();
 
-        PlayerMock winner = server.addPlayer("reece");
-        PlayerMock loser1 = server.addPlayer("jawad");
-        PlayerMock loser2 = server.addPlayer("pavey");
+        PlayerMock redWinner1 = server.addPlayer("stefan");
+        PlayerMock redWinner2 = server.addPlayer("jawad");
+        PlayerMock redWinner3 = server.addPlayer("reece");
+        PlayerMock blueLoser1 = server.addPlayer("pavey");
+        PlayerMock blueLoser2 = server.addPlayer("sean");
+        PlayerMock blueLoser3 = server.addPlayer("ben");
+        PlayerMock yellowLoser1 = server.addPlayer("luke");
+        PlayerMock yellowLoser2 = server.addPlayer("arbaaz");
+        PlayerMock yellowLoser3 = server.addPlayer("shurf");
 
         PlayerMock admin = server.addPlayer();
         admin.setOp(true);
@@ -143,56 +149,97 @@ public class WinEventTest {
                 "world.border.grace.period=10",
                 "world.border.shrinking.period=30",
                 "difficulty=HARD",
-                "team.red=reece",
-                "team.yellow=pavey",
-                "team.blue=jawad",
+                "team.red=reece,stefan,jawad",
+                "team.blue=pavey,sean,ben",
+                "team.yellow=luke,arbaaz,shurf",
                 String.format("world.spawn.x=%s", newX),
                 String.format("world.spawn.y=%s", newY),
                 String.format("world.spawn.z=%s", newZ)
         );
 
-        assertNull(winner.nextTitle());
-        assertNull(loser1.nextTitle());
-        assertNull(loser2.nextTitle());
+        assertNull(redWinner1.nextTitle());
+        assertNull(redWinner2.nextTitle());
+        assertNull(redWinner3.nextTitle());
+        assertNull(blueLoser1.nextTitle());
+        assertNull(blueLoser2.nextTitle());
+        assertNull(blueLoser3.nextTitle());
+        assertNull(yellowLoser1.nextTitle());
+        assertNull(yellowLoser2.nextTitle());
+        assertNull(yellowLoser3.nextTitle());
 
         server.execute("uhc", admin, "start");
 
         schedule.performTicks(200);
 
-        for (int titleCount = 0; titleCount < 8; titleCount++) {
+        for (int titleCount = 0; titleCount < 9; titleCount++) {
             // 5, 4, 3, 2, 1, Start, End Grace Period
-            winner.nextTitle();
-            loser1.nextTitle();
-            loser2.nextTitle();
+            redWinner1.nextTitle();
+            redWinner2.nextTitle();
+            redWinner3.nextTitle();
+            blueLoser1.nextTitle();
+            blueLoser2.nextTitle();
+            blueLoser3.nextTitle();
+            yellowLoser1.nextTitle();
+            yellowLoser2.nextTitle();
+            yellowLoser3.nextTitle();
         }
 
-        assertNull(winner.nextTitle());
-        assertNull(loser1.nextTitle());
-        assertNull(loser2.nextTitle());
+        blueLoser1.damage(20);
 
-        loser1.damage(20);
+        assertNull(redWinner1.nextTitle());
+        assertNull(redWinner2.nextTitle());
+        assertNull(redWinner3.nextTitle());
+        assertNull(blueLoser1.nextTitle());
+        assertNull(blueLoser2.nextTitle());
+        assertNull(blueLoser3.nextTitle());
+        assertNull(yellowLoser1.nextTitle());
+        assertNull(yellowLoser2.nextTitle());
+        assertNull(yellowLoser3.nextTitle());
 
-        assertNull(winner.nextTitle());
-        assertNull(loser1.nextTitle());
-        assertNull(loser2.nextTitle());
+        assertEquals(new Location(world, 0, 5, 0), redWinner1.getLocation());
 
-        assertEquals(new Location(world, 0, 5, 0), winner.getLocation());
+        blueLoser2.damage(20);
+        blueLoser3.damage(20);
 
-        loser2.damage(20);
+        assertNull(redWinner1.nextTitle());
+        assertNull(redWinner2.nextTitle());
+        assertNull(redWinner3.nextTitle());
+        assertNull(blueLoser1.nextTitle());
+        assertNull(blueLoser2.nextTitle());
+        assertNull(blueLoser3.nextTitle());
+        assertNull(yellowLoser1.nextTitle());
+        assertNull(yellowLoser2.nextTitle());
+        assertNull(yellowLoser3.nextTitle());
 
-        assertEquals(ChatColor.GOLD + "Congratulations to Team Red!", winner.nextTitle());
-        assertEquals(ChatColor.GOLD + "Congratulations to Team Red!", loser1.nextTitle());
-        assertEquals(ChatColor.GOLD + "Congratulations to Team Red!", loser2.nextTitle());
+        yellowLoser1.damage(20);
+        yellowLoser2.damage(20);
+        redWinner1.damage(20);
+
+        assertNull(redWinner1.nextTitle());
+        assertNull(redWinner2.nextTitle());
+        assertNull(redWinner3.nextTitle());
+        assertNull(blueLoser1.nextTitle());
+        assertNull(blueLoser2.nextTitle());
+        assertNull(blueLoser3.nextTitle());
+        assertNull(yellowLoser1.nextTitle());
+        assertNull(yellowLoser2.nextTitle());
+        assertNull(yellowLoser3.nextTitle());
+
+        yellowLoser3.damage(20);
+
+        assertEquals(ChatColor.GOLD + "Congratulations to Team Red!", redWinner1.nextTitle());
+        assertEquals(ChatColor.GOLD + "Congratulations to Team Red!", redWinner2.nextTitle());
+        assertEquals(ChatColor.GOLD + "Congratulations to Team Red!", redWinner3.nextTitle());
+        assertEquals(ChatColor.GOLD + "Congratulations to Team Red!", blueLoser1.nextTitle());
+        assertEquals(ChatColor.GOLD + "Congratulations to Team Red!", blueLoser2.nextTitle());
+        assertEquals(ChatColor.GOLD + "Congratulations to Team Red!", blueLoser3.nextTitle());
+        assertEquals(ChatColor.GOLD + "Congratulations to Team Red!", yellowLoser1.nextTitle());
+        assertEquals(ChatColor.GOLD + "Congratulations to Team Red!", yellowLoser2.nextTitle());
+        assertEquals(ChatColor.GOLD + "Congratulations to Team Red!", yellowLoser3.nextTitle());
 
         schedule.performTicks(100);
 
-        assertEquals(new Location(world, newX, newY, newZ), winner.getLocation());
-
-    }
-
-    private void assertWorldValues(WorldAssertion assertion) {
-        assertion.execute(world);
-        assertion.execute(nether);
-        assertion.execute(end);
+        assertEquals(new Location(world, newX, newY, newZ), redWinner2.getLocation());
+        assertEquals(new Location(world, newX, newY, newZ), redWinner3.getLocation());
     }
 }

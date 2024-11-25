@@ -62,7 +62,7 @@ public class UHCLoot {
             Material.BOW,
             Material.DIAMOND_AXE,
             Material.GOLDEN_APPLE,
-//            Material.PLAYER_HEAD, // revivable
+            Material.PLAYER_HEAD, // revivable
             Material.GOLD_BLOCK,
             Material.DIAMOND_BLOCK,
             Material.TRIDENT,

@@ -26,6 +26,29 @@ public class UHCCommandTabCompleter implements TabCompleter {
                 List<String> configKeys = Arrays.stream(ConfigKey.values()).toList().stream().map((key) -> key.configName + "=").toList();
                 suggestions.addAll(configKeys);
             }
+            // Third argument for "set team.<colour>="
+            else if (args.length == 3 && args[0].equalsIgnoreCase("set") && args[1].startsWith("team.")) {
+                String color = args[1].substring(5); // Extract the color part after "team."
+
+                // Validate color
+                if (Arrays.asList("red", "blue", "green", "yellow", "orange", "pink").contains(color)) {
+                    // Check if the input ends with '=' to suggest player names
+                    if (args[1].endsWith("=")) {
+                        // Suggest all online player names
+                        for (Player player : Bukkit.getOnlinePlayers()) {
+                            suggestions.add(player.getName());
+                        }
+                    } else if (args[1].contains("=")) {
+                        // If there's text after '=', suggest based on the input after it
+                        String prefix = args[1].substring(args[1].indexOf('=') + 1); // Get text after '='
+                        for (Player player : Bukkit.getOnlinePlayers()) {
+                            if (player.getName().toLowerCase().startsWith(prefix.toLowerCase())) {
+                                suggestions.add(player.getName());
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         // Filter suggestions based on the last argument typed

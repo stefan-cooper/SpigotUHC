@@ -14,6 +14,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
@@ -72,6 +73,9 @@ public class BaseEvents implements Listener {
             headMeta.setDisplayName(String.format("%s's head", player.getDisplayName()));
             headMeta.setLore(List.of("Put this item in a bench", "For a Golden Apple"));
             headMeta.setOwningPlayer(player);
+            headMeta.setUnbreakable(true);
+            headMeta.setFireResistant(true);
+            headMeta.setRarity(ItemRarity.EPIC);
             head.setItemMeta(headMeta);
             player.getWorld().dropItemNaturally(player.getLocation(), head);
         }

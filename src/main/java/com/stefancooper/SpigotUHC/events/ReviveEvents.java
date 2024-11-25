@@ -5,7 +5,9 @@ import com.stefancooper.SpigotUHC.types.Revive;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,6 +16,8 @@ import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityCombustEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
@@ -180,4 +184,15 @@ public class ReviveEvents implements Listener {
             }
         }
     }
+
+    @EventHandler
+    public void onEntityDamage(EntityDamageEvent event) {
+        if (event.getEntityType() == EntityType.ITEM) {
+            Item item = (Item) event.getEntity();
+            if (item.getItemStack().getType() == Material.PLAYER_HEAD) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
 }

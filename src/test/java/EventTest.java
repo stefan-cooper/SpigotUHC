@@ -7,6 +7,7 @@ import com.stefancooper.SpigotUHC.utils.Utils;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -181,5 +182,25 @@ public class EventTest {
         assertEquals(player.getLocation(), newLocation2);
         player.simulatePlayerMove(newLocation3);
         assertEquals(player.getLocation(), newLocation3);
+    }
+
+    @Test
+    @DisplayName("Test the on death event fires a cannon when someone dies in a uhc")
+    void cannonOnDeathTest() {
+        PlayerMock admin = server.addPlayer();
+        admin.setOp(true);
+
+        PlayerMock player1 = server.addPlayer();
+        PlayerMock player2 = server.addPlayer();
+        PlayerMock player3 = server.addPlayer();
+
+        server.execute("uhc", admin, "cancel");
+        server.execute("uhc", admin, "start");
+
+        player1.damage(100);
+
+        player2.assertSoundHeard(Sound.ENTITY_LIGHTNING_BOLT_THUNDER);
+        player3.assertSoundHeard(Sound.ENTITY_LIGHTNING_BOLT_THUNDER);
+        server.execute("uhc", admin, "cancel");
     }
 }

@@ -3,9 +3,12 @@ package com.stefancooper.SpigotUHC.events;
 import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.enums.DeathAction;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -75,7 +78,12 @@ public class BaseEvents implements Listener {
             headMeta.setOwningPlayer(player);
             headMeta.setUnbreakable(true);
             headMeta.setFireResistant(true);
-            headMeta.setRarity(ItemRarity.EPIC);
+            try {
+                headMeta.setRarity(ItemRarity.EPIC);
+            } catch (Exception e) {
+                // noop
+                // for some reason, this function is not implemented in MockBukkit but it is not worth us mocking
+            }
             head.setItemMeta(headMeta);
             player.getWorld().dropItemNaturally(player.getLocation(), head);
         }
@@ -90,6 +98,11 @@ public class BaseEvents implements Listener {
             } else {
                 config.getManagedResources().addTimestamp(String.format("%s dies", event.getEntity().getDisplayName()));
             }
+        }
+
+        // Play death cannon
+        if (config.getPlugin().getStarted()) {
+            Bukkit.getOnlinePlayers().forEach(player -> player.playSound(player, Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 1, 1));
         }
     }
 

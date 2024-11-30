@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 if [ -z "$DISCORD_WEBHOOK" ]; then
   echo "no discord webhook env var set"
   exit 1
@@ -10,7 +12,7 @@ fi
 PLUGIN_VERSION=$(mvn help:evaluate -Dexpression=UHCPlugin.version -q -DforceStdout)
 PLUGIN_LOCATION="./build/SpigotUHC-${PLUGIN_VERSION}.jar"
 
-curl \
+curl --fail-with-body \
   -H "Content-Type: multipart/form-data" \
   -X POST \
   -F "payload_json={ \"content\":\"SpigotUHC ${PLUGIN_VERSION} is now available\" }" \

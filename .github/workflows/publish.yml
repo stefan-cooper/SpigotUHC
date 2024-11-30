@@ -4,6 +4,9 @@ on:
   push:
     branches: [ "main" ]
 
+env:
+  DISCORD_WEBHOOK: DISCORD_WEBHOOK
+
 jobs:
   build:
 

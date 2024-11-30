@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 env:
-  DISCORD_WEBHOOK: DISCORD_WEBHOOK
+  DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
 
 jobs:
   build:

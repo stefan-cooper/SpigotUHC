@@ -6,6 +6,8 @@ on:
 
 env:
   DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+  COMMIT_MSG: ${{ github.event.head_commit.message }}
+  COMMIT_SHA: ${{ github.event.after }}
 
 jobs:
   build:

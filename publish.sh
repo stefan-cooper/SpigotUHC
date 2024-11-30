@@ -14,6 +14,9 @@ PLUGIN_LOCATION="./build/SpigotUHC-${PLUGIN_VERSION}.jar"
 COMMIT_MSG=${COMMIT_MSG:-$(git log -1 --pretty=format:"%s")}
 COMMIT_SHA=${COMMIT_SHA:-$(git rev-parse HEAD)}
 
+# if commit details is multiline, only use first line
+COMMIT_MSG=$(echo "${COMMIT_MSG}" | head -1)
+
 curl --fail-with-body \
   -H "Content-Type: multipart/form-data" \
   -X POST \

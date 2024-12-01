@@ -122,6 +122,8 @@ world.spawn.x=0
 world.spawn.y=64
 # (optional) Z coordinate for world spawn when a UHC is not active
 world.spawn.z=0
+# (optional) disable natural witch spawns
+disable.witches=true
 ```
 
 ## Commands

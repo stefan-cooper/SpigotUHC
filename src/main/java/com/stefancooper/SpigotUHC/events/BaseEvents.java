@@ -13,6 +13,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -144,6 +145,17 @@ public class BaseEvents implements Listener {
         final Location getTo = event.getTo();
         final Location getFrom = event.getFrom();
         if (config.getPlugin().isCountingDown() && getTo != null && (getTo.getY() > getFrom.getY() || getTo.getX() != getFrom.getX() || getTo.getZ() != getFrom.getZ())) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onMobSpawn(CreatureSpawnEvent event) {
+        if (!event.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.NATURAL)) {
+            // noop
+            return;
+        }
+        if (Boolean.TRUE.equals(config.getProperty(DISABLE_WITCHES)) && event.getEntity().getType().equals(EntityType.WITCH)) {
             event.setCancelled(true);
         }
     }

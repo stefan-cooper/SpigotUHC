@@ -19,6 +19,7 @@ import org.bukkit.scoreboard.Team;
 
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.COUNTDOWN_TIMER_LENGTH;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DIFFICULTY;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.DISABLE_WITCHES;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.ENABLE_TIMESTAMPS;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.GRACE_PERIOD_TIMER;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_ENABLED;
@@ -103,6 +104,7 @@ public class ConfigParser {
             case WORLD_BORDER_IN_BOSSBAR -> new Configurable<>(WORLD_BORDER_IN_BOSSBAR, Boolean.parseBoolean(value));
             case ENABLE_TIMESTAMPS -> new Configurable<>(ENABLE_TIMESTAMPS, Boolean.parseBoolean(value));
             case RANDOM_FINAL_LOCATION -> new Configurable<>(RANDOM_FINAL_LOCATION, Boolean.parseBoolean(value));
+            case DISABLE_WITCHES -> new Configurable<>(DISABLE_WITCHES, Boolean.parseBoolean(value));
             // Revive config
             case REVIVE_ENABLED -> new Configurable<>(REVIVE_ENABLED, Boolean.parseBoolean(value));
             case REVIVE_TIME -> new Configurable<>(REVIVE_TIME, Integer.parseInt(value));

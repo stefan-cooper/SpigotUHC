@@ -38,6 +38,7 @@ public enum ConfigKey {
     WORLD_SPAWN_X("world.spawn.x"), // X coordinate for world spawn when a UHC is not active
     WORLD_SPAWN_Y("world.spawn.y"), // Y coordinate for world spawn when a UHC is not active
     WORLD_SPAWN_Z("world.spawn.z"), // Z coordinate for world spawn when a UHC is not active
+    DISABLE_WITCHES("disable.witches"), // disable witch spawns
 
     // Revive config
     REVIVE_ENABLED("revive.enabled"), // Enable revive

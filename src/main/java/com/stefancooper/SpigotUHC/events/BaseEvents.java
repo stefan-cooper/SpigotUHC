@@ -3,6 +3,7 @@ package com.stefancooper.SpigotUHC.events;
 import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.enums.DeathAction;
 
+import com.stefancooper.SpigotUHC.types.BossBarBorder;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -124,6 +125,7 @@ public class BaseEvents implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
+        /* -- Setting Game mode -- */
         GameMode currentGamemode = event.getPlayer().getGameMode();
         if (currentGamemode == GameMode.SPECTATOR) {
             return;
@@ -137,6 +139,13 @@ public class BaseEvents implements Listener {
             if (inventorySize == 0 && worldSpawn != null) {
                 event.getPlayer().teleport(worldSpawn);
             }
+        }
+
+        /* -- Setting boss bar -- */
+        if (config.getPlugin().getStarted() && Boolean.TRUE.equals(config.getProperty(WORLD_BORDER_IN_BOSSBAR))) {
+            BossBarBorder bossBarBorder = config.getManagedResources().getBossBarBorder();
+            bossBarBorder.getBossBar().addPlayer(event.getPlayer());
+            bossBarBorder.getBossBar().setVisible(true);
         }
     }
 

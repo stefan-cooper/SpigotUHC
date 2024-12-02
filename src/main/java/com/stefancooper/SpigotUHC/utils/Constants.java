@@ -3,6 +3,7 @@ package com.stefancooper.SpigotUHC.utils;
 public final class Constants {
 
     public static final String PLAYER_HEAD = "PLAYER_HEAD";
+    public static final String NOTCH_APPLE = "NOTCH_APPLE";
 
     // File locations
     public final static String TIMESTAMPS_LOCATION = Utils.getResourceLocation("timestamps.txt");

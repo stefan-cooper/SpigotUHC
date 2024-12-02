@@ -18,6 +18,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.COUNTDOWN_TIMER_LENGTH;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.CRAFTABLE_NOTCH_APPLE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DIFFICULTY;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DISABLE_WITCHES;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.ENABLE_TIMESTAMPS;
@@ -105,6 +106,7 @@ public class ConfigParser {
             case ENABLE_TIMESTAMPS -> new Configurable<>(ENABLE_TIMESTAMPS, Boolean.parseBoolean(value));
             case RANDOM_FINAL_LOCATION -> new Configurable<>(RANDOM_FINAL_LOCATION, Boolean.parseBoolean(value));
             case DISABLE_WITCHES -> new Configurable<>(DISABLE_WITCHES, Boolean.parseBoolean(value));
+            case CRAFTABLE_NOTCH_APPLE -> new Configurable<>(CRAFTABLE_NOTCH_APPLE, Boolean.parseBoolean(value));
             // Revive config
             case REVIVE_ENABLED -> new Configurable<>(REVIVE_ENABLED, Boolean.parseBoolean(value));
             case REVIVE_TIME -> new Configurable<>(REVIVE_TIME, Integer.parseInt(value));
@@ -221,10 +223,29 @@ public class ConfigParser {
                         Bukkit.removeRecipe(playerHeadKey);
                     }
                 }
+                break;
+            case CRAFTABLE_NOTCH_APPLE:
+                NamespacedKey notchAppleKey = config.getManagedResources().getNotchAppleKey();
+                if (Boolean.TRUE.equals(config.getProperty(CRAFTABLE_NOTCH_APPLE))) {
+                    if (Bukkit.getRecipe(notchAppleKey) == null) {
+                        ItemStack apple = new ItemStack(Material.ENCHANTED_GOLDEN_APPLE, 1);
+                        ShapedRecipe recipe = new ShapedRecipe(notchAppleKey, apple);
+                        recipe.shape("GGG", "GAG", "GGG");
+                        recipe.setIngredient('G', Material.GOLD_BLOCK);
+                        recipe.setIngredient('A', Material.APPLE);
+                        Bukkit.addRecipe(recipe);
+                    }
+                } else {
+                    if (Bukkit.getRecipe(notchAppleKey) != null) {
+                        Bukkit.removeRecipe(notchAppleKey);
+                    }
+                }
+                break;
             case WORLD_NAME:
             case WORLD_NAME_NETHER:
             case WORLD_NAME_END:
                 config.getWorlds().updateWorlds();
+
 
             default:
                 break;

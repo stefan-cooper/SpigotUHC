@@ -124,6 +124,8 @@ world.spawn.y=64
 world.spawn.z=0
 # (optional) disable natural witch spawns
 disable.witches=true
+# (optional) re-add notch apples
+craftable.notch.apples=true
 ```
 
 ## Commands

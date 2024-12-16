@@ -68,6 +68,15 @@ public class StartCommand extends AbstractCommand {
             finalLocation = new Location(world, centerX, 64, centerZ);
         }
 
+        final Double initialWorldBorderSize = getConfig().getProperty(WORLD_BORDER_INITIAL_SIZE);
+        if (initialWorldBorderSize != null) {
+            Utils.setWorldEffects(List.of(world, nether, end), (World) -> {
+                WorldBorder worldBorder = World.getWorldBorder();
+                worldBorder.setSize(initialWorldBorderSize);
+                worldBorder.setDamageAmount(0);
+            });
+        }
+
         // Wipe existing achievements
         getSender().getServer().dispatchCommand(getSender(), "advancement revoke @a everything");
 

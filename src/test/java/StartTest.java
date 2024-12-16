@@ -14,7 +14,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -36,6 +35,7 @@ public class StartTest {
     private static World world;
     private static World nether;
     private static World end;
+    private static final int initialWorldBorderSize = 10000;
 
     @BeforeAll
     public static void load()
@@ -50,6 +50,7 @@ public class StartTest {
     @BeforeEach
     public void cleanUp() {
         plugin.getUHCConfig().resetToDefaults();
+        world.getWorldBorder().setSize(initialWorldBorderSize);
     }
 
     @AfterAll
@@ -107,6 +108,8 @@ public class StartTest {
         PlayerMock admin = server.addPlayer();
         admin.setOp(true);
 
+        assertEquals(initialWorldBorderSize, world.getWorldBorder().getSize());
+
         server.execute("uhc", admin, "set",
                 "world.border.initial.size=50",
                 "world.border.final.size=10",
@@ -116,6 +119,12 @@ public class StartTest {
                 "world.border.shrinking.period=30",
                 "difficulty=HARD"
         );
+
+        assertEquals(50, world.getWorldBorder().getSize());
+
+        world.getWorldBorder().setSize(initialWorldBorderSize);
+
+        assertEquals(initialWorldBorderSize, world.getWorldBorder().getSize());
 
         server.getOnlinePlayers().forEach(player -> {
             assertEquals(GameMode.ADVENTURE, player.getGameMode());
@@ -135,6 +144,7 @@ public class StartTest {
         assertWorldValues((world) -> {
             assertEquals(0, world.getWorldBorder().getDamageAmount());
             assertEquals(5, world.getWorldBorder().getDamageBuffer());
+            assertEquals(50, world.getWorldBorder().getSize());
             assertFalse(world.getPVP());
         });
         assertEquals(Difficulty.PEACEFUL, world.getDifficulty());

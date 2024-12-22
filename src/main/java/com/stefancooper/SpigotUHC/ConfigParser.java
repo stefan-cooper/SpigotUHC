@@ -24,6 +24,9 @@ import static com.stefancooper.SpigotUHC.enums.ConfigKey.DISABLE_WITCHES;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.ENABLE_TIMESTAMPS;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.GRACE_PERIOD_TIMER;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_ENABLED;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_HIGH_LOOT_ODDS;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_MID_LOOT_ODDS;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_SPINS_PER_GEN;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_X;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_Y;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_Z;
@@ -128,6 +131,9 @@ public class ConfigParser {
             case LOOT_CHEST_Y -> new Configurable<>(LOOT_CHEST_Y, Integer.valueOf(value));
             case LOOT_CHEST_Z -> new Configurable<>(LOOT_CHEST_Z, Integer.valueOf(value));
             case LOOT_CHEST_FREQUENCY -> new Configurable<>(LOOT_CHEST_FREQUENCY, Integer.valueOf(value));
+            case LOOT_CHEST_HIGH_LOOT_ODDS -> new Configurable<>(LOOT_CHEST_HIGH_LOOT_ODDS, Integer.valueOf(value));
+            case LOOT_CHEST_SPINS_PER_GEN -> new Configurable<>(LOOT_CHEST_SPINS_PER_GEN, Integer.valueOf(value));
+            case LOOT_CHEST_MID_LOOT_ODDS -> new Configurable<>(LOOT_CHEST_MID_LOOT_ODDS, Integer.valueOf(value));
             case null -> null;
         };
     }

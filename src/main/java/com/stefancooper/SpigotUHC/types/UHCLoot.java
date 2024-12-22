@@ -1,6 +1,7 @@
 package com.stefancooper.SpigotUHC.types;
 
 import com.stefancooper.SpigotUHC.Config;
+import com.stefancooper.SpigotUHC.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -13,13 +14,15 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_ENABLED;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_HIGH_LOOT_ODDS;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_MID_LOOT_ODDS;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_SPINS_PER_GEN;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_X;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_Y;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_Z;
@@ -78,10 +81,21 @@ public class UHCLoot {
         final Integer chestZ = config.getProperty(LOOT_CHEST_Z);
         final Integer lootFrequency = config.getProperty(LOOT_CHEST_FREQUENCY);
 
+        Integer spawnRate = config.getProperty(LOOT_CHEST_SPINS_PER_GEN);
+        Integer highLootOdds = config.getProperty(LOOT_CHEST_HIGH_LOOT_ODDS);
+        Integer midLootOdds = config.getProperty(LOOT_CHEST_MID_LOOT_ODDS);
+
+        if (highLootOdds == null) highLootOdds = 5;
+        if (midLootOdds == null) midLootOdds = 40;
+        if (spawnRate == null) spawnRate = 5;
+
         final Block lootChestBlock = world.getBlockAt(chestX, chestY, chestZ);
         lootChestBlock.setType(Material.CHEST);
         final Chest lootChest = (Chest) lootChestBlock.getState();
 
+        final int finalSpawnRate = spawnRate;
+        final int finalHighLootOdds = highLootOdds;
+        final int finalMidLootOdds = midLootOdds + finalHighLootOdds;
         config.getManagedResources().runRepeatingTask(() -> {
             try {
                 world.spawnParticle(Particle.ENCHANT, new Location(world, chestX + 0.5, chestY + 1.5, chestZ + 0.5), 1000);
@@ -91,18 +105,15 @@ public class UHCLoot {
             }
             lootChest.getBlockInventory().clear();
             final Random random = new Random();
-            for (int i = 0; i < 5; i++) {
+            for (int i = 0; i < finalSpawnRate; i++) {
                 final int spin = random.nextInt(100) + 1;
                 final Material itemToAdd;
 
-                // 1% over 5 attempts == 5% of getting at least one high-tier
-                if (spin == 1) {
+                if (spin < finalHighLootOdds) {
                     itemToAdd = highTier.get(random.nextInt(highTier.size()));
                     Bukkit.getOnlinePlayers().forEach(player -> player.playSound(player, Sound.ITEM_GOAT_HORN_SOUND_7, 2, 1));
-                // 10% over 5 attempts == 40% of getting at least one mid-tier
-                } else if (spin < 10) {
+                } else if (spin < finalMidLootOdds) {
                     itemToAdd = midTier.get(random.nextInt(midTier.size()));
-                // 90% over 5 attempts == 99.99999% of getting at least one low-tier
                 } else {
                     itemToAdd = lowTier.get(random.nextInt(lowTier.size()));
                 }
@@ -154,6 +165,7 @@ public class UHCLoot {
             case Material.COAL -> item.setAmount(8);
             case Material.COOKED_BEEF -> item.setAmount(5);
             case Material.STRING -> item.setAmount(3);
+            case Material.DIAMOND -> item.setAmount(3);
         }
     }
 
@@ -174,11 +186,15 @@ public class UHCLoot {
             final List<PotionType> effects = List.of(
                     PotionType.HARMING,
                     PotionType.SLOWNESS,
-                    PotionType.WEAKNESS // TODO - make this slowness 4
+                    PotionType.WEAKNESS
             );
             PotionType effect = effects.get(random.nextInt(effects.size()));
             PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
-            potionMeta.setBasePotionType(effect);
+            if (effect == PotionType.SLOWNESS || effect == PotionType.WEAKNESS) {
+                potionMeta.addCustomEffect(new PotionEffect(effect.getEffectType(), (int) Utils.secondsToTicks(30), 3), true);
+            } else {
+                potionMeta.setBasePotionType(effect);
+            }
             item.setItemMeta(potionMeta);
         }
     }

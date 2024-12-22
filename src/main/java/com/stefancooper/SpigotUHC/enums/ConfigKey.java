@@ -58,6 +58,9 @@ public enum ConfigKey {
     LOOT_CHEST_Y("loot.chest.y"), // Chest y
     LOOT_CHEST_Z("loot.chest.z"), // Chest z
     LOOT_CHEST_FREQUENCY("loot.chest.frequency"), // Frequency of loot gen (in seconds)
+    LOOT_CHEST_HIGH_LOOT_ODDS("loot.chest.high.loot.odds"), // % odds of a high loot item spawning (per spin)
+    LOOT_CHEST_MID_LOOT_ODDS("loot.chest.mid.loot.odds"), // % odds of a mid loot item spawning (per spin)
+    LOOT_CHEST_SPINS_PER_GEN("loot.chest.spins.per.gen") // how many items are spawned per gen
     ;
 
     public final String configName;

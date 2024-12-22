@@ -103,6 +103,12 @@ loot.chest.y=64
 loot.chest.z=100
 # How frequently loot is regenerated (in seconds)
 loot.chest.frequency=300
+# % odds of a high loot item spawning (per spin)
+loot.chest.high.loot.odds=5
+# % odds of a mid loot item spawning (per spin)
+loot.chest.mid.loot.odds=40
+# items/spins per gen
+loot.chest.spins.per.gen=5
 ```
 
 Miscellaneous:

@@ -132,6 +132,8 @@ world.spawn.z=0
 disable.witches=true
 # (optional) re-add notch apples
 craftable.notch.apples=true
+# (optional) add a craftable player head (golden apple surrounded by diamonds)
+craftable.player.heads=true
 ```
 
 ## Commands

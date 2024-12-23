@@ -15,6 +15,7 @@ import java.io.FileWriter;
 import java.util.Date;
 import java.util.Optional;
 
+import static com.stefancooper.SpigotUHC.utils.Constants.CRAFTABLE_PLAYER_HEAD;
 import static com.stefancooper.SpigotUHC.utils.Constants.NOTCH_APPLE;
 import static com.stefancooper.SpigotUHC.utils.Constants.PLAYER_HEAD;
 import static com.stefancooper.SpigotUHC.utils.Constants.TIMESTAMPS_LOCATION;
@@ -25,6 +26,7 @@ public class ManagedResources {
     final BossBarBorder bossBarBorder;
     final BukkitScheduler scheduler;
     final NamespacedKey playerHead;
+    final NamespacedKey craftablePlayerHead;
     final NamespacedKey notchApple;
     Revive currentRevive = null;
     BukkitTask reviveDebounce = null;
@@ -35,6 +37,7 @@ public class ManagedResources {
         this.bossBarBorder = new BossBarBorder(config);
         this.scheduler = Bukkit.getScheduler();
         this.playerHead = new NamespacedKey(config.getPlugin(), PLAYER_HEAD);
+        this.craftablePlayerHead = new NamespacedKey(config.getPlugin(), CRAFTABLE_PLAYER_HEAD);
         this.notchApple = new NamespacedKey(config.getPlugin(), NOTCH_APPLE);
     }
 
@@ -80,6 +83,10 @@ public class ManagedResources {
 
     public NamespacedKey getNotchAppleKey() {
         return notchApple;
+    }
+
+    public NamespacedKey getCraftablePlayerHeadKey() {
+        return craftablePlayerHead;
     }
 
     public void cancelTimer() {

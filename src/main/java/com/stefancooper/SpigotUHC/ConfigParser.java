@@ -19,6 +19,7 @@ import org.bukkit.scoreboard.Team;
 
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.COUNTDOWN_TIMER_LENGTH;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.CRAFTABLE_NOTCH_APPLE;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.CRAFTABLE_PLAYER_HEAD;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DIFFICULTY;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DISABLE_WITCHES;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.ENABLE_TIMESTAMPS;
@@ -110,6 +111,7 @@ public class ConfigParser {
             case RANDOM_FINAL_LOCATION -> new Configurable<>(RANDOM_FINAL_LOCATION, Boolean.parseBoolean(value));
             case DISABLE_WITCHES -> new Configurable<>(DISABLE_WITCHES, Boolean.parseBoolean(value));
             case CRAFTABLE_NOTCH_APPLE -> new Configurable<>(CRAFTABLE_NOTCH_APPLE, Boolean.parseBoolean(value));
+            case CRAFTABLE_PLAYER_HEAD -> new Configurable<>(CRAFTABLE_PLAYER_HEAD, Boolean.parseBoolean(value));
             // Revive config
             case REVIVE_ENABLED -> new Configurable<>(REVIVE_ENABLED, Boolean.parseBoolean(value));
             case REVIVE_TIME -> new Configurable<>(REVIVE_TIME, Integer.parseInt(value));
@@ -244,6 +246,23 @@ public class ConfigParser {
                 } else {
                     if (Bukkit.getRecipe(notchAppleKey) != null) {
                         Bukkit.removeRecipe(notchAppleKey);
+                    }
+                }
+                break;
+            case CRAFTABLE_PLAYER_HEAD:
+                final NamespacedKey craftablePlayerHeadKey = config.getManagedResources().getCraftablePlayerHeadKey();
+                if (Boolean.TRUE.equals(config.getProperty(CRAFTABLE_PLAYER_HEAD))) {
+                    if (Bukkit.getRecipe(craftablePlayerHeadKey) == null) {
+                        ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD, 1);
+                        ShapedRecipe recipe = new ShapedRecipe(craftablePlayerHeadKey, playerHead);
+                        recipe.shape("DDD", "DGD", "DDD");
+                        recipe.setIngredient('D', Material.DIAMOND);
+                        recipe.setIngredient('G', Material.GOLDEN_APPLE);
+                        Bukkit.addRecipe(recipe);
+                    }
+                } else {
+                    if (Bukkit.getRecipe(craftablePlayerHeadKey) != null) {
+                        Bukkit.removeRecipe(craftablePlayerHeadKey);
                     }
                 }
                 break;

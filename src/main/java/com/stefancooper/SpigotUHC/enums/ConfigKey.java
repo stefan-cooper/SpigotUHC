@@ -40,6 +40,7 @@ public enum ConfigKey {
     WORLD_SPAWN_Z("world.spawn.z"), // Z coordinate for world spawn when a UHC is not active
     DISABLE_WITCHES("disable.witches"), // disable witch spawns
     CRAFTABLE_NOTCH_APPLE("craftable.notch.apple"), // re-add craftable notch apple
+    CRAFTABLE_PLAYER_HEAD("craftable.player.head"), // add craftable player head
 
     // Revive config
     REVIVE_ENABLED("revive.enabled"), // Enable revive

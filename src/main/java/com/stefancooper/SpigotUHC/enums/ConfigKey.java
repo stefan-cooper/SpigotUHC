@@ -44,9 +44,9 @@ public enum ConfigKey {
 
     // Revive config
     REVIVE_ENABLED("revive.enabled"), // Enable revive
-    REVIVE_LOCATION_X("revive.location.x"), // Revive x center location
-    REVIVE_LOCATION_Y("revive.location.y"), // Revive y center location
-    REVIVE_LOCATION_Z("revive.location.z"), // Revive z center location
+    REVIVE_LOCATION_X("revive.location.x"), // Revive x center locations (comma seperated)
+    REVIVE_LOCATION_Y("revive.location.y"), // Revive y center locations (comma seperated)
+    REVIVE_LOCATION_Z("revive.location.z"), // Revive z center location (comma seperated)
     REVIVE_TIME("revive.time"), // How many seconds it takes to revive
     REVIVE_LOCATION_SIZE("revive.location.size"), // Diameter of revive location
     REVIVE_HP("revive.hp"), // Revivee starting hp

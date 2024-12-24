@@ -117,9 +117,9 @@ public class ConfigParser {
             case REVIVE_TIME -> new Configurable<>(REVIVE_TIME, Integer.parseInt(value));
             case REVIVE_HP -> new Configurable<>(REVIVE_HP, Integer.parseInt(value));
             case REVIVE_LOCATION_SIZE -> new Configurable<>(REVIVE_LOCATION_SIZE, Integer.parseInt(value));
-            case REVIVE_LOCATION_X -> new Configurable<>(REVIVE_LOCATION_X, Integer.parseInt(value));
-            case REVIVE_LOCATION_Y -> new Configurable<>(REVIVE_LOCATION_Y, Integer.parseInt(value));
-            case REVIVE_LOCATION_Z -> new Configurable<>(REVIVE_LOCATION_Z, Integer.parseInt(value));
+            case REVIVE_LOCATION_X -> new Configurable<>(REVIVE_LOCATION_X, value);
+            case REVIVE_LOCATION_Y -> new Configurable<>(REVIVE_LOCATION_Y, value);
+            case REVIVE_LOCATION_Z -> new Configurable<>(REVIVE_LOCATION_Z, value);
             case REVIVE_LOSE_MAX_HEALTH -> new Configurable<>(REVIVE_LOSE_MAX_HEALTH, Integer.parseInt(value));
 
             case REVIVE_ANY_HEAD -> new Configurable<>(REVIVE_ANY_HEAD, Boolean.parseBoolean(value));

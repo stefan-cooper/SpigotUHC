@@ -4,12 +4,17 @@ import com.stefancooper.SpigotUHC.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_HP;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_LOCATION_SIZE;
@@ -35,9 +40,9 @@ public class Revive {
 
     private final int reviveHealth;
     private final int reviveLoseMaxHealth;
-    private final int reviveX;
-    private final int reviveY;
-    private final int reviveZ;
+    private final List<Integer> reviveXs;
+    private final List<Integer> reviveYs;
+    private final List<Integer> reviveZs;
     private final int reviveSize;
     private final World world;
 
@@ -47,9 +52,10 @@ public class Revive {
         this.revivee = Bukkit.getPlayer(revivee);
         this.world = config.getWorlds().getOverworld();
         this.reviveHealth = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_HP.configName)).orElse("2"));
-        this.reviveX = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_LOCATION_X.configName)).orElse("0"));
-        this.reviveY = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_LOCATION_Y.configName)).orElse("64"));
-        this.reviveZ = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_LOCATION_Z.configName)).orElse("0"));
+
+        this.reviveXs = getReviveXs(config);
+        this.reviveYs = getReviveYs(config);
+        this.reviveZs = getReviveZs(config);
         this.reviveSize = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_LOCATION_SIZE.configName)).orElse("10"));
         this.reviveLoseMaxHealth = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_LOSE_MAX_HEALTH.configName)).orElse("2"));
         this.playerHead = playerHead;
@@ -57,22 +63,35 @@ public class Revive {
 
         this.reviveTask = config.getManagedResources().runTaskLater(revivePlayer(), reviveTime);
         this.playParticles = config.getManagedResources().runRepeatingTask(() -> {
-            for (int x = reviveX - reviveSize; x < reviveX + reviveSize; x++ ) {
-                for (int z = reviveZ - reviveSize; z < reviveZ + reviveSize; z++) {
-                    Location loc = new Location (world, x, reviveY, z);
-                    if (isInsideReviveZone(config, loc)) {
-                        try {
-                            world.spawnParticle(Particle.GLOW, loc, 5);
-                        } catch (Exception e) {
-                            // noop
-                            // for some reason, this function is not implemented in MockBukkit but it is not worth us mocking
-                        }
+            for (int reviveNumber = 0; reviveNumber < reviveXs.size(); reviveNumber++) {
+                for (int x = reviveXs.get(reviveNumber) - reviveSize; x < reviveXs.get(reviveNumber) + reviveSize; x++ ) {
+                    for (int z = reviveZs.get(reviveNumber) - reviveSize; z < reviveZs.get(reviveNumber) + reviveSize; z++) {
+                        Location loc = new Location (world, x, reviveYs.get(reviveNumber), z);
+                        if (isInsideReviveZone(config, loc)) {
+                            try {
+                                world.spawnParticle(Particle.GLOW, loc, 5);
+                            } catch (Exception e) {
+                                // noop
+                                // for some reason, this function is not implemented in MockBukkit but it is not worth us mocking
+                            }
 
+                        }
                     }
                 }
             }
         }, 1);
         this.reviveCallback = reviveCallback;
+
+        for (int reviveNumber = 0; reviveNumber < reviveXs.size(); reviveNumber++) {
+            for (int x = reviveXs.get(reviveNumber) - reviveSize; x < reviveXs.get(reviveNumber) + reviveSize; x++ ) {
+                for (int z = reviveZs.get(reviveNumber) - reviveSize; z < reviveZs.get(reviveNumber) + reviveSize; z++) {
+                    Location loc = new Location (world, x, reviveYs.get(reviveNumber), z);
+                    if (isInsideReviveZone(config, loc)) {
+                        world.getBlockAt(x, reviveYs.get(reviveNumber) - 1, z).setType(Material.BEDROCK);
+                    }
+                }
+            }
+        }
 
         if (this.revivee == null) {
             reviver.sendMessage(String.format("%s is offline, so cannot be revived", revivee));
@@ -95,14 +114,11 @@ public class Revive {
             if (reviver.getInventory().contains(playerHead)) {
                 Bukkit.broadcastMessage(String.format("%s has been revived!", revivee.getDisplayName()));
                 reviveCallback.callback();
-                // TODO - laters:
-                // - only revivable if death was non-pvp (?)
-                // - only revivable one time (?)
 
                 // Revivee effects
                 revivee.getInventory().clear();
                 revivee.spigot().respawn();
-                revivee.teleport(new Location(world, reviveX, reviveY, reviveZ));
+                revivee.teleport(reviver.getLocation());
                 revivee.setGameMode(GameMode.SURVIVAL);
                 if (revivee.getMaxHealth() < reviveHealth) {
                     revivee.setHealth(revivee.getMaxHealth());
@@ -139,37 +155,86 @@ public class Revive {
         playParticles.cancel();
     }
 
+    private static List<Integer> getReviveXs(Config config) {
+        String reviveX = config.getProperty(REVIVE_LOCATION_X);
+        if (reviveX == null) reviveX = "0";
+        try {
+            return Arrays.stream(reviveX.split(",")).map(Integer::parseInt).toList();
+        } catch (Exception e) {
+            System.out.println("Exception caught setting the revive config, check your revive location config. Setting default value");
+            return List.of(0);
+        }
+    }
+
+    private static List<Integer> getReviveYs(Config config) {
+        String reviveY = config.getProperty(REVIVE_LOCATION_Y);
+        if (reviveY == null) reviveY = "0";
+        try {
+            return Arrays.stream(reviveY.split(",")).map(Integer::parseInt).toList();
+        } catch (Exception e) {
+            System.out.println("Exception caught setting the revive config, check your revive location config. Setting default value");
+            return List.of(64);
+        }
+    }
+
+    private static List<Integer> getReviveZs(Config config) {
+        String reviveZ = config.getProperty(REVIVE_LOCATION_Z);
+        if (reviveZ == null) reviveZ = "0";
+        try {
+            return Arrays.stream(reviveZ.split(",")).map(Integer::parseInt).toList();
+        } catch (Exception e) {
+            System.out.println("Exception caught setting the revive config, check your revive location config. Setting default value");
+            return List.of(0);
+        }
+    }
+
     public static boolean isInsideReviveZone(Config config, Location location) {
-        int reviveX = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_LOCATION_X.configName)).orElse("0"));
-        int reviveY = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_LOCATION_Y.configName)).orElse("100"));
-        int reviveZ = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_LOCATION_Z.configName)).orElse("0"));
-        int size = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_LOCATION_SIZE.configName)).orElse("10"));
-        int minReviveX = reviveX - (reviveX < 0 ? Math.floorDiv(size, 2) : Math.ceilDiv(size, 2));
-        int maxReviveX = reviveX + (reviveX < 0 ? Math.floorDiv(size, 2) : Math.ceilDiv(size, 2));
-        int minReviveZ = reviveZ - (reviveZ < 0 ? Math.floorDiv(size, 2) : Math.ceilDiv(size, 2));
-        int maxReviveZ = reviveZ + (reviveZ < 0 ? Math.floorDiv(size, 2) : Math.ceilDiv(size, 2));
-        int newPositionX = location.getBlockX();
-        int newPositionY = location.getBlockY();
-        int newPositionZ = location.getBlockZ();
-        return (newPositionX >= minReviveX && newPositionX <= maxReviveX) &&
-               (newPositionZ >= minReviveZ && newPositionZ <= maxReviveZ) &&
-               (newPositionY <= reviveY + 2 && newPositionY >= reviveY - 2);
+        final List<Integer> reviveXs = getReviveXs(config);
+        final List<Integer> reviveYs = getReviveYs(config);
+        final List<Integer> reviveZs = getReviveZs(config);
+        final int newPositionX = location.getBlockX();
+        final int newPositionY = location.getBlockY();
+        final int newPositionZ = location.getBlockZ();
+        final int size = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_LOCATION_SIZE.configName)).orElse("10"));
+        for (int i = 0; i < reviveXs.size(); i++) {
+            final int reviveX = reviveXs.get(i);
+            final int reviveY = reviveYs.get(i);
+            final int reviveZ = reviveZs.get(i);
+            final int minReviveX = reviveX - (reviveX < 0 ? Math.floorDiv(size, 2) : Math.ceilDiv(size, 2));
+            final int maxReviveX = reviveX + (reviveX < 0 ? Math.floorDiv(size, 2) : Math.ceilDiv(size, 2));
+            final int minReviveZ = reviveZ - (reviveZ < 0 ? Math.floorDiv(size, 2) : Math.ceilDiv(size, 2));
+            final int maxReviveZ = reviveZ + (reviveZ < 0 ? Math.floorDiv(size, 2) : Math.ceilDiv(size, 2));
+            if ((newPositionX >= minReviveX && newPositionX <= maxReviveX) &&
+                    (newPositionZ >= minReviveZ && newPositionZ <= maxReviveZ) &&
+                    (newPositionY <= reviveY + 2 && newPositionY >= reviveY - 2)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static boolean isNearReviveZone(Config config, Location location) {
-        int reviveX = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_LOCATION_X.configName)).orElse("0"));
-        int reviveY = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_LOCATION_Y.configName)).orElse("100"));
-        int reviveZ = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_LOCATION_Z.configName)).orElse("0"));
-        int size = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_LOCATION_SIZE.configName)).orElse("10"));
-        int minReviveX = reviveX - (reviveX < 0 ? Math.floorDiv(size, 2) : Math.ceilDiv(size, 2));
-        int maxReviveX = reviveX + (reviveX < 0 ? Math.floorDiv(size, 2) : Math.ceilDiv(size, 2));
-        int minReviveZ = reviveZ - (reviveZ < 0 ? Math.floorDiv(size, 2) : Math.ceilDiv(size, 2));
-        int maxReviveZ = reviveZ + (reviveZ < 0 ? Math.floorDiv(size, 2) : Math.ceilDiv(size, 2));
-        int newPositionX = location.getBlockX();
-        int newPositionY = location.getBlockY();
-        int newPositionZ = location.getBlockZ();
-        return (newPositionX >= minReviveX - 8 && newPositionX <= maxReviveX + 8) &&
-                (newPositionZ >= minReviveZ - 8 && newPositionZ <= maxReviveZ + 8) &&
-                (newPositionY >= reviveY - 8 && newPositionY <= reviveY + 8);
+        final List<Integer> reviveXs = getReviveXs(config);
+        final List<Integer> reviveYs = getReviveYs(config);
+        final List<Integer> reviveZs = getReviveZs(config);
+        final int size = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_LOCATION_SIZE.configName)).orElse("10"));
+        final int newPositionX = location.getBlockX();
+        final int newPositionY = location.getBlockY();
+        final int newPositionZ = location.getBlockZ();
+        for (int i = 0; i < reviveXs.size(); i++) {
+            final int reviveX = reviveXs.get(i);
+            final int reviveY = reviveYs.get(i);
+            final int reviveZ = reviveZs.get(i);
+            final int minReviveX = reviveX - (reviveX < 0 ? Math.floorDiv(size, 2) : Math.ceilDiv(size, 2));
+            final int maxReviveX = reviveX + (reviveX < 0 ? Math.floorDiv(size, 2) : Math.ceilDiv(size, 2));
+            final int minReviveZ = reviveZ - (reviveZ < 0 ? Math.floorDiv(size, 2) : Math.ceilDiv(size, 2));
+            final int maxReviveZ = reviveZ + (reviveZ < 0 ? Math.floorDiv(size, 2) : Math.ceilDiv(size, 2));
+            if ((newPositionX >= minReviveX - 8 && newPositionX <= maxReviveX + 8) &&
+                    (newPositionZ >= minReviveZ - 8 && newPositionZ <= maxReviveZ + 8) &&
+                    (newPositionY >= reviveY - 8 && newPositionY <= reviveY + 8)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

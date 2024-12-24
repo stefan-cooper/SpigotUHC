@@ -81,10 +81,16 @@ revive.lose.max.health=4
 revive.time=90
 # X coordinate for the center of the revive location
 revive.location.x=-30
+# for multiple revive locations, you can comma seperate each x coordinate of each location
+# revive.location.x=-30,100,45
 # Y coordinate for the center of the revive location
 revive.location.y=64
+# for multiple revive locations, you can comma seperate each y coordinate of each location
+# revive.location.y=64,68,75
 # Z coordinate for the center of the revive location
 revive.location.z=11
+# for multiple revive locations, you can comma seperate each z coordinate of each location
+# revive.location.z=11,222,-42
 # Diameter/size of the revive location
 revive.location.size=10
 # reive with any player head

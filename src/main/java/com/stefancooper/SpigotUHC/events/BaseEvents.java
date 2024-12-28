@@ -22,6 +22,8 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -100,6 +102,25 @@ public class BaseEvents implements Listener {
             } else {
                 config.getManagedResources().addTimestamp(String.format("%s dies", event.getEntity().getDisplayName()));
             }
+        }
+
+        if (Boolean.TRUE.equals(config.getProperty(WHISPER_TEAMMATE_DEAD_LOCATION))) {
+            Player player = event.getEntity();
+            Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+            Optional<Team> playerTeam = scoreboard.getTeams().stream().filter(team -> team.hasEntry(player.getDisplayName())).findFirst();
+            playerTeam.ifPresent(team -> {
+                team.getEntries().forEach(teammatePlayer -> {
+                    Player teammate = Bukkit.getPlayer(teammatePlayer);
+                    if (teammate != null) {
+                        teammate.sendMessage(String.format("(Only visible to your team) %s death location: %s, %s, %s",
+                                player.getDisplayName(),
+                                (int) player.getLocation().getX(),
+                                (int) player.getLocation().getY(),
+                                (int) player.getLocation().getZ()
+                        ));
+                    }
+                });
+            });
         }
 
         // Play death cannon

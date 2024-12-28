@@ -41,6 +41,7 @@ public enum ConfigKey {
     DISABLE_WITCHES("disable.witches"), // disable witch spawns
     CRAFTABLE_NOTCH_APPLE("craftable.notch.apple"), // re-add craftable notch apple
     CRAFTABLE_PLAYER_HEAD("craftable.player.head"), // add craftable player head
+    WHISPER_TEAMMATE_DEAD_LOCATION("whisper.teammate.dead.location"), // whisper the location of dead teammates when they die
 
     // Revive config
     REVIVE_ENABLED("revive.enabled"), // Enable revive

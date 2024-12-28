@@ -59,6 +59,7 @@ import static com.stefancooper.SpigotUHC.enums.ConfigKey.TEAM_PINK;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.TEAM_PURPLE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.TEAM_RED;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.TEAM_YELLOW;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.WHISPER_TEAMMATE_DEAD_LOCATION;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_CENTER_X;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_CENTER_Z;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_FINAL_SIZE;
@@ -119,6 +120,7 @@ public class ConfigParser {
             case DISABLE_WITCHES -> new Configurable<>(DISABLE_WITCHES, Boolean.parseBoolean(value));
             case CRAFTABLE_NOTCH_APPLE -> new Configurable<>(CRAFTABLE_NOTCH_APPLE, Boolean.parseBoolean(value));
             case CRAFTABLE_PLAYER_HEAD -> new Configurable<>(CRAFTABLE_PLAYER_HEAD, Boolean.parseBoolean(value));
+            case WHISPER_TEAMMATE_DEAD_LOCATION -> new Configurable<>(WHISPER_TEAMMATE_DEAD_LOCATION, Boolean.parseBoolean(value));
             // Revive config
             case REVIVE_ENABLED -> new Configurable<>(REVIVE_ENABLED, Boolean.parseBoolean(value));
             case REVIVE_TIME -> new Configurable<>(REVIVE_TIME, Integer.parseInt(value));

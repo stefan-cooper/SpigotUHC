@@ -21,10 +21,16 @@ public class UHCCommandTabCompleter implements TabCompleter {
             if (args.length == 1) {
                 suggestions.addAll(Arrays.asList("set", "view", "start", "resume", "latestart", "cancel", "pvp"));
             }
-            // Second argument for "set" command
-            else if (args.length >= 2 && args[0].equalsIgnoreCase("set")) {
+            // Suggestions for "set" command
+            else if (args.length >= 2 && (args[0].equalsIgnoreCase("set"))) {
                 List<String> configKeys = Arrays.stream(ConfigKey.values()).toList().stream().map((key) -> key.configName + "=").toList();
                 suggestions.addAll(configKeys);
+            }
+            // Suggestions for "view" command
+            else if (args.length >= 2 && args[0].equalsIgnoreCase("view")) {
+                List<String> configKeys = Arrays.stream(ConfigKey.values()).toList().stream().map((key) -> key.configName).toList();
+                suggestions.addAll(configKeys);
+                suggestions.add("config");
             }
             // Third argument for "set team.<colour>="
             else if (args.length == 3 && args[0].equalsIgnoreCase("set") && args[1].startsWith("team.")) {
@@ -48,6 +54,12 @@ public class UHCCommandTabCompleter implements TabCompleter {
                         }
                     }
                 }
+            }
+            // Suggestions for latestart
+            else if (args.length >= 2 && (args[0].equalsIgnoreCase("latestart"))) {
+                Bukkit.getOnlinePlayers().forEach(player -> {
+                    suggestions.add(player.getName());
+                });
             }
         }
 

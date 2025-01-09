@@ -1,5 +1,7 @@
 package com.stefancooper.SpigotUHC;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import com.stefancooper.SpigotUHC.types.BossBarBorder;
@@ -36,6 +38,9 @@ import static com.stefancooper.SpigotUHC.enums.ConfigKey.ON_DEATH_ACTION;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.PLAYER_HEAD_GOLDEN_APPLE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_FINAL_LOCATION;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_TEAMS_ENABLED;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_TEAMS_POT_ONE;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_TEAMS_POT_THREE;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_TEAMS_POT_TWO;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_TEAM_SIZE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_ANY_HEAD;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_ENABLED;
@@ -68,6 +73,8 @@ import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_SPAWN_X;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_SPAWN_Y;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_SPAWN_Z;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.fromString;
+import static com.stefancooper.SpigotUHC.types.UHCTeam.createTeam;
+
 import com.stefancooper.SpigotUHC.types.UHCTeam;
 import com.stefancooper.SpigotUHC.utils.Configurable;
 
@@ -121,8 +128,11 @@ public class ConfigParser {
             case REVIVE_LOCATION_Y -> new Configurable<>(REVIVE_LOCATION_Y, value);
             case REVIVE_LOCATION_Z -> new Configurable<>(REVIVE_LOCATION_Z, value);
             case REVIVE_LOSE_MAX_HEALTH -> new Configurable<>(REVIVE_LOSE_MAX_HEALTH, Integer.parseInt(value));
-
             case REVIVE_ANY_HEAD -> new Configurable<>(REVIVE_ANY_HEAD, Boolean.parseBoolean(value));
+            // Random teams
+            case RANDOM_TEAMS_POT_ONE -> new Configurable<>(RANDOM_TEAMS_POT_ONE, new HashSet<>(Arrays.asList(value.split(","))));
+            case RANDOM_TEAMS_POT_TWO -> new Configurable<>(RANDOM_TEAMS_POT_TWO, new HashSet<>(Arrays.asList(value.split(","))));
+            case RANDOM_TEAMS_POT_THREE -> new Configurable<>(RANDOM_TEAMS_POT_THREE, new HashSet<>(Arrays.asList(value.split(","))));
             // World spawn
             case WORLD_SPAWN_X -> new Configurable<>(WORLD_SPAWN_X, Integer.parseInt(value));
             case WORLD_SPAWN_Y -> new Configurable<>(WORLD_SPAWN_Y, Integer.parseInt(value));
@@ -138,26 +148,6 @@ public class ConfigParser {
             case LOOT_CHEST_MID_LOOT_ODDS -> new Configurable<>(LOOT_CHEST_MID_LOOT_ODDS, Integer.valueOf(value));
             case null -> null;
         };
-    }
-
-    private void createTeam(UHCTeam uhcTeam) {
-        Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
-
-        // if team already exists, redefine it
-        if (scoreboard.getTeam(uhcTeam.getName()) != null) {
-            scoreboard.getTeam(uhcTeam.getName()).unregister();
-        }
-        Team team = scoreboard.registerNewTeam(uhcTeam.getName());
-        uhcTeam.getPlayers().forEach(player -> {
-            // if player is already on another team, remove them from that team and put them on this team
-            if (scoreboard.getEntryTeam(player) != null) {
-                scoreboard.getEntryTeam(player).removeEntry(player);
-            }
-            team.addEntry(player);
-        });
-        team.setColor(uhcTeam.getColor());
-        team.setAllowFriendlyFire(false);
-        team.setPrefix(String.format("[%s] ", uhcTeam.getName()));
     }
 
     public void executeConfigurable(Configurable<?> configurable) {

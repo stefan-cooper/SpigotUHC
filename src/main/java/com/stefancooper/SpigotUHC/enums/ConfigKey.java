@@ -53,6 +53,11 @@ public enum ConfigKey {
     REVIVE_LOSE_MAX_HEALTH("revive.lose.max.health"), // Revivee max hp loss
     REVIVE_ANY_HEAD("revive.any.head"), // Revive-able with any player head
 
+    // Random teams
+    RANDOM_TEAMS_POT_ONE("random.teams.pot.1"),
+    RANDOM_TEAMS_POT_TWO("random.teams.pot.2"),
+    RANDOM_TEAMS_POT_THREE("random.teams.pot.3"),
+
     // UHC Loot
     LOOT_CHEST_ENABLED("loot.chest.enabled"), // Enable loot chest
     LOOT_CHEST_X("loot.chest.x"), // Chest x

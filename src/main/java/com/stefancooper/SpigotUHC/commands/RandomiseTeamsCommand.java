@@ -5,6 +5,7 @@ import com.stefancooper.SpigotUHC.enums.ConfigKey;
 import com.stefancooper.SpigotUHC.types.UHCTeam;
 import com.stefancooper.SpigotUHC.types.Worlds;
 import com.stefancooper.SpigotUHC.utils.Utils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -58,7 +59,7 @@ public class RandomiseTeamsCommand extends AbstractCommand {
                                 team.add(rand);
                                 potOne.remove(rand);
                                 potOnes++;
-                            } else if ((team.isEmpty() && !potThree.isEmpty()) || potTwos > potThrees && !potThree.isEmpty() || potOnes > potThrees && !potThree.isEmpty() || (potOne.isEmpty() && potTwo.isEmpty() && !potThree.isEmpty())) {
+                            } else if ((team.isEmpty() && !potThree.isEmpty()) || potTwos > potThrees && !potThree.isEmpty() || potOnes > potThrees && !potThree.isEmpty() || (potTwo.isEmpty() && !potThree.isEmpty())) {
                                 final String rand = getRandomPlayerFromPot(potThree);
                                 team.add(rand);
                                 potThree.remove(rand);
@@ -75,7 +76,7 @@ public class RandomiseTeamsCommand extends AbstractCommand {
                                 team.add(rand);
                                 potOne.remove(rand);
                                 potOnes++;
-                            } else if ((team.isEmpty() && !potTwo.isEmpty()) || potThrees > potTwos && !potTwo.isEmpty() || potOnes > potTwos && !potTwo.isEmpty() || (potOne.isEmpty() && potThree.isEmpty() && !potTwo.isEmpty())) {
+                            } else if ((team.isEmpty() && !potTwo.isEmpty()) || potThrees > potTwos && !potTwo.isEmpty() || potOnes > potTwos && !potTwo.isEmpty() || (potThree.isEmpty() && !potTwo.isEmpty())) {
                                 final String rand = getRandomPlayerFromPot(potTwo);
                                 team.add(rand);
                                 potTwo.remove(rand);
@@ -99,7 +100,9 @@ public class RandomiseTeamsCommand extends AbstractCommand {
                         getSender().sendMessage("Too many teams generated. Failed.");
                         return;
                     }
-                    final UHCTeam team = new UHCTeam(teamColor, String.join(",", teams.get(i)), mapColorToTeamColor(teamColor));
+                    final String teamPlayers = String.join(",", teams.get(i));
+                    Bukkit.broadcastMessage(String.format("Team %s: %s", teamColor, teamPlayers));
+                    final UHCTeam team = new UHCTeam(teamColor, teamPlayers, mapColorToTeamColor(teamColor));
                     UHCTeam.createTeam(team);
                 }
             }

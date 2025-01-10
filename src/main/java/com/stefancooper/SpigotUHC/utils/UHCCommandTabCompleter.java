@@ -19,7 +19,7 @@ public class UHCCommandTabCompleter implements TabCompleter {
         if (command.getName().equalsIgnoreCase("uhc")) {
             // First argument
             if (args.length == 1) {
-                suggestions.addAll(Arrays.asList("set", "view", "start", "resume", "latestart", "cancel", "pvp"));
+                suggestions.addAll(Arrays.asList("set", "view", "start", "resume", "latestart", "cancel", "pvp", "randomise"));
             }
             // Suggestions for "set" command
             else if (args.length >= 2 && (args[0].equalsIgnoreCase("set"))) {

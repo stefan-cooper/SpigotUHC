@@ -16,6 +16,8 @@ You can configure your UHC in the server (see [Configuring](#configuring)) or yo
 
 The following configurations are available for managing your UHC:
 
+### Required Properties (they have defaults)
+
 ```properties
 # Name of the minecraft overworld
 world.name=world
@@ -47,9 +49,9 @@ world.border.shrinking.period=7200
 on.death.action=spectate
 ```
 
-Optional properties:
+### Optional properties:
 
-Teams:
+#### Team configuration
 
 ```properties
 # Team Blue players (comma seperated e.g team.orange=player1,player2) - Note: This is caps sensitive
@@ -68,7 +70,7 @@ team.pink=SimplySquare
 team.purple=Rking42
 ```
 
-Revive:
+#### Revive configuration
 
 ```properties
 # Enable revive
@@ -97,7 +99,8 @@ revive.location.size=10
 revive.any.head=false
 ```
 
-Loot Chest:
+#### Loot chest configuration
+
 ```properties
 # Enable loot chest
 loot.chest.enabled=true
@@ -117,7 +120,15 @@ loot.chest.mid.loot.odds=40
 loot.chest.spins.per.gen=5
 ```
 
-Miscellaneous:
+#### Randomise team configuration
+
+```properties
+random.teams.pot.1=badTHREEEK,someoneelse
+random.teams.pot.2=chuckle_chuckle,someoneelse2
+random.teams.pot.3=JawadJ,someoneelse3
+```
+
+#### Misc configuration
 
 ```properties
 # (optional) drop player heads who are killed that can be crafted into golden apples
@@ -181,6 +192,14 @@ e.g: `/uhc resume 30`
 `/uhc pvp <true|false>`
 
 e.g: `/uhc pvp true`
+
+#### Randomise teams:
+
+`/uhc randomise <teamSize>`
+
+e.g: `/uhc randomise 3`
+
+* Note: This command requires the setting of the following config values: `random.teams.pot.1`, `random.teams.pot.2`, `random.teams.pot.3`. See [here](#randomise-team-configuration)
 
 #### Late start player midway during a UHC
 

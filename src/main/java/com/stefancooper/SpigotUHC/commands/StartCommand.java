@@ -10,6 +10,7 @@ import com.stefancooper.SpigotUHC.types.UHCLoot;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.GameMode;
+import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
@@ -79,6 +80,7 @@ public class StartCommand extends AbstractCommand {
             world.setTime(1000);
             world.setDifficulty(Difficulty.PEACEFUL);
             world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).forEach(Entity::remove);
+            world.setGameRule(GameRule.FALL_DAMAGE, true);
         });
 
         // Actions on the player

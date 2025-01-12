@@ -7,6 +7,7 @@ import com.stefancooper.SpigotUHC.utils.Utils;
 import org.bukkit.Difficulty;
 import java.util.Arrays;
 import org.bukkit.GameMode;
+import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -24,6 +25,7 @@ import static com.stefancooper.SpigotUHC.Defaults.DEFAULT_NETHER_WORLD_NAME;
 import static com.stefancooper.SpigotUHC.Defaults.DEFAULT_WORLD_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static utils.TestUtils.WorldAssertion;
@@ -64,6 +66,8 @@ public class StartTest {
         PlayerMock admin = server.addPlayer();
         admin.setOp(true);
 
+        world.setGameRule(GameRule.FALL_DAMAGE, false);
+
         PlayerMock player1 = server.addPlayer();
         player1.setHealth(10);
         player1.giveExp(100);
@@ -76,11 +80,13 @@ public class StartTest {
 
         assertEquals(1, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
         assertFalse(world.getPVP());
+        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.FALL_DAMAGE));
 
         server.execute("uhc", admin, "start");
 
         assertFalse(world.getPVP());
         assertEquals(0, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
+        assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRule.FALL_DAMAGE));
 
         server.getOnlinePlayers().forEach(player -> {
             assertEquals(20.0, player.getHealth());

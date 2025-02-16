@@ -200,7 +200,7 @@ public class BaseEvents implements Listener {
 
         if (Boolean.TRUE.equals(config.getProperty(ENABLE_DEATH_CHAT)) && gameMode.equals(GameMode.SPECTATOR)) {
             System.out.println("Removing alive players from recipients");
-            final List<Player> alivePlayers = (List<Player>) Bukkit.getOnlinePlayers().stream().toList();
+            final List<Player> alivePlayers = (List<Player>) Bukkit.getOnlinePlayers().stream().filter(player -> player.getGameMode().equals(GameMode.SURVIVAL));
             alivePlayers.forEach(player -> event.getRecipients().remove(player));
             event.setMessage(String.format("(Death Chat) %s", event.getMessage()));
         }

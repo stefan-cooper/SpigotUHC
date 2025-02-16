@@ -15,6 +15,8 @@ public enum ConfigKey {
     WORLD_BORDER_GRACE_PERIOD("world.border.grace.period"), // Grace period time (in seconds) before the border will begin to shrink
     WORLD_BORDER_CENTER_X("world.border.center.x"), // World border center X coord
     WORLD_BORDER_CENTER_Z("world.border.center.z"), // World border center Z coord
+    WORLD_BORDER_FINAL_Y("world.border.final.y"), // World border final Y coord
+    WORLD_BORDER_Y_SHRINKING_PERIOD("world.border.y.shrinking.period"), // World border time to shrink to the final y coord
     SPREAD_MIN_DISTANCE("spread.min.distance"), // minimum distance that players will be spread across the world
     ON_DEATH_ACTION("on.death.action"), // Action to undertake when a player dies ("spectate" | "kick")
     // ----- End required config -----

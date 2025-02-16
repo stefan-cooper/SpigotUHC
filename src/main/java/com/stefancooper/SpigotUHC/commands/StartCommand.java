@@ -22,6 +22,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.potion.PotionEffectType;
 import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.utils.Utils;
+import org.bukkit.scheduler.BukkitTask;
 
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.COUNTDOWN_TIMER_LENGTH;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DIFFICULTY;
@@ -31,13 +32,18 @@ import static com.stefancooper.SpigotUHC.enums.ConfigKey.SPREAD_MIN_DISTANCE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_CENTER_X;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_CENTER_Z;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_FINAL_SIZE;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_FINAL_Y;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_GRACE_PERIOD;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_INITIAL_SIZE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_SHRINKING_PERIOD;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_Y_SHRINKING_PERIOD;
 
 public class StartCommand extends AbstractCommand {
 
     public static final String COMMAND_KEY = "start";
+
+    private static int shrinkYBorderBlock;
+    private BukkitTask runner;
 
     public StartCommand(CommandSender sender, Command cmd, String[] args, Config config) {
         super(sender, cmd, args, config);
@@ -45,6 +51,8 @@ public class StartCommand extends AbstractCommand {
 
     @Override
     public void execute() {
+        shrinkYBorderBlock = -64;
+
         // Worlds
         final World world = getConfig().getWorlds().getOverworld();
         final World nether = getConfig().getWorlds().getNether();
@@ -143,6 +151,20 @@ public class StartCommand extends AbstractCommand {
             new UHCLoot(getConfig());
         }
 
+//        getConfig().getManagedResources().runRepeatingTask(testYBorder(), 10);
+//        getConfig().getManagedResources().runTaskLater(testYBorder(60), 0);
+//        getConfig().getManagedResources().runTaskLater(testYBorder(61), 10);
+//        getConfig().getManagedResources().runTaskLater(testYBorder(62), 10);
+//        getConfig().getManagedResources().runTaskLater(testYBorder(63), 20);
+//        getConfig().getManagedResources().runTaskLater(testYBorder(64), 30);
+//        getConfig().getManagedResources().runTaskLater(testYBorder(65), 40);
+//        getConfig().getManagedResources().runTaskLater(testYBorder(66), 50);
+//        getConfig().getManagedResources().runTaskLater(testYBorder(67), 60);
+//        getConfig().getManagedResources().runTaskLater(testYBorder(68), 70);
+//        getConfig().getManagedResources().runTaskLater(testYBorder(69), 80);
+//        getConfig().getManagedResources().runTaskLater(testYBorder(70), 90);
+
+
         getConfig().getPlugin().setStarted(true);
     }
 
@@ -187,7 +209,42 @@ public class StartCommand extends AbstractCommand {
                 wb.setSize(Double.parseDouble(finalWorldBorderSize), Long.parseLong(shrinkingTime));
             });
 
+            getConfig().getManagedResources().runTaskLater(shrinkYBorderOverTime(), Integer.parseInt(shrinkingTime));
+
             Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle("World border shrinking", "Don't get caught..."));
         };
     }
+
+    protected Runnable shrinkYBorderOverTime() {
+        return () -> {
+            final int centerX = Integer.parseInt(getConfig().getProp(WORLD_BORDER_CENTER_X.configName));
+            final int centerZ = Integer.parseInt(getConfig().getProp(WORLD_BORDER_CENTER_Z.configName));
+            final int finalSize = Integer.parseInt(getConfig().getProp(WORLD_BORDER_FINAL_SIZE.configName));
+            final int finalY = Integer.parseInt(getConfig().getProp(WORLD_BORDER_FINAL_Y.configName));
+            final int shrinkTime = Integer.parseInt(getConfig().getProp(WORLD_BORDER_Y_SHRINKING_PERIOD.configName));
+            final int interval = shrinkTime / (finalY - shrinkYBorderBlock);
+
+            int eitherSide = finalSize / 2;
+            int corner1X = centerX + eitherSide;
+            int corner2X = centerX - eitherSide;
+            int corner1Z = centerZ + eitherSide;
+            int corner2Z = centerZ - eitherSide;
+
+            runner = getConfig().getManagedResources().runRepeatingTask(() -> {
+                shrinkYBorderBlock++;
+                final String fillCommand = String.format("fill %s %s %s %s %s %s minecraft:bedrock", corner1X, shrinkYBorderBlock, corner1Z, corner2X, shrinkYBorderBlock, corner2Z);
+                getSender().getServer().dispatchCommand(getSender(), fillCommand);
+                if (shrinkYBorderBlock >= finalY) {
+                    runner.cancel();
+                }
+            }, interval);
+        };
+    }
+
+//    protected Runnable shrinkYBorder() {
+//        return () -> {
+//            final String fillCommand = String.format("fill 74 %s 74 -75 %s -75 minecraft:bedrock", y, y);
+//            getSender().getServer().dispatchCommand(getSender(), fillCommand);
+//        };
+//    }
 }

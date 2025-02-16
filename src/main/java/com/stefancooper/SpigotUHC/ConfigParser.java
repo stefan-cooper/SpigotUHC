@@ -16,14 +16,14 @@ import org.bukkit.WorldBorder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
 
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.COUNTDOWN_TIMER_LENGTH;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.CRAFTABLE_NOTCH_APPLE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.CRAFTABLE_PLAYER_HEAD;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DIFFICULTY;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.DISABLE_END_GAME_AUTOMATICALLY;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DISABLE_WITCHES;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.ENABLE_DEATH_CHAT;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.ENABLE_TIMESTAMPS;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.GRACE_PERIOD_TIMER;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_ENABLED;
@@ -116,6 +116,8 @@ public class ConfigParser {
             case DIFFICULTY -> new Configurable<>(DIFFICULTY, Difficulty.valueOf(value));
             case WORLD_BORDER_IN_BOSSBAR -> new Configurable<>(WORLD_BORDER_IN_BOSSBAR, Boolean.parseBoolean(value));
             case ENABLE_TIMESTAMPS -> new Configurable<>(ENABLE_TIMESTAMPS, Boolean.parseBoolean(value));
+            case ENABLE_DEATH_CHAT -> new Configurable<>(ENABLE_DEATH_CHAT, Boolean.parseBoolean(value));
+            case DISABLE_END_GAME_AUTOMATICALLY -> new Configurable<>(DISABLE_END_GAME_AUTOMATICALLY, Boolean.parseBoolean(value));
             case RANDOM_FINAL_LOCATION -> new Configurable<>(RANDOM_FINAL_LOCATION, Boolean.parseBoolean(value));
             case DISABLE_WITCHES -> new Configurable<>(DISABLE_WITCHES, Boolean.parseBoolean(value));
             case CRAFTABLE_NOTCH_APPLE -> new Configurable<>(CRAFTABLE_NOTCH_APPLE, Boolean.parseBoolean(value));

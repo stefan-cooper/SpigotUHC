@@ -16,6 +16,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -188,5 +189,22 @@ public class BaseEvents implements Listener {
         if (Boolean.TRUE.equals(config.getProperty(DISABLE_WITCHES)) && event.getEntity().getType().equals(EntityType.WITCH)) {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onChatMessage(AsyncPlayerChatEvent event) {
+        final Player sender = event.getPlayer();
+        final GameMode gameMode = sender.getGameMode();
+
+        System.out.println(Arrays.toString(event.getRecipients().toArray()));
+
+        if (Boolean.TRUE.equals(config.getProperty(ENABLE_DEATH_CHAT)) && gameMode.equals(GameMode.SPECTATOR)) {
+            System.out.println("Removing alive players from recipients");
+            final List<Player> alivePlayers = (List<Player>) Bukkit.getOnlinePlayers().stream().toList();
+            alivePlayers.forEach(player -> event.getRecipients().remove(player));
+            event.setMessage(String.format("(Death Chat) %s", event.getMessage()));
+        }
+
+        System.out.println(Arrays.toString(event.getRecipients().toArray()));
     }
 }

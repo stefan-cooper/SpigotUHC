@@ -33,6 +33,8 @@ public enum ConfigKey {
     // Misc Enums
     PLAYER_HEAD_GOLDEN_APPLE("player.head.golden.apple"), // (optional) drop player heads who are killed that can be crafted into golden apples
     ENABLE_TIMESTAMPS("enable.timestamps"), // Get timestamps in txt file of notable events
+    ENABLE_DEATH_CHAT("enable.death.chat"), // active players cannot see messages from spectators
+    DISABLE_END_GAME_AUTOMATICALLY("disable.end.game.automatically"), // disable the end game automatically (mainly for dev purposes)
     RANDOM_FINAL_LOCATION("random.final.location"), // Use a random final location
     WORLD_BORDER_IN_BOSSBAR("world.border.in.bossbar"), // Add the world border into the bossbar
     WORLD_SPAWN_X("world.spawn.x"), // X coordinate for world spawn when a UHC is not active

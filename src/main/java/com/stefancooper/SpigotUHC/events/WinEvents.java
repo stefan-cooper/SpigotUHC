@@ -37,7 +37,7 @@ public class WinEvents implements Listener {
 
         List<UHCTeam> teamsWithSurvivors = getTeamsWithSurvivors();
 
-        if (teamsWithSurvivors.size() == 1) {
+        if (Boolean.FALSE.equals(config.getProperty(DISABLE_END_GAME_AUTOMATICALLY)) && teamsWithSurvivors.size() == 1) {
             UHCTeam winningTeam = teamsWithSurvivors.getFirst();
             String winningTeamName = winningTeam.getName();
             List<String> winningTeamMembers = new ArrayList<>(Bukkit.getScoreboardManager().getMainScoreboard().getTeam(winningTeamName).getEntries());

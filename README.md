@@ -38,7 +38,7 @@ world.border.center.x=0
 # World border center Z coord
 world.border.center.z=0
 # Final size of the world border at the end of the UHC
-world.border.final.size=500
+world.border.final.size=150
 # Grace period time (in seconds) before the border will begin to shrink
 world.border.grace.period=3600
 # Initial size world border at start of the UHC
@@ -50,6 +50,19 @@ on.death.action=spectate
 ```
 
 ### Optional properties:
+
+#### World border
+
+```properties
+# (optional) world border y border. Setting this and the world.border.y.shrinking.period means that after 
+#            the final xz border is finished shrinking, the y border will begin shrinking from the bottom 
+#            of the map up to this coordinate by replacing the layers with bedrock.
+#
+#            Note: this only works if the `world.border.final.size` value is 300 or less
+world.border.final.y=60
+# (optional) length of time in seconds to shrink the y border by
+world.border.y.shrinking.period=900
+```
 
 #### Team configuration
 
@@ -153,6 +166,11 @@ craftable.notch.apples=true
 craftable.player.heads=true
 # (optional) whisper the location of dead teammates when they die
 whisper.teammate.dead.location=true
+# (optional) disable the end game automatically (mainly for dev purposes)
+disable.end.game.automatically=false
+# (optional) active players cannot see messages from spectators
+enable.death.chat=true
+
 ```
 
 ## Commands

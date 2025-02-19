@@ -37,6 +37,7 @@ import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_GRACE_PERI
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_INITIAL_SIZE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_SHRINKING_PERIOD;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_Y_SHRINKING_PERIOD;
+import static com.stefancooper.SpigotUHC.utils.Constants.MAXIMUM_FINAL_SIZE_FOR_Y_SHRINK;
 
 public class StartCommand extends AbstractCommand {
 
@@ -151,20 +152,6 @@ public class StartCommand extends AbstractCommand {
             new UHCLoot(getConfig());
         }
 
-//        getConfig().getManagedResources().runRepeatingTask(testYBorder(), 10);
-//        getConfig().getManagedResources().runTaskLater(testYBorder(60), 0);
-//        getConfig().getManagedResources().runTaskLater(testYBorder(61), 10);
-//        getConfig().getManagedResources().runTaskLater(testYBorder(62), 10);
-//        getConfig().getManagedResources().runTaskLater(testYBorder(63), 20);
-//        getConfig().getManagedResources().runTaskLater(testYBorder(64), 30);
-//        getConfig().getManagedResources().runTaskLater(testYBorder(65), 40);
-//        getConfig().getManagedResources().runTaskLater(testYBorder(66), 50);
-//        getConfig().getManagedResources().runTaskLater(testYBorder(67), 60);
-//        getConfig().getManagedResources().runTaskLater(testYBorder(68), 70);
-//        getConfig().getManagedResources().runTaskLater(testYBorder(69), 80);
-//        getConfig().getManagedResources().runTaskLater(testYBorder(70), 90);
-
-
         getConfig().getPlugin().setStarted(true);
     }
 
@@ -209,7 +196,11 @@ public class StartCommand extends AbstractCommand {
                 wb.setSize(Double.parseDouble(finalWorldBorderSize), Long.parseLong(shrinkingTime));
             });
 
-            getConfig().getManagedResources().runTaskLater(shrinkYBorderOverTime(), Integer.parseInt(shrinkingTime));
+            if (Optional.ofNullable(getConfig().getProperty(WORLD_BORDER_Y_SHRINKING_PERIOD)).isPresent() &&
+                    Optional.ofNullable(getConfig().getProperty(WORLD_BORDER_FINAL_Y)).isPresent() &&
+                        Integer.parseInt(finalWorldBorderSize) <= MAXIMUM_FINAL_SIZE_FOR_Y_SHRINK) {
+                getConfig().getManagedResources().runTaskLater(shrinkYBorderOverTime(), Integer.parseInt(shrinkingTime));
+            }
 
             Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle("World border shrinking", "Don't get caught..."));
         };
@@ -240,11 +231,4 @@ public class StartCommand extends AbstractCommand {
             }, interval);
         };
     }
-
-//    protected Runnable shrinkYBorder() {
-//        return () -> {
-//            final String fillCommand = String.format("fill 74 %s 74 -75 %s -75 minecraft:bedrock", y, y);
-//            getSender().getServer().dispatchCommand(getSender(), fillCommand);
-//        };
-//    }
 }

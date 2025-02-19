@@ -16,6 +16,7 @@ import java.util.Properties;
 
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.*;
 import static com.stefancooper.SpigotUHC.enums.DeathAction.SPECTATE;
+import static com.stefancooper.SpigotUHC.utils.Constants.MAXIMUM_FINAL_SIZE_FOR_Y_SHRINK;
 
 public class Defaults {
 
@@ -24,7 +25,7 @@ public class Defaults {
     public static String DEFAULT_NETHER_WORLD_NAME = "world_nether";
     public static String DEFAULT_END_WORLD_NAME = "world_the_end";
     public static String DEFAULT_WORLD_BORDER_INITIAL_SIZE = "2000";
-    public static String DEFAULT_WORLD_BORDER_FINAL_SIZE = "500";
+    public static String DEFAULT_WORLD_BORDER_FINAL_SIZE = "150";
     public static String DEFAULT_WORLD_BORDER_SHRINKING_PERIOD = "7200";
     public static String DEFAULT_WORLD_BORDER_GRACE_PERIOD = "1800";
     public static String DEFAULT_WORLD_BORDER_CENTER_X = "0";
@@ -58,6 +59,7 @@ public class Defaults {
         Utils.setWorldEffects(List.of(config.getWorlds().getOverworld(), config.getWorlds().getNether(), config.getWorlds().getEnd()), (world) -> {
             world.setGameRule(GameRule.NATURAL_REGENERATION, false);
             world.setGameRule(GameRule.DO_INSOMNIA, false);
+            world.setGameRule(GameRule.COMMAND_MODIFICATION_BLOCK_LIMIT, MAXIMUM_FINAL_SIZE_FOR_Y_SHRINK * MAXIMUM_FINAL_SIZE_FOR_Y_SHRINK); // square the maximum final size to be used in y shrink
             // set pvp to false, will be enabled when /uhc start is ran
             world.setPVP(false);
         });

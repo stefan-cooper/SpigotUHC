@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
-public class SpreadServerMock extends ServerMock {
+public class DispatchCommandServerMock extends ServerMock {
 
     @Override
     public boolean dispatchCommand(@NotNull CommandSender sender, @NotNull String commandLine)
@@ -21,6 +21,9 @@ public class SpreadServerMock extends ServerMock {
 
         if (command != null) {
             return command.execute(sender, commandLabel, args);
+        } else if (commandLabel.equals("fill")) {
+            sender.sendMessage(commandLine);
+            return true;
         } else if (commandLabel.equals("spreadplayers")) {
             sender.sendMessage(commandLine);
             return true;

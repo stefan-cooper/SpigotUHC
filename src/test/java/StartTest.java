@@ -206,5 +206,6 @@ public class StartTest {
             assertEquals( 10, Math.round(world.getWorldBorder().getSize()));
             assertTrue(world.getPVP());
         });
+        admin.assertNoMoreSaid();
     }
 }

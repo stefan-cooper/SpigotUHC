@@ -2,7 +2,7 @@ import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import com.stefancooper.SpigotUHC.Plugin;
-import mocks.servers.SpreadServerMock;
+import mocks.servers.DispatchCommandServerMock;
 import org.bukkit.World;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -21,7 +21,7 @@ public class SpreadPlayersTest {
     @BeforeAll
     public static void load()
     {
-        server = MockBukkit.mock(new SpreadServerMock());
+        server = MockBukkit.mock(new DispatchCommandServerMock());
         plugin = MockBukkit.load(Plugin.class);
         world = server.getWorld(DEFAULT_WORLD_NAME);
     }

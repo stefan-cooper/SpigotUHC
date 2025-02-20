@@ -1,9 +1,9 @@
-import be.seeseemelk.mockbukkit.MockBukkit;
-import be.seeseemelk.mockbukkit.ServerMock;
-import be.seeseemelk.mockbukkit.WorldBorderMock;
-import be.seeseemelk.mockbukkit.WorldMock;
-import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import be.seeseemelk.mockbukkit.scheduler.BukkitSchedulerMock;
+import org.mockbukkit.mockbukkit.MockBukkit;
+import org.mockbukkit.mockbukkit.ServerMock;
+import org.mockbukkit.mockbukkit.world.WorldBorderMock;
+import org.mockbukkit.mockbukkit.world.WorldMock;
+import org.mockbukkit.mockbukkit.entity.PlayerMock;
+import org.mockbukkit.mockbukkit.scheduler.BukkitSchedulerMock;
 import com.stefancooper.SpigotUHC.Plugin;
 import com.stefancooper.SpigotUHC.utils.Utils;
 import mocks.servers.DispatchCommandServerMock;

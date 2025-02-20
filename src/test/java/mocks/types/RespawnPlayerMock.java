@@ -1,7 +1,7 @@
 package mocks.types;
 
-import be.seeseemelk.mockbukkit.ServerMock;
-import be.seeseemelk.mockbukkit.entity.PlayerMock;
+import org.mockbukkit.mockbukkit.ServerMock;
+import org.mockbukkit.mockbukkit.entity.PlayerMock;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
@@ -27,7 +27,7 @@ public class RespawnPlayerMock extends PlayerMock {
         @Override
         public void respawn()
         {
-            setHealth(getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
+            setHealth(getAttribute(Attribute.MAX_HEALTH).getValue());
             setLocation(new Location(getWorld(), 0, 64, 0));
             alive = true;
         }

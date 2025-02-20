@@ -1,9 +1,9 @@
-import be.seeseemelk.mockbukkit.MockBukkit;
-import be.seeseemelk.mockbukkit.ServerMock;
-import be.seeseemelk.mockbukkit.block.BlockMock;
-import be.seeseemelk.mockbukkit.block.state.ChestMock;
-import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import be.seeseemelk.mockbukkit.scheduler.BukkitSchedulerMock;
+import org.mockbukkit.mockbukkit.MockBukkit;
+import org.mockbukkit.mockbukkit.ServerMock;
+import org.mockbukkit.mockbukkit.block.BlockMock;
+import org.mockbukkit.mockbukkit.block.state.ChestStateMock;
+import org.mockbukkit.mockbukkit.entity.PlayerMock;
+import org.mockbukkit.mockbukkit.scheduler.BukkitSchedulerMock;
 import com.stefancooper.SpigotUHC.Plugin;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -50,7 +50,7 @@ public class UHCLootTest {
         MockBukkit.unmock();
     }
 
-    private List<ItemStack> getLatestChestContents(ChestMock chest) {
+    private List<ItemStack> getLatestChestContents(ChestStateMock chest) {
         return Arrays.stream(chest.getBlockInventory().getStorageContents()).filter(item -> item != null && item.getType() != Material.AIR).toList();
     }
 
@@ -75,7 +75,7 @@ public class UHCLootTest {
 
         // start uhc (so the world spawn should now be ignored)
         Block chestBlock = world.getBlockAt(new Location(world, x, y, z));
-        ChestMock chest = (ChestMock) chestBlock.getState();
+        ChestStateMock chest = (ChestStateMock) chestBlock.getState();
         final List<ItemStack> initialContents = getLatestChestContents(chest);
         assertEquals(0, initialContents.size());
 

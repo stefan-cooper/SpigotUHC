@@ -213,7 +213,7 @@ public class StartCommand extends AbstractCommand {
             final int finalSize = Integer.parseInt(getConfig().getProp(WORLD_BORDER_FINAL_SIZE.configName));
             final int finalY = Integer.parseInt(getConfig().getProp(WORLD_BORDER_FINAL_Y.configName));
             final int shrinkTime = Integer.parseInt(getConfig().getProp(WORLD_BORDER_Y_SHRINKING_PERIOD.configName));
-            final int interval = shrinkTime / (finalY - shrinkYBorderBlock);
+            final int interval = shrinkTime / (finalY + 64);
 
             int eitherSide = finalSize / 2;
             int corner1X = centerX + eitherSide;
@@ -224,7 +224,7 @@ public class StartCommand extends AbstractCommand {
             runner = getConfig().getManagedResources().runRepeatingTask(() -> {
                 shrinkYBorderBlock++;
                 final String fillCommand = String.format("fill %s %s %s %s %s %s minecraft:bedrock", corner1X, shrinkYBorderBlock, corner1Z, corner2X, shrinkYBorderBlock, corner2Z);
-                getSender().getServer().dispatchCommand(getSender(), fillCommand);
+                getSender().getServer().dispatchCommand(Bukkit.getConsoleSender(), fillCommand);
                 if (shrinkYBorderBlock >= finalY) {
                     runner.cancel();
                 }

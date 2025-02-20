@@ -79,6 +79,7 @@ public class ShrinkYBorderTest {
         BukkitSchedulerMock schedule = server.getScheduler();
 
         PlayerMock admin = server.addPlayer();
+        admin.setName("admin");
         admin.setOp(true);
 
         server.execute("uhc", admin, "set",

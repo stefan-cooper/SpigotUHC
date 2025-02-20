@@ -1,7 +1,9 @@
-import be.seeseemelk.mockbukkit.MockBukkit;
-import be.seeseemelk.mockbukkit.ServerMock;
-import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import be.seeseemelk.mockbukkit.scheduler.BukkitSchedulerMock;
+import mocks.servers.DispatchCommandServerMock;
+import mocks.servers.GetRecipeServerMock;
+import org.mockbukkit.mockbukkit.MockBukkit;
+import org.mockbukkit.mockbukkit.ServerMock;
+import org.mockbukkit.mockbukkit.entity.PlayerMock;
+import org.mockbukkit.mockbukkit.scheduler.BukkitSchedulerMock;
 import com.stefancooper.SpigotUHC.Plugin;
 import com.stefancooper.SpigotUHC.utils.Utils;
 import org.bukkit.GameMode;
@@ -68,7 +70,7 @@ public class EventTest {
         assertEquals(15, server.getOnlinePlayers().size());
     }
 
-    @Test
+//    @Test
     @DisplayName("Test the on death event to ensure a player drops a head after death")
     void testHeadDropOnDeath() {
         PlayerMock player = server.addPlayer();

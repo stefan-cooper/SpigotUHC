@@ -1,7 +1,7 @@
 package mocks.servers;
 
-import be.seeseemelk.mockbukkit.AsyncCatcher;
-import be.seeseemelk.mockbukkit.ServerMock;
+import org.mockbukkit.mockbukkit.AsyncCatcher;
+import org.mockbukkit.mockbukkit.ServerMock;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

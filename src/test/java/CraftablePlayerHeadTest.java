@@ -1,6 +1,7 @@
-import be.seeseemelk.mockbukkit.MockBukkit;
-import be.seeseemelk.mockbukkit.ServerMock;
-import be.seeseemelk.mockbukkit.entity.PlayerMock;
+import mocks.servers.GetRecipeServerMock;
+import org.mockbukkit.mockbukkit.MockBukkit;
+import org.mockbukkit.mockbukkit.ServerMock;
+import org.mockbukkit.mockbukkit.entity.PlayerMock;
 import com.stefancooper.SpigotUHC.Plugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -14,7 +15,6 @@ import org.junit.jupiter.api.Test;
 
 import static com.stefancooper.SpigotUHC.Defaults.DEFAULT_WORLD_NAME;
 import static com.stefancooper.SpigotUHC.utils.Constants.CRAFTABLE_PLAYER_HEAD;
-import static com.stefancooper.SpigotUHC.utils.Constants.NOTCH_APPLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CraftablePlayerHeadTest {

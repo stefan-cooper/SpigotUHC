@@ -47,7 +47,7 @@ public class LateStartCommand extends StartCommand {
         // Set starting stats
         player.setGameMode(GameMode.SURVIVAL);
         player.resetMaxHealth();
-        double maxHealth = player.getAttribute(Attribute.GENERIC_MAX_HEALTH).getDefaultValue();
+        double maxHealth = player.getAttribute(Attribute.MAX_HEALTH).getDefaultValue();
         player.setHealth(maxHealth);
         player.setSaturation(20);
         player.setFoodLevel(20);

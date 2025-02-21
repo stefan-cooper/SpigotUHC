@@ -27,7 +27,7 @@ public class RespawnPlayerMock extends PlayerMock {
         @Override
         public void respawn()
         {
-            setHealth(getAttribute(Attribute.MAX_HEALTH).getValue());
+            setHealth(getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());
             setLocation(new Location(getWorld(), 0, 64, 0));
             alive = true;
         }

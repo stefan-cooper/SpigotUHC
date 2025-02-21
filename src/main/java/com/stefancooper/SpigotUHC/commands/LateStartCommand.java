@@ -47,7 +47,14 @@ public class LateStartCommand extends StartCommand {
         // Set starting stats
         player.setGameMode(GameMode.SURVIVAL);
         player.resetMaxHealth();
-        double maxHealth = player.getAttribute(Attribute.MAX_HEALTH).getDefaultValue();
+        double maxHealth;
+        // TODO - remove this try/catch when https://github.com/stefan-cooper/SpigotUHC/issues/109 is resolved
+        try {
+            maxHealth  = player.getAttribute(Attribute.MAX_HEALTH).getDefaultValue();
+        } catch (NoSuchFieldError e) {
+            maxHealth = 20.0;
+        }
+
         player.setHealth(maxHealth);
         player.setSaturation(20);
         player.setFoodLevel(20);

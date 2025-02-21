@@ -1,4 +1,3 @@
-import mocks.servers.GetRecipeServerMock;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;

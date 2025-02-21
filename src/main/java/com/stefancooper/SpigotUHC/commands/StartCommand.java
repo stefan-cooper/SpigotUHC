@@ -94,14 +94,8 @@ public class StartCommand extends AbstractCommand {
 
         // Actions on the player
         Bukkit.getOnlinePlayers().forEach(player -> {
-            double maxHealth;
-            // TODO - remove this try/catch when https://github.com/stefan-cooper/SpigotUHC/issues/109 is resolved
-            try {
-                maxHealth  = player.getAttribute(Attribute.MAX_HEALTH).getDefaultValue();
-            } catch (NoSuchFieldError e) {
-                maxHealth = 20.0;
-            }
             player.resetMaxHealth();
+            double maxHealth = player.getAttribute(Attribute.MAX_HEALTH).getDefaultValue();
             player.setHealth(maxHealth);
             player.setSaturation(20);
             player.setFoodLevel(20);

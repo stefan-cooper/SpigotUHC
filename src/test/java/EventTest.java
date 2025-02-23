@@ -68,7 +68,7 @@ public class EventTest {
         assertEquals(15, server.getOnlinePlayers().size());
     }
 
-//    @Test
+    @Test
     @DisplayName("Test the on death event to ensure a player drops a head after death")
     void testHeadDropOnDeath() {
         PlayerMock player = server.addPlayer();

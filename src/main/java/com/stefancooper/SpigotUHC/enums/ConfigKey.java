@@ -68,6 +68,8 @@ public enum ConfigKey {
     LOOT_CHEST_X("loot.chest.x"), // Chest x
     LOOT_CHEST_Y("loot.chest.y"), // Chest y
     LOOT_CHEST_Z("loot.chest.z"), // Chest z
+    LOOT_CHEST_X_RANGE("loot.chest.x.range"), // Chest x range (e.g loot.chest.x.range=x1,x2)
+    LOOT_CHEST_Z_RANGE("loot.chest.z.range"), // Chest z range (e.g loot.chest.z.range=x1,x2)
     LOOT_CHEST_FREQUENCY("loot.chest.frequency"), // Frequency of loot gen (in seconds)
     LOOT_CHEST_HIGH_LOOT_ODDS("loot.chest.high.loot.odds"), // % odds of a high loot item spawning (per spin)
     LOOT_CHEST_MID_LOOT_ODDS("loot.chest.mid.loot.odds"), // % odds of a mid loot item spawning (per spin)

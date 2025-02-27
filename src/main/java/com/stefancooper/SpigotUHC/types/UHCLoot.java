@@ -3,6 +3,7 @@ package com.stefancooper.SpigotUHC.types;
 import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.utils.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -15,6 +16,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionType;
+import org.bukkit.scheduler.BukkitTask;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -24,9 +27,11 @@ import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_HIGH_LOOT_OD
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_MID_LOOT_ODDS;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_SPINS_PER_GEN;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_X;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_X_RANGE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_Y;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_Z;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_FREQUENCY;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_Z_RANGE;
 
 public class UHCLoot {
 
@@ -75,36 +80,69 @@ public class UHCLoot {
     );
 
     public UHCLoot(final Config config) {
-        final World world = config.getWorlds().getOverworld();
-        final Integer chestX = config.getProperty(LOOT_CHEST_X);
-        final Integer chestY = config.getProperty(LOOT_CHEST_Y);
-        final Integer chestZ = config.getProperty(LOOT_CHEST_Z);
+        if (!UHCLoot.isConfigured(config)) return;
         final Integer lootFrequency = config.getProperty(LOOT_CHEST_FREQUENCY);
+        final Random random = new Random();
 
-        Integer spawnRate = config.getProperty(LOOT_CHEST_SPINS_PER_GEN);
-        Integer highLootOdds = config.getProperty(LOOT_CHEST_HIGH_LOOT_ODDS);
-        Integer midLootOdds = config.getProperty(LOOT_CHEST_MID_LOOT_ODDS);
-
-        if (highLootOdds == null) highLootOdds = 5;
-        if (midLootOdds == null) midLootOdds = 40;
-        if (spawnRate == null) spawnRate = 5;
-
-        final Block lootChestBlock = world.getBlockAt(chestX, chestY, chestZ);
-        lootChestBlock.setType(Material.CHEST);
-        final Chest lootChest = (Chest) lootChestBlock.getState();
-
-        final int finalSpawnRate = spawnRate;
-        final int finalHighLootOdds = highLootOdds;
-        final int finalMidLootOdds = midLootOdds + finalHighLootOdds;
         config.getManagedResources().runRepeatingTask(() -> {
-            try {
-                world.spawnParticle(Particle.ENCHANT, new Location(world, chestX + 0.5, chestY + 1.5, chestZ + 0.5), 1000);
-            } catch (Exception e) {
-                // noop
-                // for some reason, this function is not implemented in MockBukkit but it is not worth us mocking
+            final Integer chestX = config.getProperty(LOOT_CHEST_X);
+            final Integer chestY = config.getProperty(LOOT_CHEST_Y);
+            final Integer chestZ = config.getProperty(LOOT_CHEST_Z);
+            final String chestXRange = config.getProperty(LOOT_CHEST_X_RANGE);
+            final String chestZRange = config.getProperty(LOOT_CHEST_Z_RANGE);
+
+            boolean usingStaticLootChestLocation;
+            if (chestX != null && chestY!= null && chestZ != null) {
+                usingStaticLootChestLocation = true;
+                System.out.println("SpigotUHC: Using static loot chest location");
+            } else if (chestXRange != null && chestZRange != null) {
+                usingStaticLootChestLocation = false;
+                System.out.println("SpigotUHC: Using dynamic loot chest location");
+            } else {
+                return;
             }
+            final World world = config.getWorlds().getOverworld();
+
+            final Block lootChestBlock;
+            if (usingStaticLootChestLocation) {
+                lootChestBlock = world.getBlockAt(chestX, chestY, chestZ);
+            } else {
+                final String[] chestXRangeList = chestXRange.split(",");
+                final String[] chestZRangeList = chestZRange.split(",");
+                final Block surfaceBlock = world.getHighestBlockAt(
+                        random.nextInt(Integer.parseInt(chestXRangeList[0]), Integer.parseInt(chestXRangeList[1])),
+                        random.nextInt(Integer.parseInt(chestZRangeList[0]), Integer.parseInt(chestZRangeList[1]))
+                );
+                lootChestBlock = world.getBlockAt(surfaceBlock.getX(), surfaceBlock.getY() + 1, surfaceBlock.getZ());
+                BukkitTask beam = config.getManagedResources().runRepeatingTask(() -> {
+                    for (int y = lootChestBlock.getY() + 3; y < 256; y += 3) {
+                        Utils.spawnDustParticle(world, new Location(world, lootChestBlock.getLocation().getX() + 0.5, y, lootChestBlock.getZ() + 0.5), 10, new Particle.DustOptions(Color.FUCHSIA, 100));
+                    }
+                }, 2);
+                config.getManagedResources().setDynamicLootChestLocation(lootChestBlock);
+                config.getManagedResources().runTaskLater(() -> {
+                    lootChestBlock.setType(Material.AIR);
+                    config.getManagedResources().cancelRepeatingTask(beam.getTaskId());
+                }, lootFrequency);
+            }
+
+            lootChestBlock.setType(Material.CHEST);
+            final Chest lootChest = (Chest) lootChestBlock.getState();
+
+            Integer spawnRate = config.getProperty(LOOT_CHEST_SPINS_PER_GEN);
+            Integer highLootOdds = config.getProperty(LOOT_CHEST_HIGH_LOOT_ODDS);
+            Integer midLootOdds = config.getProperty(LOOT_CHEST_MID_LOOT_ODDS);
+
+            if (highLootOdds == null) highLootOdds = 5;
+            if (midLootOdds == null) midLootOdds = 40;
+            if (spawnRate == null) spawnRate = 5;
+
+            final int finalSpawnRate = spawnRate;
+            final int finalHighLootOdds = highLootOdds;
+            final int finalMidLootOdds = midLootOdds + finalHighLootOdds;
+
+            Utils.spawnParticle(world, Particle.ENCHANT, new Location(world, lootChest.getX() + 0.5, lootChest.getY() + 1.5, lootChest.getZ() + 0.5), 1000);
             lootChest.getBlockInventory().clear();
-            final Random random = new Random();
             for (int i = 0; i < finalSpawnRate; i++) {
                 final int spin = random.nextInt(100) + 1;
                 final Material itemToAdd;
@@ -201,9 +239,11 @@ public class UHCLoot {
 
     public static boolean isConfigured(Config config) {
         final boolean enabled = Boolean.TRUE.equals(config.getProperty(LOOT_CHEST_ENABLED));
-        return enabled && config.getProperty(LOOT_CHEST_X) != null &&
-                config.getProperty(LOOT_CHEST_X) != null &&
+        return enabled && (config.getProperty(LOOT_CHEST_X) != null &&
                 config.getProperty(LOOT_CHEST_Y) != null &&
+                config.getProperty(LOOT_CHEST_Z) != null) ||
+                (config.getProperty(LOOT_CHEST_X_RANGE) != null &&
+                config.getProperty(LOOT_CHEST_Z_RANGE) != null) &&
                 config.getProperty(LOOT_CHEST_FREQUENCY) != null;
     }
 
@@ -211,7 +251,9 @@ public class UHCLoot {
         final Integer chestX = config.getProperty(LOOT_CHEST_X);
         final Integer chestY = config.getProperty(LOOT_CHEST_Y);
         final Integer chestZ = config.getProperty(LOOT_CHEST_Z);
-        if (chestX != null && chestY != null && chestZ != null) {
+        if (config.getManagedResources().getDynamicLootChestLocation() != null) {
+            return Optional.of(config.getManagedResources().getDynamicLootChestLocation().getLocation());
+        } else if (chestX != null && chestY != null && chestZ != null) {
             return Optional.of(new Location(config.getWorlds().getOverworld(), chestX, chestY, chestZ));
         }
         return Optional.empty();

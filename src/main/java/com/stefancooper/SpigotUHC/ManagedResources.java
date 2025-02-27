@@ -5,6 +5,7 @@ import com.stefancooper.SpigotUHC.types.Revive;
 import com.stefancooper.SpigotUHC.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -30,7 +31,7 @@ public class ManagedResources {
     final NamespacedKey notchApple;
     Revive currentRevive = null;
     BukkitTask reviveDebounce = null;
-
+    Block dynamicLootChestLocation = null;
 
     public ManagedResources(final Config config) {
         this.config = config;
@@ -105,5 +106,9 @@ public class ManagedResources {
             writer.close();
         } catch (Exception ignored) {}
     }
+
+    public Block getDynamicLootChestLocation() { return dynamicLootChestLocation; }
+
+    public void setDynamicLootChestLocation(final Block block) { dynamicLootChestLocation = block; }
 
 }

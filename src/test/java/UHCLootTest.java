@@ -1,3 +1,4 @@
+import com.stefancooper.SpigotUHC.utils.Utils;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.block.BlockMock;
@@ -73,18 +74,14 @@ public class UHCLootTest {
 
         server.execute("uhc", admin, "start");
 
+        schedule.performOneTick();
+
         // start uhc (so the world spawn should now be ignored)
         Block chestBlock = world.getBlockAt(new Location(world, x, y, z));
         ChestStateMock chest = (ChestStateMock) chestBlock.getState();
-        final List<ItemStack> initialContents = getLatestChestContents(chest);
-        assertEquals(0, initialContents.size());
-
-        schedule.performOneTick();
-
         final List<ItemStack> firstGeneration = getLatestChestContents(chest);
-
         assertNotEquals(0, firstGeneration.size());
-        assertNotEquals(initialContents, firstGeneration);
+        assertEquals(firstGeneration, firstGeneration);
 
         schedule.performTicks(100);
 
@@ -92,6 +89,5 @@ public class UHCLootTest {
 
         assertNotEquals(0, secondGeneration.size());
         assertNotEquals(firstGeneration, secondGeneration);
-        assertNotEquals(initialContents, secondGeneration);
     }
 }

@@ -31,9 +31,11 @@ import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_HIGH_LOOT_OD
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_MID_LOOT_ODDS;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_SPINS_PER_GEN;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_X;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_X_RANGE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_Y;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_Z;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_FREQUENCY;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_Z_RANGE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.ON_DEATH_ACTION;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.PLAYER_HEAD_GOLDEN_APPLE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_FINAL_LOCATION;
@@ -150,6 +152,8 @@ public class ConfigParser {
             case LOOT_CHEST_X -> new Configurable<>(LOOT_CHEST_X, Integer.valueOf(value));
             case LOOT_CHEST_Y -> new Configurable<>(LOOT_CHEST_Y, Integer.valueOf(value));
             case LOOT_CHEST_Z -> new Configurable<>(LOOT_CHEST_Z, Integer.valueOf(value));
+            case LOOT_CHEST_X_RANGE -> new Configurable<>(LOOT_CHEST_X_RANGE, value);
+            case LOOT_CHEST_Z_RANGE -> new Configurable<>(LOOT_CHEST_Z_RANGE, value);
             case LOOT_CHEST_FREQUENCY -> new Configurable<>(LOOT_CHEST_FREQUENCY, Integer.valueOf(value));
             case LOOT_CHEST_HIGH_LOOT_ODDS -> new Configurable<>(LOOT_CHEST_HIGH_LOOT_ODDS, Integer.valueOf(value));
             case LOOT_CHEST_SPINS_PER_GEN -> new Configurable<>(LOOT_CHEST_SPINS_PER_GEN, Integer.valueOf(value));

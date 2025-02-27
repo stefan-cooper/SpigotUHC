@@ -2,6 +2,9 @@ package com.stefancooper.SpigotUHC.utils;
 
 import com.stefancooper.SpigotUHC.Defaults;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 
@@ -57,6 +60,24 @@ public class Utils {
             return String.format("./src/test/java/resources/%s", fileName);
         } else {
             return String.format("./plugins/%s", fileName);
+        }
+    }
+
+    public static void spawnDustParticle(final World world, final Location location, final int count, final Particle.DustOptions dustOptions) {
+        try {
+            world.spawnParticle(Particle.DUST, location, count, 0.25, 0.25, 0.25, 0.0, dustOptions, true);
+        } catch (Exception e) {
+            // noop
+            // for some reason, this function is not implemented in MockBukkit but it is not worth us mocking
+        }
+    }
+
+    public static void spawnParticle(final World world, final Particle particle, final Location location, final int count) {
+        try {
+            world.spawnParticle(particle, location, count);
+        } catch (Exception e) {
+            // noop
+            // for some reason, this function is not implemented in MockBukkit but it is not worth us mocking
         }
     }
 

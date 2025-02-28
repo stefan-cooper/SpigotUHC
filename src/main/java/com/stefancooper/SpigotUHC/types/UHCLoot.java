@@ -21,6 +21,7 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.logging.Level;
 
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_ENABLED;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_HIGH_LOOT_ODDS;
@@ -91,12 +92,12 @@ public class UHCLoot {
 
         config.getManagedResources().runRepeatingTask(() -> {
             boolean usingStaticLootChestLocation;
-            if (chestX != null && chestY!= null && chestZ != null) {
+            if (chestX != null && chestY != null && chestZ != null) {
                 usingStaticLootChestLocation = true;
-                System.out.println("SpigotUHC: Using static loot chest location");
+                Bukkit.getLogger().log(Level.FINE, "SpigotUHC: Using static loot chest location");
             } else if (chestXRange != null && chestZRange != null) {
                 usingStaticLootChestLocation = false;
-                System.out.println("SpigotUHC: Using dynamic loot chest location");
+                Bukkit.getLogger().log(Level.FINE, "SpigotUHC: Using dynamic loot chest location");
             } else {
                 return;
             }

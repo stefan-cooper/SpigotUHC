@@ -215,6 +215,14 @@ The following commands are available in game:
 
 `/uhc view world.border.initial.size`
 
+#### Unset config value:
+
+`/uhc unset world.border.initial.size`
+
+#### Unset multiple config values:
+
+`/uhc unset world.border.initial.size world.border.final.size`
+
 ### Running
 
 #### Start the UHC:

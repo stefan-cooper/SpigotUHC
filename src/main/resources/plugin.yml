@@ -1,5 +1,5 @@
 name: SpigotUHC
-version: 3.1.0
+version: 3.2.0
 author: Stefan Cooper
 main: com.stefancooper.SpigotUHC.Plugin
 api-version: 1.21
@@ -26,6 +26,14 @@ commands:
       View a specific config value:
 
       /uhc view world.border.initial.size
+      
+      Unset config value:
+
+      /uhc unset world.border.initial.size
+      
+      Unset multiple config values:
+
+      /uhc unset world.border.initial.size world.border.final.size
       
       Start the UHC:
       

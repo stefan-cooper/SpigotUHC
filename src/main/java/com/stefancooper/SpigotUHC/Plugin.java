@@ -7,6 +7,7 @@ import com.stefancooper.SpigotUHC.commands.RandomiseTeamsCommand;
 import com.stefancooper.SpigotUHC.commands.ResumeCommand;
 import com.stefancooper.SpigotUHC.commands.SetConfigCommand;
 import com.stefancooper.SpigotUHC.commands.StartCommand;
+import com.stefancooper.SpigotUHC.commands.UnsetConfigCommand;
 import com.stefancooper.SpigotUHC.commands.ViewConfigCommand;
 import com.stefancooper.SpigotUHC.events.BaseEvents;
 import com.stefancooper.SpigotUHC.events.ReviveEvents;
@@ -57,6 +58,9 @@ public class Plugin extends JavaPlugin implements Listener {
             switch (args[0]) {
                 case SetConfigCommand.COMMAND_KEY:
                     new SetConfigCommand(sender, cmd, getCommandArgs(args), config).execute();
+                    return true;
+                case UnsetConfigCommand.COMMAND_KEY:
+                    new UnsetConfigCommand(sender, cmd, getCommandArgs(args), config).execute();
                     return true;
                 case ViewConfigCommand.COMMAND_KEY:
                     new ViewConfigCommand(sender, cmd, getCommandArgs(args), config).execute();

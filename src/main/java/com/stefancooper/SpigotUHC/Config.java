@@ -15,6 +15,7 @@ import java.util.stream.Stream;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_NAME;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_NAME_END;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_NAME_NETHER;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.fromString;
 import static com.stefancooper.SpigotUHC.utils.Constants.CONFIG_LOCATION;
 
 public class Config {
@@ -100,6 +101,22 @@ public class Config {
             }
         } else {
             System.out.println("Invalid config value attempted to be set: " + key + "=" + value);
+        }
+    }
+
+    public void unsetProp(String key) {
+        if (fromString(key) != null) {
+            config.remove(key);
+            try {
+                File file = new File(CONFIG_LOCATION);
+                FileOutputStream fos = new FileOutputStream(file);
+                config.store(fos, "saving new value");
+                fos.close();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            System.out.println("Unknown config key. Not unsetting.");
         }
     }
 

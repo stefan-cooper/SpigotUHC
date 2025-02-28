@@ -117,12 +117,6 @@ revive.any.head=false
 ```properties
 # Enable loot chest
 loot.chest.enabled=true
-# X coordinate for the loot chest
-loot.chest.x=100
-# Y coordinate for the loot chest
-loot.chest.y=64
-# Z coordinate for the loot chest
-loot.chest.z=100
 # How frequently loot is regenerated (in seconds)
 loot.chest.frequency=300
 # % odds of a high loot item spawning (per spin)
@@ -131,6 +125,32 @@ loot.chest.high.loot.odds=5
 loot.chest.mid.loot.odds=40
 # items/spins per gen
 loot.chest.spins.per.gen=5
+```
+
+Static Loot Chest:
+
+A non-destructible loot chest is spawned at this location on uhc start.
+
+```properties
+# X coordinate for the loot chest
+loot.chest.x=100
+# Y coordinate for the loot chest
+loot.chest.y=64
+# Z coordinate for the loot chest
+loot.chest.z=100
+```
+
+Dynamic Loot Chest:
+
+Dynamic loot chests are randomly spawned on each regeneration between the ranges below.
+
+* Note - given the x & z, it will spawn on the highest y coord available.
+
+```properties
+# X coordinate for the loot chest
+loot.chest.x.range=-75,75
+# Z coordinate for the loot chest
+loot.chest.z=-75,75
 ```
 
 #### Randomise team configuration

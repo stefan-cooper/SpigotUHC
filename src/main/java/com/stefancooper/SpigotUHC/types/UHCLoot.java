@@ -82,15 +82,14 @@ public class UHCLoot {
     public UHCLoot(final Config config) {
         if (!UHCLoot.isConfigured(config)) return;
         final Integer lootFrequency = config.getProperty(LOOT_CHEST_FREQUENCY);
+        final Integer chestX = config.getProperty(LOOT_CHEST_X);
+        final Integer chestY = config.getProperty(LOOT_CHEST_Y);
+        final Integer chestZ = config.getProperty(LOOT_CHEST_Z);
+        final String chestXRange = config.getProperty(LOOT_CHEST_X_RANGE);
+        final String chestZRange = config.getProperty(LOOT_CHEST_Z_RANGE);
         final Random random = new Random();
 
         config.getManagedResources().runRepeatingTask(() -> {
-            final Integer chestX = config.getProperty(LOOT_CHEST_X);
-            final Integer chestY = config.getProperty(LOOT_CHEST_Y);
-            final Integer chestZ = config.getProperty(LOOT_CHEST_Z);
-            final String chestXRange = config.getProperty(LOOT_CHEST_X_RANGE);
-            final String chestZRange = config.getProperty(LOOT_CHEST_Z_RANGE);
-
             boolean usingStaticLootChestLocation;
             if (chestX != null && chestY!= null && chestZ != null) {
                 usingStaticLootChestLocation = true;

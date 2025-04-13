@@ -47,11 +47,11 @@ public class UHCLoot {
             Material.NETHERITE_HOE,
             Material.BUCKET,
             Material.GUNPOWDER,
-            Material.GOAT_HORN
+            Material.GOAT_HORN,
+            Material.EXPERIENCE_BOTTLE
     );
     private static final List<Material> midTier = List.of(
             Material.SADDLE,
-            Material.GOLD_INGOT,
             Material.TNT,
             Material.SPYGLASS,
             Material.DIAMOND,
@@ -61,18 +61,19 @@ public class UHCLoot {
             Material.IRON_LEGGINGS,
             Material.ARROW,
             Material.BOOKSHELF,
-            Material.EXPERIENCE_BOTTLE,
             Material.SPECTRAL_ARROW,
             Material.DIAMOND_HORSE_ARMOR,
-            Material.ENDER_PEARL
+            Material.ENDER_PEARL,
+            Material.GOLD_BLOCK,
+            Material.ANVIL,
+            Material.POTION,
+            Material.SPLASH_POTION
     );
     private static final List<Material> highTier = List.of(
             Material.MACE,
             Material.BOW,
             Material.DIAMOND_AXE,
-            Material.GOLDEN_APPLE,
             Material.PLAYER_HEAD, // revivable
-            Material.GOLD_BLOCK,
             Material.DIAMOND_BLOCK,
             Material.TRIDENT,
             Material.ELYTRA,
@@ -146,19 +147,23 @@ public class UHCLoot {
             for (int i = 0; i < finalSpawnRate; i++) {
                 final int spin = random.nextInt(100) + 1;
                 final Material itemToAdd;
+                Tier tier;
 
                 if (spin < finalHighLootOdds) {
                     itemToAdd = highTier.get(random.nextInt(highTier.size()));
                     Bukkit.getOnlinePlayers().forEach(player -> player.playSound(player, Sound.ITEM_GOAT_HORN_SOUND_7, 2, 1));
+                    tier = Tier.HIGH;
                 } else if (spin < finalMidLootOdds) {
                     itemToAdd = midTier.get(random.nextInt(midTier.size()));
+                    tier = Tier.MID;
                 } else {
                     itemToAdd = lowTier.get(random.nextInt(lowTier.size()));
+                    tier = Tier.LOW;
                 }
                 final ItemStack item = new ItemStack(itemToAdd);
                 addEnchantments(item);
                 multiplyItems(item);
-                addPotionEffects(item);
+                addPotionEffects(item, tier);
                 lootChest.getBlockInventory().addItem(item);
             }
 
@@ -170,20 +175,20 @@ public class UHCLoot {
             case Material.DIAMOND_AXE -> item.addEnchantment(Enchantment.SHARPNESS, 1);
             case Material.BOW -> item.addEnchantment(Enchantment.INFINITY, 1);
             case Material.IRON_CHESTPLATE -> {
-                item.addEnchantment(Enchantment.THORNS, 1);
-                item.addEnchantment(Enchantment.PROTECTION, 2);
+                item.addEnchantment(Enchantment.THORNS, 2);
+                item.addEnchantment(Enchantment.PROTECTION, 3);
             }
             case Material.IRON_LEGGINGS -> {
                 item.addEnchantment(Enchantment.PROTECTION, 2);
-                item.addEnchantment(Enchantment.SWIFT_SNEAK, 1);
+                item.addEnchantment(Enchantment.SWIFT_SNEAK, 3);
             }
             case Material.IRON_BOOTS -> {
-                item.addEnchantment(Enchantment.FROST_WALKER, 1);
+                item.addEnchantment(Enchantment.FEATHER_FALLING, 3);
                 item.addEnchantment(Enchantment.PROTECTION, 2);
             }
             case Material.IRON_HELMET -> {
                 item.addEnchantment(Enchantment.RESPIRATION, 3);
-                item.addEnchantment(Enchantment.PROTECTION, 1);
+                item.addEnchantment(Enchantment.PROTECTION, 2);
             }
             case Material.TRIDENT -> {
                 item.addEnchantment(Enchantment.LOYALTY, 1);
@@ -207,32 +212,41 @@ public class UHCLoot {
         }
     }
 
-    public void addPotionEffects(ItemStack item) {
+    public void addPotionEffects(ItemStack item, Tier tier) {
         final Random random = new Random();
+        final List<PotionType> effects;
         if (item.getType() == Material.POTION) {
-            final List<PotionType> effects = List.of(
-                    PotionType.STRENGTH,
-                    PotionType.FIRE_RESISTANCE,
-                    PotionType.INVISIBILITY,
-                    PotionType.SWIFTNESS
-            );
+            if (tier == Tier.HIGH) {
+                effects = List.of(
+                        PotionType.STRENGTH,
+                        PotionType.STRONG_HEALING
+                );
+            } else {
+                effects = List.of(
+                        PotionType.FIRE_RESISTANCE,
+                        PotionType.INVISIBILITY,
+                        PotionType.SWIFTNESS
+                );
+            }
             PotionType effect = effects.get(random.nextInt(effects.size()));
             PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
             potionMeta.setBasePotionType(effect);
             item.setItemMeta(potionMeta);
         } else if (item.getType() == Material.SPLASH_POTION) {
-            final List<PotionType> effects = List.of(
-                    PotionType.HARMING,
-                    PotionType.SLOWNESS,
-                    PotionType.WEAKNESS
-            );
+            if (tier == Tier.HIGH) {
+                effects = List.of(
+                        PotionType.STRONG_HARMING,
+                        PotionType.STRONG_HEALING
+                );
+            } else {
+                effects = List.of(
+                        PotionType.STRONG_SLOWNESS,
+                        PotionType.LONG_WEAKNESS
+                );
+            }
             PotionType effect = effects.get(random.nextInt(effects.size()));
             PotionMeta potionMeta = (PotionMeta) item.getItemMeta();
-            if (effect == PotionType.SLOWNESS || effect == PotionType.WEAKNESS) {
-                potionMeta.addCustomEffect(new PotionEffect(effect.getEffectType(), (int) Utils.secondsToTicks(30), 3), true);
-            } else {
-                potionMeta.setBasePotionType(effect);
-            }
+            potionMeta.setBasePotionType(effect);
             item.setItemMeta(potionMeta);
         }
     }
@@ -257,5 +271,11 @@ public class UHCLoot {
             return Optional.of(new Location(config.getWorlds().getOverworld(), chestX, chestY, chestZ));
         }
         return Optional.empty();
+    }
+
+    public enum Tier {
+        HIGH,
+        MID,
+        LOW
     }
 }

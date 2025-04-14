@@ -1,11 +1,14 @@
 package com.stefancooper.SpigotUHC;
 
 import com.stefancooper.SpigotUHC.types.BossBarBorder;
+import com.stefancooper.SpigotUHC.types.InstantRevive;
 import com.stefancooper.SpigotUHC.types.Revive;
 import com.stefancooper.SpigotUHC.utils.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -55,6 +58,10 @@ public class ManagedResources {
         if (reviveDebounce == null || reviveDebounce.isCancelled()) {
             reviveDebounce = runTaskLater(() -> reviveDebounce.cancel(), 30);
         }
+    }
+
+    public void instantRevive(Player reviver, String revivee, ArmorStand armorStand) {
+        new InstantRevive(config, reviver, revivee, true, armorStand);
     }
 
     public void cancelRevive() {

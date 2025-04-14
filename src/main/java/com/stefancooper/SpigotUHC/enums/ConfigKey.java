@@ -57,6 +57,8 @@ public enum ConfigKey {
     REVIVE_HP("revive.hp"), // Revivee starting hp
     REVIVE_LOSE_MAX_HEALTH("revive.lose.max.health"), // Revivee max hp loss
     REVIVE_ANY_HEAD("revive.any.head"), // Revive-able with any player head
+    REVIVE_VIA_PLATFORMS("revive.via.platforms"), // Revive using the xyz coords / platforms
+    REVIVE_VIA_ARMOR_STAND("revive.via.armor.stand"), // Enable revive
 
     // Random teams
     RANDOM_TEAMS_POT_ONE("random.teams.pot.1"),

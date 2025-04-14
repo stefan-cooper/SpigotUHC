@@ -53,6 +53,8 @@ import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_LOCATION_Y;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_LOCATION_Z;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_LOSE_MAX_HEALTH;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_TIME;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_VIA_ARMOR_STAND;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_VIA_PLATFORMS;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.SPREAD_MIN_DISTANCE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.TEAM_BLUE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.TEAM_GREEN;
@@ -139,6 +141,8 @@ public class ConfigParser {
             case REVIVE_LOCATION_Z -> new Configurable<>(REVIVE_LOCATION_Z, value);
             case REVIVE_LOSE_MAX_HEALTH -> new Configurable<>(REVIVE_LOSE_MAX_HEALTH, Integer.parseInt(value));
             case REVIVE_ANY_HEAD -> new Configurable<>(REVIVE_ANY_HEAD, Boolean.parseBoolean(value));
+            case REVIVE_VIA_ARMOR_STAND -> new Configurable<>(REVIVE_VIA_ARMOR_STAND, Boolean.parseBoolean(value));
+            case REVIVE_VIA_PLATFORMS -> new Configurable<>(REVIVE_VIA_PLATFORMS, Boolean.parseBoolean(value));
             // Random teams
             case RANDOM_TEAMS_POT_ONE -> new Configurable<>(RANDOM_TEAMS_POT_ONE, new HashSet<>(Arrays.asList(value.split(","))));
             case RANDOM_TEAMS_POT_TWO -> new Configurable<>(RANDOM_TEAMS_POT_TWO, new HashSet<>(Arrays.asList(value.split(","))));

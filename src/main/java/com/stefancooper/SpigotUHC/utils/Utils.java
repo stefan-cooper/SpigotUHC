@@ -1,5 +1,6 @@
 package com.stefancooper.SpigotUHC.utils;
 
+import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.Defaults;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -9,6 +10,11 @@ import org.bukkit.World;
 import org.bukkit.WorldCreator;
 
 import java.util.List;
+import java.util.Optional;
+
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_ENABLED;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_VIA_ARMOR_STAND;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_VIA_PLATFORMS;
 
 public class Utils {
 
@@ -79,6 +85,18 @@ public class Utils {
             // noop
             // for some reason, this function is not implemented in MockBukkit but it is not worth us mocking
         }
+    }
+
+    public static boolean isReviveViaPlatformsEnabled(final Config config) {
+        boolean reviveEnabled = Optional.ofNullable(config.<Boolean>getProperty(REVIVE_ENABLED)).orElse(false);
+        boolean reviveViaPlatforms = Optional.ofNullable(config.<Boolean>getProperty(REVIVE_VIA_PLATFORMS)).orElse(true);
+        return reviveEnabled && reviveViaPlatforms;
+    }
+
+    public static boolean isReviveViaArmorStandEnabled(final Config config) {
+        boolean reviveEnabled = Optional.ofNullable(config.<Boolean>getProperty(REVIVE_ENABLED)).orElse(false);
+        boolean reviveViaPlatforms = Optional.ofNullable(config.<Boolean>getProperty(REVIVE_VIA_ARMOR_STAND)).orElse(true);
+        return reviveEnabled && reviveViaPlatforms;
     }
 
 }

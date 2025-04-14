@@ -5,7 +5,6 @@ import com.stefancooper.SpigotUHC.types.InstantRevive;
 import com.stefancooper.SpigotUHC.types.Revive;
 import com.stefancooper.SpigotUHC.utils.Utils;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;

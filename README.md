@@ -92,6 +92,15 @@ revive.enabled=true
 revive.hp=4
 # HP that the revived player will lose permanently on each revive (default 2 hearts)
 revive.lose.max.health=4
+# revive with any player head
+revive.any.head=false
+```
+
+Platforms Revive config
+
+```properties
+# revive via the regular platforms (requires the location coords to be set too). True by default
+revive.via.platforms=true
 # How long it takes for the revive to happen
 revive.time=90
 # X coordinate for the center of the revive location
@@ -108,8 +117,12 @@ revive.location.z=11
 # revive.location.z=11,222,-42
 # Diameter/size of the revive location
 revive.location.size=10
-# reive with any player head
-revive.any.head=false
+```
+
+Armor stand config
+```properties
+# revive via armor stand + head. False by default
+revive.via.armor.stand=false
 ```
 
 #### Loot chest configuration

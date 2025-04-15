@@ -8,7 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -93,17 +92,7 @@ public class BaseEvents implements Listener {
             player.getWorld().dropItemNaturally(player.getLocation(), head);
         }
 
-        if (Boolean.parseBoolean(config.getProp(ENABLE_TIMESTAMPS.configName))) {
-            if (event.getEntity().getLastDamageCause() != null &&
-                    event.getEntity().getLastDamageCause().getDamageSource().getDirectEntity() != null &&
-                    event.getEntity().getLastDamageCause().getDamageSource().getDirectEntity().getType() == EntityType.PLAYER
-            ) {
-                Player player = (Player) event.getEntity().getLastDamageCause().getDamageSource().getDirectEntity();
-                config.getManagedResources().addTimestamp(String.format("%s kills %s", player.getDisplayName(), event.getEntity().getDisplayName()));
-            } else {
-                config.getManagedResources().addTimestamp(String.format("%s dies", event.getEntity().getDisplayName()));
-            }
-        }
+
 
         if (Boolean.TRUE.equals(config.getProperty(WHISPER_TEAMMATE_DEAD_LOCATION))) {
             Player player = event.getEntity();

@@ -18,6 +18,14 @@ import java.util.List;
 
 import static com.stefancooper.SpigotUHC.Defaults.DEFAULT_WORLD_NAME;
 
+/**
+ * Message for later me - If you've come here looking for tests related to testing timestamps
+ *                        for achievements/advancements, they do not exist. There was an attempt
+ *                        to write these but MockBukkit as of today (16/04/25) does not support
+ *                        anything related to advancements in their API. Unless that changes or
+ *                        we contribute it ourselves, this will have to remain untested.
+ */
+
 public class TimestampTest {
 
     private static ServerMock server;
@@ -98,7 +106,7 @@ public class TimestampTest {
     }
 
     @Test
-    @DisplayName("When start is run, a timestamp is added")
+    @DisplayName("When start is run, a timestamp is added. When start is run again, the old timestamps are wiped.")
     void timestampsResetOnStart() throws IOException {
         PlayerMock player = server.addPlayer();
         player.setDisplayName("stefan");

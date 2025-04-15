@@ -145,7 +145,7 @@ public class StartCommand extends AbstractCommand {
 
         // Timestamps
         if (Boolean.parseBoolean(getConfig().getProp(ConfigKey.ENABLE_TIMESTAMPS.configName))) {
-            getConfig().getManagedResources().addTimestamp("UHC Started", false);
+            getConfig().getManagedResources().addTimestamp("[Meta] UHC Started", false);
         }
 
         if (UHCLoot.isConfigured(getConfig())) {

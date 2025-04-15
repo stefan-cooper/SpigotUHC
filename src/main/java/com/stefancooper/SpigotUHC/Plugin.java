@@ -11,6 +11,7 @@ import com.stefancooper.SpigotUHC.commands.UnsetConfigCommand;
 import com.stefancooper.SpigotUHC.commands.ViewConfigCommand;
 import com.stefancooper.SpigotUHC.events.BaseEvents;
 import com.stefancooper.SpigotUHC.events.ReviveEvents;
+import com.stefancooper.SpigotUHC.events.TimestampEvents;
 import com.stefancooper.SpigotUHC.events.UHCLootEvents;
 import com.stefancooper.SpigotUHC.utils.UHCCommandTabCompleter;
 import com.stefancooper.SpigotUHC.events.WinEvents;
@@ -33,6 +34,7 @@ public class Plugin extends JavaPlugin implements Listener {
         Defaults.setDefaultGameRules(this.config);
         Bukkit.getPluginManager().registerEvents(new BaseEvents(config), this);
         Bukkit.getPluginManager().registerEvents(new ReviveEvents(config), this);
+        Bukkit.getPluginManager().registerEvents(new TimestampEvents(config), this);
         Bukkit.getPluginManager().registerEvents(new WinEvents(config), this);
         Bukkit.getPluginManager().registerEvents(new UHCLootEvents(config), this);
         started = false;

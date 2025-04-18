@@ -1,6 +1,7 @@
 package com.stefancooper.SpigotUHC.commands;
 
 import com.stefancooper.SpigotUHC.Config;
+import com.stefancooper.SpigotUHC.Defaults;
 import com.stefancooper.SpigotUHC.enums.ConfigKey;
 import com.stefancooper.SpigotUHC.types.BossBarBorder;
 import org.bukkit.Bukkit;
@@ -56,7 +57,7 @@ public class LateStartCommand extends StartCommand {
         player.setLevel(0);
 
         // set bossbar
-        if (Boolean.parseBoolean(getConfig().getProp(ConfigKey.WORLD_BORDER_IN_BOSSBAR.configName))) {
+        if (getConfig().getProperty(ConfigKey.WORLD_BORDER_IN_BOSSBAR, Defaults.WORLD_BORDER_IN_BOSSBAR)) {
             BossBarBorder bossBarBorder = getConfig().getManagedResources().getBossBarBorder();
             bossBarBorder.getBossBar().addPlayer(player);
             bossBarBorder.getBossBar().setVisible(true);
@@ -82,13 +83,13 @@ public class LateStartCommand extends StartCommand {
         // if could not be teleported to teammate, spread them as usual
         if (!teleported.get()) {
             // Spread Players
-            double centerX = Double.parseDouble(getConfig().getProp(WORLD_BORDER_CENTER_X.configName));
-            double centerZ =  Double.parseDouble(getConfig().getProp(WORLD_BORDER_CENTER_Z.configName));
-            double minDistance =  Double.parseDouble(getConfig().getProp(SPREAD_MIN_DISTANCE.configName));
-            double maxDistance =  Double.parseDouble(getConfig().getProp(WORLD_BORDER_INITIAL_SIZE.configName)) / 2;
+            int centerX = getConfig().getProperty(WORLD_BORDER_CENTER_X, Defaults.WORLD_BORDER_CENTER_X);
+            int centerZ = getConfig().getProperty(WORLD_BORDER_CENTER_Z, Defaults.WORLD_BORDER_CENTER_Z);
+            int minDistance = getConfig().getProperty(SPREAD_MIN_DISTANCE, Defaults.MIN_SPREAD_DISTANCE);
+            int maxDistance = getConfig().getProperty(WORLD_BORDER_INITIAL_SIZE, Defaults.WORLD_BORDER_INITIAL_SIZE) / 2;
             // spreadplayers <x> <z> <spreadDistance> <maxRange> <teams> <targets>
             // See: https://minecraft.fandom.com/wiki/Commands/spreadplayers
-            String spreadCommand = String.format("spreadplayers %f %f %f %f true %s", centerX, centerZ, minDistance, maxDistance, player.getDisplayName());
+            String spreadCommand = String.format("spreadplayers %s %s %s %s true %s", centerX, centerZ, minDistance, maxDistance, player.getDisplayName());
             getSender().getServer().dispatchCommand(getSender(), spreadCommand);
         }
     }

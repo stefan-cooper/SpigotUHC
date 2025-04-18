@@ -16,7 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-import static com.stefancooper.SpigotUHC.Defaults.DEFAULT_WORLD_NAME;
+import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
 
 /**
  * Message for later me - If you've come here looking for tests related to testing timestamps
@@ -38,7 +38,7 @@ public class TimestampTest {
     {
         server = MockBukkit.mock();
         plugin = MockBukkit.load(Plugin.class);
-        world = server.getWorld(DEFAULT_WORLD_NAME);
+        world = server.getWorld(WORLD_NAME);
         admin = server.addPlayer();
         admin.setOp(true);
     }

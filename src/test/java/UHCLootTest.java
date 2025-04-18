@@ -1,7 +1,5 @@
-import com.stefancooper.SpigotUHC.utils.Utils;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
-import org.mockbukkit.mockbukkit.block.BlockMock;
 import org.mockbukkit.mockbukkit.block.state.ChestStateMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
 import org.mockbukkit.mockbukkit.scheduler.BukkitSchedulerMock;
@@ -19,7 +17,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.stefancooper.SpigotUHC.Defaults.DEFAULT_WORLD_NAME;
+import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
@@ -34,7 +32,7 @@ public class UHCLootTest {
     public static void load() {
         server = MockBukkit.mock();
         plugin = MockBukkit.load(Plugin.class);
-        world = server.getWorld(DEFAULT_WORLD_NAME);
+        world = server.getWorld(WORLD_NAME);
         admin = server.addPlayer();
         admin.setOp(true);
     }

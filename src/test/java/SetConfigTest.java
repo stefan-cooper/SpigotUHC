@@ -12,7 +12,7 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.scoreboard.Scoreboard;
 import org.junit.jupiter.api.*;
 
-import static com.stefancooper.SpigotUHC.Defaults.DEFAULT_WORLD_NAME;
+import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
 import static com.stefancooper.SpigotUHC.utils.Constants.PLAYER_HEAD;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -27,7 +27,7 @@ public class SetConfigTest {
     {
         server = MockBukkit.mock();
         plugin = MockBukkit.load(Plugin.class);
-        world = server.getWorld(DEFAULT_WORLD_NAME);
+        world = server.getWorld(WORLD_NAME);
     }
 
     @BeforeEach

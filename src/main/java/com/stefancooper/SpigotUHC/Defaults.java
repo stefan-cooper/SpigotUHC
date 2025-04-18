@@ -1,5 +1,6 @@
 package com.stefancooper.SpigotUHC;
 
+import com.stefancooper.SpigotUHC.enums.ConfigKey;
 import com.stefancooper.SpigotUHC.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
@@ -20,38 +21,69 @@ import static com.stefancooper.SpigotUHC.utils.Constants.MAXIMUM_FINAL_SIZE_FOR_
 
 public class Defaults {
 
+    /* -- Defaults that are written to uhc_config.properties -- */
     public static String HEALTH_OBJECTIVE = "health";
-    public static String DEFAULT_WORLD_NAME = "world";
-    public static String DEFAULT_NETHER_WORLD_NAME = "world_nether";
-    public static String DEFAULT_END_WORLD_NAME = "world_the_end";
-    public static String DEFAULT_WORLD_BORDER_INITIAL_SIZE = "2000";
-    public static String DEFAULT_WORLD_BORDER_FINAL_SIZE = "150";
-    public static String DEFAULT_WORLD_BORDER_SHRINKING_PERIOD = "7200";
-    public static String DEFAULT_WORLD_BORDER_GRACE_PERIOD = "1800";
-    public static String DEFAULT_WORLD_BORDER_CENTER_X = "0";
-    public static String DEFAULT_WORLD_BORDER_CENTER_Z = "0";
-    public static String DEFAULT_GRACE_PERIOD_TIMER = "600";
-    public static String DEFAULT_ON_DEATH_ACTION = SPECTATE.name;
-    public static String DEFAULT_COUNTDOWN_TIMER_LENGTH = "10";
-    public static String DEFAULT_MIN_SPREAD_DISTANCE = "250";
-    public static Difficulty DEFAULT_DIFFICULTY = Difficulty.EASY;
+    public static String WORLD_NAME = "world";
+    public static String NETHER_WORLD_NAME = "world_nether";
+    public static String END_WORLD_NAME = "world_the_end";
+    public static int WORLD_BORDER_INITIAL_SIZE = 2000;
+    public static int WORLD_BORDER_FINAL_SIZE = 150;
+    public static int WORLD_BORDER_SHRINKING_PERIOD = 7200;
+    public static int WORLD_BORDER_GRACE_PERIOD = 1800;
+    public static int WORLD_BORDER_CENTER_X = 0;
+    public static int WORLD_BORDER_CENTER_Z = 0;
+    public static int GRACE_PERIOD_TIMER = 600;
+    public static String ON_DEATH_ACTION = SPECTATE.name;
+    public static int COUNTDOWN_TIMER_LENGTH = 10;
+    public static int MIN_SPREAD_DISTANCE = 250;
+    public static Difficulty DIFFICULTY = Difficulty.EASY;
+    /* -- End of defaults written to uhc_config.properties -- */
+
+    /* -- Other internal defaults -- */
+
+    // Misc
+    public static boolean PLAYER_HEAD_GOLDEN_APPLE = false;
+    public static boolean WHISPER_TEAMMATE_DEAD_LOCATION = false;
+    public static boolean RANDOM_FINAL_LOCATION = false;
+    public static boolean ENABLE_TIMESTAMPS = true;
+
+    // Craftables
+    public static boolean CRAFTABLE_NOTCH_APPLE = false;
+    public static boolean CRAFTABLE_PLAYER_HEAD = false;
+
+    // World Border
+    public static boolean WORLD_BORDER_IN_BOSSBAR = true;
+    public static int WORLD_BORDER_FINAL_Y = -256;
+    public static int WORLD_BORDER_Y_SHRINKING_PERIOD = 0;
+
+    // Revives
+    public static boolean REVIVE_ENABLED = false;
+    public static boolean REVIVE_VIA_PLATFORMS = false;
+    public static boolean REVIVE_VIA_ARMOR_STAND = true;
+    public static int REVIVE_HP = 4;
+    public static int REVIVE_LOSE_MAX_HEALTH = 4;
+    public static int REVIVE_LOCATION_SIZE = 10;
+    public static int REVIVE_TIME = 5;
+
+    /* -- End of defaults -- */
+
 
     public static Properties createDefaultConfig() {
         final Properties defaults = new Properties();
-        defaults.setProperty(WORLD_NAME.configName, DEFAULT_WORLD_NAME);
-        defaults.setProperty(WORLD_NAME_NETHER.configName, DEFAULT_NETHER_WORLD_NAME);
-        defaults.setProperty(WORLD_NAME_END.configName, DEFAULT_END_WORLD_NAME);
-        defaults.setProperty(WORLD_BORDER_INITIAL_SIZE.configName, DEFAULT_WORLD_BORDER_INITIAL_SIZE);
-        defaults.setProperty(WORLD_BORDER_FINAL_SIZE.configName, DEFAULT_WORLD_BORDER_FINAL_SIZE);
-        defaults.setProperty(WORLD_BORDER_SHRINKING_PERIOD.configName, DEFAULT_WORLD_BORDER_SHRINKING_PERIOD);
-        defaults.setProperty(WORLD_BORDER_GRACE_PERIOD.configName, DEFAULT_WORLD_BORDER_GRACE_PERIOD);
-        defaults.setProperty(WORLD_BORDER_CENTER_X.configName, DEFAULT_WORLD_BORDER_CENTER_X);
-        defaults.setProperty(WORLD_BORDER_CENTER_Z.configName, DEFAULT_WORLD_BORDER_CENTER_Z);
-        defaults.setProperty(GRACE_PERIOD_TIMER.configName, DEFAULT_GRACE_PERIOD_TIMER);
-        defaults.setProperty(ON_DEATH_ACTION.configName, DEFAULT_ON_DEATH_ACTION);
-        defaults.setProperty(COUNTDOWN_TIMER_LENGTH.configName, DEFAULT_COUNTDOWN_TIMER_LENGTH);
-        defaults.setProperty(SPREAD_MIN_DISTANCE.configName, DEFAULT_MIN_SPREAD_DISTANCE);
-        defaults.setProperty(DIFFICULTY.configName, DEFAULT_DIFFICULTY.name());
+        defaults.setProperty(ConfigKey.WORLD_NAME.configName, WORLD_NAME);
+        defaults.setProperty(WORLD_NAME_NETHER.configName, NETHER_WORLD_NAME);
+        defaults.setProperty(WORLD_NAME_END.configName, END_WORLD_NAME);
+        defaults.setProperty(ConfigKey.WORLD_BORDER_INITIAL_SIZE.configName, Integer.toString(WORLD_BORDER_INITIAL_SIZE));
+        defaults.setProperty(ConfigKey.WORLD_BORDER_FINAL_SIZE.configName, Integer.toString(WORLD_BORDER_FINAL_SIZE));
+        defaults.setProperty(ConfigKey.WORLD_BORDER_SHRINKING_PERIOD.configName, Integer.toString(WORLD_BORDER_SHRINKING_PERIOD));
+        defaults.setProperty(ConfigKey.WORLD_BORDER_GRACE_PERIOD.configName, Integer.toString(WORLD_BORDER_GRACE_PERIOD));
+        defaults.setProperty(ConfigKey.WORLD_BORDER_CENTER_X.configName, Integer.toString(WORLD_BORDER_CENTER_X));
+        defaults.setProperty(ConfigKey.WORLD_BORDER_CENTER_Z.configName, Integer.toString(WORLD_BORDER_CENTER_Z));
+        defaults.setProperty(ConfigKey.GRACE_PERIOD_TIMER.configName, Integer.toString(GRACE_PERIOD_TIMER));
+        defaults.setProperty(ConfigKey.ON_DEATH_ACTION.configName, ON_DEATH_ACTION);
+        defaults.setProperty(ConfigKey.COUNTDOWN_TIMER_LENGTH.configName, Integer.toString(COUNTDOWN_TIMER_LENGTH));
+        defaults.setProperty(SPREAD_MIN_DISTANCE.configName, Integer.toString(MIN_SPREAD_DISTANCE));
+        defaults.setProperty(ConfigKey.DIFFICULTY.configName, DIFFICULTY.name());
         return defaults;
     }
 

@@ -18,7 +18,7 @@ public class ViewConfigTest {
     {
         server = MockBukkit.mock();
         plugin = MockBukkit.load(Plugin.class);
-        world = server.getWorld(DEFAULT_WORLD_NAME);
+        world = server.getWorld(WORLD_NAME);
     }
 
     @BeforeEach
@@ -53,8 +53,8 @@ public class ViewConfigTest {
                         world.border.initial.size=%s
                         world.border.shrinking.period=%s
                         world.name=%s
-                        """, DEFAULT_COUNTDOWN_TIMER_LENGTH, DEFAULT_DIFFICULTY, DEFAULT_END_WORLD_NAME, DEFAULT_GRACE_PERIOD_TIMER, DEFAULT_NETHER_WORLD_NAME, DEFAULT_ON_DEATH_ACTION, DEFAULT_MIN_SPREAD_DISTANCE, DEFAULT_WORLD_BORDER_CENTER_X, DEFAULT_WORLD_BORDER_CENTER_Z,
-                DEFAULT_WORLD_BORDER_FINAL_SIZE, DEFAULT_WORLD_BORDER_GRACE_PERIOD, DEFAULT_WORLD_BORDER_INITIAL_SIZE, DEFAULT_WORLD_BORDER_SHRINKING_PERIOD, DEFAULT_WORLD_NAME
+                        """, COUNTDOWN_TIMER_LENGTH, DIFFICULTY, END_WORLD_NAME, GRACE_PERIOD_TIMER, NETHER_WORLD_NAME, ON_DEATH_ACTION, MIN_SPREAD_DISTANCE, WORLD_BORDER_CENTER_X, WORLD_BORDER_CENTER_Z,
+                WORLD_BORDER_FINAL_SIZE, WORLD_BORDER_GRACE_PERIOD, WORLD_BORDER_INITIAL_SIZE, WORLD_BORDER_SHRINKING_PERIOD, WORLD_NAME
                         )
         );
     }
@@ -65,7 +65,7 @@ public class ViewConfigTest {
         PlayerMock player = server.addPlayer();
         player.setOp(true);
         server.execute("uhc", player, "view", "world.border.initial.size");
-        player.assertSaid("world.border.initial.size=" + DEFAULT_WORLD_BORDER_INITIAL_SIZE);
+        player.assertSaid("world.border.initial.size=" + WORLD_BORDER_INITIAL_SIZE);
     }
 
     @Test
@@ -74,7 +74,7 @@ public class ViewConfigTest {
         PlayerMock player = server.addPlayer();
         player.setOp(true);
         server.execute("uhc", player, "view", "world.border.center.x");
-        player.assertSaid("world.border.center.x=" + DEFAULT_WORLD_BORDER_CENTER_X);
+        player.assertSaid("world.border.center.x=" + WORLD_BORDER_CENTER_X);
     }
 
     @Test
@@ -83,6 +83,6 @@ public class ViewConfigTest {
         PlayerMock player = server.addPlayer();
         player.setOp(true);
         server.execute("uhc", player, "view", "world.border.center.z");
-        player.assertSaid("world.border.center.z=" + DEFAULT_WORLD_BORDER_CENTER_Z);
+        player.assertSaid("world.border.center.z=" + WORLD_BORDER_CENTER_Z);
     }
 }

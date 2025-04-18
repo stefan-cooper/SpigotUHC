@@ -1,29 +1,16 @@
 package com.stefancooper.SpigotUHC.types;
 
 import com.stefancooper.SpigotUHC.Config;
+import com.stefancooper.SpigotUHC.Defaults;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
-import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitTask;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_HP;
-import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_LOCATION_SIZE;
-import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_LOCATION_X;
-import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_LOCATION_Y;
-import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_LOCATION_Z;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_LOSE_MAX_HEALTH;
-import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_TIME;
 
 
 public class InstantRevive {
@@ -44,8 +31,8 @@ public class InstantRevive {
         this.reviver = reviver;
         this.armorStand = armorStand;
         this.revivee = Bukkit.getPlayer(revivee);
-        this.reviveHealth = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_HP.configName)).orElse("2"));
-        this.reviveLoseMaxHealth = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_LOSE_MAX_HEALTH.configName)).orElse("2"));
+        this.reviveHealth = config.getProperty(REVIVE_HP, Defaults.REVIVE_HP);
+        this.reviveLoseMaxHealth = config.getProperty(REVIVE_LOSE_MAX_HEALTH, Defaults.REVIVE_LOSE_MAX_HEALTH);
 
         if (this.revivee == null) {
             reviver.sendMessage(String.format("%s is offline, so cannot be revived", revivee));

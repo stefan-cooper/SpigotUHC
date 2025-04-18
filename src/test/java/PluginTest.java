@@ -20,7 +20,7 @@ public class PluginTest {
     {
         server = MockBukkit.mock();
         plugin = MockBukkit.load(Plugin.class);
-        world = server.getWorld(DEFAULT_WORLD_NAME);
+        world = server.getWorld(WORLD_NAME);
     }
 
     @BeforeEach
@@ -58,8 +58,8 @@ public class PluginTest {
         Assertions.assertNotNull(world.getWorldBorder());
         Assertions.assertEquals(0, world.getWorldBorder().getDamageAmount());
         Assertions.assertEquals(5, world.getWorldBorder().getDamageBuffer());
-        Assertions.assertEquals(Double.parseDouble(DEFAULT_WORLD_BORDER_INITIAL_SIZE), world.getWorldBorder().getSize());
-        Assertions.assertEquals(Double.parseDouble(DEFAULT_WORLD_BORDER_CENTER_X), world.getWorldBorder().getCenter().getX());
-        Assertions.assertEquals(Double.parseDouble(DEFAULT_WORLD_BORDER_CENTER_Z), world.getWorldBorder().getCenter().getZ());
+        Assertions.assertEquals(WORLD_BORDER_INITIAL_SIZE, world.getWorldBorder().getSize());
+        Assertions.assertEquals(WORLD_BORDER_CENTER_X, world.getWorldBorder().getCenter().getX());
+        Assertions.assertEquals(WORLD_BORDER_CENTER_Z, world.getWorldBorder().getCenter().getZ());
     }
 }

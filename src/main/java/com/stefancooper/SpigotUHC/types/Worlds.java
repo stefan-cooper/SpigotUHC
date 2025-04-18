@@ -1,6 +1,7 @@
 package com.stefancooper.SpigotUHC.types;
 
 import com.stefancooper.SpigotUHC.Config;
+import com.stefancooper.SpigotUHC.Defaults;
 import com.stefancooper.SpigotUHC.utils.Utils;
 import org.bukkit.World;
 
@@ -17,9 +18,9 @@ public class Worlds {
 
     public Worlds(Config config) {
         this.config = config;
-        overworld = Utils.getWorld(config.getProp(WORLD_NAME.configName));
-        nether = Utils.getWorld(config.getProp(WORLD_NAME_NETHER.configName));
-        end = Utils.getWorld(config.getProp(WORLD_NAME_END.configName));
+        overworld = Utils.getWorld(config.getProperty(WORLD_NAME, Defaults.WORLD_NAME));
+        nether = Utils.getWorld(config.getProperty(WORLD_NAME_NETHER, Defaults.NETHER_WORLD_NAME));
+        end = Utils.getWorld(config.getProperty(WORLD_NAME_END, Defaults.END_WORLD_NAME));
     }
 
     public World getOverworld() {
@@ -35,8 +36,8 @@ public class Worlds {
     }
 
     public void updateWorlds() {
-        overworld = Utils.getWorld(config.getProp(WORLD_NAME.configName));
-        nether = Utils.getWorld(config.getProp(WORLD_NAME_NETHER.configName));
-        end = Utils.getWorld(config.getProp(WORLD_NAME_END.configName));
+        overworld = Utils.getWorld(config.getProperty(WORLD_NAME, Defaults.WORLD_NAME));
+        nether = Utils.getWorld(config.getProperty(WORLD_NAME_NETHER, Defaults.NETHER_WORLD_NAME));
+        end = Utils.getWorld(config.getProperty(WORLD_NAME_END, Defaults.END_WORLD_NAME));
     }
 }

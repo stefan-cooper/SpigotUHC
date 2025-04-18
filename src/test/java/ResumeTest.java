@@ -23,9 +23,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static com.stefancooper.SpigotUHC.Defaults.DEFAULT_END_WORLD_NAME;
-import static com.stefancooper.SpigotUHC.Defaults.DEFAULT_NETHER_WORLD_NAME;
-import static com.stefancooper.SpigotUHC.Defaults.DEFAULT_WORLD_NAME;
+import static com.stefancooper.SpigotUHC.Defaults.END_WORLD_NAME;
+import static com.stefancooper.SpigotUHC.Defaults.NETHER_WORLD_NAME;
+import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
 import static utils.TestUtils.WorldAssertion;
 
 
@@ -42,9 +42,9 @@ public class ResumeTest {
     {
         server = MockBukkit.mock();
         plugin = MockBukkit.load(Plugin.class);
-        world = server.getWorld(DEFAULT_WORLD_NAME);
-        nether = server.getWorld(DEFAULT_NETHER_WORLD_NAME);
-        end = server.getWorld(DEFAULT_END_WORLD_NAME);
+        world = server.getWorld(WORLD_NAME);
+        nether = server.getWorld(NETHER_WORLD_NAME);
+        end = server.getWorld(END_WORLD_NAME);
     }
 
     @BeforeEach

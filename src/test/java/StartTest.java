@@ -15,14 +15,13 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import static com.stefancooper.SpigotUHC.Defaults.DEFAULT_END_WORLD_NAME;
-import static com.stefancooper.SpigotUHC.Defaults.DEFAULT_NETHER_WORLD_NAME;
-import static com.stefancooper.SpigotUHC.Defaults.DEFAULT_WORLD_NAME;
+import static com.stefancooper.SpigotUHC.Defaults.END_WORLD_NAME;
+import static com.stefancooper.SpigotUHC.Defaults.NETHER_WORLD_NAME;
+import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -44,9 +43,9 @@ public class StartTest {
     {
         server = MockBukkit.mock();
         plugin = MockBukkit.load(Plugin.class);
-        world = server.getWorld(DEFAULT_WORLD_NAME);
-        nether = server.getWorld(DEFAULT_NETHER_WORLD_NAME);
-        end = server.getWorld(DEFAULT_END_WORLD_NAME);
+        world = server.getWorld(WORLD_NAME);
+        nether = server.getWorld(NETHER_WORLD_NAME);
+        end = server.getWorld(END_WORLD_NAME);
     }
 
     @BeforeEach

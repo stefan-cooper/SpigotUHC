@@ -10,7 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static com.stefancooper.SpigotUHC.Defaults.DEFAULT_WORLD_NAME;
+import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
 
 public class SpreadPlayersTest {
 
@@ -23,7 +23,7 @@ public class SpreadPlayersTest {
     {
         server = MockBukkit.mock(new DispatchCommandServerMock());
         plugin = MockBukkit.load(Plugin.class);
-        world = server.getWorld(DEFAULT_WORLD_NAME);
+        world = server.getWorld(WORLD_NAME);
     }
 
     @BeforeEach
@@ -53,6 +53,6 @@ public class SpreadPlayersTest {
         server.execute("uhc", admin, "start");
 
         // center.x, center.z, min distance, initial border size / 2, true = respectTeams, @a = all players
-        admin.assertSaid("spreadplayers 100.000000 150.000000 100.000000 250.000000 true @a");
+        admin.assertSaid("spreadplayers 100.0 150.0 100 250 true @a");
     }
 }

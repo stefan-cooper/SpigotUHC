@@ -1,6 +1,7 @@
 package com.stefancooper.SpigotUHC.types;
 
 import com.stefancooper.SpigotUHC.Config;
+import com.stefancooper.SpigotUHC.Defaults;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -51,15 +52,15 @@ public class Revive {
         this.reviver = reviver;
         this.revivee = Bukkit.getPlayer(revivee);
         this.world = config.getWorlds().getOverworld();
-        this.reviveHealth = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_HP.configName)).orElse("2"));
+        this.reviveHealth = config.getProperty(REVIVE_HP, Defaults.REVIVE_HP);
 
         this.reviveXs = getReviveXs(config);
         this.reviveYs = getReviveYs(config);
         this.reviveZs = getReviveZs(config);
-        this.reviveSize = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_LOCATION_SIZE.configName)).orElse("10"));
-        this.reviveLoseMaxHealth = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_LOSE_MAX_HEALTH.configName)).orElse("2"));
+        this.reviveSize = config.getProperty(REVIVE_LOCATION_SIZE, Defaults.REVIVE_LOCATION_SIZE);
+        this.reviveLoseMaxHealth = config.getProperty(REVIVE_LOSE_MAX_HEALTH, Defaults.REVIVE_LOSE_MAX_HEALTH);
         this.playerHead = playerHead;
-        int reviveTime = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_TIME.configName)).orElse("5"));
+        int reviveTime = config.getProperty(REVIVE_TIME, Defaults.REVIVE_TIME);
 
         this.reviveTask = config.getManagedResources().runTaskLater(revivePlayer(), reviveTime);
         this.playParticles = config.getManagedResources().runRepeatingTask(() -> {
@@ -195,7 +196,7 @@ public class Revive {
         final int newPositionX = location.getBlockX();
         final int newPositionY = location.getBlockY();
         final int newPositionZ = location.getBlockZ();
-        final int size = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_LOCATION_SIZE.configName)).orElse("10"));
+        final int size = config.getProperty(REVIVE_LOCATION_SIZE, Defaults.REVIVE_LOCATION_SIZE);
         for (int i = 0; i < reviveXs.size(); i++) {
             final int reviveX = reviveXs.get(i);
             final int reviveY = reviveYs.get(i);
@@ -217,7 +218,7 @@ public class Revive {
         final List<Integer> reviveXs = getReviveXs(config);
         final List<Integer> reviveYs = getReviveYs(config);
         final List<Integer> reviveZs = getReviveZs(config);
-        final int size = Integer.parseInt(Optional.ofNullable(config.getProp(REVIVE_LOCATION_SIZE.configName)).orElse("10"));
+        final int size = config.getProperty(REVIVE_LOCATION_SIZE, Defaults.REVIVE_LOCATION_SIZE);
         final int newPositionX = location.getBlockX();
         final int newPositionY = location.getBlockY();
         final int newPositionZ = location.getBlockZ();

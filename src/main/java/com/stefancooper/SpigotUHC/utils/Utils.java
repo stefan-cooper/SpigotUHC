@@ -3,7 +3,6 @@ package com.stefancooper.SpigotUHC.utils;
 import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.Defaults;
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.World;
@@ -19,7 +18,7 @@ import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_VIA_PLATFORMS;
 public class Utils {
 
     public static World getWorld (String name) {
-        final String worldName = name != null ? name : Defaults.DEFAULT_WORLD_NAME;
+        final String worldName = name != null ? name : Defaults.WORLD_NAME;
         if (Bukkit.getWorld(worldName) == null) return Bukkit.createWorld(WorldCreator.name(worldName).environment(World.Environment.NORMAL));
         else return Bukkit.getWorld(worldName);
     }
@@ -88,14 +87,14 @@ public class Utils {
     }
 
     public static boolean isReviveViaPlatformsEnabled(final Config config) {
-        boolean reviveEnabled = Optional.ofNullable(config.<Boolean>getProperty(REVIVE_ENABLED)).orElse(false);
-        boolean reviveViaPlatforms = Optional.ofNullable(config.<Boolean>getProperty(REVIVE_VIA_PLATFORMS)).orElse(true);
+        boolean reviveEnabled = config.getProperty(REVIVE_ENABLED, Defaults.REVIVE_ENABLED);
+        boolean reviveViaPlatforms = config.getProperty(REVIVE_VIA_PLATFORMS, Defaults.REVIVE_VIA_PLATFORMS);
         return reviveEnabled && reviveViaPlatforms;
     }
 
     public static boolean isReviveViaArmorStandEnabled(final Config config) {
-        boolean reviveEnabled = Optional.ofNullable(config.<Boolean>getProperty(REVIVE_ENABLED)).orElse(false);
-        boolean reviveViaPlatforms = Optional.ofNullable(config.<Boolean>getProperty(REVIVE_VIA_ARMOR_STAND)).orElse(true);
+        boolean reviveEnabled = config.getProperty(REVIVE_ENABLED, Defaults.REVIVE_ENABLED);
+        boolean reviveViaPlatforms = config.getProperty(REVIVE_VIA_ARMOR_STAND, Defaults.REVIVE_VIA_ARMOR_STAND);
         return reviveEnabled && reviveViaPlatforms;
     }
 

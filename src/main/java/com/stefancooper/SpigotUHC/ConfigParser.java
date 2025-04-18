@@ -96,16 +96,16 @@ public class ConfigParser {
 
     public Configurable<?> propertyToConfigurable(String key, String value) {
         return switch (fromString(key)) {
-            case WORLD_BORDER_INITIAL_SIZE -> new Configurable<>(WORLD_BORDER_INITIAL_SIZE, Double.parseDouble(value));
-            case WORLD_BORDER_FINAL_SIZE -> new Configurable<>(WORLD_BORDER_FINAL_SIZE, Double.parseDouble(value));
-            case WORLD_BORDER_SHRINKING_PERIOD -> new Configurable<>(WORLD_BORDER_SHRINKING_PERIOD, Double.parseDouble(value));
-            case WORLD_BORDER_GRACE_PERIOD -> new Configurable<>(WORLD_BORDER_GRACE_PERIOD, Double.parseDouble(value));
-            case WORLD_BORDER_CENTER_X -> new Configurable<>(WORLD_BORDER_CENTER_X, Double.parseDouble(value));
-            case WORLD_BORDER_CENTER_Z -> new Configurable<>(WORLD_BORDER_CENTER_Z, Double.parseDouble(value));
-            case WORLD_BORDER_FINAL_Y -> new Configurable<>(WORLD_BORDER_FINAL_Y, Double.parseDouble(value));
-            case WORLD_BORDER_Y_SHRINKING_PERIOD -> new Configurable<>(WORLD_BORDER_Y_SHRINKING_PERIOD, Double.parseDouble(value));
+            case WORLD_BORDER_INITIAL_SIZE -> new Configurable<>(WORLD_BORDER_INITIAL_SIZE, Integer.parseInt(value));
+            case WORLD_BORDER_FINAL_SIZE -> new Configurable<>(WORLD_BORDER_FINAL_SIZE, Integer.parseInt(value));
+            case WORLD_BORDER_SHRINKING_PERIOD -> new Configurable<>(WORLD_BORDER_SHRINKING_PERIOD, Integer.parseInt(value));
+            case WORLD_BORDER_GRACE_PERIOD -> new Configurable<>(WORLD_BORDER_GRACE_PERIOD, Integer.parseInt(value));
+            case WORLD_BORDER_CENTER_X -> new Configurable<>(WORLD_BORDER_CENTER_X, Integer.parseInt(value));
+            case WORLD_BORDER_CENTER_Z -> new Configurable<>(WORLD_BORDER_CENTER_Z, Integer.parseInt(value));
+            case WORLD_BORDER_FINAL_Y -> new Configurable<>(WORLD_BORDER_FINAL_Y, Integer.parseInt(value));
+            case WORLD_BORDER_Y_SHRINKING_PERIOD -> new Configurable<>(WORLD_BORDER_Y_SHRINKING_PERIOD, Integer.parseInt(value));
             case RANDOM_TEAMS_ENABLED -> new Configurable<>(RANDOM_TEAMS_ENABLED, Boolean.parseBoolean((value)));
-            case RANDOM_TEAM_SIZE -> new Configurable<>(RANDOM_TEAM_SIZE, Double.parseDouble(value));
+            case RANDOM_TEAM_SIZE -> new Configurable<>(RANDOM_TEAM_SIZE, Integer.parseInt(value));
             case TEAM_RED -> new Configurable<>(TEAM_RED, value);
             case TEAM_YELLOW -> new Configurable<>(TEAM_YELLOW, value);
             case TEAM_GREEN -> new Configurable<>(TEAM_GREEN, value);
@@ -113,10 +113,10 @@ public class ConfigParser {
             case TEAM_ORANGE -> new Configurable<>(TEAM_ORANGE, value);
             case TEAM_PINK -> new Configurable<>(TEAM_PINK, value);
             case TEAM_PURPLE -> new Configurable<>(TEAM_PURPLE, value);
-            case SPREAD_MIN_DISTANCE -> new Configurable<>(SPREAD_MIN_DISTANCE, Double.parseDouble(value));
-            case GRACE_PERIOD_TIMER -> new Configurable<>(GRACE_PERIOD_TIMER, Double.parseDouble(value));
+            case SPREAD_MIN_DISTANCE -> new Configurable<>(SPREAD_MIN_DISTANCE, Integer.parseInt(value));
+            case GRACE_PERIOD_TIMER -> new Configurable<>(GRACE_PERIOD_TIMER, Integer.parseInt(value));
             case ON_DEATH_ACTION -> new Configurable<>(ON_DEATH_ACTION, value);
-            case COUNTDOWN_TIMER_LENGTH -> new Configurable<>(COUNTDOWN_TIMER_LENGTH, Double.parseDouble(value));
+            case COUNTDOWN_TIMER_LENGTH -> new Configurable<>(COUNTDOWN_TIMER_LENGTH, Integer.parseInt(value));
             case PLAYER_HEAD_GOLDEN_APPLE -> new Configurable<>(PLAYER_HEAD_GOLDEN_APPLE, Boolean.parseBoolean((value)));
             case WORLD_NAME -> new Configurable<>(WORLD_NAME, value);
             case WORLD_NAME_NETHER -> new Configurable<>(WORLD_NAME_NETHER, value);
@@ -176,7 +176,7 @@ public class ConfigParser {
         World end = config.getWorlds().getEnd();
         switch (configurable.key()) {
             case WORLD_BORDER_INITIAL_SIZE:
-                Double newWorldBorderSize = (Double) configurable.value();
+                int newWorldBorderSize = (int) configurable.value();
                 Utils.setWorldEffects(List.of(overworld, nether, end), (world) -> {
                     WorldBorder worldBorder = world.getWorldBorder();
                     worldBorder.setSize(newWorldBorderSize);
@@ -184,7 +184,7 @@ public class ConfigParser {
                 });
                 break;
             case WORLD_BORDER_CENTER_X:
-                Double newWorldCenterX = (Double) configurable.value();
+                int newWorldCenterX = (int) configurable.value();
                 Utils.setWorldEffects(List.of(overworld, nether, end), (world) -> {
                     WorldBorder worldBorder = world.getWorldBorder();
                     double worldCenterZ = worldBorder.getCenter().getZ();
@@ -192,7 +192,7 @@ public class ConfigParser {
                 });
                 break;
             case WORLD_BORDER_CENTER_Z:
-                Double newWorldCenterZ = (Double) configurable.value();
+                int newWorldCenterZ = (int) configurable.value();
                 Utils.setWorldEffects(List.of(overworld, nether, end), (world) -> {
                     WorldBorder worldBorder = world.getWorldBorder();
                     double worldCenterX = worldBorder.getCenter().getX();
@@ -222,7 +222,7 @@ public class ConfigParser {
                 break;
             case PLAYER_HEAD_GOLDEN_APPLE:
                 NamespacedKey playerHeadKey = config.getManagedResources().getPlayerHeadKey();
-                if (Boolean.parseBoolean(config.getProp(PLAYER_HEAD_GOLDEN_APPLE.configName))) {
+                if (config.getProperty(PLAYER_HEAD_GOLDEN_APPLE, Defaults.PLAYER_HEAD_GOLDEN_APPLE)) {
                     if (Bukkit.getRecipe(playerHeadKey) == null) {
                         ItemStack apple = new ItemStack(Material.GOLDEN_APPLE, 1);
                         ItemMeta appleMeta = apple.getItemMeta();
@@ -240,7 +240,7 @@ public class ConfigParser {
                 break;
             case CRAFTABLE_NOTCH_APPLE:
                 NamespacedKey notchAppleKey = config.getManagedResources().getNotchAppleKey();
-                if (Boolean.TRUE.equals(config.getProperty(CRAFTABLE_NOTCH_APPLE))) {
+                if (config.getProperty(CRAFTABLE_NOTCH_APPLE, Defaults.CRAFTABLE_NOTCH_APPLE)) {
                     if (Bukkit.getRecipe(notchAppleKey) == null) {
                         ItemStack apple = new ItemStack(Material.ENCHANTED_GOLDEN_APPLE, 1);
                         ShapedRecipe recipe = new ShapedRecipe(notchAppleKey, apple);
@@ -257,7 +257,7 @@ public class ConfigParser {
                 break;
             case CRAFTABLE_PLAYER_HEAD:
                 final NamespacedKey craftablePlayerHeadKey = config.getManagedResources().getCraftablePlayerHeadKey();
-                if (Boolean.TRUE.equals(config.getProperty(CRAFTABLE_PLAYER_HEAD))) {
+                if (config.getProperty(CRAFTABLE_PLAYER_HEAD, Defaults.CRAFTABLE_PLAYER_HEAD)) {
                     if (Bukkit.getRecipe(craftablePlayerHeadKey) == null) {
                         ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD, 1);
                         ShapedRecipe recipe = new ShapedRecipe(craftablePlayerHeadKey, playerHead);

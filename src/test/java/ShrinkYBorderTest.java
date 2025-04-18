@@ -1,32 +1,22 @@
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
-import org.mockbukkit.mockbukkit.world.WorldBorderMock;
 import org.mockbukkit.mockbukkit.world.WorldMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
 import org.mockbukkit.mockbukkit.scheduler.BukkitSchedulerMock;
 import com.stefancooper.SpigotUHC.Plugin;
 import com.stefancooper.SpigotUHC.utils.Utils;
 import mocks.servers.DispatchCommandServerMock;
-import org.bukkit.Difficulty;
-import java.util.Arrays;
-import org.bukkit.GameMode;
-import org.bukkit.GameRule;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
-import org.bukkit.entity.EntityType;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffectType;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import static com.stefancooper.SpigotUHC.Defaults.DEFAULT_END_WORLD_NAME;
-import static com.stefancooper.SpigotUHC.Defaults.DEFAULT_NETHER_WORLD_NAME;
-import static com.stefancooper.SpigotUHC.Defaults.DEFAULT_WORLD_NAME;
+import static com.stefancooper.SpigotUHC.Defaults.END_WORLD_NAME;
+import static com.stefancooper.SpigotUHC.Defaults.NETHER_WORLD_NAME;
+import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -48,12 +38,12 @@ public class ShrinkYBorderTest {
     {
         server = MockBukkit.mock(new DispatchCommandServerMock());
         WorldMock mockWorld = new WorldMock(Material.GRASS_BLOCK, Biome.PLAINS, -64, 128, 4);
-        mockWorld.setName(DEFAULT_WORLD_NAME);
+        mockWorld.setName(WORLD_NAME);
         server.addWorld(mockWorld);
         plugin = MockBukkit.load(Plugin.class);
         world = mockWorld;
-        nether = server.getWorld(DEFAULT_NETHER_WORLD_NAME);
-        end = server.getWorld(DEFAULT_END_WORLD_NAME);
+        nether = server.getWorld(NETHER_WORLD_NAME);
+        end = server.getWorld(END_WORLD_NAME);
     }
 
     @BeforeEach
@@ -103,7 +93,7 @@ public class ShrinkYBorderTest {
 
         schedule.performOneTick();
 
-        admin.assertSaid("spreadplayers 0.000000 0.000000 250.000000 25.000000 true @a");
+         admin.assertSaid("spreadplayers 0.0 0.0 250 25 true @a");
 
         // Initial start
         schedule.performTicks(Utils.secondsToTicks(10));

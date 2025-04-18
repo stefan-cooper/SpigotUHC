@@ -1,6 +1,7 @@
 package com.stefancooper.SpigotUHC.events;
 
 import com.stefancooper.SpigotUHC.Config;
+import com.stefancooper.SpigotUHC.Defaults;
 import com.stefancooper.SpigotUHC.enums.DeathAction;
 
 import com.stefancooper.SpigotUHC.types.BossBarBorder;
@@ -44,13 +45,13 @@ public class BaseEvents implements Listener {
 
     @Nullable
     private Location getWorldSpawn() {
-        Optional<String> worldSpawnX = Optional.ofNullable(config.getProp(WORLD_SPAWN_X.configName));
-        Optional<String> worldSpawnY = Optional.ofNullable(config.getProp(WORLD_SPAWN_Y.configName));
-        Optional<String> worldSpawnZ = Optional.ofNullable(config.getProp(WORLD_SPAWN_Z.configName));
+        Optional<Integer> worldSpawnX = Optional.ofNullable(config.getProperty(WORLD_SPAWN_X));
+        Optional<Integer> worldSpawnY = Optional.ofNullable(config.getProperty(WORLD_SPAWN_Y));
+        Optional<Integer> worldSpawnZ = Optional.ofNullable(config.getProperty(WORLD_SPAWN_Z));
         if (worldSpawnX.isPresent() && worldSpawnY.isPresent() && worldSpawnZ.isPresent()) {
-            int x = Integer.parseInt(worldSpawnX.get());
-            int y = Integer.parseInt(worldSpawnY.get());
-            int z = Integer.parseInt(worldSpawnZ.get());
+            int x = worldSpawnX.get();
+            int y = worldSpawnY.get();
+            int z = worldSpawnZ.get();
             return new Location(config.getWorlds().getOverworld(), x, y, z);
         }
         return null;
@@ -60,7 +61,7 @@ public class BaseEvents implements Listener {
     @SuppressWarnings("UnstableApiUsage")
     @EventHandler
     public void onDeath (PlayerDeathEvent event) {
-        switch (DeathAction.fromString(config.getProp(ON_DEATH_ACTION.configName))){
+        switch (DeathAction.fromString(config.getProperty(ON_DEATH_ACTION, Defaults.ON_DEATH_ACTION))){
             case SPECTATE:
                 event.getEntity().setGameMode(GameMode.SPECTATOR);
                 break;
@@ -72,7 +73,7 @@ public class BaseEvents implements Listener {
                 break;
         }
 
-        if (Boolean.parseBoolean(config.getProp(PLAYER_HEAD_GOLDEN_APPLE.configName))){
+        if (config.getProperty(PLAYER_HEAD_GOLDEN_APPLE, Defaults.PLAYER_HEAD_GOLDEN_APPLE)) {
             Player player = event.getEntity();
             ItemStack head = new ItemStack(Material.PLAYER_HEAD,1);
             SkullMeta headMeta = (SkullMeta) head.getItemMeta();
@@ -94,7 +95,7 @@ public class BaseEvents implements Listener {
 
 
 
-        if (Boolean.TRUE.equals(config.getProperty(WHISPER_TEAMMATE_DEAD_LOCATION))) {
+        if (config.getProperty(WHISPER_TEAMMATE_DEAD_LOCATION, Defaults.WHISPER_TEAMMATE_DEAD_LOCATION)) {
             Player player = event.getEntity();
             Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
             Optional<Team> playerTeam = scoreboard.getTeams().stream().filter(team -> team.hasEntry(player.getDisplayName())).findFirst();

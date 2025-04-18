@@ -72,14 +72,14 @@ public class WinEvents implements Listener {
         config.trigger();
         config.getManagedResources().cancelTimer();
 
-        Optional<String> worldSpawnX = Optional.ofNullable(config.getProp(WORLD_SPAWN_X.configName));
-        Optional<String> worldSpawnY = Optional.ofNullable(config.getProp(WORLD_SPAWN_Y.configName));
-        Optional<String> worldSpawnZ = Optional.ofNullable(config.getProp(WORLD_SPAWN_Z.configName));
+        Optional<Integer> worldSpawnX = Optional.ofNullable(config.getProperty(WORLD_SPAWN_X));
+        Optional<Integer> worldSpawnY = Optional.ofNullable(config.getProperty(WORLD_SPAWN_Y));
+        Optional<Integer> worldSpawnZ = Optional.ofNullable(config.getProperty(WORLD_SPAWN_Z));
 
-        if (worldSpawnX.isPresent() && worldSpawnZ.isPresent()) {
-            int x = Integer.parseInt(worldSpawnX.get());
-            int y = Integer.parseInt(worldSpawnY.get());
-            int z = Integer.parseInt(worldSpawnZ.get());
+        if (worldSpawnX.isPresent() && worldSpawnZ.isPresent() && worldSpawnY.isPresent()) {
+            int x = worldSpawnX.get();
+            int y = worldSpawnY.get();
+            int z = worldSpawnZ.get();
 
             for(Player player : Bukkit.getOnlinePlayers()) {
                 player.teleport(new Location(config.getWorlds().getOverworld(), x, y, z));

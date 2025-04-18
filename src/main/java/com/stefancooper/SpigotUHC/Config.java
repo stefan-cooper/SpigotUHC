@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Comparator;
+import java.util.Optional;
 import java.util.Properties;
 import java.util.stream.Stream;
 
@@ -68,6 +69,15 @@ public class Config {
 
     public String getProp(String key) {
         return (String) config.get(key);
+    }
+
+    /** improved version of getProp, this will use the parsing that we've already done */
+    public <T> T getProperty(ConfigKey key, T defaultValue) {
+        final String value = getProp(key.configName);
+        if (value != null) {
+            return Optional.ofNullable((T) parser.propertyToConfigurable(key.configName, value).value()).orElse(defaultValue);
+        }
+        return defaultValue;
     }
 
     /** improved version of getProp, this will use the parsing that we've already done */

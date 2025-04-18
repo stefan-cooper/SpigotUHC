@@ -1,6 +1,7 @@
 package com.stefancooper.SpigotUHC.commands;
 
 import com.stefancooper.SpigotUHC.Config;
+import com.stefancooper.SpigotUHC.Defaults;
 import com.stefancooper.SpigotUHC.types.UHCLoot;
 import com.stefancooper.SpigotUHC.utils.Utils;
 import com.stefancooper.SpigotUHC.enums.ConfigKey;
@@ -52,41 +53,42 @@ public class ResumeCommand extends StartCommand {
         Bukkit.setDefaultGameMode(GameMode.SURVIVAL);
 
         // Actions on the world
-        Utils.setWorldEffects(List.of(world, nether, end), (cbWorld) -> world.getWorldBorder().setSize(Double.parseDouble(getConfig().getProp(WORLD_BORDER_INITIAL_SIZE.configName))) );
+        Utils.setWorldEffects(List.of(world, nether, end), (cbWorld) -> world.getWorldBorder().setSize(getConfig().getProperty(WORLD_BORDER_INITIAL_SIZE, Defaults.WORLD_BORDER_INITIAL_SIZE)));
         Utils.setWorldEffects(List.of(getConfig().getWorlds().getOverworld(), getConfig().getWorlds().getNether(), getConfig().getWorlds().getEnd()), (cbWorld) -> {
-            cbWorld.setDifficulty(Difficulty.valueOf(getConfig().getProp(DIFFICULTY.configName)));
+            cbWorld.setDifficulty(getConfig().getProperty(DIFFICULTY, Defaults.DIFFICULTY));
         });
 
-        if (Boolean.parseBoolean(getConfig().getProp(ConfigKey.WORLD_BORDER_IN_BOSSBAR.configName))) {
+        if (getConfig().getProperty(ConfigKey.WORLD_BORDER_IN_BOSSBAR, Defaults.WORLD_BORDER_IN_BOSSBAR)) {
             BossBarBorder bossBarBorder = getConfig().getManagedResources().getBossBarBorder();
             Bukkit.getOnlinePlayers().forEach(player -> bossBarBorder.getBossBar().addPlayer(player));
             bossBarBorder.getBossBar().setVisible(true);
             getConfig().getManagedResources().runRepeatingTask(bossBarBorder.updateProgress(), 1);
         }
 
-        Optional<String> gracePeriod = Optional.ofNullable(getConfig().getProp(GRACE_PERIOD_TIMER.configName));
-        Optional<String> worldBorderGracePeriod = Optional.ofNullable(getConfig().getProp(WORLD_BORDER_GRACE_PERIOD.configName));
+        Integer gracePeriod = getConfig().getProperty(GRACE_PERIOD_TIMER, Defaults.GRACE_PERIOD_TIMER);
+        Integer worldBorderGracePeriod = getConfig().getProperty(WORLD_BORDER_GRACE_PERIOD, Defaults.WORLD_BORDER_GRACE_PERIOD);
 
-        worldBorderGracePeriod.ifPresent(s -> {
+        // PVP Grace Period
+        if (gracePeriod > 0) {
             int secondsProgressed = minutesProgressed * 60;
-            int worldBorderGracePeriodTime = Integer.parseInt(s);
-            if (secondsProgressed > worldBorderGracePeriodTime) {
-                endWorldBorderGracePeriod(secondsProgressed - worldBorderGracePeriodTime);
-            } else {
-                getConfig().getManagedResources().runTaskLater(endWorldBorderGracePeriod(), Integer.parseInt(s) - (minutesProgressed * 60));
-            }
-        });
-        gracePeriod.ifPresent(s -> {
-            int secondsProgressed = minutesProgressed * 60;
-            int gracePeriodTimer = Integer.parseInt(s);
-            if (secondsProgressed > gracePeriodTimer) {
+            if (secondsProgressed > gracePeriod) {
                 endGracePeriod().run();
             } else {
-                getConfig().getManagedResources().runTaskLater(endGracePeriod(), Integer.parseInt(s) - secondsProgressed);
-
+                getConfig().getManagedResources().runTaskLater(endGracePeriod(), gracePeriod - secondsProgressed);
             }
-        });
+        }
 
+        // World Border Grace Period
+        if (worldBorderGracePeriod > 0) {
+            int secondsProgressed = minutesProgressed * 60;
+            if (secondsProgressed > worldBorderGracePeriod) {
+                endWorldBorderGracePeriod(secondsProgressed - worldBorderGracePeriod);
+            } else {
+                getConfig().getManagedResources().runTaskLater(endWorldBorderGracePeriod(), worldBorderGracePeriod - (minutesProgressed * 60));
+            }
+        }
+
+        // UHC Loot Chest
         if (UHCLoot.isConfigured(getConfig())) {
             new UHCLoot(getConfig());
         }
@@ -95,14 +97,13 @@ public class ResumeCommand extends StartCommand {
     }
 
     protected void endWorldBorderGracePeriod (int progressedSeconds) {
-        System.out.println("BORDER GRACE PERIOD OVER");
-        String finalWorldBorderSize = getConfig().getProp(WORLD_BORDER_FINAL_SIZE.configName);
-        String shrinkingTime = getConfig().getProp(WORLD_BORDER_SHRINKING_PERIOD.configName);
+        int finalWorldBorderSize = getConfig().getProperty(WORLD_BORDER_FINAL_SIZE, Defaults.WORLD_BORDER_FINAL_SIZE);
+        int shrinkingTime = getConfig().getProperty(WORLD_BORDER_SHRINKING_PERIOD, Defaults.WORLD_BORDER_SHRINKING_PERIOD);
         Utils.setWorldEffects(List.of(getConfig().getWorlds().getOverworld(), getConfig().getWorlds().getNether(), getConfig().getWorlds().getEnd()), (cbWorld) -> {
             WorldBorder wb = cbWorld.getWorldBorder();
             wb.setDamageBuffer(5);
             wb.setDamageAmount(0.2);
-            wb.setSize(Double.parseDouble(finalWorldBorderSize), Long.parseLong(shrinkingTime) - progressedSeconds);
+            wb.setSize(finalWorldBorderSize, shrinkingTime - progressedSeconds);
         });
         Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle("World border shrinking", "Don't get caught..."));
     }

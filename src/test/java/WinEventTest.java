@@ -3,18 +3,11 @@ import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
 import org.mockbukkit.mockbukkit.scheduler.BukkitSchedulerMock;
 import com.stefancooper.SpigotUHC.Plugin;
-import com.stefancooper.SpigotUHC.utils.Utils;
 import org.bukkit.*;
-import org.bukkit.entity.EntityType;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffectType;
 import org.junit.jupiter.api.*;
-
-import java.util.Arrays;
 
 import static com.stefancooper.SpigotUHC.Defaults.*;
 import static org.junit.jupiter.api.Assertions.*;
-import static utils.TestUtils.WorldAssertion;
 
 
 public class WinEventTest {
@@ -30,9 +23,9 @@ public class WinEventTest {
     {
         server = MockBukkit.mock();
         plugin = MockBukkit.load(Plugin.class);
-        world = server.getWorld(DEFAULT_WORLD_NAME);
-        nether = server.getWorld(DEFAULT_NETHER_WORLD_NAME);
-        end = server.getWorld(DEFAULT_END_WORLD_NAME);
+        world = server.getWorld(WORLD_NAME);
+        nether = server.getWorld(NETHER_WORLD_NAME);
+        end = server.getWorld(END_WORLD_NAME);
     }
 
     @BeforeEach

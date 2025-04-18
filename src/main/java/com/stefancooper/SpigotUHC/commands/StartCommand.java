@@ -3,6 +3,7 @@ package com.stefancooper.SpigotUHC.commands;
 import java.util.List;
 import java.util.Optional;
 
+import com.stefancooper.SpigotUHC.Defaults;
 import com.stefancooper.SpigotUHC.enums.ConfigKey;
 import com.stefancooper.SpigotUHC.types.BossBarBorder;
 import com.stefancooper.SpigotUHC.types.RandomFinalLocation;
@@ -60,18 +61,18 @@ public class StartCommand extends AbstractCommand {
         final World end = getConfig().getWorlds().getEnd();
 
         // Config Values
-        final int centerX = Integer.parseInt(getConfig().getProp(WORLD_BORDER_CENTER_X.configName));
-        final int centerZ = Integer.parseInt(getConfig().getProp(WORLD_BORDER_CENTER_Z.configName));
-        final double minDistance =  Double.parseDouble(getConfig().getProp(SPREAD_MIN_DISTANCE.configName));
-        final double maxDistance =  Double.parseDouble(getConfig().getProp(WORLD_BORDER_INITIAL_SIZE.configName)) / 2;
+        final int centerX = getConfig().getProperty(WORLD_BORDER_CENTER_X, Defaults.WORLD_BORDER_CENTER_X);
+        final int centerZ = getConfig().getProperty(WORLD_BORDER_CENTER_Z, Defaults.WORLD_BORDER_CENTER_Z);
+        final int minDistance = getConfig().getProperty(SPREAD_MIN_DISTANCE, Defaults.MIN_SPREAD_DISTANCE);
+        final int maxDistance = getConfig().getProperty(WORLD_BORDER_INITIAL_SIZE, Defaults.WORLD_BORDER_INITIAL_SIZE) / 2;
 
         // World and Countdown timer are both configs that will always be set
-        final int countdownTimer = Integer.parseInt(getConfig().getProp(COUNTDOWN_TIMER_LENGTH.configName));
+        final int countdownTimer = getConfig().getProperty(COUNTDOWN_TIMER_LENGTH, Defaults.COUNTDOWN_TIMER_LENGTH);
 
         // Final Center Location
         final Location finalLocation;
-        if (Boolean.parseBoolean(getConfig().getProp(RANDOM_FINAL_LOCATION.configName))) {
-            final int initialWorldBorderSize = Integer.parseInt(getConfig().getProp(WORLD_BORDER_INITIAL_SIZE.configName));
+        if (getConfig().getProperty(RANDOM_FINAL_LOCATION, Defaults.RANDOM_FINAL_LOCATION)) {
+            final int initialWorldBorderSize = getConfig().getProperty(WORLD_BORDER_INITIAL_SIZE, Defaults.WORLD_BORDER_INITIAL_SIZE);
             final RandomFinalLocation location = new RandomFinalLocation(world, centerX, centerZ, initialWorldBorderSize);
             finalLocation = location.getLocation();
         } else {
@@ -84,7 +85,7 @@ public class StartCommand extends AbstractCommand {
         // Actions on the world
         Bukkit.setDefaultGameMode(GameMode.SURVIVAL);
         Utils.setWorldEffects(List.of(world, nether, end), (cbWorld) -> {
-            world.getWorldBorder().setSize(Double.parseDouble(getConfig().getProp(WORLD_BORDER_INITIAL_SIZE.configName)));
+            world.getWorldBorder().setSize(getConfig().getProperty(WORLD_BORDER_INITIAL_SIZE, Defaults.WORLD_BORDER_INITIAL_SIZE));
             world.getWorldBorder().setCenter(finalLocation.getX(), finalLocation.getZ());
             world.setTime(1000);
             world.setDifficulty(Difficulty.PEACEFUL);
@@ -104,7 +105,7 @@ public class StartCommand extends AbstractCommand {
             player.setLevel(0);
             player.setGameMode(GameMode.SURVIVAL);
             player.addPotionEffect(PotionEffectType.MINING_FATIGUE.createEffect((int) Utils.secondsToTicks(countdownTimer), 3));
-            if (Boolean.parseBoolean(getConfig().getProp(RANDOM_FINAL_LOCATION.configName))) {
+            if (getConfig().getProperty(RANDOM_FINAL_LOCATION, Defaults.RANDOM_FINAL_LOCATION)) {
                 player.getInventory().addItem(RandomFinalLocation.generateWorldCenterCompass());
                 player.setCompassTarget(world.getWorldBorder().getCenter());
             }
@@ -113,17 +114,17 @@ public class StartCommand extends AbstractCommand {
         // Spread players
         // spreadplayers <x> <z> <spreadDistance> <maxRange> <teams> <targets>
         // See: https://minecraft.fandom.com/wiki/Commands/spreadplayers
-        final String spreadCommand = String.format("spreadplayers %f %f %f %f true @a", finalLocation.getX(), finalLocation.getZ(), minDistance, maxDistance);
+        final String spreadCommand = String.format("spreadplayers %s %s %s %s true @a", finalLocation.getX(), finalLocation.getZ(), minDistance, maxDistance);
         getSender().getServer().dispatchCommand(getSender(), spreadCommand);
 
         // Timed actions
-        Optional<String> gracePeriod = Optional.ofNullable(getConfig().getProp(GRACE_PERIOD_TIMER.configName));
-        Optional<String> worldBorderGracePeriod = Optional.ofNullable(getConfig().getProp(WORLD_BORDER_GRACE_PERIOD.configName));
+        int gracePeriod = getConfig().getProperty(GRACE_PERIOD_TIMER, Defaults.GRACE_PERIOD_TIMER);
+        int worldBorderGracePeriod = getConfig().getProperty(WORLD_BORDER_GRACE_PERIOD, Defaults.WORLD_BORDER_GRACE_PERIOD);
 
         // World border grace period
-        worldBorderGracePeriod.ifPresent(s -> getConfig().getManagedResources().runTaskLater(endWorldBorderGracePeriod(), Integer.parseInt(s)));
+        if (worldBorderGracePeriod > 0) getConfig().getManagedResources().runTaskLater(endWorldBorderGracePeriod(), worldBorderGracePeriod);
         // PVP Grace period
-        gracePeriod.ifPresent(s -> getConfig().getManagedResources().runTaskLater(endGracePeriod(), Integer.parseInt(s)));
+        if (gracePeriod > 0) getConfig().getManagedResources().runTaskLater(endGracePeriod(), gracePeriod);
 
         // Countdown timer
         for (int curr = 0; curr <= countdownTimer; curr++) {
@@ -136,7 +137,7 @@ public class StartCommand extends AbstractCommand {
         }
 
         // World border boss bar
-        if (Boolean.parseBoolean(getConfig().getProp(ConfigKey.WORLD_BORDER_IN_BOSSBAR.configName))) {
+        if (getConfig().getProperty(ConfigKey.WORLD_BORDER_IN_BOSSBAR, Defaults.WORLD_BORDER_IN_BOSSBAR)) {
             BossBarBorder bossBarBorder = getConfig().getManagedResources().getBossBarBorder();
             Bukkit.getOnlinePlayers().forEach(player -> bossBarBorder.getBossBar().addPlayer(player));
             bossBarBorder.getBossBar().setVisible(true);
@@ -144,10 +145,11 @@ public class StartCommand extends AbstractCommand {
         }
 
         // Timestamps
-        if (Boolean.parseBoolean(getConfig().getProp(ConfigKey.ENABLE_TIMESTAMPS.configName))) {
+        if (getConfig().getProperty(ConfigKey.ENABLE_TIMESTAMPS, Defaults.ENABLE_TIMESTAMPS)) {
             getConfig().getManagedResources().addTimestamp("[Meta] UHC Started", false);
         }
 
+        // UHC Loot
         if (UHCLoot.isConfigured(getConfig())) {
             new UHCLoot(getConfig());
         }
@@ -156,9 +158,9 @@ public class StartCommand extends AbstractCommand {
     }
 
     protected Runnable countdown(int remaining, World world) {
-        String countdownTimer = getConfig().getProp(COUNTDOWN_TIMER_LENGTH.configName);
+        int countdownTimer = getConfig().getProperty(COUNTDOWN_TIMER_LENGTH, Defaults.COUNTDOWN_TIMER_LENGTH);
         return () -> {
-            int timeLeft = Integer.parseInt(countdownTimer) - remaining;
+            int timeLeft = countdownTimer - remaining;
             if (timeLeft == 2) {
                 Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle(Integer.toString(timeLeft), "Ready"));
             } else if (timeLeft == 1) {
@@ -166,7 +168,7 @@ public class StartCommand extends AbstractCommand {
             } else if (timeLeft == 0) {
                 // Countdown over!
                 Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle(Integer.toString(timeLeft), "Go!"));
-                world.setDifficulty(Difficulty.valueOf(getConfig().getProp(DIFFICULTY.configName)));
+                world.setDifficulty(getConfig().getProperty(DIFFICULTY, Defaults.DIFFICULTY));
                 getConfig().getPlugin().setCountingDown(false);
             } else {
                 Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle(Integer.toString(timeLeft), "Starting soon..."));
@@ -186,20 +188,20 @@ public class StartCommand extends AbstractCommand {
         return () -> {
             System.out.println("BORDER GRACE PERIOD OVER");
 
-            String finalWorldBorderSize = getConfig().getProp(WORLD_BORDER_FINAL_SIZE.configName);
-            String shrinkingTime = getConfig().getProp(WORLD_BORDER_SHRINKING_PERIOD.configName);
+            int finalWorldBorderSize = getConfig().getProperty(WORLD_BORDER_FINAL_SIZE, Defaults.WORLD_BORDER_FINAL_SIZE);
+            int shrinkingTime = getConfig().getProperty(WORLD_BORDER_SHRINKING_PERIOD, Defaults.WORLD_BORDER_SHRINKING_PERIOD);
 
             Utils.setWorldEffects(List.of(getConfig().getWorlds().getOverworld(), getConfig().getWorlds().getNether(), getConfig().getWorlds().getEnd()), (cbWorld) -> {
                 WorldBorder wb = cbWorld.getWorldBorder();
                 wb.setDamageBuffer(5);
                 wb.setDamageAmount(0.2);
-                wb.setSize(Double.parseDouble(finalWorldBorderSize), Long.parseLong(shrinkingTime));
+                wb.setSize(finalWorldBorderSize, shrinkingTime);
             });
 
             if (Optional.ofNullable(getConfig().getProperty(WORLD_BORDER_Y_SHRINKING_PERIOD)).isPresent() &&
                     Optional.ofNullable(getConfig().getProperty(WORLD_BORDER_FINAL_Y)).isPresent() &&
-                        Integer.parseInt(finalWorldBorderSize) <= MAXIMUM_FINAL_SIZE_FOR_Y_SHRINK) {
-                getConfig().getManagedResources().runTaskLater(shrinkYBorderOverTime(), Integer.parseInt(shrinkingTime));
+                        finalWorldBorderSize <= MAXIMUM_FINAL_SIZE_FOR_Y_SHRINK) {
+                getConfig().getManagedResources().runTaskLater(shrinkYBorderOverTime(), shrinkingTime);
             }
 
             Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle("World border shrinking", "Don't get caught..."));
@@ -208,11 +210,11 @@ public class StartCommand extends AbstractCommand {
 
     protected Runnable shrinkYBorderOverTime() {
         return () -> {
-            final int centerX = Integer.parseInt(getConfig().getProp(WORLD_BORDER_CENTER_X.configName));
-            final int centerZ = Integer.parseInt(getConfig().getProp(WORLD_BORDER_CENTER_Z.configName));
-            final int finalSize = Integer.parseInt(getConfig().getProp(WORLD_BORDER_FINAL_SIZE.configName));
-            final int finalY = Integer.parseInt(getConfig().getProp(WORLD_BORDER_FINAL_Y.configName));
-            final int shrinkTime = Integer.parseInt(getConfig().getProp(WORLD_BORDER_Y_SHRINKING_PERIOD.configName));
+            final int centerX = getConfig().getProperty(WORLD_BORDER_CENTER_X, Defaults.WORLD_BORDER_CENTER_X);
+            final int centerZ = getConfig().getProperty(WORLD_BORDER_CENTER_Z, Defaults.WORLD_BORDER_CENTER_Z);
+            final int finalSize = getConfig().getProperty(WORLD_BORDER_FINAL_SIZE, Defaults.WORLD_BORDER_FINAL_SIZE);
+            final int finalY = getConfig().getProperty(WORLD_BORDER_FINAL_Y, Defaults.WORLD_BORDER_FINAL_Y);
+            final int shrinkTime = getConfig().getProperty(WORLD_BORDER_Y_SHRINKING_PERIOD, Defaults.WORLD_BORDER_Y_SHRINKING_PERIOD);
             final int interval = shrinkTime / (finalY + 64);
 
             int eitherSide = finalSize / 2;
@@ -221,14 +223,16 @@ public class StartCommand extends AbstractCommand {
             int corner1Z = centerZ + eitherSide;
             int corner2Z = centerZ - eitherSide;
 
-            runner = getConfig().getManagedResources().runRepeatingTask(() -> {
-                shrinkYBorderBlock++;
-                final String fillCommand = String.format("fill %s %s %s %s %s %s minecraft:bedrock", corner1X, shrinkYBorderBlock, corner1Z, corner2X, shrinkYBorderBlock, corner2Z);
-                getSender().getServer().dispatchCommand(Bukkit.getConsoleSender(), fillCommand);
-                if (shrinkYBorderBlock >= finalY) {
-                    runner.cancel();
-                }
-            }, interval);
+            if (shrinkTime > 0) {
+                runner = getConfig().getManagedResources().runRepeatingTask(() -> {
+                    shrinkYBorderBlock++;
+                    final String fillCommand = String.format("fill %s %s %s %s %s %s minecraft:bedrock", corner1X, shrinkYBorderBlock, corner1Z, corner2X, shrinkYBorderBlock, corner2Z);
+                    getSender().getServer().dispatchCommand(Bukkit.getConsoleSender(), fillCommand);
+                    if (shrinkYBorderBlock >= finalY) {
+                        runner.cancel();
+                    }
+                }, interval);
+            }
         };
     }
 }

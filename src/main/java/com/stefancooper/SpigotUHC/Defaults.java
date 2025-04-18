@@ -46,6 +46,9 @@ public class Defaults {
     public static boolean WHISPER_TEAMMATE_DEAD_LOCATION = false;
     public static boolean RANDOM_FINAL_LOCATION = false;
     public static boolean ENABLE_TIMESTAMPS = true;
+    public static boolean ENABLE_DEATHCHAT = true;
+    public static boolean DISABLE_END_GAME_AUTOMATICALLY = false;
+    public static boolean DISABLE_WITCHES = false;
 
     // Craftables
     public static boolean CRAFTABLE_NOTCH_APPLE = false;
@@ -64,6 +67,15 @@ public class Defaults {
     public static int REVIVE_LOSE_MAX_HEALTH = 4;
     public static int REVIVE_LOCATION_SIZE = 10;
     public static int REVIVE_TIME = 5;
+    public static boolean REVIVE_ANY_HEAD = true;
+
+    // Loot chest
+    public static boolean LOOT_CHEST_ENABLED = false;
+    public static int LOOT_CHEST_FREQUENCY = 300;
+    public static int LOOT_CHEST_SPINS_PER_GEN = 5;
+    public static int LOOT_CHEST_HIGH_LOOT_ODDS = 8;
+    public static int LOOT_CHEST_MID_LOOT_ODDS = 40;
+
 
     /* -- End of defaults -- */
 

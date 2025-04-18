@@ -176,7 +176,7 @@ public class BaseEvents implements Listener {
             // noop
             return;
         }
-        if (Boolean.TRUE.equals(config.getProperty(DISABLE_WITCHES)) && event.getEntity().getType().equals(EntityType.WITCH)) {
+        if (config.getProperty(DISABLE_WITCHES, Defaults.DISABLE_WITCHES) && event.getEntity().getType().equals(EntityType.WITCH)) {
             event.setCancelled(true);
         }
     }
@@ -186,7 +186,7 @@ public class BaseEvents implements Listener {
         final Player sender = event.getPlayer();
         final GameMode gameMode = sender.getGameMode();
 
-        if (Boolean.TRUE.equals(config.getProperty(ENABLE_DEATH_CHAT)) && gameMode.equals(GameMode.SPECTATOR)) {
+        if (config.getProperty(ENABLE_DEATH_CHAT, Defaults.ENABLE_DEATHCHAT) && gameMode.equals(GameMode.SPECTATOR)) {
             final List<Player> alivePlayers = (List<Player>) Bukkit.getOnlinePlayers().stream().filter(player -> player.getGameMode().equals(GameMode.SURVIVAL)).toList();
             alivePlayers.forEach(player -> event.getRecipients().remove(player));
             event.setMessage(String.format("(Death Chat) %s", event.getMessage()));

@@ -1,6 +1,7 @@
 package com.stefancooper.SpigotUHC.types;
 
 import com.stefancooper.SpigotUHC.Config;
+import com.stefancooper.SpigotUHC.Defaults;
 import com.stefancooper.SpigotUHC.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -14,7 +15,6 @@ import org.bukkit.block.Chest;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionType;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -83,7 +83,7 @@ public class UHCLoot {
 
     public UHCLoot(final Config config) {
         if (!UHCLoot.isConfigured(config)) return;
-        final Integer lootFrequency = config.getProperty(LOOT_CHEST_FREQUENCY);
+        final Integer lootFrequency = config.getProperty(LOOT_CHEST_FREQUENCY, Defaults.LOOT_CHEST_FREQUENCY);
         final Integer chestX = config.getProperty(LOOT_CHEST_X);
         final Integer chestY = config.getProperty(LOOT_CHEST_Y);
         final Integer chestZ = config.getProperty(LOOT_CHEST_Z);
@@ -130,30 +130,22 @@ public class UHCLoot {
             lootChestBlock.setType(Material.CHEST);
             final Chest lootChest = (Chest) lootChestBlock.getState();
 
-            Integer spawnRate = config.getProperty(LOOT_CHEST_SPINS_PER_GEN);
-            Integer highLootOdds = config.getProperty(LOOT_CHEST_HIGH_LOOT_ODDS);
-            Integer midLootOdds = config.getProperty(LOOT_CHEST_MID_LOOT_ODDS);
-
-            if (highLootOdds == null) highLootOdds = 5;
-            if (midLootOdds == null) midLootOdds = 40;
-            if (spawnRate == null) spawnRate = 5;
-
-            final int finalSpawnRate = spawnRate;
-            final int finalHighLootOdds = highLootOdds;
-            final int finalMidLootOdds = midLootOdds + finalHighLootOdds;
+            final int spawnRate = config.getProperty(LOOT_CHEST_SPINS_PER_GEN, Defaults.LOOT_CHEST_SPINS_PER_GEN);
+            final int highLootOdds = config.getProperty(LOOT_CHEST_HIGH_LOOT_ODDS, Defaults.LOOT_CHEST_HIGH_LOOT_ODDS);
+            final int midLootOdds = config.getProperty(LOOT_CHEST_MID_LOOT_ODDS, Defaults.LOOT_CHEST_MID_LOOT_ODDS) + highLootOdds;
 
             Utils.spawnParticle(world, Particle.ENCHANT, new Location(world, lootChest.getX() + 0.5, lootChest.getY() + 1.5, lootChest.getZ() + 0.5), 1000);
             lootChest.getBlockInventory().clear();
-            for (int i = 0; i < finalSpawnRate; i++) {
+            for (int i = 0; i < spawnRate; i++) {
                 final int spin = random.nextInt(100) + 1;
                 final Material itemToAdd;
                 Tier tier;
 
-                if (spin < finalHighLootOdds) {
+                if (spin < highLootOdds) {
                     itemToAdd = highTier.get(random.nextInt(highTier.size()));
                     Bukkit.getOnlinePlayers().forEach(player -> player.playSound(player, Sound.ITEM_GOAT_HORN_SOUND_7, 2, 1));
                     tier = Tier.HIGH;
-                } else if (spin < finalMidLootOdds) {
+                } else if (spin < midLootOdds) {
                     itemToAdd = midTier.get(random.nextInt(midTier.size()));
                     tier = Tier.MID;
                 } else {
@@ -252,7 +244,7 @@ public class UHCLoot {
     }
 
     public static boolean isConfigured(Config config) {
-        final boolean enabled = Boolean.TRUE.equals(config.getProperty(LOOT_CHEST_ENABLED));
+        final boolean enabled = config.getProperty(LOOT_CHEST_ENABLED, Defaults.LOOT_CHEST_ENABLED);
         return enabled && (config.getProperty(LOOT_CHEST_X) != null &&
                 config.getProperty(LOOT_CHEST_Y) != null &&
                 config.getProperty(LOOT_CHEST_Z) != null) ||

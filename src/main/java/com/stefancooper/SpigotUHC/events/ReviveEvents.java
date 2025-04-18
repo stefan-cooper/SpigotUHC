@@ -1,6 +1,7 @@
 package com.stefancooper.SpigotUHC.events;
 
 import com.stefancooper.SpigotUHC.Config;
+import com.stefancooper.SpigotUHC.Defaults;
 import com.stefancooper.SpigotUHC.types.Revive;
 import com.stefancooper.SpigotUHC.utils.Utils;
 import org.bukkit.Bukkit;
@@ -56,7 +57,7 @@ public class ReviveEvents implements Listener {
             if (revive.isEmpty() && event.getPlayer().getInventory().contains(Material.PLAYER_HEAD)) {
                 List<ItemStack> playerHeads = Arrays.stream(event.getPlayer().getInventory().getStorageContents()).filter(itemStack -> itemStack != null && itemStack.getType().equals(Material.PLAYER_HEAD)).toList();
                 for (ItemStack playerHead : playerHeads) {
-                    if (Boolean.TRUE.equals(config.getProperty(REVIVE_ANY_HEAD))) {
+                    if (config.getProperty(REVIVE_ANY_HEAD, Defaults.REVIVE_ANY_HEAD)) {
                         // Any head revive mode
                         Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(event.getPlayer().getDisplayName());
                         if (team != null) {
@@ -202,7 +203,7 @@ public class ReviveEvents implements Listener {
         if (Utils.isReviveViaArmorStandEnabled(config)) {
             if (event.getSlot() == EquipmentSlot.HEAD && event.getPlayerItem().getType() == Material.PLAYER_HEAD) {
                 ItemStack playerHead = event.getPlayerItem();
-                if (Boolean.TRUE.equals(config.getProperty(REVIVE_ANY_HEAD))) {
+                if (config.getProperty(REVIVE_ANY_HEAD, Defaults.REVIVE_ANY_HEAD)) {
                     // Any head revive mode
                     Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(event.getPlayer().getDisplayName());
                     if (team != null) {

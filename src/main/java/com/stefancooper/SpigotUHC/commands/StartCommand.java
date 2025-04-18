@@ -178,7 +178,6 @@ public class StartCommand extends AbstractCommand {
 
     protected Runnable endGracePeriod () {
         return () -> {
-            System.out.println("PVP GRACE PERIOD OVER");
             Utils.setWorldEffects(List.of(getConfig().getWorlds().getOverworld(), getConfig().getWorlds().getNether(), getConfig().getWorlds().getEnd()), (cbWorld) -> cbWorld.setPVP(true));
             Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle("Grace period over", "\uD83D\uDC40 Watch your back \uD83D\uDC40"));
         };
@@ -186,8 +185,6 @@ public class StartCommand extends AbstractCommand {
 
     protected Runnable endWorldBorderGracePeriod () {
         return () -> {
-            System.out.println("BORDER GRACE PERIOD OVER");
-
             int finalWorldBorderSize = getConfig().getProperty(WORLD_BORDER_FINAL_SIZE, Defaults.WORLD_BORDER_FINAL_SIZE);
             int shrinkingTime = getConfig().getProperty(WORLD_BORDER_SHRINKING_PERIOD, Defaults.WORLD_BORDER_SHRINKING_PERIOD);
 

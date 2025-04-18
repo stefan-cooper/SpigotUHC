@@ -1,6 +1,7 @@
 package com.stefancooper.SpigotUHC.events;
 
 import com.stefancooper.SpigotUHC.Config;
+import com.stefancooper.SpigotUHC.Defaults;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -37,7 +38,7 @@ public class WinEvents implements Listener {
 
         List<UHCTeam> teamsWithSurvivors = getTeamsWithSurvivors();
 
-        final boolean doNotEndGameAutomatically = (boolean) Optional.ofNullable(config.getProperty(DISABLE_END_GAME_AUTOMATICALLY)).orElse(false);
+        final boolean doNotEndGameAutomatically = config.getProperty(DISABLE_END_GAME_AUTOMATICALLY, Defaults.DISABLE_END_GAME_AUTOMATICALLY);
 
         if (!doNotEndGameAutomatically && teamsWithSurvivors.size() == 1) {
             UHCTeam winningTeam = teamsWithSurvivors.getFirst();

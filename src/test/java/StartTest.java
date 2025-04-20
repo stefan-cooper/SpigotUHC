@@ -149,9 +149,9 @@ public class StartTest {
             assertEquals(3, player.getPotionEffect(PotionEffectType.MINING_FATIGUE).getAmplifier());
         });
 
-        schedule.performTicks(Utils.secondsToTicks(10));
+        admin.assertSaid("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!");
 
-        admin.assertSaid("UHC: Go! Go! Go!");
+        schedule.performTicks(Utils.secondsToTicks(10));
 
         // Countdown finished
         assertEquals(Difficulty.HARD, world.getDifficulty());

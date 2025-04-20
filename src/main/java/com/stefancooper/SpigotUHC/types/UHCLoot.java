@@ -136,6 +136,7 @@ public class UHCLoot {
 
             Utils.spawnParticle(world, Particle.ENCHANT, new Location(world, lootChest.getX() + 0.5, lootChest.getY() + 1.5, lootChest.getZ() + 0.5), 1000);
             lootChest.getBlockInventory().clear();
+            boolean didHighTierSpawn = false;
             for (int i = 0; i < spawnRate; i++) {
                 final int spin = random.nextInt(100) + 1;
                 final Material itemToAdd;
@@ -143,8 +144,8 @@ public class UHCLoot {
 
                 if (spin < highLootOdds) {
                     itemToAdd = highTier.get(random.nextInt(highTier.size()));
-                    Bukkit.getOnlinePlayers().forEach(player -> player.playSound(player, Sound.ITEM_GOAT_HORN_SOUND_7, 2, 1));
                     tier = Tier.HIGH;
+                    didHighTierSpawn = true;
                 } else if (spin < midLootOdds) {
                     itemToAdd = midTier.get(random.nextInt(midTier.size()));
                     tier = Tier.MID;
@@ -157,6 +158,11 @@ public class UHCLoot {
                 multiplyItems(item);
                 addPotionEffects(item, tier);
                 lootChest.getBlockInventory().addItem(item);
+            }
+
+            if (didHighTierSpawn) {
+                Bukkit.getOnlinePlayers().forEach(player -> player.playSound(player, Sound.ITEM_GOAT_HORN_SOUND_7, 2, 1));
+                Bukkit.broadcastMessage("UHC: High tier loot item(s) have spawned in the loot chest!");
             }
 
         }, lootFrequency);

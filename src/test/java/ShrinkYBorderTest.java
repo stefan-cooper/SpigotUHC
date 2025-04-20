@@ -91,11 +91,12 @@ public class ShrinkYBorderTest {
 
         server.execute("uhc", admin, "start");
 
+        admin.assertSaid("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!");
         admin.assertSaid("spreadplayers 0.0 0.0 250 25 true @a");
+        admin.assertNoMoreSaid();
 
         // Wait for countdown (10 sec)
         schedule.performTicks(Utils.secondsToTicks(10));
-        admin.assertSaid("UHC: Go! Go! Go!");
         admin.assertNoMoreSaid();
 
         // Wait for grace period (20 sec)

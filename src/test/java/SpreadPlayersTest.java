@@ -52,6 +52,7 @@ public class SpreadPlayersTest {
 
         server.execute("uhc", admin, "start");
 
+        admin.assertSaid("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!");
         // center.x, center.z, min distance, initial border size / 2, true = respectTeams, @a = all players
         admin.assertSaid("spreadplayers 100.0 150.0 100 250 true @a");
     }

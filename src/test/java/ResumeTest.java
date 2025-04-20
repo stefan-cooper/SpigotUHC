@@ -97,25 +97,25 @@ public class ResumeTest {
 
     private static Stream<Arguments> resumeConfigGracePeriod() {
         return Stream.of(
-                Arguments.of(0, 600, 3600, 3600),
-                Arguments.of(300, 600, 3600, 3600),
-                Arguments.of(700, 600, 3600, 3600)
+                Arguments.of(0, 10, 600, 3600, 3600),
+                Arguments.of(300, 10, 600, 3600, 3600),
+                Arguments.of(700, 10, 600, 3600, 3600)
         );
     }
 
     private static Stream<Arguments> worldBorderConfig() {
         return Stream.of(
-                Arguments.of(0, 600, 3600, 3600),
-                Arguments.of(1200, 600, 3600, 3600),
-                Arguments.of(3700, 600, 3600, 3600),
-                Arguments.of(7500, 600, 3600, 3600)
+                Arguments.of(0, 10, 600, 3600, 3600),
+                Arguments.of(1200, 10, 600, 3600, 3600),
+                Arguments.of(3700, 10, 600, 3600, 3600),
+                Arguments.of(7500, 10, 600, 3600, 3600)
         );
     }
 
     @ParameterizedTest
     @MethodSource("resumeConfigGracePeriod")
     @DisplayName("When resume is ran, the timers set everything appropriately")
-    void resumeCommandGracePeriod(int minutesProgressed, int gracePeriodTimer, int worldBorderGracePeriodTimer, int worldBorderShrinkingPeriod) throws InterruptedException {
+    void resumeCommandGracePeriod(int minutesProgressed, int countdown, int gracePeriodTimer, int worldBorderGracePeriodTimer, int worldBorderShrinkingPeriod) throws InterruptedException {
         BukkitSchedulerMock schedule = server.getScheduler();
 
         PlayerMock admin = server.addPlayer();
@@ -153,12 +153,11 @@ public class ResumeTest {
 
         int secondsProgressed = minutesProgressed * 60;
 
-        if (secondsProgressed > gracePeriodTimer) {
+        if (secondsProgressed > gracePeriodTimer + countdown) {
             assertWorldValues((world) -> Assertions.assertTrue(world.getPVP()));
-
         } else {
             assertWorldValues((world) -> Assertions.assertFalse(world.getPVP()));
-            int difference = gracePeriodTimer - (minutesProgressed * 60);
+            int difference = gracePeriodTimer + countdown - (minutesProgressed * 60);
             schedule.performTicks(Utils.secondsToTicks(difference));
             assertWorldValues((world) -> Assertions.assertTrue(world.getPVP()));
         }
@@ -167,7 +166,7 @@ public class ResumeTest {
     @ParameterizedTest
     @MethodSource("worldBorderConfig")
     @DisplayName("When resume is ran, the timers set the world border grace period and shrinking appropriately")
-    void resumeCommandWorldBorderGracePeriod(int minutesProgressed, int gracePeriodTimer, int worldBorderGracePeriodTimer, int worldBorderShrinkingPeriod) throws InterruptedException {
+    void resumeCommandWorldBorderGracePeriod(int minutesProgressed, int countdown, int gracePeriodTimer, int worldBorderGracePeriodTimer, int worldBorderShrinkingPeriod) throws InterruptedException {
         BukkitSchedulerMock schedule = server.getScheduler();
 
         PlayerMock admin = server.addPlayer();
@@ -204,14 +203,14 @@ public class ResumeTest {
             Assertions.assertEquals(initialSize, world.getWorldBorder().getSize());
         });
 
-        if (secondsProgressed > worldBorderGracePeriodTimer + worldBorderShrinkingPeriod) {
+        if (secondsProgressed > countdown + worldBorderGracePeriodTimer + worldBorderShrinkingPeriod) {
             schedule.performTicks(Utils.secondsToTicks(secondsProgressed));
             assertWorldValues((world) -> {
                 Assertions.assertEquals(0.2, world.getWorldBorder().getDamageAmount());
                 Assertions.assertEquals(5, world.getWorldBorder().getDamageBuffer());
                 Assertions.assertEquals(finalSize, world.getWorldBorder().getSize());
             });
-        } else if (secondsProgressed > worldBorderGracePeriodTimer) {
+        } else if (secondsProgressed > countdown + worldBorderGracePeriodTimer) {
             schedule.performTicks(Utils.secondsToTicks(secondsProgressed));
             assertWorldValues((world) -> {
                 Assertions.assertEquals(0.2, world.getWorldBorder().getDamageAmount());

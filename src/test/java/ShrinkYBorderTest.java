@@ -91,27 +91,33 @@ public class ShrinkYBorderTest {
 
         server.execute("uhc", admin, "start");
 
-        schedule.performOneTick();
+        admin.assertSaid("spreadplayers 0.0 0.0 250 25 true @a");
 
-         admin.assertSaid("spreadplayers 0.0 0.0 250 25 true @a");
-
-        // Initial start
+        // Wait for countdown (10 sec)
         schedule.performTicks(Utils.secondsToTicks(10));
-
-        // Countdown finished
-        schedule.performTicks(Utils.secondsToTicks(10));
-
-        // Grace period finished
-        schedule.performTicks(Utils.secondsToTicks(10)); // advance ticks for potion effect
-
-        // World border grace period finished
-        schedule.performTicks(Utils.secondsToTicks(30)); // advance ticks for potion effect
-
-        // xz World border shrinking finished
-        // y border start shrinking
-        admin.assertSaid("fill 12 -63 12 -12 -63 -12 minecraft:bedrock");
+        admin.assertSaid("UHC: Go! Go! Go!");
         admin.assertNoMoreSaid();
 
+        // Wait for grace period (20 sec)
+        schedule.performTicks(Utils.secondsToTicks(20));
+        admin.assertSaid("UHC: PVP grace period is now over.");
+        admin.assertNoMoreSaid();
+
+
+        // Wait for world border grace period (10 more sec)
+        schedule.performTicks(Utils.secondsToTicks(10)); // 30 ticks total after countdown, so 10 more
+        admin.assertSaid("UHC: World Border shrink grace period is now over.");
+        admin.assertNoMoreSaid();
+
+        // Wait for world border to shrink (30 sec)
+        schedule.performTicks(Utils.secondsToTicks(30)); // advance ticks for potion effect
+        admin.assertSaid("UHC: Y Border shrink grace period over.");
+
+        // wait for first y border shrink
+        schedule.performTicks(Utils.secondsToTicks(2));
+        admin.assertSaid("fill 12 -63 12 -12 -63 -12 minecraft:bedrock");
+
+        // wait for next 5 y shrinks
         schedule.performTicks(Utils.secondsToTicks(10));
         admin.assertSaid("fill 12 -62 12 -12 -62 -12 minecraft:bedrock");
         admin.assertSaid("fill 12 -61 12 -12 -61 -12 minecraft:bedrock");
@@ -120,6 +126,7 @@ public class ShrinkYBorderTest {
         admin.assertSaid("fill 12 -58 12 -12 -58 -12 minecraft:bedrock");
         admin.assertNoMoreSaid();
 
+        // wait for next 5 y shrinks
         schedule.performTicks(Utils.secondsToTicks(10));
         admin.assertSaid("fill 12 -57 12 -12 -57 -12 minecraft:bedrock");
         admin.assertSaid("fill 12 -56 12 -12 -56 -12 minecraft:bedrock");
@@ -128,10 +135,14 @@ public class ShrinkYBorderTest {
         admin.assertSaid("fill 12 -53 12 -12 -53 -12 minecraft:bedrock");
         admin.assertNoMoreSaid();
 
+        // wait for next final y shrinks
         schedule.performTicks(Utils.secondsToTicks(10));
         admin.assertSaid("fill 12 -52 12 -12 -52 -12 minecraft:bedrock");
         admin.assertSaid("fill 12 -51 12 -12 -51 -12 minecraft:bedrock");
         admin.assertSaid("fill 12 -50 12 -12 -50 -12 minecraft:bedrock");
+        admin.assertNoMoreSaid();
+
+        schedule.performTicks(Utils.secondsToTicks(100));
         admin.assertNoMoreSaid();
     }
 }

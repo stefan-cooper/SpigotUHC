@@ -15,13 +15,18 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import java.util.List;
 import java.util.Optional;
+
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.COUNTDOWN_TIMER_LENGTH;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DIFFICULTY;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.GRACE_PERIOD_TIMER;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_ENABLED;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_FINAL_SIZE;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_FINAL_Y;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_GRACE_PERIOD;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_INITIAL_SIZE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_SHRINKING_PERIOD;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_Y_SHRINKING_PERIOD;
+import static com.stefancooper.SpigotUHC.utils.Constants.MAXIMUM_FINAL_SIZE_FOR_Y_SHRINK;
 
 public class ResumeCommand extends StartCommand {
 
@@ -37,6 +42,8 @@ public class ResumeCommand extends StartCommand {
         final World nether = getConfig().getWorlds().getNether();
         final World end = getConfig().getWorlds().getEnd();
         getConfig().getManagedResources().cancelTimer();
+
+        final int countdownTimer = getConfig().getProperty(COUNTDOWN_TIMER_LENGTH, Defaults.COUNTDOWN_TIMER_LENGTH);
 
         int minutesProgressed;
         if (getArgs().length > 0) {
@@ -74,7 +81,7 @@ public class ResumeCommand extends StartCommand {
             if (secondsProgressed > gracePeriod) {
                 endGracePeriod().run();
             } else {
-                getConfig().getManagedResources().runTaskLater(endGracePeriod(), gracePeriod - secondsProgressed);
+                getConfig().getManagedResources().runTaskLater(endGracePeriod(), gracePeriod + countdownTimer - secondsProgressed);
             }
         }
 
@@ -84,7 +91,7 @@ public class ResumeCommand extends StartCommand {
             if (secondsProgressed > worldBorderGracePeriod) {
                 endWorldBorderGracePeriod(secondsProgressed - worldBorderGracePeriod);
             } else {
-                getConfig().getManagedResources().runTaskLater(endWorldBorderGracePeriod(), worldBorderGracePeriod - (minutesProgressed * 60));
+                getConfig().getManagedResources().runTaskLater(endWorldBorderGracePeriod(), worldBorderGracePeriod + countdownTimer - (minutesProgressed * 60));
             }
         }
 
@@ -105,6 +112,13 @@ public class ResumeCommand extends StartCommand {
             wb.setDamageAmount(0.2);
             wb.setSize(finalWorldBorderSize, shrinkingTime - progressedSeconds);
         });
+
+        if (Optional.ofNullable(getConfig().getProperty(WORLD_BORDER_Y_SHRINKING_PERIOD)).isPresent() &&
+                Optional.ofNullable(getConfig().getProperty(WORLD_BORDER_FINAL_Y)).isPresent() &&
+                finalWorldBorderSize <= MAXIMUM_FINAL_SIZE_FOR_Y_SHRINK) {
+            getConfig().getManagedResources().runTaskLater(shrinkYBorderOverTime(), shrinkingTime);
+        }
+
         Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle("World border shrinking", "Don't get caught..."));
     }
 }

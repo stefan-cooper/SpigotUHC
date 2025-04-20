@@ -86,21 +86,27 @@ team.purple=Rking42
 #### Revive configuration
 
 ```properties
-# Enable revive
-revive.enabled=true
+# Enable revive (disabled by default)
+revive.enabled=false|true
 # HP that the revived player will start on (default: 2 hearts)
 revive.hp=4
 # HP that the revived player will lose permanently on each revive (default 2 hearts)
 revive.lose.max.health=4
 # revive with any player head
-revive.any.head=false
+revive.any.head=false|true
+```
+
+Armor stand config
+```properties
+# revive via armor stand + head. False by default
+revive.via.armor.stand=false|true
 ```
 
 Platforms Revive config
 
 ```properties
 # revive via the regular platforms (requires the location coords to be set too). True by default
-revive.via.platforms=true
+revive.via.platforms=false|true
 # How long it takes for the revive to happen
 revive.time=90
 # X coordinate for the center of the revive location
@@ -119,17 +125,11 @@ revive.location.z=11
 revive.location.size=10
 ```
 
-Armor stand config
-```properties
-# revive via armor stand + head. False by default
-revive.via.armor.stand=false
-```
-
 #### Loot chest configuration
 
 ```properties
 # Enable loot chest
-loot.chest.enabled=true
+loot.chest.enabled=false|true
 # How frequently loot is regenerated (in seconds)
 loot.chest.frequency=300
 # % odds of a high loot item spawning (per spin)

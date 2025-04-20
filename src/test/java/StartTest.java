@@ -151,6 +151,8 @@ public class StartTest {
 
         schedule.performTicks(Utils.secondsToTicks(10));
 
+        admin.assertSaid("UHC: Go! Go! Go!");
+
         // Countdown finished
         assertEquals(Difficulty.HARD, world.getDifficulty());
         server.getOnlinePlayers().forEach(player -> {
@@ -163,7 +165,8 @@ public class StartTest {
             assertFalse(world.getPVP());
         });
 
-        schedule.performTicks(Utils.secondsToTicks(10));
+        schedule.performTicks(Utils.secondsToTicks(20));
+        admin.assertSaid("UHC: PVP grace period is now over.");
 
         // Grace period finished
         assertEquals(Difficulty.HARD, world.getDifficulty());
@@ -179,6 +182,7 @@ public class StartTest {
         });
 
         schedule.performTicks(Utils.secondsToTicks(10)); // advance ticks for potion effect
+        admin.assertSaid("UHC: World Border shrink grace period is now over.");
 
         // World border grace period finished
         assertEquals(Difficulty.HARD, world.getDifficulty());

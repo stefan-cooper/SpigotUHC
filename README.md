@@ -86,13 +86,13 @@ team.purple=Rking42
 #### Revive configuration
 
 ```properties
-# Enable revive (disabled by default)
+# Enable revive. False by default
 revive.enabled=false|true
-# HP that the revived player will start on (default: 2 hearts)
+# HP that the revived player will start on (default: 4 (2 hearts))
 revive.hp=4
-# HP that the revived player will lose permanently on each revive (default 2 hearts)
+# HP that the revived player will lose permanently on each revive (default 4 (2 hearts))
 revive.lose.max.health=4
-# revive with any player head
+# revive with any player head. True by default
 revive.any.head=false|true
 ```
 
@@ -105,10 +105,10 @@ revive.via.armor.stand=false|true
 Platforms Revive config
 
 ```properties
-# revive via the regular platforms (requires the location coords to be set too). True by default
+# revive via the regular platforms (requires the location coords to be set too). False by default
 revive.via.platforms=false|true
 # How long it takes for the revive to happen
-revive.time=90
+revive.time=10
 # X coordinate for the center of the revive location
 revive.location.x=-30
 # for multiple revive locations, you can comma seperate each x coordinate of each location

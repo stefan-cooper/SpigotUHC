@@ -21,7 +21,7 @@ public class CancelCommand extends AbstractCommand {
         getConfig().trigger();
         getConfig().getManagedResources().cancelTimer();
         for (Player player : Bukkit.getOnlinePlayers()) {
-            player.sendTitle("MATCH HAS ENDED","");
+            player.sendTitle("MATCH HAS ENDED","", 10, 70, 20);
         }
     }
 }

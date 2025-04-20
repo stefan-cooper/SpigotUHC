@@ -119,6 +119,6 @@ public class ResumeCommand extends StartCommand {
             getConfig().getManagedResources().runTaskLater(shrinkYBorderOverTime(), shrinkingTime);
         }
 
-        Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle("World border shrinking", "Don't get caught..."));
+        Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle("World border shrinking", "Don't get caught...", 10, 70, 20));
     }
 }

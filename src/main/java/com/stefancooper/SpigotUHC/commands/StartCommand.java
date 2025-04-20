@@ -164,16 +164,16 @@ public class StartCommand extends AbstractCommand {
         return () -> {
             int timeLeft = countdownTimer - remaining;
             if (timeLeft == 2) {
-                Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle(Integer.toString(timeLeft), "Ready"));
+                Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle(Integer.toString(timeLeft), "Ready", 10, 70, 20));
             } else if (timeLeft == 1) {
-                Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle(Integer.toString(timeLeft), "Set"));
+                Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle(Integer.toString(timeLeft), "Set", 10, 70, 20));
             } else if (timeLeft == 0) {
                 // Countdown over!
-                Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle(Integer.toString(timeLeft), "Go!"));
+                Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle(Integer.toString(timeLeft), "Go!", 10, 70, 20));
                 world.setDifficulty(getConfig().getProperty(DIFFICULTY, Defaults.DIFFICULTY));
                 getConfig().getPlugin().setCountingDown(false);
             } else {
-                Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle(Integer.toString(timeLeft), "Starting soon..."));
+                Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle(Integer.toString(timeLeft), "Starting soon...", 10, 70, 20));
             }
         };
     }
@@ -183,7 +183,7 @@ public class StartCommand extends AbstractCommand {
             Bukkit.broadcastMessage("UHC: PVP grace period is now over.");
             getConfig().getManagedResources().addTimestamp("[Meta] PVP grace period is now over.");
             Utils.setWorldEffects(List.of(getConfig().getWorlds().getOverworld(), getConfig().getWorlds().getNether(), getConfig().getWorlds().getEnd()), (cbWorld) -> cbWorld.setPVP(true));
-            Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle("Grace period over", "\uD83D\uDC40 Watch your back \uD83D\uDC40"));
+            Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle("Grace period over", "\uD83D\uDC40 Watch your back \uD83D\uDC40", 10, 70, 20));
         };
     }
 
@@ -208,7 +208,7 @@ public class StartCommand extends AbstractCommand {
 
             Bukkit.broadcastMessage("UHC: World Border shrink grace period is now over.");
             getConfig().getManagedResources().addTimestamp("[Meta] World Border shrink grace period is now over.");
-            Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle("World border shrinking", "Don't get caught..."));
+            Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle("World border shrinking", "Don't get caught...", 10, 70, 20));
         };
     }
 

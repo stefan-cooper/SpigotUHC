@@ -48,7 +48,10 @@ public class UHCLoot {
             Material.BUCKET,
             Material.GUNPOWDER,
             Material.GOAT_HORN,
-            Material.EXPERIENCE_BOTTLE
+            Material.EXPERIENCE_BOTTLE,
+            Material.NETHER_WART,
+            Material.CAULDRON,
+            Material.ARROW
     );
     private static final List<Material> midTier = List.of(
             Material.SADDLE,
@@ -59,13 +62,13 @@ public class UHCLoot {
             Material.IRON_BOOTS,
             Material.IRON_HELMET,
             Material.IRON_LEGGINGS,
-            Material.ARROW,
             Material.BOOKSHELF,
             Material.SPECTRAL_ARROW,
             Material.DIAMOND_HORSE_ARMOR,
             Material.ENDER_PEARL,
             Material.GOLD_BLOCK,
             Material.ANVIL,
+            Material.BREWING_STAND,
             Material.POTION,
             Material.SPLASH_POTION
     );
@@ -207,6 +210,7 @@ public class UHCLoot {
             case Material.COOKED_BEEF -> item.setAmount(5);
             case Material.STRING -> item.setAmount(3);
             case Material.DIAMOND -> item.setAmount(3);
+            case Material.NETHER_WART -> item.setAmount(8);
         }
     }
 

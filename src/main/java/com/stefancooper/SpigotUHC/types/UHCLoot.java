@@ -51,7 +51,8 @@ public class UHCLoot {
             Material.EXPERIENCE_BOTTLE,
             Material.NETHER_WART,
             Material.CAULDRON,
-            Material.ARROW
+            Material.ARROW,
+            Material.WIND_CHARGE
     );
     private static final List<Material> midTier = List.of(
             Material.SADDLE,
@@ -211,6 +212,7 @@ public class UHCLoot {
             case Material.STRING -> item.setAmount(3);
             case Material.DIAMOND -> item.setAmount(3);
             case Material.NETHER_WART -> item.setAmount(8);
+            case Material.WIND_CHARGE -> item.setAmount(3);
         }
     }
 

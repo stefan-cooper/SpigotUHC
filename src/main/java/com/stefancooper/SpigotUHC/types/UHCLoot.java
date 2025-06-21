@@ -52,7 +52,9 @@ public class UHCLoot {
             Material.NETHER_WART,
             Material.CAULDRON,
             Material.ARROW,
-            Material.WIND_CHARGE
+            Material.WIND_CHARGE,
+            Material.SNOWBALL,
+            Material.ORANGE_HARNESS
     );
     private static final List<Material> midTier = List.of(
             Material.SADDLE,
@@ -71,7 +73,8 @@ public class UHCLoot {
             Material.ANVIL,
             Material.BREWING_STAND,
             Material.POTION,
-            Material.SPLASH_POTION
+            Material.SPLASH_POTION,
+            Material.DRIED_GHAST
     );
     private static final List<Material> highTier = List.of(
             Material.MACE,
@@ -213,6 +216,7 @@ public class UHCLoot {
             case Material.DIAMOND -> item.setAmount(3);
             case Material.NETHER_WART -> item.setAmount(8);
             case Material.WIND_CHARGE -> item.setAmount(3);
+            case Material.SNOWBALL -> item.setAmount(16);
         }
     }
 

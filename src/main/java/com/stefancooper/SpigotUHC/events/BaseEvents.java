@@ -10,7 +10,10 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.HappyGhast;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -172,6 +175,17 @@ public class BaseEvents implements Listener {
 
     @EventHandler
     public void onMobSpawn(CreatureSpawnEvent event) {
+
+        // Set Happy Ghasts to 100 hearts
+        if (event.getEntity().getType().equals(EntityType.HAPPY_GHAST)) {
+            final HappyGhast ghast = (HappyGhast) event.getEntity();
+            final AttributeInstance maxHealth = ghast.getAttribute(Attribute.MAX_HEALTH);
+            if (maxHealth != null) {
+                maxHealth.setBaseValue(200);
+            }
+            ghast.setHealth(200);
+        }
+
         if (!event.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.NATURAL)) {
             // noop
             return;

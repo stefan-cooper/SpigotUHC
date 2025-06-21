@@ -51,7 +51,7 @@ public class Utils {
         return (double) (distanceToShrink - progress) / distanceToShrink;
     }
 
-    private static boolean testMode() {
+    public static boolean testMode() {
         for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
             if (element.getClassName().startsWith("org.junit.")) {
                 return true;

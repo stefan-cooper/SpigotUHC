@@ -109,7 +109,7 @@ public class UHCLoot {
             lowTier = updateLowTier.stream().toList();
 
             List<Material> updateMidTier = new ArrayList<>(midTier);
-            updateLowTier.add(Material.DRIED_GHAST);
+            updateMidTier.add(Material.DRIED_GHAST);
             midTier = updateMidTier.stream().toList();
         }
 

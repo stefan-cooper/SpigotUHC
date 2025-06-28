@@ -103,6 +103,7 @@ public class Defaults {
         Utils.setWorldEffects(List.of(config.getWorlds().getOverworld(), config.getWorlds().getNether(), config.getWorlds().getEnd()), (world) -> {
             world.setGameRule(GameRule.NATURAL_REGENERATION, false);
             world.setGameRule(GameRule.DO_INSOMNIA, false);
+            world.setGameRule(GameRule.LOCATOR_BAR, false);
             world.setGameRule(GameRule.COMMAND_MODIFICATION_BLOCK_LIMIT, MAXIMUM_FINAL_SIZE_FOR_Y_SHRINK * MAXIMUM_FINAL_SIZE_FOR_Y_SHRINK); // square the maximum final size to be used in y shrink
             // set pvp to false, will be enabled when /uhc start is ran
             world.setPVP(false);

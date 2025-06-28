@@ -54,7 +54,8 @@ public class UHCLoot {
             Material.CAULDRON,
             Material.ARROW,
             Material.WIND_CHARGE,
-            Material.SNOWBALL
+            Material.SNOWBALL,
+            Material.ORANGE_HARNESS
     );
 
     private static List<Material> midTier = List.of(
@@ -74,7 +75,8 @@ public class UHCLoot {
             Material.ANVIL,
             Material.BREWING_STAND,
             Material.POTION,
-            Material.SPLASH_POTION
+            Material.SPLASH_POTION,
+            Material.DRIED_GHAST
     );
 
     private static final List<Material> highTier = List.of(
@@ -100,18 +102,6 @@ public class UHCLoot {
         final String chestXRange = config.getProperty(LOOT_CHEST_X_RANGE);
         final String chestZRange = config.getProperty(LOOT_CHEST_Z_RANGE);
         final Random random = new Random();
-
-        // TODO - remove this when MockBukkit supports 1.21.6
-        //        add to original lists rather than adding them later here
-        if (!Utils.testMode()) {
-            List<Material> updateLowTier = new ArrayList<>(lowTier);
-            updateLowTier.add(Material.ORANGE_HARNESS);
-            lowTier = updateLowTier.stream().toList();
-
-            List<Material> updateMidTier = new ArrayList<>(midTier);
-            updateMidTier.add(Material.DRIED_GHAST);
-            midTier = updateMidTier.stream().toList();
-        }
 
         config.getManagedResources().runRepeatingTask(() -> {
             boolean usingStaticLootChestLocation;

@@ -77,6 +77,11 @@ import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_NAME_NETHER;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_SPAWN_X;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_SPAWN_Y;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_SPAWN_Z;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.ADDITIONAL_ENCHANTS_SHIELD;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.ADDITIONAL_ENCHANTS_APPLE;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.ADDITIONAL_ENCHANTS_ARROWS;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.ADDITIONAL_ENCHANTS_HELMET;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.ADDITIONAL_ENCHANTS_TRIDENT;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.fromString;
 import static com.stefancooper.SpigotUHC.types.UHCTeam.createTeam;
 
@@ -158,6 +163,12 @@ public class ConfigParser {
             case LOOT_CHEST_HIGH_LOOT_ODDS -> new Configurable<>(LOOT_CHEST_HIGH_LOOT_ODDS, Integer.valueOf(value));
             case LOOT_CHEST_SPINS_PER_GEN -> new Configurable<>(LOOT_CHEST_SPINS_PER_GEN, Integer.valueOf(value));
             case LOOT_CHEST_MID_LOOT_ODDS -> new Configurable<>(LOOT_CHEST_MID_LOOT_ODDS, Integer.valueOf(value));
+            // Additional Enchants
+            case ADDITIONAL_ENCHANTS_SHIELD -> new Configurable<>(ADDITIONAL_ENCHANTS_SHIELD, Boolean.parseBoolean(value));
+            case ADDITIONAL_ENCHANTS_APPLE -> new Configurable<>(ADDITIONAL_ENCHANTS_APPLE, Boolean.parseBoolean(value));
+            case ADDITIONAL_ENCHANTS_ARROWS -> new Configurable<>(ADDITIONAL_ENCHANTS_ARROWS, Boolean.parseBoolean(value));
+            case ADDITIONAL_ENCHANTS_HELMET -> new Configurable<>(ADDITIONAL_ENCHANTS_HELMET, Boolean.parseBoolean(value));
+            case ADDITIONAL_ENCHANTS_TRIDENT -> new Configurable<>(ADDITIONAL_ENCHANTS_TRIDENT, Boolean.parseBoolean(value));
             case null -> null;
         };
     }
@@ -265,6 +276,30 @@ public class ConfigParser {
                 } else {
                     if (Bukkit.getRecipe(craftablePlayerHeadKey) != null) {
                         Bukkit.removeRecipe(craftablePlayerHeadKey);
+                    }
+                }
+                break;
+            case ADDITIONAL_ENCHANTS_HELMET:
+                NamespacedKey nightVisionKey = new NamespacedKey(config.getPlugin(), "night_vision_goggles_book");
+                if (config.getProperty(ADDITIONAL_ENCHANTS_HELMET, false)) {
+                    if (Bukkit.getRecipe(nightVisionKey) == null) {
+                        ItemStack book = new ItemStack(Material.ENCHANTED_BOOK);
+                        ItemMeta meta = book.getItemMeta();
+                        if (meta != null) {
+                            meta.setDisplayName("§r" + ChatColor.RESET + ChatColor.GRAY + "" + ChatColor.ITALIC + "Night Vision Goggles");
+                            meta.setLore(List.of(ChatColor.GRAY + "" + ChatColor.ITALIC + "Grants night vision when applied"));
+                            book.setItemMeta(meta);
+                        }
+
+                        ShapedRecipe recipe = new ShapedRecipe(nightVisionKey, book);
+                        recipe.shape("GGG", "GBG", "GGG");
+                        recipe.setIngredient('G', Material.GLASS);
+                        recipe.setIngredient('B', Material.BOOK);
+                        Bukkit.addRecipe(recipe);
+                    }
+                } else {
+                    if (Bukkit.getRecipe(nightVisionKey) != null) {
+                        Bukkit.removeRecipe(nightVisionKey);
                     }
                 }
                 break;

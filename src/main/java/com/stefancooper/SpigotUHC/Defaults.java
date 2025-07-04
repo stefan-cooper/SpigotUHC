@@ -78,6 +78,12 @@ public class Defaults {
     public static int LOOT_CHEST_HIGH_LOOT_ODDS = 8;
     public static int LOOT_CHEST_MID_LOOT_ODDS = 40;
 
+    // Additional Enchants
+    public static boolean ADDITIONAL_ENCHANTS_SHIELD = false;
+    public static boolean ADDITIONAL_ENCHANTS_TRIDENT = false;
+    public static boolean ADDITIONAL_ENCHANTS_HELMET = false;
+    public static boolean ADDITIONAL_ENCHANTS_ARROWS = false;
+    public static boolean ADDITIONAL_ENCHANTS_APPLE = false;
 
     /* -- End of defaults -- */
 

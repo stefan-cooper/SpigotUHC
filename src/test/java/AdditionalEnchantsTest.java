@@ -77,7 +77,6 @@ public class AdditionalEnchantsTest {
         assertTrue(meta.getLore().stream().anyMatch(l -> l.contains("Knockback II")));
     }
 
-
     @Test
     void shieldEnchantNotAppliedWhenDisabled() {
         server.execute("uhc", admin, "set", "additional.enchants.shield=false");
@@ -87,6 +86,54 @@ public class AdditionalEnchantsTest {
 
         assertFalse(shield.containsEnchantment(Enchantment.KNOCKBACK));
         assertFalse(shield.containsEnchantment(Enchantment.THORNS));
+    }
+
+    @Test
+    void shieldNotEnchantedTwice() {
+        ItemStack shield = new ItemStack(Material.SHIELD);
+        AdditionalEnchants enchants = new AdditionalEnchants(plugin.getUHCConfig());
+
+        // Apply once
+        enchants.apply(shield);
+        ItemMeta firstMeta = shield.getItemMeta();
+
+        // Null-safe capture of lore
+        List<String> firstLore = firstMeta.hasLore() ? new ArrayList<>(firstMeta.getLore()) : new ArrayList<>();
+        int enchantCount = shield.getEnchantments().size();
+
+        // Apply again
+        enchants.apply(shield);
+
+        // Assert no changes
+        ItemMeta secondMeta = shield.getItemMeta();
+        List<String> secondLore = secondMeta.hasLore() ? secondMeta.getLore() : new ArrayList<>();
+        assertEquals(firstLore, secondLore);
+        assertEquals(enchantCount, shield.getEnchantments().size());
+    }
+
+
+    @Test
+    void shieldNotEnchantedIfCustomLoreExists() {
+        ItemStack shield = new ItemStack(Material.SHIELD);
+        ItemMeta meta = shield.getItemMeta();
+        meta.setLore(List.of("Knockback I"));
+        shield.setItemMeta(meta);
+
+        new AdditionalEnchants(plugin.getUHCConfig()).apply(shield);
+
+        assertTrue(shield.getLore().contains("Knockback I"));
+        assertEquals(0, shield.getEnchantments().size());
+    }
+
+    @Test
+    void shieldSkippedIfAlreadyVanillaEnchanted() {
+        ItemStack shield = new ItemStack(Material.SHIELD);
+        shield.addUnsafeEnchantment(Enchantment.UNBREAKING, 2); // vanilla enchant
+        new AdditionalEnchants(plugin.getUHCConfig()).apply(shield);
+
+        // Still has only original enchant
+        assertEquals(1, shield.getEnchantments().size());
+        assertTrue(shield.containsEnchantment(Enchantment.UNBREAKING));
     }
 
     /* ---------------------------
@@ -100,13 +147,12 @@ public class AdditionalEnchantsTest {
         ItemStack helmet = new ItemStack(Material.DIAMOND_HELMET);
         new AdditionalEnchants(plugin.getUHCConfig()).apply(helmet);
 
-        assertTrue(helmet.containsEnchantment(Enchantment.RESPIRATION));
-
         ItemMeta meta = helmet.getItemMeta();
         assertNotNull(meta);
         assertTrue(meta.hasLore());
         assertTrue(meta.getLore().contains("§7§oNight Vision Goggles"));
         assertEquals(3001, meta.getCustomModelData());
+        assertTrue(helmet.containsEnchantment(Enchantment.RESPIRATION));
     }
 
     @Test

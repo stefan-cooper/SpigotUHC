@@ -104,4 +104,25 @@ public class Utils {
         return random.nextInt(outOf) < odds;
     }
 
+    public static String romanNumeral(int level) {
+        return switch (level) {
+            case 1 -> "I";
+            case 2 -> "II";
+            case 3 -> "III";
+            case 4 -> "IV";
+            case 5 -> "V";
+            default -> String.valueOf(level);
+        };
+    }
+
+    public static int romanToInt(String roman) {
+        return switch (roman.toUpperCase()) {
+            case "I" -> 1;
+            case "II" -> 2;
+            case "III" -> 3;
+            case "IV" -> 4;
+            case "V" -> 5;
+            default -> 1;
+        };
+    }
 }

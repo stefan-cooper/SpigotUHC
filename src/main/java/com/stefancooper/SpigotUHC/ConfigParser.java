@@ -281,30 +281,6 @@ public class ConfigParser {
                     }
                 }
                 break;
-            case ADDITIONAL_ENCHANTS_HELMET:
-                NamespacedKey nightVisionKey = new NamespacedKey(config.getPlugin(), "night_vision_goggles_book");
-                if (config.getProperty(ADDITIONAL_ENCHANTS_HELMET, false)) {
-                    if (Bukkit.getRecipe(nightVisionKey) == null) {
-                        ItemStack book = new ItemStack(Material.ENCHANTED_BOOK);
-                        ItemMeta meta = book.getItemMeta();
-                        if (meta != null) {
-                            meta.setDisplayName("§r" + ChatColor.RESET + ChatColor.GRAY + "" + ChatColor.ITALIC + "Night Vision Goggles");
-                            meta.setLore(List.of(ChatColor.GRAY + "" + ChatColor.ITALIC + "Grants night vision when applied"));
-                            book.setItemMeta(meta);
-                        }
-
-                        ShapedRecipe recipe = new ShapedRecipe(nightVisionKey, book);
-                        recipe.shape("GGG", "GBG", "GGG");
-                        recipe.setIngredient('G', Material.GLASS);
-                        recipe.setIngredient('B', Material.BOOK);
-                        Bukkit.addRecipe(recipe);
-                    }
-                } else {
-                    if (Bukkit.getRecipe(nightVisionKey) != null) {
-                        Bukkit.removeRecipe(nightVisionKey);
-                    }
-                }
-                break;
             case WORLD_NAME:
             case WORLD_NAME_NETHER:
             case WORLD_NAME_END:

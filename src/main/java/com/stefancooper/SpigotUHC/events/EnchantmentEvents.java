@@ -1,6 +1,7 @@
 package com.stefancooper.SpigotUHC.events;
 
 import com.stefancooper.SpigotUHC.Config;
+import com.stefancooper.SpigotUHC.Defaults;
 import com.stefancooper.SpigotUHC.enums.ConfigKey;
 import com.stefancooper.SpigotUHC.types.AdditionalEnchants;
 import org.bukkit.ChatColor;
@@ -11,13 +12,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.ItemFlag;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+
+import static com.stefancooper.SpigotUHC.utils.Utils.romanNumeral;
 
 public class EnchantmentEvents implements Listener {
 
@@ -36,16 +37,15 @@ public class EnchantmentEvents implements Listener {
         if (item.getType().name().endsWith("_HELMET") &&
                 event.getExpLevelCost() >= 5 &&
                 random.nextInt(10) < 2 &&
-                Boolean.TRUE.equals(config.getProperty(ConfigKey.ADDITIONAL_ENCHANTS_HELMET))) {
+                config.getProperty(ConfigKey.ADDITIONAL_ENCHANTS_HELMET, Defaults.ADDITIONAL_ENCHANTS_HELMET)) {
 
-            AdditionalEnchants enchants = new AdditionalEnchants(config);
-            enchants.apply(item);
+            new AdditionalEnchants(config).apply(item);
+            return;
         }
 
         // Shield logic
         if (item.getType() == Material.SHIELD &&
-                event.getExpLevelCost() >= 5 &&
-                Boolean.TRUE.equals(config.getProperty(ConfigKey.ADDITIONAL_ENCHANTS_SHIELD))) {
+                config.getProperty(ConfigKey.ADDITIONAL_ENCHANTS_SHIELD, Defaults.ADDITIONAL_ENCHANTS_SHIELD)) {
 
             ItemMeta meta = item.getItemMeta();
             if (meta == null) return;
@@ -58,34 +58,30 @@ public class EnchantmentEvents implements Listener {
 
             if (alreadyEnchanted || hasLoreEnchant) return;
 
-            // Clear default enchantments to apply our own
             event.getEnchantsToAdd().clear();
 
             List<String> lore = meta.hasLore() ? new ArrayList<>(meta.getLore()) : new ArrayList<>();
 
-            boolean applyKnockback = new Random().nextBoolean();
-            if (applyKnockback) {
-                int level = 1 + new Random().nextInt(2);
-                item.addUnsafeEnchantment(Enchantment.KNOCKBACK, level);
-                lore.add(ChatColor.GRAY + "Knockback " + romanNumeral(level));
-            } else {
-                int level = 1 + new Random().nextInt(3);
-                item.addUnsafeEnchantment(Enchantment.THORNS, level);
-                lore.add(ChatColor.GRAY + "Thorns " + romanNumeral(level));
+            item.addUnsafeEnchantment(event.getEnchantmentHint(), event.getLevelHint());
+            if (event.getEnchantmentHint().equals(Enchantment.THORNS)) {
+                lore.add(ChatColor.GRAY + "Thorns " + romanNumeral(event.getLevelHint()));
+            } else if (event.getEnchantmentHint().equals(Enchantment.KNOCKBACK)) {
+                lore.add(ChatColor.GRAY + "Knockback " + romanNumeral(event.getLevelHint()));
             }
 
             meta.setLore(lore);
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS); // Ensures glow without cluttering tooltip
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            meta.setEnchantmentGlintOverride(true);
             item.setItemMeta(meta);
+            return;
         }
 
         // Trident logic
         if (item.getType() == Material.TRIDENT &&
                 event.getExpLevelCost() >= 5 &&
-                Boolean.TRUE.equals(config.getProperty(ConfigKey.ADDITIONAL_ENCHANTS_TRIDENT))) {
+                config.getProperty(ConfigKey.ADDITIONAL_ENCHANTS_TRIDENT, Defaults.ADDITIONAL_ENCHANTS_TRIDENT)) {
 
-            AdditionalEnchants enchants = new AdditionalEnchants(config);
-            enchants.apply(item);
+            new AdditionalEnchants(config).apply(item);
         }
     }
 
@@ -94,7 +90,7 @@ public class EnchantmentEvents implements Listener {
         ItemStack item = event.getItem();
 
         if (item.getType() == Material.SHIELD &&
-                Boolean.TRUE.equals(config.getProperty(ConfigKey.ADDITIONAL_ENCHANTS_SHIELD))) {
+                config.getProperty(ConfigKey.ADDITIONAL_ENCHANTS_SHIELD, Defaults.ADDITIONAL_ENCHANTS_SHIELD)) {
 
             ItemMeta meta = item.getItemMeta();
             boolean alreadyEnchanted = !item.getEnchantments().isEmpty();
@@ -103,32 +99,50 @@ public class EnchantmentEvents implements Listener {
                 return stripped.startsWith("knockback") || stripped.startsWith("thorns");
             });
 
-            // Block re-enchanting
             if (alreadyEnchanted || hasLoreEnchant) {
-                for (int i = 0; i < event.getOffers().length; i++) {
+                for (int i = 0; i < 3; i++) {
                     event.getOffers()[i] = null;
                 }
                 return;
             }
 
-            // Show dummy enchantment options to activate GUI
-            event.getOffers()[0] = new EnchantmentOffer(Enchantment.UNBREAKING, 1, 5);
-            event.getOffers()[1] = new EnchantmentOffer(Enchantment.THORNS, 1, 10);
-            event.getOffers()[2] = new EnchantmentOffer(Enchantment.KNOCKBACK, 2, 20);
+            final List<EnchantmentAndLevel> LOW_LEVEL_POSSIBLE_ENCHANTS = List.of(
+                    new EnchantmentAndLevel(Enchantment.KNOCKBACK, 1),
+                    new EnchantmentAndLevel(Enchantment.THORNS, 1)
+            );
 
-            event.setCancelled(false); // Ensure not blocked by other plugins
+            final List<EnchantmentAndLevel> MID_LEVEL_POSSIBLE_ENCHANTS = List.of(
+                    new EnchantmentAndLevel(Enchantment.KNOCKBACK, 1),
+                    new EnchantmentAndLevel(Enchantment.KNOCKBACK, 2),
+                    new EnchantmentAndLevel(Enchantment.THORNS, 1),
+                    new EnchantmentAndLevel(Enchantment.THORNS, 2)
+            );
+
+            final List<EnchantmentAndLevel> HIGH_LEVEL_POSSIBLE_ENCHANTS = List.of(
+                    new EnchantmentAndLevel(Enchantment.KNOCKBACK, 2),
+                    new EnchantmentAndLevel(Enchantment.THORNS, 2),
+                    new EnchantmentAndLevel(Enchantment.THORNS, 3)
+            );
+
+            final EnchantmentAndLevel lowOddsChoice = LOW_LEVEL_POSSIBLE_ENCHANTS.get(new Random().nextInt(0, LOW_LEVEL_POSSIBLE_ENCHANTS.size()));
+            final EnchantmentAndLevel midOddsChoice = MID_LEVEL_POSSIBLE_ENCHANTS.get(new Random().nextInt(0, MID_LEVEL_POSSIBLE_ENCHANTS.size()));
+            final EnchantmentAndLevel highOddsChoice = HIGH_LEVEL_POSSIBLE_ENCHANTS.get(new Random().nextInt(0, HIGH_LEVEL_POSSIBLE_ENCHANTS.size()));
+
+            event.getOffers()[0] = new EnchantmentOffer(lowOddsChoice.enchantment, lowOddsChoice.level, 3);
+            event.getOffers()[1] = new EnchantmentOffer(midOddsChoice.enchantment, midOddsChoice.level, 7);
+            event.getOffers()[2] = new EnchantmentOffer(highOddsChoice.enchantment, highOddsChoice.level, 10);
+
+            event.setCancelled(false); // Allow GUI to appear for shields
         }
     }
 
-    private String romanNumeral(int level) {
-        return switch (level) {
-            case 1 -> "I";
-            case 2 -> "II";
-            case 3 -> "III";
-            case 4 -> "IV";
-            case 5 -> "V";
-            default -> String.valueOf(level);
-        };
+    private class EnchantmentAndLevel {
+        public Enchantment enchantment;
+        public int level;
+
+        public EnchantmentAndLevel(Enchantment enchantment, int level) {
+            this.enchantment = enchantment;
+            this.level = level;
+        }
     }
 }
-

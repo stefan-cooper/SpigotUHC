@@ -26,15 +26,20 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.LeavesDecayEvent;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -52,6 +57,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.*;
+import static com.stefancooper.SpigotUHC.utils.Utils.romanToInt;
 
 public class BaseEvents implements Listener {
 
@@ -173,7 +179,7 @@ public class BaseEvents implements Listener {
         }
 
         /* -- Setting boss bar -- */
-        if (config.getPlugin().getStarted() && Boolean.TRUE.equals(config.getProperty(WORLD_BORDER_IN_BOSSBAR))) {
+        if (config.getPlugin().getStarted() && config.getProperty(WORLD_BORDER_IN_BOSSBAR, Defaults.WORLD_BORDER_IN_BOSSBAR)) {
             BossBarBorder bossBarBorder = config.getManagedResources().getBossBarBorder();
             bossBarBorder.getBossBar().addPlayer(event.getPlayer());
             bossBarBorder.getBossBar().setVisible(true);
@@ -257,8 +263,8 @@ public class BaseEvents implements Listener {
         if (!(event.getWhoClicked() instanceof Player player)) return;
 
         // Handle all inventory click types (shift-click, drag-drop, etc.)
-        Bukkit.getScheduler().runTaskLater(config.getPlugin(), () -> {
-            ItemStack helmet = player.getInventory().getHelmet();
+        config.getManagedResources().runTaskLater(() -> {
+            final ItemStack helmet = player.getInventory().getHelmet();
 
             if (AdditionalEnchants.isNightVisionGoggles(helmet)) {
                 if (!player.hasPotionEffect(PotionEffectType.NIGHT_VISION)) {
@@ -279,12 +285,67 @@ public class BaseEvents implements Listener {
     }
 
     @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        if (event.getHand() != EquipmentSlot.HAND) return; // ignore off-hand
+        if (event.getItem() == null || event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)
+            return;
+
+        final Player player = event.getPlayer();
+        final ItemStack item = event.getItem();
+
+        // Delay to allow helmet slot to update
+        config.getManagedResources().runTaskLater(() -> {
+            final ItemStack helmet = player.getInventory().getHelmet();
+
+            if (AdditionalEnchants.isNightVisionGoggles(helmet)) {
+                if (!player.hasPotionEffect(PotionEffectType.NIGHT_VISION)) {
+                    player.addPotionEffect(new PotionEffect(
+                            PotionEffectType.NIGHT_VISION,
+                            Integer.MAX_VALUE,
+                            0,
+                            true,
+                            false
+                    ));
+                }
+            } else {
+                player.removePotionEffect(PotionEffectType.NIGHT_VISION);
+            }
+        }, 1L);
+    }
+
+    @EventHandler
+    public void onInventoryDrag(InventoryDragEvent event) {
+        if (!(event.getWhoClicked() instanceof Player player)) return;
+
+        // Helmet slot index in player inventory is 5
+        if (event.getInventorySlots().contains(39)) {
+            config.getManagedResources().runTaskLater(() -> {
+                final ItemStack helmet = player.getInventory().getHelmet();
+
+                if (AdditionalEnchants.isNightVisionGoggles(helmet)) {
+                    if (!player.hasPotionEffect(PotionEffectType.NIGHT_VISION)) {
+                        player.addPotionEffect(new PotionEffect(
+                                PotionEffectType.NIGHT_VISION,
+                                Integer.MAX_VALUE,
+                                0,
+                                true,
+                                false
+                        ));
+                    }
+                } else {
+                    player.removePotionEffect(PotionEffectType.NIGHT_VISION);
+                }
+            }, 1L);
+        }
+    }
+
+    @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         applyNightVisionIfWearingHelmet(event.getPlayer());
     }
 
     private void applyNightVisionIfWearingHelmet(Player player) {
-        ItemStack helmet = player.getInventory().getHelmet();
+        final ItemStack helmet = player.getInventory().getHelmet();
         if (AdditionalEnchants.isNightVisionGoggles(helmet)) {
             player.addPotionEffect(new PotionEffect(
                     PotionEffectType.NIGHT_VISION,
@@ -302,8 +363,18 @@ public class BaseEvents implements Listener {
         if (!(event.getDamager() instanceof LivingEntity attacker)) return;
         if (!defender.isBlocking()) return;
 
-        ItemStack shield = defender.getInventory().getItemInOffHand();
-        if (shield == null || shield.getType() != Material.SHIELD || !shield.hasItemMeta()) return;
+        // Check both hands for a shield
+        ItemStack shield = null;
+        ItemStack offHand = defender.getInventory().getItemInOffHand();
+        ItemStack mainHand = defender.getInventory().getItemInMainHand();
+
+        if (offHand != null && offHand.getType() == Material.SHIELD) {
+            shield = offHand;
+        } else if (mainHand != null && mainHand.getType() == Material.SHIELD) {
+            shield = mainHand;
+        }
+
+        if (shield == null || !shield.hasItemMeta()) return;
 
         ItemMeta meta = shield.getItemMeta();
         if (meta == null || !meta.hasLore()) return;
@@ -311,22 +382,27 @@ public class BaseEvents implements Listener {
         int knockbackLevel = getEnchantLevelFromLore(meta, "Knockback");
         int thornsLevel = getEnchantLevelFromLore(meta, "Thorns");
 
-        // Thorns damage scaling
+        // Apply Thorns damage
         if (thornsLevel > 0) {
-            double damage = 1.0 + 0.5 * (thornsLevel - 1); // Start with 1.0, increase by 0.5 per level
+            double damage = 1.0 + 0.5 * (thornsLevel - 1);
             attacker.damage(damage, defender);
-            attacker.getWorld().spawnParticle(Particle.DAMAGE_INDICATOR, attacker.getLocation().add(0, 1, 0), 5 + 2 * thornsLevel);
+            attacker.getWorld().spawnParticle(
+                    Particle.DAMAGE_INDICATOR,
+                    attacker.getLocation().add(0, 1, 0),
+                    5 + 2 * thornsLevel
+            );
         }
 
-        // Knockback scaling — DELAY to avoid override by Bukkit
+        // Apply Knockback with delay (to avoid Bukkit override)
         if (knockbackLevel > 0) {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    Vector direction = attacker.getLocation().toVector().subtract(defender.getLocation().toVector()).normalize().multiply(1);
-                    attacker.setVelocity(direction.multiply(0.6 + 0.4 * knockbackLevel));
-                }
-            }.runTaskLater(config.getPlugin(), 1L); // Delay 1 tick to avoid Bukkit override
+            config.getManagedResources().runTaskLater(() -> {
+                Vector direction = attacker.getLocation().toVector()
+                        .subtract(defender.getLocation().toVector())
+                        .normalize()
+                        .multiply(1);
+
+                attacker.setVelocity(direction.multiply(0.6 + 0.4 * knockbackLevel));
+            }, 1L);
         }
     }
 
@@ -335,10 +411,6 @@ public class BaseEvents implements Listener {
     public void onTridentLand(ProjectileHitEvent event) {
         if (!(event.getEntity() instanceof Trident trident)) return;
         if (!(trident.getShooter() instanceof Player player)) return;
-
-        // Check if this trident has "Ender Trident" in its lore
-        //ItemStack item = player.getInventory().getItemInMainHand();
-        //if (item == null || item.getType() != Material.TRIDENT || !item.hasItemMeta()) return;
 
         ItemMeta meta = trident.getItem().getItemMeta();
         if (meta == null || !meta.hasLore()) return;
@@ -352,16 +424,12 @@ public class BaseEvents implements Listener {
         Location destination = trident.getLocation().clone();
 
         // Delay teleport slightly to avoid server collision weirdness
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                player.teleport(destination);
-                player.damage(1.0);
-                player.getWorld().playSound(destination, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
-                player.getWorld().spawnParticle(Particle.PORTAL, destination.clone().add(0, 1, 0), 40, 0.5, 0.5, 0.5);
-            }
-        }.runTaskLater(config.getPlugin(), 1L);
-        event.setCancelled(true);
+        config.getManagedResources().runTaskLater(() -> {
+            player.teleport(destination);
+            player.damage(1.0);
+            player.getWorld().playSound(destination, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
+            player.getWorld().spawnParticle(Particle.PORTAL, destination.clone().add(0, 1, 0), 40, 0.5, 0.5, 0.5);
+        }, 1L);
     }
 
     private int getEnchantLevelFromLore(ItemMeta meta, String enchantName) {
@@ -380,16 +448,5 @@ public class BaseEvents implements Listener {
             }
         }
         return 0;
-    }
-
-    private int romanToInt(String roman) {
-        return switch (roman.toUpperCase()) {
-            case "I" -> 1;
-            case "II" -> 2;
-            case "III" -> 3;
-            case "IV" -> 4;
-            case "V" -> 5;
-            default -> 1;
-        };
     }
 }

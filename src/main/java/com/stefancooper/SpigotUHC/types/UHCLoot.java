@@ -55,11 +55,12 @@ public class UHCLoot {
             Material.ARROW,
             Material.WIND_CHARGE,
             Material.SNOWBALL,
-            Material.ORANGE_HARNESS
+            Material.ORANGE_HARNESS,
+            Material.SADDLE,
+            Material.PAPER
     );
 
     private static List<Material> midTier = List.of(
-            Material.SADDLE,
             Material.TNT,
             Material.SPYGLASS,
             Material.DIAMOND,
@@ -76,12 +77,16 @@ public class UHCLoot {
             Material.BREWING_STAND,
             Material.POTION,
             Material.SPLASH_POTION,
-            Material.DRIED_GHAST
+            Material.DRIED_GHAST,
+            Material.HORSE_SPAWN_EGG,
+            Material.END_CRYSTAL,
+            Material.GOLDEN_SWORD
     );
 
     private static final List<Material> highTier = List.of(
             Material.MACE,
             Material.BOW,
+            Material.DIAMOND_SWORD,
             Material.DIAMOND_AXE,
             Material.PLAYER_HEAD, // revivable
             Material.DIAMOND_BLOCK,
@@ -203,6 +208,13 @@ public class UHCLoot {
             case Material.TRIDENT -> {
                 item.addEnchantment(Enchantment.LOYALTY, 1);
             }
+            case Material.GOLDEN_SWORD -> {
+                item.addEnchantment(Enchantment.SHARPNESS, 5);
+                item.addEnchantment(Enchantment.KNOCKBACK, 2);
+            }
+            case Material.DIAMOND_SWORD -> {
+                item.addEnchantment(Enchantment.FIRE_ASPECT, 1);
+            }
         }
     }
 
@@ -222,6 +234,7 @@ public class UHCLoot {
             case Material.NETHER_WART -> item.setAmount(8);
             case Material.WIND_CHARGE -> item.setAmount(3);
             case Material.SNOWBALL -> item.setAmount(16);
+            case Material.PAPER -> item.setAmount(8);
         }
     }
 

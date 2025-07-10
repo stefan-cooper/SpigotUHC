@@ -35,6 +35,7 @@ public class Defaults {
     public static int GRACE_PERIOD_TIMER = 600;
     public static String ON_DEATH_ACTION = SPECTATE.name;
     public static int COUNTDOWN_TIMER_LENGTH = 10;
+    public static boolean ALL_TREES_SPAWN_LEAVES = true;
     public static int MIN_SPREAD_DISTANCE = 250;
     public static Difficulty DIFFICULTY = Difficulty.EASY;
     /* -- End of defaults written to uhc_config.properties -- */
@@ -49,6 +50,7 @@ public class Defaults {
     public static boolean ENABLE_DEATHCHAT = true;
     public static boolean DISABLE_END_GAME_AUTOMATICALLY = false;
     public static boolean DISABLE_WITCHES = false;
+    public static boolean ALL_TREES_SPAWN_APPLES = true;
 
     // Craftables
     public static boolean CRAFTABLE_NOTCH_APPLE = false;
@@ -96,6 +98,7 @@ public class Defaults {
         defaults.setProperty(ConfigKey.COUNTDOWN_TIMER_LENGTH.configName, Integer.toString(COUNTDOWN_TIMER_LENGTH));
         defaults.setProperty(SPREAD_MIN_DISTANCE.configName, Integer.toString(MIN_SPREAD_DISTANCE));
         defaults.setProperty(ConfigKey.DIFFICULTY.configName, DIFFICULTY.name());
+        defaults.setProperty(ConfigKey.ALL_TREES_SPAWN_APPLES.configName, Boolean.toString(true));
         return defaults;
     }
 

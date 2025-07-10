@@ -203,6 +203,8 @@ whisper.teammate.dead.location=true
 disable.end.game.automatically=false
 # (optional) active players cannot see messages from spectators
 enable.death.chat=true
+# (optional) turn off all leaves having chance of dropping apples (by default this is on)
+all.trees.spawn.apples=false
 
 ```
 

@@ -44,6 +44,7 @@ public enum ConfigKey {
     CRAFTABLE_NOTCH_APPLE("craftable.notch.apple"), // re-add craftable notch apple
     CRAFTABLE_PLAYER_HEAD("craftable.player.head"), // add craftable player head
     WHISPER_TEAMMATE_DEAD_LOCATION("whisper.teammate.dead.location"), // whisper the location of dead teammates when they die
+    ALL_TREES_SPAWN_APPLES("all.trees.spawn.apples"), // make it so that all trees spawn apples
 
     // Revive config
     REVIVE_ENABLED("revive.enabled"), // Enable revive

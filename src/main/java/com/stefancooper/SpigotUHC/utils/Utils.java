@@ -10,6 +10,7 @@ import org.bukkit.WorldCreator;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_ENABLED;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_VIA_ARMOR_STAND;
@@ -96,6 +97,11 @@ public class Utils {
         boolean reviveEnabled = config.getProperty(REVIVE_ENABLED, Defaults.REVIVE_ENABLED);
         boolean reviveViaPlatforms = config.getProperty(REVIVE_VIA_ARMOR_STAND, Defaults.REVIVE_VIA_ARMOR_STAND);
         return reviveEnabled && reviveViaPlatforms;
+    }
+
+    public static boolean checkOddsOf(final int odds, final int outOf) {
+        Random random = new Random();
+        return random.nextInt(outOf) < odds;
     }
 
 }

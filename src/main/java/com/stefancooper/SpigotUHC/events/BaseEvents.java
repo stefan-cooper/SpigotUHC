@@ -5,6 +5,7 @@ import com.stefancooper.SpigotUHC.Defaults;
 import com.stefancooper.SpigotUHC.enums.DeathAction;
 
 import com.stefancooper.SpigotUHC.types.BossBarBorder;
+import com.stefancooper.SpigotUHC.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -12,11 +13,14 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.HappyGhast;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -33,6 +37,7 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.*;
 
@@ -205,5 +210,34 @@ public class BaseEvents implements Listener {
             alivePlayers.forEach(player -> event.getRecipients().remove(player));
             event.setMessage(String.format("(Death Chat) %s", event.getMessage()));
         }
+    }
+
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent event) {
+        if (config.getProperty(ALL_TREES_SPAWN_APPLES, Defaults.ALL_TREES_SPAWN_APPLES)) {
+            // 1/200 chance when breaking leaves to spawn an apple
+            if (isBlockLeaves(event.getBlock()) && Utils.checkOddsOf(2,200)) {
+                event.getBlock().getWorld().dropItem(event.getBlock().getLocation(), new ItemStack(Material.APPLE));
+            }
+        }
+    }
+
+    @EventHandler
+    public void onLeavesDecay(LeavesDecayEvent event) {
+        if (config.getProperty(ALL_TREES_SPAWN_APPLES, Defaults.ALL_TREES_SPAWN_APPLES)) {
+            // 1/200 chance when leaves decay to spawn an apple
+            if (isBlockLeaves(event.getBlock()) && Utils.checkOddsOf(2,200)) {
+                event.getBlock().getWorld().dropItem(event.getBlock().getLocation(), new ItemStack(Material.APPLE));
+            }
+        }
+    }
+
+    private boolean isBlockLeaves(Block block) {
+        return switch (block.getType()) {
+            case Material.ACACIA_LEAVES, Material.AZALEA_LEAVES, Material.BIRCH_LEAVES, Material.CHERRY_LEAVES,
+                 Material.JUNGLE_LEAVES, Material.MANGROVE_LEAVES, Material.SPRUCE_LEAVES,
+                 Material.FLOWERING_AZALEA_LEAVES, Material.PALE_OAK_LEAVES -> true;
+            default -> false;
+        };
     }
 }

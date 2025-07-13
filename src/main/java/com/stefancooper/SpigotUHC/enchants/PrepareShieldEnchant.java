@@ -10,8 +10,7 @@ public class PrepareShieldEnchant {
     private final EnchantmentOffer[] offers;
 
     final List<EnchantmentOffer> ZERO_BONUS_BOTTOM_POSSIBLE_ENCHANTS = List.of(
-            new EnchantmentOffer(Enchantment.KNOCKBACK, 1, 2),
-            new EnchantmentOffer(Enchantment.THORNS, 1, 2)
+            new EnchantmentOffer(Enchantment.KNOCKBACK, 1, 2)
     );
 
     final List<EnchantmentOffer> ZERO_BONUS_MIDDLE_POSSIBLE_ENCHANTS = List.of(
@@ -20,9 +19,9 @@ public class PrepareShieldEnchant {
     );
 
     final List<EnchantmentOffer> ZERO_BONUS_TOP_POSSIBLE_ENCHANTS = List.of(
-            new EnchantmentOffer(Enchantment.KNOCKBACK, 2, 4),
-            new EnchantmentOffer(Enchantment.THORNS, 1, 4),
-            new EnchantmentOffer(Enchantment.KNOCKBACK, 1, 4)
+            new EnchantmentOffer(Enchantment.KNOCKBACK, 1, 4),
+            new EnchantmentOffer(Enchantment.THORNS, 1, 4)
+
     );
 
     final List<EnchantmentOffer> ONE_BONUS_BOTTOM_POSSIBLE_ENCHANTS = List.of(

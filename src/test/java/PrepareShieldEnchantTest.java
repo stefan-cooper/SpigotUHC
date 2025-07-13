@@ -67,10 +67,10 @@ public class PrepareShieldEnchantTest {
     @DisplayName("Different offers are provided when the seed is different")
     void seededEnchantsTest() {
         int seed1 = 123456;
-        int seed2 = 1;
+        int seed2 = 5;
 
-        PrepareShieldEnchant firstTime = new PrepareShieldEnchant(new ItemStack(Material.SHIELD), seed1, 0);
-        PrepareShieldEnchant secondTime = new PrepareShieldEnchant(new ItemStack(Material.SHIELD), seed2, 0);
+        PrepareShieldEnchant firstTime = new PrepareShieldEnchant(new ItemStack(Material.SHIELD), seed1, 2);
+        PrepareShieldEnchant secondTime = new PrepareShieldEnchant(new ItemStack(Material.SHIELD), seed2, 2);
 
         // level and cost may be same, but the enchant is what we care about
 

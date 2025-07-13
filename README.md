@@ -163,7 +163,7 @@ Dynamic loot chests are randomly spawned on each regeneration between the ranges
 # X coordinate for the loot chest
 loot.chest.x.range=-75,75
 # Z coordinate for the loot chest
-loot.chest.z=-75,75
+loot.chest.z.range=-75,75
 ```
 
 #### Randomise team configuration
@@ -173,6 +173,30 @@ random.teams.pot.1=badTHREEEK,someoneelse
 random.teams.pot.2=chuckle_chuckle,someoneelse2
 random.teams.pot.3=JawadJ,someoneelse3
 ```
+
+#### Enchantments
+
+Enable custom/additional enchantments by tool/weapon:
+
+##### Shields (false by default):
+
+```properties
+additional.enchants.shield=false|true
+```
+
+Adds the following enchantments:
+
+`Knockback I` -> `Knockback II` - Applies knockback effect to enemy attacks when blocking
+
+`Thorns I` -> `Thorns III` - Applies thorns effect to enemy attacks when blocking
+
+These enchantments are scaled with bookcases as such:
+
+| Bookcases    | Max Knockback Available | Max Thorns Available |
+|--------------|-------------------------|----------------------|
+| 0 Bookcases  | Knockback I             | Thorns I             |
+| 1 Bookcase   | Knockback II            | Thorns II            |
+| 2+ Bookcases | Knockback II            | Thorns III           |
 
 #### Misc configuration
 

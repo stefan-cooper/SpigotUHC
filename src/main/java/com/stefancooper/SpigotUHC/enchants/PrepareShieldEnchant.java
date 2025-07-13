@@ -46,7 +46,6 @@ public class PrepareShieldEnchant {
 
     final List<EnchantmentOffer> TWO_BONUS_BOTTOM_POSSIBLE_ENCHANTS = List.of(
             new EnchantmentOffer(Enchantment.KNOCKBACK, 2, 5),
-            new EnchantmentOffer(Enchantment.THORNS, 1, 5),
             new EnchantmentOffer(Enchantment.THORNS, 2, 5)
     );
 

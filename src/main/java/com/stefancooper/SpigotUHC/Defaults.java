@@ -83,7 +83,6 @@ public class Defaults {
 
     /* -- End of defaults -- */
 
-
     public static Properties createDefaultConfig() {
         final Properties defaults = new Properties();
         defaults.setProperty(ConfigKey.WORLD_NAME.configName, WORLD_NAME);

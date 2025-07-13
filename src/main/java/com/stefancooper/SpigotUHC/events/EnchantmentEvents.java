@@ -7,14 +7,17 @@ import com.stefancooper.SpigotUHC.enchants.PrepareShieldEnchant;
 import com.stefancooper.SpigotUHC.enums.ConfigKey;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.damage.DamageType;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
@@ -23,7 +26,6 @@ import java.util.*;
 public class EnchantmentEvents implements Listener {
 
     private final Config config;
-    private final Random random = new Random();
 
     public EnchantmentEvents(final Config config) {
         this.config = config;
@@ -65,8 +67,8 @@ public class EnchantmentEvents implements Listener {
 
     @EventHandler
     public void onShieldBlock(EntityDamageByEntityEvent event) {
-        if (!(event.getEntity() instanceof Player defender)) return;
-        if (!(event.getDamager() instanceof LivingEntity attacker)) return;
+        if (!(event.getEntity() instanceof final Player defender)) return;
+        if (!(event.getDamager() instanceof final LivingEntity attacker)) return;
         if (!defender.isBlocking()) return;
 
         // Check both hands for a shield
@@ -109,5 +111,17 @@ public class EnchantmentEvents implements Listener {
                 attacker.setVelocity(direction.multiply(0.6 + 0.4 * knockbackLevel));
             }, 1L);
         }
+    }
+
+    @EventHandler
+    public void onEntityDamageEvent(EntityDamageEvent event) {
+        // if damage is not thorns, ignore
+        if (event.getDamageSource().getDamageType() != DamageType.THORNS) return;
+        // if damage is not from a player, ignore
+        if (!(event.getDamageSource().getCausingEntity() instanceof final Player damager)) return;
+        // if damager has thorns armor equipped, fair enough, ignore
+        if (Arrays.stream(damager.getInventory().getArmorContents()).anyMatch(armor -> armor != null && armor.getEnchantments().containsKey(Enchantment.THORNS))) return;
+        // cancel event because minecraft is trying to apply thorns damage even though the damager is not blocking
+        if (!damager.isBlocking()) event.setCancelled(true);
     }
 }

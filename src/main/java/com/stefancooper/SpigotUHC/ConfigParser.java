@@ -79,10 +79,6 @@ import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_SPAWN_X;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_SPAWN_Y;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_SPAWN_Z;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.ADDITIONAL_ENCHANTS_SHIELD;
-import static com.stefancooper.SpigotUHC.enums.ConfigKey.ADDITIONAL_ENCHANTS_APPLE;
-import static com.stefancooper.SpigotUHC.enums.ConfigKey.ADDITIONAL_ENCHANTS_ARROWS;
-import static com.stefancooper.SpigotUHC.enums.ConfigKey.ADDITIONAL_ENCHANTS_HELMET;
-import static com.stefancooper.SpigotUHC.enums.ConfigKey.ADDITIONAL_ENCHANTS_TRIDENT;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.fromString;
 import static com.stefancooper.SpigotUHC.types.UHCTeam.createTeam;
 
@@ -167,10 +163,6 @@ public class ConfigParser {
             case LOOT_CHEST_MID_LOOT_ODDS -> new Configurable<>(LOOT_CHEST_MID_LOOT_ODDS, Integer.valueOf(value));
             // Additional Enchants
             case ADDITIONAL_ENCHANTS_SHIELD -> new Configurable<>(ADDITIONAL_ENCHANTS_SHIELD, Boolean.parseBoolean(value));
-            case ADDITIONAL_ENCHANTS_APPLE -> new Configurable<>(ADDITIONAL_ENCHANTS_APPLE, Boolean.parseBoolean(value));
-            case ADDITIONAL_ENCHANTS_ARROWS -> new Configurable<>(ADDITIONAL_ENCHANTS_ARROWS, Boolean.parseBoolean(value));
-            case ADDITIONAL_ENCHANTS_HELMET -> new Configurable<>(ADDITIONAL_ENCHANTS_HELMET, Boolean.parseBoolean(value));
-            case ADDITIONAL_ENCHANTS_TRIDENT -> new Configurable<>(ADDITIONAL_ENCHANTS_TRIDENT, Boolean.parseBoolean(value));
             case null -> null;
         };
     }

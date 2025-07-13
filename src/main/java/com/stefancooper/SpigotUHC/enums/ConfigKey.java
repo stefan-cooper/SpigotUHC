@@ -78,10 +78,6 @@ public enum ConfigKey {
 
     // Additional Enchants
     ADDITIONAL_ENCHANTS_SHIELD("additional.enchants.shield"), // Additional enchants for shield
-    ADDITIONAL_ENCHANTS_TRIDENT("additional.enchants.trident"), // Additional enchants for trident
-    ADDITIONAL_ENCHANTS_HELMET("additional.enchants.helmet"), // Additional enchants for helmet
-    ADDITIONAL_ENCHANTS_ARROWS("additional.enchants.arrows"), // Additional enchants for arrows
-    ADDITIONAL_ENCHANTS_APPLE("additional.enchants.apple") // Additional enchants for golden apple
     ;
 
     public final String configName;

@@ -2,86 +2,44 @@ package com.stefancooper.SpigotUHC.events;
 
 import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.Defaults;
+import com.stefancooper.SpigotUHC.enchants.EnchantShield;
+import com.stefancooper.SpigotUHC.enchants.PrepareShieldEnchant;
 import com.stefancooper.SpigotUHC.enums.ConfigKey;
-import com.stefancooper.SpigotUHC.types.AdditionalEnchants;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.enchantments.EnchantmentOffer;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
-import org.bukkit.inventory.ItemFlag;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.util.Vector;
 
 import java.util.*;
-
-import static com.stefancooper.SpigotUHC.utils.Utils.romanNumeral;
 
 public class EnchantmentEvents implements Listener {
 
     private final Config config;
     private final Random random = new Random();
 
-    public EnchantmentEvents(Config config) {
+    public EnchantmentEvents(final Config config) {
         this.config = config;
     }
 
     @EventHandler
-    public void onEnchantItem(EnchantItemEvent event) {
-        ItemStack item = event.getItem();
+    public void onEnchantItem(final EnchantItemEvent event) throws Exception {
+        final ItemStack item = event.getItem();
 
-        // Helmet logic
-        if (item.getType().name().endsWith("_HELMET") &&
-                event.getExpLevelCost() >= 5 &&
-                random.nextInt(10) < 2 &&
-                config.getProperty(ConfigKey.ADDITIONAL_ENCHANTS_HELMET, Defaults.ADDITIONAL_ENCHANTS_HELMET)) {
-
-            new AdditionalEnchants(config).apply(item);
-            return;
-        }
-
-        // Shield logic
+        // Shield enchants
         if (item.getType() == Material.SHIELD &&
                 config.getProperty(ConfigKey.ADDITIONAL_ENCHANTS_SHIELD, Defaults.ADDITIONAL_ENCHANTS_SHIELD)) {
-
-            ItemMeta meta = item.getItemMeta();
-            if (meta == null) return;
-
-            boolean alreadyEnchanted = !item.getEnchantments().isEmpty();
-            boolean hasLoreEnchant = meta.hasLore() && meta.getLore().stream().anyMatch(line -> {
-                String stripped = ChatColor.stripColor(line).toLowerCase();
-                return stripped.startsWith("knockback") || stripped.startsWith("thorns");
-            });
-
-            if (alreadyEnchanted || hasLoreEnchant) return;
-
+            final EnchantShield shieldEnchants = new EnchantShield(item, Map.of(event.getEnchantmentHint(), event.getLevelHint()));
+            // Note - In the future, if base minecraft adds their own enchants for shields, we may want to remove this
             event.getEnchantsToAdd().clear();
-
-            List<String> lore = meta.hasLore() ? new ArrayList<>(meta.getLore()) : new ArrayList<>();
-
-            item.addUnsafeEnchantment(event.getEnchantmentHint(), event.getLevelHint());
-            if (event.getEnchantmentHint().equals(Enchantment.THORNS)) {
-                lore.add(ChatColor.GRAY + "Thorns " + romanNumeral(event.getLevelHint()));
-            } else if (event.getEnchantmentHint().equals(Enchantment.KNOCKBACK)) {
-                lore.add(ChatColor.GRAY + "Knockback " + romanNumeral(event.getLevelHint()));
-            }
-
-            meta.setLore(lore);
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            meta.setEnchantmentGlintOverride(true);
-            item.setItemMeta(meta);
-            return;
-        }
-
-        // Trident logic
-        if (item.getType() == Material.TRIDENT &&
-                event.getExpLevelCost() >= 5 &&
-                config.getProperty(ConfigKey.ADDITIONAL_ENCHANTS_TRIDENT, Defaults.ADDITIONAL_ENCHANTS_TRIDENT)) {
-
-            new AdditionalEnchants(config).apply(item);
+            event.getEnchantsToAdd().putAll(shieldEnchants.getEnchantsToAdd());
         }
     }
 
@@ -92,57 +50,64 @@ public class EnchantmentEvents implements Listener {
         if (item.getType() == Material.SHIELD &&
                 config.getProperty(ConfigKey.ADDITIONAL_ENCHANTS_SHIELD, Defaults.ADDITIONAL_ENCHANTS_SHIELD)) {
 
-            ItemMeta meta = item.getItemMeta();
-            boolean alreadyEnchanted = !item.getEnchantments().isEmpty();
-            boolean hasLoreEnchant = meta != null && meta.hasLore() && meta.getLore().stream().anyMatch(line -> {
-                String stripped = ChatColor.stripColor(line).toLowerCase();
-                return stripped.startsWith("knockback") || stripped.startsWith("thorns");
-            });
+            final PrepareShieldEnchant prepareShieldEnchant = new PrepareShieldEnchant(item, event.getView().getEnchantmentSeed(), event.getEnchantmentBonus());
 
-            if (alreadyEnchanted || hasLoreEnchant) {
-                for (int i = 0; i < 3; i++) {
-                    event.getOffers()[i] = null;
-                }
-                return;
-            }
+            if (prepareShieldEnchant.getOffers().length != 3 || prepareShieldEnchant.getOffers()[0] == null) return;
 
-            final List<EnchantmentAndLevel> LOW_LEVEL_POSSIBLE_ENCHANTS = List.of(
-                    new EnchantmentAndLevel(Enchantment.KNOCKBACK, 1),
-                    new EnchantmentAndLevel(Enchantment.THORNS, 1)
-            );
-
-            final List<EnchantmentAndLevel> MID_LEVEL_POSSIBLE_ENCHANTS = List.of(
-                    new EnchantmentAndLevel(Enchantment.KNOCKBACK, 1),
-                    new EnchantmentAndLevel(Enchantment.KNOCKBACK, 2),
-                    new EnchantmentAndLevel(Enchantment.THORNS, 1),
-                    new EnchantmentAndLevel(Enchantment.THORNS, 2)
-            );
-
-            final List<EnchantmentAndLevel> HIGH_LEVEL_POSSIBLE_ENCHANTS = List.of(
-                    new EnchantmentAndLevel(Enchantment.KNOCKBACK, 2),
-                    new EnchantmentAndLevel(Enchantment.THORNS, 2),
-                    new EnchantmentAndLevel(Enchantment.THORNS, 3)
-            );
-
-            final EnchantmentAndLevel lowOddsChoice = LOW_LEVEL_POSSIBLE_ENCHANTS.get(new Random().nextInt(0, LOW_LEVEL_POSSIBLE_ENCHANTS.size()));
-            final EnchantmentAndLevel midOddsChoice = MID_LEVEL_POSSIBLE_ENCHANTS.get(new Random().nextInt(0, MID_LEVEL_POSSIBLE_ENCHANTS.size()));
-            final EnchantmentAndLevel highOddsChoice = HIGH_LEVEL_POSSIBLE_ENCHANTS.get(new Random().nextInt(0, HIGH_LEVEL_POSSIBLE_ENCHANTS.size()));
-
-            event.getOffers()[0] = new EnchantmentOffer(lowOddsChoice.enchantment, lowOddsChoice.level, 3);
-            event.getOffers()[1] = new EnchantmentOffer(midOddsChoice.enchantment, midOddsChoice.level, 7);
-            event.getOffers()[2] = new EnchantmentOffer(highOddsChoice.enchantment, highOddsChoice.level, 10);
-
+            event.getOffers()[0] = prepareShieldEnchant.getOffers()[0];
+            event.getOffers()[1] = prepareShieldEnchant.getOffers()[1];
+            event.getOffers()[2] = prepareShieldEnchant.getOffers()[2];
             event.setCancelled(false); // Allow GUI to appear for shields
         }
     }
 
-    private class EnchantmentAndLevel {
-        public Enchantment enchantment;
-        public int level;
+    // Shield events
 
-        public EnchantmentAndLevel(Enchantment enchantment, int level) {
-            this.enchantment = enchantment;
-            this.level = level;
+    @EventHandler
+    public void onShieldBlock(EntityDamageByEntityEvent event) {
+        if (!(event.getEntity() instanceof Player defender)) return;
+        if (!(event.getDamager() instanceof LivingEntity attacker)) return;
+        if (!defender.isBlocking()) return;
+
+        // Check both hands for a shield
+        final ItemStack shield;
+        final ItemStack offHand = defender.getInventory().getItemInOffHand();
+        final ItemStack mainHand = defender.getInventory().getItemInMainHand();
+
+        // If shield is in both off hand + main hand, use the off hand one
+        if ((offHand.getType() == Material.SHIELD && mainHand.getType() == Material.SHIELD) || mainHand.getType() == Material.SHIELD) {
+            shield = mainHand;
+        } else if (offHand.getType() == Material.SHIELD) {
+            shield = offHand;
+        } else {
+            // if not using a shield, get outta here
+            return;
+        }
+
+        final int knockbackLevel = shield.getEnchantmentLevel(Enchantment.KNOCKBACK);
+        final int thornsLevel = shield.getEnchantmentLevel(Enchantment.THORNS);
+
+        // Apply Thorns damage
+        if (thornsLevel > 0) {
+            double damage = 1.0 + 0.5 * (thornsLevel - 1);
+            attacker.damage(damage, defender);
+            attacker.getWorld().spawnParticle(
+                    Particle.DAMAGE_INDICATOR,
+                    attacker.getLocation().add(0, 1, 0),
+                    5 + 2 * thornsLevel
+            );
+        }
+
+        // Apply Knockback with delay (to avoid Bukkit override)
+        if (knockbackLevel > 0) {
+            config.getManagedResources().runTaskLater(() -> {
+                Vector direction = attacker.getLocation().toVector()
+                        .subtract(defender.getLocation().toVector())
+                        .normalize()
+                        .multiply(1);
+
+                attacker.setVelocity(direction.multiply(0.6 + 0.4 * knockbackLevel));
+            }, 1L);
         }
     }
 }

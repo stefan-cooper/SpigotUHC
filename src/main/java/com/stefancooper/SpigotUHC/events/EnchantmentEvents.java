@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.damage.DamageType;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.enchantments.EnchantmentOffer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -59,7 +60,13 @@ public class EnchantmentEvents implements Listener {
             event.getOffers()[0] = prepareShieldEnchant.getOffers()[0];
             event.getOffers()[1] = prepareShieldEnchant.getOffers()[1];
             event.getOffers()[2] = prepareShieldEnchant.getOffers()[2];
+
             event.setCancelled(false); // Allow GUI to appear for shields
+
+            // force client to refresh inventory to show new offers
+            config.getManagedResources().runTaskLater(() -> {
+                event.getEnchanter().updateInventory();
+            }, 1L);
         }
     }
 

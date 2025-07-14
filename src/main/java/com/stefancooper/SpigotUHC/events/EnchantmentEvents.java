@@ -10,6 +10,7 @@ import org.bukkit.Particle;
 import org.bukkit.damage.DamageType;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentOffer;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,6 +20,8 @@ import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityKnockbackByEntityEvent;
+import org.bukkit.event.entity.EntityKnockbackEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
@@ -70,7 +73,7 @@ public class EnchantmentEvents implements Listener {
         }
     }
 
-    // Shield events
+    /* ----- Shield events ----- */
 
     @EventHandler
     public void onShieldBlock(EntityDamageByEntityEvent event) {
@@ -131,4 +134,26 @@ public class EnchantmentEvents implements Listener {
         // cancel event because minecraft is trying to apply thorns damage even though the damager is not blocking
         if (!damager.isBlocking()) event.setCancelled(true);
     }
+
+    // any tool/item with Knockback enchant will cause knockback when hitting
+    // turn that off for the shield
+    @EventHandler
+    public void onEntityKnockbackEvent(EntityKnockbackByEntityEvent event) {
+        // check that it is a player attacking
+        if (!(event.getSourceEntity() instanceof final Player attacker)) return;
+        // if the damage was caused by entity attack and by a shield, cancel the event
+        if (event.getCause() == EntityKnockbackEvent.KnockbackCause.ENTITY_ATTACK &&
+                attacker.getInventory().getItemInMainHand().getType() == Material.SHIELD) {
+            event.setFinalKnockback(new Vector(0, 0, 0));
+            config.getManagedResources().runTaskLater(() -> {
+                final Entity defender = event.getEntity();
+                final float yaw = attacker.getLocation().getYaw();
+                final double x = -Math.sin(Math.toRadians(yaw)) * 0.3; // default knockback
+                final double z =  Math.cos(Math.toRadians(yaw)) * 0.3;
+                defender.setVelocity(new Vector(x, 0.1, z));
+            }, 1L);
+        }
+    }
+
+    /* ----- End of shield events ----- */
 }

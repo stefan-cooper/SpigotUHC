@@ -143,14 +143,15 @@ public class EnchantmentEvents implements Listener {
         if (!(event.getSourceEntity() instanceof final Player attacker)) return;
         // if the damage was caused by entity attack and by a shield, cancel the event
         if (event.getCause() == EntityKnockbackEvent.KnockbackCause.ENTITY_ATTACK &&
-                attacker.getInventory().getItemInMainHand().getType() == Material.SHIELD) {
+                attacker.getInventory().getItemInMainHand().getType() == Material.SHIELD &&
+                attacker.getInventory().getItemInMainHand().getEnchantments().containsKey(Enchantment.KNOCKBACK)) {
             event.setFinalKnockback(new Vector(0, 0, 0));
             config.getManagedResources().runTaskLater(() -> {
                 final Entity defender = event.getEntity();
                 final float yaw = attacker.getLocation().getYaw();
-                final double x = -Math.sin(Math.toRadians(yaw)) * 0.3; // default knockback
-                final double z =  Math.cos(Math.toRadians(yaw)) * 0.3;
-                defender.setVelocity(new Vector(x, 0.1, z));
+                final double x = -Math.sin(Math.toRadians(yaw)) * 0.2; // default knockback
+                final double z =  Math.cos(Math.toRadians(yaw)) * 0.2;
+                defender.setVelocity(new Vector(x, 0.3, z));
             }, 1L);
         }
     }

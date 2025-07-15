@@ -85,8 +85,11 @@ public class TimestampTest {
         PlayerMock player1 = server.addPlayer();
         PlayerMock player2 = server.addPlayer();
         PlayerMock player3 = server.addPlayer();
+        player1.setName("jawad");
         player1.setDisplayName("jawad");
+        player2.setName("stefan");
         player2.setDisplayName("stefan");
+        player3.setName("sean");
         player3.setDisplayName("sean");
 
 
@@ -95,12 +98,12 @@ public class TimestampTest {
 
         player1.damage(100);
 
-        assertFileContainsText("jawad dies", true);
+        assertFileContainsText("jawad dies | Death message: \"jawad got killed\"", true);
         assertTotalLines(2); // uhc started and stefan dies
 
         player3.simulateDamage(100, player2);
 
-        assertFileContainsText("stefan kills sean", true);
+        assertFileContainsText("sean killed by stefan | Death message: \"sean was slain by stefan\"", true);
         assertTotalLines(3); // uhc started and stefan dies
 
     }
@@ -110,6 +113,7 @@ public class TimestampTest {
     void timestampsResetOnStart() throws IOException {
         PlayerMock player = server.addPlayer();
         player.setDisplayName("stefan");
+        player.setName("stefan");
 
         server.execute("uhc", admin, "set", "enable.timestamps=true");
         server.execute("uhc", admin, "start");

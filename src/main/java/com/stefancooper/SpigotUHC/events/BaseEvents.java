@@ -3,7 +3,6 @@ package com.stefancooper.SpigotUHC.events;
 import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.Defaults;
 import com.stefancooper.SpigotUHC.enums.DeathAction;
-
 import com.stefancooper.SpigotUHC.types.BossBarBorder;
 import com.stefancooper.SpigotUHC.utils.Utils;
 import org.bukkit.Bukkit;
@@ -32,20 +31,17 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
-
 import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
-
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.*;
 
 public class BaseEvents implements Listener {
 
     private final Config config;
 
-    public BaseEvents (Config config) {
+    public BaseEvents(Config config) {
         this.config = config;
     }
 
@@ -68,8 +64,8 @@ public class BaseEvents implements Listener {
     // DamageSource API is experimental, so this may break in a spigot update
     @SuppressWarnings("UnstableApiUsage")
     @EventHandler
-    public void onDeath (PlayerDeathEvent event) {
-        switch (DeathAction.fromString(config.getProperty(ON_DEATH_ACTION, Defaults.ON_DEATH_ACTION))){
+    public void onDeath(PlayerDeathEvent event) {
+        switch (DeathAction.fromString(config.getProperty(ON_DEATH_ACTION, Defaults.ON_DEATH_ACTION))) {
             case SPECTATE:
                 event.getEntity().setGameMode(GameMode.SPECTATOR);
                 break;
@@ -83,7 +79,7 @@ public class BaseEvents implements Listener {
 
         if (config.getProperty(PLAYER_HEAD_GOLDEN_APPLE, Defaults.PLAYER_HEAD_GOLDEN_APPLE)) {
             Player player = event.getEntity();
-            ItemStack head = new ItemStack(Material.PLAYER_HEAD,1);
+            ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1);
             SkullMeta headMeta = (SkullMeta) head.getItemMeta();
             assert headMeta != null;
             headMeta.setDisplayName(String.format("%s's head", player.getDisplayName()));
@@ -100,7 +96,6 @@ public class BaseEvents implements Listener {
             head.setItemMeta(headMeta);
             player.getWorld().dropItemNaturally(player.getLocation(), head);
         }
-
 
 
         if (config.getProperty(WHISPER_TEAMMATE_DEAD_LOCATION, Defaults.WHISPER_TEAMMATE_DEAD_LOCATION)) {
@@ -162,7 +157,7 @@ public class BaseEvents implements Listener {
         }
 
         /* -- Setting boss bar -- */
-        if (config.getPlugin().getStarted() && Boolean.TRUE.equals(config.getProperty(WORLD_BORDER_IN_BOSSBAR))) {
+        if (config.getPlugin().getStarted() && config.getProperty(WORLD_BORDER_IN_BOSSBAR, Defaults.WORLD_BORDER_IN_BOSSBAR)) {
             BossBarBorder bossBarBorder = config.getManagedResources().getBossBarBorder();
             bossBarBorder.getBossBar().addPlayer(event.getPlayer());
             bossBarBorder.getBossBar().setVisible(true);
@@ -216,7 +211,7 @@ public class BaseEvents implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
         if (config.getProperty(ALL_TREES_SPAWN_APPLES, Defaults.ALL_TREES_SPAWN_APPLES)) {
             // 1/200 chance when breaking leaves to spawn an apple
-            if (isBlockLeaves(event.getBlock()) && Utils.checkOddsOf(2,200)) {
+            if (isBlockLeaves(event.getBlock()) && Utils.checkOddsOf(2, 200)) {
                 event.getBlock().getWorld().dropItem(event.getBlock().getLocation(), new ItemStack(Material.APPLE));
             }
         }
@@ -226,7 +221,7 @@ public class BaseEvents implements Listener {
     public void onLeavesDecay(LeavesDecayEvent event) {
         if (config.getProperty(ALL_TREES_SPAWN_APPLES, Defaults.ALL_TREES_SPAWN_APPLES)) {
             // 1/200 chance when leaves decay to spawn an apple
-            if (isBlockLeaves(event.getBlock()) && Utils.checkOddsOf(2,200)) {
+            if (isBlockLeaves(event.getBlock()) && Utils.checkOddsOf(2, 200)) {
                 event.getBlock().getWorld().dropItem(event.getBlock().getLocation(), new ItemStack(Material.APPLE));
             }
         }

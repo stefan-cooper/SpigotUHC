@@ -78,6 +78,7 @@ import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_NAME_NETHER;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_SPAWN_X;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_SPAWN_Y;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_SPAWN_Z;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.ADDITIONAL_ENCHANTS_SHIELD;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.fromString;
 import static com.stefancooper.SpigotUHC.types.UHCTeam.createTeam;
 
@@ -160,6 +161,8 @@ public class ConfigParser {
             case LOOT_CHEST_HIGH_LOOT_ODDS -> new Configurable<>(LOOT_CHEST_HIGH_LOOT_ODDS, Integer.valueOf(value));
             case LOOT_CHEST_SPINS_PER_GEN -> new Configurable<>(LOOT_CHEST_SPINS_PER_GEN, Integer.valueOf(value));
             case LOOT_CHEST_MID_LOOT_ODDS -> new Configurable<>(LOOT_CHEST_MID_LOOT_ODDS, Integer.valueOf(value));
+            // Additional Enchants
+            case ADDITIONAL_ENCHANTS_SHIELD -> new Configurable<>(ADDITIONAL_ENCHANTS_SHIELD, Boolean.parseBoolean(value));
             case null -> null;
         };
     }

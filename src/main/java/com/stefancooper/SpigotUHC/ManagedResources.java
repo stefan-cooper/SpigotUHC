@@ -76,6 +76,10 @@ public class ManagedResources {
         return scheduler.runTaskLater(config.getPlugin(), runnable, Utils.secondsToTicks(time));
     }
 
+    public BukkitTask runTaskLater(Runnable runnable, long time) {
+        return scheduler.runTaskLater(config.getPlugin(), runnable, time);
+    }
+
     public BukkitTask runRepeatingTask(Runnable runnable, int interval) {
         return scheduler.runTaskTimer(config.getPlugin(), runnable, 0, Utils.secondsToTicks(interval));
     }

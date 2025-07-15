@@ -78,9 +78,10 @@ public class Defaults {
     public static int LOOT_CHEST_HIGH_LOOT_ODDS = 8;
     public static int LOOT_CHEST_MID_LOOT_ODDS = 40;
 
+    // Additional Enchants
+    public static boolean ADDITIONAL_ENCHANTS_SHIELD = false;
 
     /* -- End of defaults -- */
-
 
     public static Properties createDefaultConfig() {
         final Properties defaults = new Properties();

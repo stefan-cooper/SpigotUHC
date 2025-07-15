@@ -32,9 +32,9 @@ public class TimestampEvents implements Listener {
                     event.getEntity().getLastDamageCause().getDamageSource().getDirectEntity().getType() == EntityType.PLAYER
             ) {
                 Player player = (Player) event.getEntity().getLastDamageCause().getDamageSource().getDirectEntity();
-                config.getManagedResources().addTimestamp(String.format("[Death] %s kills %s", player.getDisplayName(), event.getEntity().getDisplayName()));
+                config.getManagedResources().addTimestamp(String.format("[Death] %s killed by %s | Death message: \"%s\"", event.getEntity().getDisplayName(), player.getDisplayName(), event.getDeathMessage()));
             } else {
-                config.getManagedResources().addTimestamp(String.format("[Death] %s dies", event.getEntity().getDisplayName()));
+                config.getManagedResources().addTimestamp(String.format("[Death] %s dies | Death message: \"%s\"", event.getEntity().getDisplayName(), event.getDeathMessage()));
             }
         }
     }

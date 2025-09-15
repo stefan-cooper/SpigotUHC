@@ -112,14 +112,27 @@ public class EnchantmentEvents implements Listener {
 
         // Apply Knockback with delay (to avoid Bukkit override)
         if (knockbackLevel > 0) {
-            config.getManagedResources().runTaskLater(() -> {
-                Vector direction = attacker.getLocation().toVector()
-                        .subtract(defender.getLocation().toVector())
-                        .normalize()
-                        .multiply(1);
 
-                attacker.setVelocity(direction.multiply(0.6 + 0.4 * knockbackLevel));
-            }, 1L);
+            // Check if attacker and defender are facing each other
+            final Vector attackerDir = attacker.getLocation().getDirection().normalize();
+            final Vector defenderDir = defender.getLocation().getDirection().normalize();
+            final Vector attackerToDefender = defender.getLocation().toVector().subtract(attacker.getLocation().toVector()).normalize();
+            final Vector defenderToAttacker = attacker.getLocation().toVector().subtract(defender.getLocation().toVector()).normalize();
+            final double attackerFacingVictim = attackerDir.dot(attackerToDefender);
+            final double defenderFacingAttacker = defenderDir.dot(defenderToAttacker);
+
+            final double threshold = 0.7; // adjust how strict the facing requirement is (1 = perfectly aligned)
+
+            if (attackerFacingVictim > threshold && defenderFacingAttacker > threshold) {
+                config.getManagedResources().runTaskLater(() -> {
+                    Vector direction = attacker.getLocation().toVector()
+                            .subtract(defender.getLocation().toVector())
+                            .normalize()
+                            .multiply(1);
+
+                    attacker.setVelocity(direction.multiply(0.6 + 0.4 * knockbackLevel));
+                }, 1L);
+            }
         }
     }
 
@@ -141,18 +154,21 @@ public class EnchantmentEvents implements Listener {
     public void onEntityKnockbackEvent(EntityKnockbackByEntityEvent event) {
         // check that it is a player attacking
         if (!(event.getSourceEntity() instanceof final Player attacker)) return;
+        final Entity defender = event.getEntity();
+
         // if the damage was caused by entity attack and by a shield, cancel the event
         if (event.getCause() == EntityKnockbackEvent.KnockbackCause.ENTITY_ATTACK &&
                 attacker.getInventory().getItemInMainHand().getType() == Material.SHIELD &&
                 attacker.getInventory().getItemInMainHand().getEnchantments().containsKey(Enchantment.KNOCKBACK)) {
+
             event.setFinalKnockback(new Vector(0, 0, 0));
             config.getManagedResources().runTaskLater(() -> {
-                final Entity defender = event.getEntity();
                 final float yaw = attacker.getLocation().getYaw();
                 final double x = -Math.sin(Math.toRadians(yaw)) * 0.2; // default knockback
                 final double z =  Math.cos(Math.toRadians(yaw)) * 0.2;
                 defender.setVelocity(new Vector(x, 0.3, z));
             }, 1L);
+
         }
     }
 

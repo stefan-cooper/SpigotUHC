@@ -15,6 +15,7 @@ fi
 
 REFRESH_BUILD=${REFRESH_BUILD:-false}
 MINECRAFT_VERSION=${MINECRAFT_VERSION:-1.21.8}
+PAPER_BUILD=${PAPER_BUILD:-60}
 export MINECRAFT_VERSION="${MINECRAFT_VERSION}"
 
 ./build_plugin.sh
@@ -27,8 +28,9 @@ cp build/SpigotUHC-"${PLUGIN_VERSION}".jar server/plugins/SpigotUHC-"${PLUGIN_VE
 
 if [ "${REFRESH_BUILD}" = "true" ]; then
   cd server
-  curl -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
-  java -jar BuildTools.jar --rev "${MINECRAFT_VERSION}"
+  curl -o paper-latest.jar "https://api.papermc.io/v2/projects/paper/versions/${MINECRAFT_VERSION}/builds/${PAPER_BUILD}/downloads/paper-${MINECRAFT_VERSION}-${PAPER_BUILD}.jar"
+#  curl -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
+#  java -jar BuildTools.jar --rev "${MINECRAFT_VERSION}"
   cd ..
 fi
 

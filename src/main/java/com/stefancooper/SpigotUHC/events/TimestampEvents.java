@@ -1,6 +1,9 @@
 package com.stefancooper.SpigotUHC.events;
 
 import com.stefancooper.SpigotUHC.Config;
+import com.stefancooper.SpigotUHC.utils.Utils;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,13 +11,19 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.ENABLE_TIMESTAMPS;
 
 public class TimestampEvents implements Listener {
 
     private final Config config;
+    private final Map<UUID, Set<NamespacedKey>> completed = new HashMap<>();
 
     public TimestampEvents (Config config) {
         this.config = config;
@@ -41,8 +50,13 @@ public class TimestampEvents implements Listener {
 
     @EventHandler
     public void onAchievement (PlayerAdvancementDoneEvent event) {
-        if (isTimestampsEnabled() && config.getPlugin().getStarted() && Optional.ofNullable(event.getAdvancement().getDisplay()).isPresent()) {
-            config.getManagedResources().addTimestamp(String.format("[Achievement] %s awarded achievement \"%s\"", event.getPlayer().getDisplayName(), event.getAdvancement().getDisplay().getTitle()));
+        Player player = event.getPlayer();
+        NamespacedKey key = event.getAdvancement().getKey();
+
+        completed.putIfAbsent(player.getUniqueId(), new HashSet<>());
+        Set<NamespacedKey> done = completed.get(player.getUniqueId());
+        if (isTimestampsEnabled() && config.getPlugin().getStarted() && done.add(key) && event.getAdvancement().getDisplay() != null && !Utils.testMode()) {
+            config.getManagedResources().addTimestamp(String.format("[Achievement] %s awarded achievement \"%s\"", event.getPlayer().getDisplayName(), PlainTextComponentSerializer.plainText().serialize(event.getAdvancement().getDisplay().displayName())));
         }
     }
 }

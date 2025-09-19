@@ -22,6 +22,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Arrays;
+import java.util.logging.Level;
 
 public class Plugin extends JavaPlugin implements Listener {
 
@@ -40,7 +41,8 @@ public class Plugin extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(new UHCLootEvents(config), this);
         Bukkit.getPluginManager().registerEvents(new EnchantmentEvents(config), this);
         started = false;
-        System.out.println("UHC Plugin enabled");
+
+        this.getLogger().log(Level.INFO, "UHC Plugin enabled");
         getCommand("uhc").setTabCompleter(new UHCCommandTabCompleter());
     }
 

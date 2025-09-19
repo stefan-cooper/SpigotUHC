@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.logging.Level;
 
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_TEAMS_POT_ONE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_TEAMS_POT_THREE;
@@ -42,7 +43,7 @@ public class RandomiseTeamsCommand extends AbstractCommand {
                 final int totalPlayers = potOne.size() + potTwo.size() + potThree.size();
 
                 if (totalPlayers % teamSize != 0) {
-                    System.out.println("Team size is not divisible by total players in pots");
+                    getConfig().getPlugin().getLogger().log(Level.WARNING, "Team size is not divisible by total players in pots");
                     getSender().sendMessage("Team size is not divisible by total players in pots");
                     return;
                 }
@@ -90,13 +91,12 @@ public class RandomiseTeamsCommand extends AbstractCommand {
                         }
                     }
                     teams.add(team.stream().toList());
-                    System.out.println(Arrays.stream(team.toArray()).toList());
                 }
 
                 for (int i = 0; i < teams.size(); i++) {
                     final String teamColor = mapIndexToTeamColor(i);
                     if (teamColor.equals(TOO_MANY_TEAMS)) {
-                        System.out.println("Too many teams generated. Failed.");
+                        getConfig().getPlugin().getLogger().log(Level.WARNING, "Too many teams generated. Failed.");
                         getSender().sendMessage("Too many teams generated. Failed.");
                         return;
                     }
@@ -108,7 +108,7 @@ public class RandomiseTeamsCommand extends AbstractCommand {
             }
 
         } else {
-            System.out.println("Bad arguments provided to randomise command");
+            getConfig().getPlugin().getLogger().log(Level.WARNING, "Bad arguments provided to randomise command");
             getSender().sendMessage("Bad arguments provided to randomise command");
         }
     }

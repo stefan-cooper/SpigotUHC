@@ -1,5 +1,6 @@
 package com.stefancooper.SpigotUHC.events;
 
+import com.destroystokyo.paper.event.entity.EntityKnockbackByEntityEvent;
 import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.Defaults;
 import com.stefancooper.SpigotUHC.enchants.EnchantShield;
@@ -20,8 +21,7 @@ import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityKnockbackByEntityEvent;
-import org.bukkit.event.entity.EntityKnockbackEvent;
+import io.papermc.paper.event.entity.EntityKnockbackEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
@@ -153,15 +153,15 @@ public class EnchantmentEvents implements Listener {
     @EventHandler
     public void onEntityKnockbackEvent(EntityKnockbackByEntityEvent event) {
         // check that it is a player attacking
-        if (!(event.getSourceEntity() instanceof final Player attacker)) return;
+        if (!(event.getHitBy() instanceof final Player attacker)) return;
         final Entity defender = event.getEntity();
 
         // if the damage was caused by entity attack and by a shield, cancel the event
-        if (event.getCause() == EntityKnockbackEvent.KnockbackCause.ENTITY_ATTACK &&
+        if (event.getCause() == EntityKnockbackEvent.Cause.ENTITY_ATTACK &&
                 attacker.getInventory().getItemInMainHand().getType() == Material.SHIELD &&
                 attacker.getInventory().getItemInMainHand().getEnchantments().containsKey(Enchantment.KNOCKBACK)) {
 
-            event.setFinalKnockback(new Vector(0, 0, 0));
+            event.setKnockback(new Vector(0, 0, 0));
             config.getManagedResources().runTaskLater(() -> {
                 final float yaw = attacker.getLocation().getYaw();
                 final double x = -Math.sin(Math.toRadians(yaw)) * 0.2; // default knockback

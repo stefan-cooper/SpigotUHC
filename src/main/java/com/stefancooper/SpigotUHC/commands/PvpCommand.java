@@ -7,6 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
+import java.util.logging.Level;
 
 public class PvpCommand extends AbstractCommand {
 
@@ -25,7 +26,7 @@ public class PvpCommand extends AbstractCommand {
                 world.setPVP(enabled);
             });
         } else {
-            System.out.println("Bad arguments provided to pvp command");
+            getConfig().getPlugin().getLogger().log(Level.WARNING, "Bad arguments provided to pvp command");
             getSender().sendMessage("Bad arguments provided to pvp command");
         }
     }

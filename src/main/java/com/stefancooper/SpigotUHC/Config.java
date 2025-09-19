@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.stream.Stream;
 
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_NAME;
@@ -110,7 +111,7 @@ public class Config {
                 throw new RuntimeException(e);
             }
         } else {
-            System.out.println("Invalid config value attempted to be set: " + key + "=" + value);
+            this.getPlugin().getLogger().log(Level.WARNING, "Invalid config value attempted to be set: " + key + "=" + value);
         }
     }
 
@@ -126,7 +127,7 @@ public class Config {
                 throw new RuntimeException(e);
             }
         } else {
-            System.out.println("Unknown config key. Not unsetting.");
+            this.getPlugin().getLogger().log(Level.WARNING, "Unknown config key. Not unsetting.");
         }
     }
 

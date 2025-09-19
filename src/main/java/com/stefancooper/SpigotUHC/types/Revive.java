@@ -17,6 +17,8 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_HP;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_LOCATION_SIZE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_LOCATION_X;
@@ -162,7 +164,7 @@ public class Revive {
         try {
             return Arrays.stream(reviveX.split(",")).map(Integer::parseInt).toList();
         } catch (Exception e) {
-            System.out.println("Exception caught setting the revive config, check your revive location config. Setting default value");
+            config.getPlugin().getLogger().log(Level.WARNING, "Exception caught setting the revive config, check your revive location config. Setting default value...");
             return List.of(0);
         }
     }
@@ -173,7 +175,7 @@ public class Revive {
         try {
             return Arrays.stream(reviveY.split(",")).map(Integer::parseInt).toList();
         } catch (Exception e) {
-            System.out.println("Exception caught setting the revive config, check your revive location config. Setting default value");
+            config.getPlugin().getLogger().log(Level.WARNING, "Exception caught setting the revive config, check your revive location config. Setting default value...");
             return List.of(64);
         }
     }
@@ -184,7 +186,7 @@ public class Revive {
         try {
             return Arrays.stream(reviveZ.split(",")).map(Integer::parseInt).toList();
         } catch (Exception e) {
-            System.out.println("Exception caught setting the revive config, check your revive location config. Setting default value");
+            config.getPlugin().getLogger().log(Level.WARNING, "Exception caught setting the revive config, check your revive location config. Setting default value...");
             return List.of(0);
         }
     }

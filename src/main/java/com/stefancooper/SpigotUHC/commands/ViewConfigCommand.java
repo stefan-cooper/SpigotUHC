@@ -1,8 +1,11 @@
 package com.stefancooper.SpigotUHC.commands;
 
 import com.stefancooper.SpigotUHC.Config;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+
+import java.util.logging.Level;
 
 public class ViewConfigCommand extends AbstractCommand {
 
@@ -26,7 +29,7 @@ public class ViewConfigCommand extends AbstractCommand {
                 getSender().sendMessage("Unknown config value requested or not set");
             }
         } else {
-            System.out.println("Too many arguments provided to view config");
+            getConfig().getPlugin().getLogger().log(Level.FINE, "Too many arguments provided to view config");
             getSender().sendMessage("Too many arguments provided to view config");
         }
     }

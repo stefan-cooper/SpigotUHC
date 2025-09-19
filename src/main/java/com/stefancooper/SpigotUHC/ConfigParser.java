@@ -3,6 +3,7 @@ package com.stefancooper.SpigotUHC;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.logging.Level;
 
 import com.stefancooper.SpigotUHC.types.BossBarBorder;
 import com.stefancooper.SpigotUHC.utils.Utils;
@@ -169,7 +170,7 @@ public class ConfigParser {
 
     public void executeConfigurable(Configurable<?> configurable) {
         if (configurable == null) {
-            System.out.println("Invalid config value attempted to be executed, ignoring...");
+            config.getPlugin().getLogger().log(Level.WARNING, "Invalid config value attempted to be executed, ignoring...");
             return;
         }
         World overworld = config.getWorlds().getOverworld();

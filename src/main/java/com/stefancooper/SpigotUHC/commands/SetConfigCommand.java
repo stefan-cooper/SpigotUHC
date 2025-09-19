@@ -5,6 +5,7 @@ import com.stefancooper.SpigotUHC.enums.ConfigKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import java.util.Arrays;
+import java.util.logging.Level;
 
 public class SetConfigCommand extends AbstractCommand {
 
@@ -23,7 +24,7 @@ public class SetConfigCommand extends AbstractCommand {
                 String value = splitConfig[1];
                 getConfig().setProp(key, value);
             } else {
-                System.out.println("Invalid configuration: " + arg);
+                getConfig().getPlugin().getLogger().log(Level.WARNING, "Invalid configuration: " + arg);
                 getSender().sendMessage("Invalid configuration: " + arg);
             }
         });

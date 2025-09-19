@@ -29,8 +29,6 @@ cp build/SpigotUHC-"${PLUGIN_VERSION}".jar server/plugins/SpigotUHC-"${PLUGIN_VE
 if [ "${REFRESH_BUILD}" = "true" ]; then
   cd server
   curl -o paper-latest.jar "https://api.papermc.io/v2/projects/paper/versions/${MINECRAFT_VERSION}/builds/${PAPER_BUILD}/downloads/paper-${MINECRAFT_VERSION}-${PAPER_BUILD}.jar"
-#  curl -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
-#  java -jar BuildTools.jar --rev "${MINECRAFT_VERSION}"
   cd ..
 fi
 

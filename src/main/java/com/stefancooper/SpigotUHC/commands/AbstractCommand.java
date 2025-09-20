@@ -1,17 +1,20 @@
 package com.stefancooper.SpigotUHC.commands;
 
+import com.stefancooper.SpigotUHC.utils.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import com.stefancooper.SpigotUHC.Config;
 
+import java.util.Arrays;
+
 public abstract class AbstractCommand {
 
     private final CommandSender sender;
-    private final Command cmd;
+    private final String cmd;
     private final String[] args;
     private final Config config;
 
-    public AbstractCommand (CommandSender sender, Command cmd, String[] args, Config config) {
+    public AbstractCommand (CommandSender sender, String cmd, String[] args, Config config) {
         this.sender = sender;
         this.cmd = cmd;
         this.args = args;
@@ -22,7 +25,7 @@ public abstract class AbstractCommand {
         return sender;
     }
 
-    public Command getCommand() {
+    public String getCommand() {
         return cmd;
     }
 

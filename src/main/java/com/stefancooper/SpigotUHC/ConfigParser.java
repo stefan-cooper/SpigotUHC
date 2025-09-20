@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.ADDITIONAL_ENCHANTS_TNT;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.ALL_TREES_SPAWN_APPLES;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.COUNTDOWN_TIMER_LENGTH;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.CRAFTABLE_NOTCH_APPLE;
@@ -164,6 +165,7 @@ public class ConfigParser {
             case LOOT_CHEST_MID_LOOT_ODDS -> new Configurable<>(LOOT_CHEST_MID_LOOT_ODDS, Integer.valueOf(value));
             // Additional Enchants
             case ADDITIONAL_ENCHANTS_SHIELD -> new Configurable<>(ADDITIONAL_ENCHANTS_SHIELD, Boolean.parseBoolean(value));
+            case ADDITIONAL_ENCHANTS_TNT -> new Configurable<>(ADDITIONAL_ENCHANTS_TNT, Boolean.parseBoolean(value));
             case null -> null;
         };
     }

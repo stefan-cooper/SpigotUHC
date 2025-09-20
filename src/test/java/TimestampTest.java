@@ -1,3 +1,5 @@
+import com.stefancooper.SpigotUHC.commands.UHCCommand;
+import org.junit.jupiter.api.AfterEach;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
@@ -10,6 +12,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import utils.TestUtils;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -33,9 +36,8 @@ public class TimestampTest {
     private static World world;
     private static PlayerMock admin;
 
-    @BeforeAll
-    public static void load()
-    {
+    @BeforeEach
+    public void setup() {
         server = MockBukkit.mock();
         plugin = MockBukkit.load(Plugin.class);
         world = server.getWorld(WORLD_NAME);
@@ -43,15 +45,8 @@ public class TimestampTest {
         admin.setOp(true);
     }
 
-    @BeforeEach
-    public void cleanUp() {
-        plugin.getUHCConfig().resetToDefaults();
-        server.execute("uhc", admin, "cancel");
-    }
-
-    @AfterAll
-    public static void unload() {
-        plugin.getUHCConfig().resetToDefaults();
+    @AfterEach
+    public void tearDown() {
         MockBukkit.unmock();
     }
 
@@ -73,8 +68,8 @@ public class TimestampTest {
     @Test
     @DisplayName("When start is run, a timestamp is added")
     void startTimestamp() throws IOException {
-        server.execute("uhc", admin, "set", "enable.timestamps=true");
-        server.execute("uhc", admin, "start");
+        TestUtils.executeCommand(plugin, admin, "set", "enable.timestamps=true");
+        TestUtils.executeCommand(plugin, admin, "start");
         assertFileContainsText("UHC Started", true);
         assertTotalLines(1);
     }
@@ -92,9 +87,8 @@ public class TimestampTest {
         player3.setName("sean");
         player3.setDisplayName("sean");
 
-
-        server.execute("uhc", admin, "set", "enable.timestamps=true");
-        server.execute("uhc", admin, "start");
+        TestUtils.executeCommand(plugin, admin, "set", "enable.timestamps=true");
+        TestUtils.executeCommand(plugin, admin, "start");
 
         player1.damage(100);
 
@@ -115,8 +109,8 @@ public class TimestampTest {
         player.setDisplayName("stefan");
         player.setName("stefan");
 
-        server.execute("uhc", admin, "set", "enable.timestamps=true");
-        server.execute("uhc", admin, "start");
+        TestUtils.executeCommand(plugin, admin, "set", "enable.timestamps=true");
+        TestUtils.executeCommand(plugin, admin, "start");
 
         assertFileContainsText("UHC Started", true);
         assertTotalLines(1);
@@ -126,7 +120,7 @@ public class TimestampTest {
         assertFileContainsText("stefan dies", true);
         assertTotalLines(2); // uhc started and stefan dies
 
-        server.execute("uhc", admin, "start");
+        TestUtils.executeCommand(plugin, admin, "start");
 
         assertFileContainsText("UHC Started", true);
         assertFileContainsText("stefan dies", false);

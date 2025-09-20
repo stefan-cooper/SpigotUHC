@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import utils.TestUtils;
 
 import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
 
@@ -43,14 +44,14 @@ public class SpreadPlayersTest {
         PlayerMock admin = server.addPlayer();
         admin.setOp(true);
 
-        server.execute("uhc", admin, "set",
+        TestUtils.executeCommand(plugin, admin, "set",
                 "world.border.initial.size=500",
                 "world.border.center.x=100",
                 "world.border.center.z=150",
                 "spread.min.distance=100"
         );
 
-        server.execute("uhc", admin, "start");
+        TestUtils.executeCommand(plugin, admin, "start");
 
         admin.assertSaid("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!");
         // center.x, center.z, min distance, initial border size / 2, true = respectTeams, @a = all players

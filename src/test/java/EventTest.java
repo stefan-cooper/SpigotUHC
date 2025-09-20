@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.jupiter.api.*;
+import utils.TestUtils;
 
 public class EventTest {
 
@@ -61,7 +62,7 @@ public class EventTest {
         server.setPlayers(15);
         PlayerMock player = server.addPlayer();
         player.setOp(true);
-        server.execute("uhc", player, "set", "on.death.action=kick");
+        TestUtils.executeCommand(plugin, player, "set", "on.death.action=kick");
         assertEquals(16, server.getOnlinePlayers().size());
         player.damage(100);
         server.getOnlinePlayers();
@@ -73,7 +74,7 @@ public class EventTest {
     void testHeadDropOnDeath() {
         PlayerMock player = server.addPlayer();
         player.setOp(true);
-        server.execute("uhc", player, "set", "player.head.golden.apple=true");
+        TestUtils.executeCommand(plugin, player, "set", "player.head.golden.apple=true");
         player.damage(100);
         if(!world.getEntities().stream().filter(entity -> entity.getType() == EntityType.ITEM && entity.getName().equals("PLAYER_HEAD")).toList().isEmpty()){
             Item droppedItem = (Item) world.getEntities().get(0);
@@ -107,7 +108,7 @@ public class EventTest {
         PlayerMock player = server.addPlayer();
         assertEquals(GameMode.ADVENTURE, player.getGameMode());
 
-        server.execute("uhc", admin, "start");
+        TestUtils.executeCommand(plugin, admin, "start");
 
         assertEquals(GameMode.SURVIVAL, player.getGameMode());
 
@@ -126,7 +127,7 @@ public class EventTest {
 
         assertEquals(GameMode.SPECTATOR, player.getGameMode());
 
-        server.execute("uhc", admin, "cancel");
+        TestUtils.executeCommand(plugin, admin, "cancel");
 
         assertEquals(GameMode.ADVENTURE, player.getGameMode());
 
@@ -144,7 +145,7 @@ public class EventTest {
 
         PlayerMock player = server.addPlayer();
 
-        server.execute("uhc", admin, "set", "countdown.timer.length=5");
+        TestUtils.executeCommand(plugin, admin, "set", "countdown.timer.length=5");
 
         Location initialLocation = player.getLocation();
         Location newLocation1 = initialLocation.clone();
@@ -164,7 +165,7 @@ public class EventTest {
 
         // Reset back to original location
         player.simulatePlayerMove(initialLocation);
-        server.execute("uhc", admin, "start");
+        TestUtils.executeCommand(plugin, admin, "start");
 
         assertEquals(player.getLocation(), initialLocation);
         player.simulatePlayerMove(newLocation1);
@@ -194,13 +195,13 @@ public class EventTest {
         PlayerMock player2 = server.addPlayer();
         PlayerMock player3 = server.addPlayer();
 
-        server.execute("uhc", admin, "cancel");
-        server.execute("uhc", admin, "start");
+        TestUtils.executeCommand(plugin, admin, "cancel");
+        TestUtils.executeCommand(plugin, admin, "start");
 
         player1.damage(100);
 
         player2.assertSoundHeard(Sound.ENTITY_LIGHTNING_BOLT_THUNDER);
         player3.assertSoundHeard(Sound.ENTITY_LIGHTNING_BOLT_THUNDER);
-        server.execute("uhc", admin, "cancel");
+        TestUtils.executeCommand(plugin, admin, "cancel");
     }
 }

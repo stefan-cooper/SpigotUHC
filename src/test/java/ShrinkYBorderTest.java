@@ -14,6 +14,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import utils.TestUtils;
+
 import static com.stefancooper.SpigotUHC.Defaults.END_WORLD_NAME;
 import static com.stefancooper.SpigotUHC.Defaults.NETHER_WORLD_NAME;
 import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
@@ -72,7 +74,7 @@ public class ShrinkYBorderTest {
         admin.setName("admin");
         admin.setOp(true);
 
-        server.execute("uhc", admin, "set",
+        TestUtils.executeCommand(plugin, admin, "set",
                 "world.border.initial.size=50",
                 "world.border.final.size=25",
                 "countdown.timer.length=10",
@@ -89,7 +91,7 @@ public class ShrinkYBorderTest {
             assertEquals(5, world.getWorldBorder().getDamageBuffer());
         });
 
-        server.execute("uhc", admin, "start");
+        TestUtils.executeCommand(plugin, admin, "start");
 
         admin.assertSaid("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!");
         admin.assertSaid("spreadplayers 0.0 0.0 250 25 true @a");

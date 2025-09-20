@@ -19,6 +19,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import utils.TestUtils;
+
 import static com.stefancooper.SpigotUHC.Defaults.END_WORLD_NAME;
 import static com.stefancooper.SpigotUHC.Defaults.NETHER_WORLD_NAME;
 import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
@@ -81,7 +83,7 @@ public class StartTest {
         assertFalse(world.getPVP());
         assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.FALL_DAMAGE));
 
-        server.execute("uhc", admin, "start");
+        TestUtils.executeCommand(plugin, admin, "start");
 
         assertFalse(world.getPVP());
         assertEquals(0, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
@@ -112,7 +114,7 @@ public class StartTest {
         PlayerMock admin = server.addPlayer();
         admin.setOp(true);
 
-        server.execute("uhc", admin, "set",
+        TestUtils.executeCommand(plugin, admin, "set",
                 "world.border.initial.size=50",
                 "world.border.final.size=10",
                 "countdown.timer.length=10",
@@ -132,7 +134,7 @@ public class StartTest {
             assertEquals(5, world.getWorldBorder().getDamageBuffer());
         });
 
-        server.execute("uhc", admin, "start");
+        TestUtils.executeCommand(plugin, admin, "start");
 
         schedule.performOneTick();
 

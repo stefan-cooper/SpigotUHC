@@ -11,7 +11,7 @@ public class UnsetConfigCommand extends AbstractCommand {
 
     public static final String COMMAND_KEY = "unset";
 
-    public UnsetConfigCommand(CommandSender sender, Command cmd, String[] args, Config config) {
+    public UnsetConfigCommand(CommandSender sender, String cmd, String[] args, Config config) {
         super(sender, cmd, args, config);
     }
 

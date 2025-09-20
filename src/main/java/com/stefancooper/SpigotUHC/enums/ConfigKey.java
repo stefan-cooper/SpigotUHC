@@ -78,6 +78,7 @@ public enum ConfigKey {
 
     // Additional Enchants
     ADDITIONAL_ENCHANTS_SHIELD("additional.enchants.shield"), // Additional enchants for shield
+    ADDITIONAL_ENCHANTS_TNT("additional.enchants.tnt"), // Additional enchants for shield
     ;
 
     public final String configName;

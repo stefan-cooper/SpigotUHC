@@ -80,7 +80,7 @@ public class Defaults {
 
     // Additional Enchants
     public static boolean ADDITIONAL_ENCHANTS_SHIELD = false;
-    public static boolean ADDITIONAL_ENCHANTS_TNT = true;
+    public static boolean ADDITIONAL_ENCHANTS_TNT = false;
 
     /* -- End of defaults -- */
 

@@ -1,11 +1,7 @@
 package com.stefancooper.SpigotUHC.commands;
 
-import com.stefancooper.SpigotUHC.utils.Utils;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import com.stefancooper.SpigotUHC.Config;
-
-import java.util.Arrays;
 
 public abstract class AbstractCommand {
 

@@ -20,8 +20,6 @@ public class EnchantShield {
         /* -- Additional logic for adding more than just the 'hinted' enchants would go here -- */
 
         this.enchantsToAdd = enchantsToAdd;
-
-
     }
 
     public Map<Enchantment, Integer> getEnchantsToAdd () {

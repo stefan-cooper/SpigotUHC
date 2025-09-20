@@ -15,6 +15,7 @@ import com.stefancooper.SpigotUHC.events.EnchantmentEvents;
 import com.stefancooper.SpigotUHC.events.ReviveEvents;
 import com.stefancooper.SpigotUHC.events.TimestampEvents;
 import com.stefancooper.SpigotUHC.events.UHCLootEvents;
+import com.stefancooper.SpigotUHC.utils.Constants;
 import com.stefancooper.SpigotUHC.utils.UHCCommandTabCompleter;
 import com.stefancooper.SpigotUHC.events.WinEvents;
 import com.stefancooper.SpigotUHC.utils.Utils;
@@ -62,22 +63,18 @@ public class Plugin extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(new EnchantmentEvents(config), this);
         started = false;
 
-//        ---
-        Enchantment quickBoom;
-        Registry<Enchantment> enchantRegistry = RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT);
-        // Lookup your custom enchant
-        quickBoom = enchantRegistry.get(EnchantmentKeys.create(Key.key("spigotuhc:quickboom")));
-
-        if (quickBoom == null) {
-            getLogger().warning("QuickBoom enchantment not found in registry!");
-        } else {
-            getLogger().info("QuickBoom enchantment loaded successfully.");
-        }
-//        ---
-
         this.getLogger().log(Level.INFO, "UHC Plugin enabled");
         getServer().getCommandMap().register("uhc", new UHCCommand(config));
 
+        assertCustomEnchantmentsExist();
+    }
+
+    private void assertCustomEnchantmentsExist() {
+        final Registry<Enchantment> enchantRegistry = RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT);
+        final Enchantment quickBoom = enchantRegistry.get(EnchantmentKeys.create(Key.key(String.format("%s:%s", Constants.SPIGOT_NAMESPACE, Constants.QUICKBOOM_ENCHANTMENT))));
+
+        if (quickBoom == null) getLogger().warning("QuickBoom enchantment not found in registry!");
+        else getLogger().fine("QuickBoom enchantment loaded successfully.");
     }
 
     public Config getUHCConfig() {
@@ -97,48 +94,5 @@ public class Plugin extends JavaPlugin implements Listener {
     public boolean isCountingDown() { return countingDown; }
 
     public void setCountingDown(boolean countingDown) { this.countingDown = countingDown; }
-
-    /** Used to pass to child commands so that we don't pass the command key to them */
-    private String[] getCommandArgs (String[] allArgs) {
-        return Arrays.copyOfRange(allArgs, 1, allArgs.length);
-    }
-
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (cmd.equals("uhc") && args.length > 0 && Utils.testMode()) {
-            switch (args[0]) {
-                case SetConfigCommand.COMMAND_KEY:
-                    new SetConfigCommand(sender, cmd.getLabel(), getCommandArgs(args), config).execute();
-                    return true;
-                case UnsetConfigCommand.COMMAND_KEY:
-                    new UnsetConfigCommand(sender, cmd.getLabel(), getCommandArgs(args), config).execute();
-                    return true;
-                case ViewConfigCommand.COMMAND_KEY:
-                    new ViewConfigCommand(sender, cmd.getLabel(), getCommandArgs(args), config).execute();
-                    return true;
-                case StartCommand.COMMAND_KEY:
-                    new StartCommand(sender, cmd.getLabel(), getCommandArgs(args), config).execute();
-                    return true;
-                case CancelCommand.COMMAND_KEY:
-                    new CancelCommand(sender, cmd.getLabel(), getCommandArgs(args), config).execute();
-                    return true;
-                case ResumeCommand.COMMAND_KEY:
-                    new ResumeCommand(sender, cmd.getLabel(), getCommandArgs(args), config).execute();
-                    return true;
-                case LateStartCommand.COMMAND_KEY:
-                    new LateStartCommand(sender, cmd.getLabel(), getCommandArgs(args), config).execute();
-                    return true;
-                case PvpCommand.COMMAND_KEY:
-                    new PvpCommand(sender, cmd.getLabel(), getCommandArgs(args), config).execute();
-                    return true;
-                case RandomiseTeamsCommand.COMMAND_KEY:
-                    new RandomiseTeamsCommand(sender, cmd.getLabel(), getCommandArgs(args), config).execute();
-                    return true;
-                default:
-                    break;
-            }
-        }
-        return false;
-    }
 }
 

@@ -1,5 +1,6 @@
 package com.stefancooper.SpigotUHC;
 
+import com.stefancooper.SpigotUHC.utils.Constants;
 import io.papermc.paper.plugin.bootstrap.BootstrapContext;
 import io.papermc.paper.plugin.bootstrap.PluginBootstrap;
 import io.papermc.paper.plugin.bootstrap.PluginProviderContext;
@@ -20,13 +21,11 @@ public class Bootstrap implements PluginBootstrap {
     @Override
     @SuppressWarnings("UnstableApiUsage")
     public void bootstrap(BootstrapContext context) {
-        context.getLogger().info(" ------  EYE CATCHER ----");
         context.getLifecycleManager().registerEventHandler(
         RegistryEvents.ENCHANTMENT.compose().newHandler(event -> {
             try {
-                // Create your custom enchantment key in your namespace
-                var enchantKey = EnchantmentKeys.create(Key.key("spigotuhc:quickboom"));
-
+                final String quickboomEnchantmentKey =  String.format("%s:%s", Constants.SPIGOT_NAMESPACE, Constants.QUICKBOOM_ENCHANTMENT);
+                var enchantKey = EnchantmentKeys.create(Key.key(quickboomEnchantmentKey));
                 event.registry().register(
                         enchantKey,
                         b -> b.description(Component.text("Quickboom"))
@@ -38,14 +37,10 @@ public class Bootstrap implements PluginBootstrap {
                                 .maximumCost(EnchantmentRegistryEntry.EnchantmentCost.of(3, 1))
                                 .activeSlots(EquipmentSlotGroup.HAND)
                 );
-
-                context.getLogger().info("Quickboom enchantment registered successfully!");
+                context.getLogger().debug("Quickboom enchantment registered successfully!");
             } catch (Throwable t) {
                 context.getLogger().error("Failed to register custom enchantment", t);
             }
-        })
-);
-
-        context.getLogger().info(" ------  EYE CATCHER  2 ----");
+        }));
     }
 }

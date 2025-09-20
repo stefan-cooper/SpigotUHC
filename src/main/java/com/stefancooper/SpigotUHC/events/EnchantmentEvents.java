@@ -59,7 +59,7 @@ public class EnchantmentEvents implements Listener {
             event.getEnchantsToAdd().putAll(shieldEnchants.getEnchantsToAdd());
         }
 
-        // Shield enchants
+        // TNT enchants
         if (item.getType() == Material.TNT &&
                 config.getProperty(ConfigKey.ADDITIONAL_ENCHANTS_TNT, Defaults.ADDITIONAL_ENCHANTS_TNT)) {
             final EnchantTNT shieldEnchants = new EnchantTNT(item, Map.of(event.getEnchantmentHint(), event.getLevelHint()));
@@ -104,13 +104,12 @@ public class EnchantmentEvents implements Listener {
             event.getOffers()[1] = prepareTNTEnchant.getOffers()[1];
             event.getOffers()[2] = prepareTNTEnchant.getOffers()[2];
 
-            event.setCancelled(false); // Allow GUI to appear for shields
+            event.setCancelled(false); // Allow GUI to appear for TNT
 
             // force client to refresh inventory to show new offers
             config.getManagedResources().runTaskLater(() -> {
                 event.getEnchanter().updateInventory();
             }, 1L);
-            return;
         }
     }
 
@@ -219,14 +218,17 @@ public class EnchantmentEvents implements Listener {
 
     private final Map<String, UUID> tntOwners = new HashMap<>();
 
+    // check if item has quickboom enchant
     private boolean hasQuickboomEnchantment(final ItemStack item) {
         return item.containsEnchantment(config.getManagedResources().getQuickboomEnchantment());
     }
 
+    // get uuid from block
     private static String keyFromBlock(final Block b) {
         return b.getWorld().getUID() + ":" + b.getX() + "," + b.getY() + "," + b.getZ();
     }
 
+    // apply correct fuse time to primed TNT
     private void handleQuickboom(final TNTPrimed tnt, final List<MetadataValue> metadata) {
         final int level = metadata.getFirst().asInt();
         switch (level) {
@@ -246,6 +248,7 @@ public class EnchantmentEvents implements Listener {
         }
     }
 
+    // save owners who place quickboom enchantment to memory so that we can make sure we dont damage them later
     @EventHandler
     public void onBlockPlace(final BlockPlaceEvent event) {
         if (event.getBlockPlaced().getType() != Material.TNT) return;
@@ -263,6 +266,7 @@ public class EnchantmentEvents implements Listener {
         }
     }
 
+    // when a tnt is primed, check our owners and set the source if it is in memory so that we can remove any damage
     @EventHandler
     public void onTNTAddToWorld(final EntityAddToWorldEvent event) {
         if (!(event.getEntity() instanceof TNTPrimed tnt)) return;
@@ -277,6 +281,7 @@ public class EnchantmentEvents implements Listener {
         }
     }
 
+    // cancel damage if you placed an enchanted tnt
     @EventHandler
     public void onTNTDamage(final EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof TNTPrimed tnt
@@ -286,6 +291,7 @@ public class EnchantmentEvents implements Listener {
         }
     }
 
+    // when a tnt is primed, check if it has any enchantments we care about and apply any effects
     @EventHandler
     public void onTNTPrimeEvent(final TNTPrimeEvent event) {
         final Block block = event.getBlock();
@@ -302,4 +308,6 @@ public class EnchantmentEvents implements Listener {
             });
         }
     }
+
+    /* ----- End of TNT events ----- */
 }

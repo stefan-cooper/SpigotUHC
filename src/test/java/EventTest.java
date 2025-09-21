@@ -29,21 +29,15 @@ public class EventTest {
     private static Plugin plugin;
     private static World world;
 
-    @BeforeAll
-    public static void load() {
+    @BeforeEach
+    public void load() {
         server = MockBukkit.mock();
         plugin = MockBukkit.load(Plugin.class);
         world = server.getWorld(WORLD_NAME);
     }
 
-    @BeforeEach
-    public void cleanUp() {
-        plugin.getUHCConfig().resetToDefaults();
-    }
-
-    @AfterAll
-    public static void unload() {
-        plugin.getUHCConfig().resetToDefaults();
+    @AfterEach
+    public void unload() {
         MockBukkit.unmock();
     }
 

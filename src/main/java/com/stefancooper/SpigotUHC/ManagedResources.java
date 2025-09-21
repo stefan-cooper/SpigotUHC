@@ -21,6 +21,7 @@ import java.io.FileWriter;
 import java.util.Date;
 import java.util.Optional;
 
+import static com.stefancooper.SpigotUHC.utils.Constants.BLASTWAVE_ENCHANTMENT;
 import static com.stefancooper.SpigotUHC.utils.Constants.CRAFTABLE_PLAYER_HEAD;
 import static com.stefancooper.SpigotUHC.utils.Constants.NOTCH_APPLE;
 import static com.stefancooper.SpigotUHC.utils.Constants.PLAYER_HEAD;
@@ -37,6 +38,7 @@ public class ManagedResources {
     final NamespacedKey craftablePlayerHead;
     final NamespacedKey notchApple;
     final NamespacedKey quickboomEnchantment;
+    final NamespacedKey blastwaveEnchantment;
     Revive currentRevive = null;
     BukkitTask reviveDebounce = null;
     Block dynamicLootChestLocation = null;
@@ -49,6 +51,7 @@ public class ManagedResources {
         this.craftablePlayerHead = new NamespacedKey(config.getPlugin(), CRAFTABLE_PLAYER_HEAD);
         this.notchApple = new NamespacedKey(config.getPlugin(), NOTCH_APPLE);
         this.quickboomEnchantment = new NamespacedKey(SPIGOT_NAMESPACE, QUICKBOOM_ENCHANTMENT);
+        this.blastwaveEnchantment = new NamespacedKey(SPIGOT_NAMESPACE, BLASTWAVE_ENCHANTMENT);
     }
 
     public Optional<Revive> getRevive() {
@@ -105,6 +108,10 @@ public class ManagedResources {
 
     public Enchantment getQuickboomEnchantment() {
         return RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).get(quickboomEnchantment);
+    }
+
+    public Enchantment getBlastwaveEnchantment() {
+        return RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).get(blastwaveEnchantment);
     }
 
     public NamespacedKey getCraftablePlayerHeadKey() {

@@ -4,9 +4,12 @@ import com.stefancooper.SpigotUHC.types.BossBarBorder;
 import com.stefancooper.SpigotUHC.types.InstantRevive;
 import com.stefancooper.SpigotUHC.types.Revive;
 import com.stefancooper.SpigotUHC.utils.Utils;
+import io.papermc.paper.registry.RegistryAccess;
+import io.papermc.paper.registry.RegistryKey;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -21,6 +24,8 @@ import java.util.Optional;
 import static com.stefancooper.SpigotUHC.utils.Constants.CRAFTABLE_PLAYER_HEAD;
 import static com.stefancooper.SpigotUHC.utils.Constants.NOTCH_APPLE;
 import static com.stefancooper.SpigotUHC.utils.Constants.PLAYER_HEAD;
+import static com.stefancooper.SpigotUHC.utils.Constants.QUICKBOOM_ENCHANTMENT;
+import static com.stefancooper.SpigotUHC.utils.Constants.SPIGOT_NAMESPACE;
 import static com.stefancooper.SpigotUHC.utils.Constants.TIMESTAMPS_LOCATION;
 
 public class ManagedResources {
@@ -31,6 +36,7 @@ public class ManagedResources {
     final NamespacedKey playerHead;
     final NamespacedKey craftablePlayerHead;
     final NamespacedKey notchApple;
+    final NamespacedKey quickboomEnchantment;
     Revive currentRevive = null;
     BukkitTask reviveDebounce = null;
     Block dynamicLootChestLocation = null;
@@ -42,6 +48,7 @@ public class ManagedResources {
         this.playerHead = new NamespacedKey(config.getPlugin(), PLAYER_HEAD);
         this.craftablePlayerHead = new NamespacedKey(config.getPlugin(), CRAFTABLE_PLAYER_HEAD);
         this.notchApple = new NamespacedKey(config.getPlugin(), NOTCH_APPLE);
+        this.quickboomEnchantment = new NamespacedKey(SPIGOT_NAMESPACE, QUICKBOOM_ENCHANTMENT);
     }
 
     public Optional<Revive> getRevive() {
@@ -94,6 +101,10 @@ public class ManagedResources {
 
     public NamespacedKey getNotchAppleKey() {
         return notchApple;
+    }
+
+    public Enchantment getQuickboomEnchantment() {
+        return RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).get(quickboomEnchantment);
     }
 
     public NamespacedKey getCraftablePlayerHeadKey() {

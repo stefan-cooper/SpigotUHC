@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
+import utils.TestUtils;
 
 import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
 
@@ -41,11 +42,11 @@ public class UnsetConfigTest {
     void testSetAndUnsetConfigKey() {
         PlayerMock player = server.addPlayer();
         player.setOp(true);
-        server.execute("uhc", player, "set", "random.teams.pot.1=stefan");
-        server.execute("uhc", player, "view", "random.teams.pot.1");
+        TestUtils.executeCommand(plugin, player, "set", "random.teams.pot.1=stefan");
+        TestUtils.executeCommand(plugin, player, "view", "random.teams.pot.1");
         player.assertSaid("random.teams.pot.1=stefan");
-        server.execute("uhc", player, "unset", "random.teams.pot.1");
-        server.execute("uhc", player, "view", "random.teams.pot.1");
+        TestUtils.executeCommand(plugin, player, "unset", "random.teams.pot.1");
+        TestUtils.executeCommand(plugin, player, "view", "random.teams.pot.1");
         player.assertSaid("Unknown config value requested or not set");
     }
 }

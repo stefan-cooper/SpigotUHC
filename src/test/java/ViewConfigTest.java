@@ -4,6 +4,7 @@ import org.mockbukkit.mockbukkit.entity.PlayerMock;
 import com.stefancooper.SpigotUHC.Plugin;
 import org.bukkit.World;
 import org.junit.jupiter.api.*;
+import utils.TestUtils;
 
 import static com.stefancooper.SpigotUHC.Defaults.*;
 
@@ -37,7 +38,7 @@ public class ViewConfigTest {
     void testPlayerGetConfig() {
         PlayerMock player = server.addPlayer();
         player.setOp(true);
-        server.execute("uhc", player, "view", "config");
+        TestUtils.executeCommand(plugin, player, "view", "config");
         player.assertSaid(String.format("""
                         all.trees.spawn.apples=%s
                         countdown.timer.length=%s
@@ -65,7 +66,7 @@ public class ViewConfigTest {
     void testPlayerGetInitialWorldBorderSize() {
         PlayerMock player = server.addPlayer();
         player.setOp(true);
-        server.execute("uhc", player, "view", "world.border.initial.size");
+        TestUtils.executeCommand(plugin, player, "view", "world.border.initial.size");
         player.assertSaid("world.border.initial.size=" + WORLD_BORDER_INITIAL_SIZE);
     }
 
@@ -74,7 +75,7 @@ public class ViewConfigTest {
     void testPlayerGetWorldBorderCenterX() {
         PlayerMock player = server.addPlayer();
         player.setOp(true);
-        server.execute("uhc", player, "view", "world.border.center.x");
+        TestUtils.executeCommand(plugin, player, "view", "world.border.center.x");
         player.assertSaid("world.border.center.x=" + WORLD_BORDER_CENTER_X);
     }
 
@@ -83,7 +84,7 @@ public class ViewConfigTest {
     void testPlayerGetWorldBorderCenterZ() {
         PlayerMock player = server.addPlayer();
         player.setOp(true);
-        server.execute("uhc", player, "view", "world.border.center.z");
+        TestUtils.executeCommand(plugin, player, "view", "world.border.center.z");
         player.assertSaid("world.border.center.z=" + WORLD_BORDER_CENTER_Z);
     }
 }

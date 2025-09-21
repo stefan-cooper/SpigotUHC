@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import utils.TestUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -75,7 +76,7 @@ public class ReviveTest {
         PlayerMock admin = server.addPlayer();
         admin.setOp(true);
         
-        server.execute("uhc", admin, "set",
+        TestUtils.executeCommand(plugin, admin, "set",
                 "team.red=pavey,luke",
                 "player.head.golden.apple=true",
                 "revive.via.platforms=true",
@@ -140,7 +141,7 @@ public class ReviveTest {
         PlayerMock admin = server.addPlayer();
         admin.setOp(true);
 
-        server.execute("uhc", admin, "set",
+        TestUtils.executeCommand(plugin, admin, "set",
                 "team.red=pavey,luke",
                 "player.head.golden.apple=true",
                 "revive.via.platforms=true",
@@ -205,7 +206,7 @@ public class ReviveTest {
         PlayerMock admin = server.addPlayer();
         admin.setOp(true);
 
-        server.execute("uhc", admin, "set",
+        TestUtils.executeCommand(plugin, admin, "set",
                 "team.red=pavey,luke",
                 "player.head.golden.apple=true",
                 "revive.enabled=true",
@@ -274,7 +275,7 @@ public class ReviveTest {
         PlayerMock admin = server.addPlayer();
         admin.setOp(true);
 
-        server.execute("uhc", admin, "set",
+        TestUtils.executeCommand(plugin, admin, "set",
                 "team.red=pavey,luke",
                 "player.head.golden.apple=true",
                 "revive.enabled=true",
@@ -370,7 +371,7 @@ public class ReviveTest {
         PlayerMock admin = server.addPlayer();
         admin.setOp(true);
 
-        server.execute("uhc", admin, "set",
+        TestUtils.executeCommand(plugin, admin, "set",
                 "team.red=pavey,luke",
                 "player.head.golden.apple=true",
                 "revive.enabled=true",
@@ -423,7 +424,7 @@ public class ReviveTest {
         PlayerMock admin = server.addPlayer();
         admin.setOp(true);
 
-        server.execute("uhc", admin, "set",
+        TestUtils.executeCommand(plugin, admin, "set",
                 "team.red=pavey,luke",
                 "player.head.golden.apple=true",
                 "revive.via.platforms=true",
@@ -507,7 +508,7 @@ public class ReviveTest {
         PlayerMock admin = server.addPlayer();
         admin.setOp(true);
 
-        server.execute("uhc", admin, "set",
+        TestUtils.executeCommand(plugin, admin, "set",
                 "team.red=pavey,luke",
                 "player.head.golden.apple=true",
                 "revive.via.platforms=true",

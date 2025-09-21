@@ -11,7 +11,7 @@ public class SetConfigCommand extends AbstractCommand {
 
     public static final String COMMAND_KEY = "set";
 
-    public SetConfigCommand(CommandSender sender, Command cmd, String[] args, Config config) {
+    public SetConfigCommand(CommandSender sender, String cmd, String[] args, Config config) {
         super(sender, cmd, args, config);
     }
 

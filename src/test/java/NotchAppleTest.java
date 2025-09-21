@@ -11,6 +11,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import utils.TestUtils;
 
 import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
 import static com.stefancooper.SpigotUHC.utils.Constants.NOTCH_APPLE;
@@ -50,13 +51,13 @@ public class NotchAppleTest {
 
         assertEquals(null, Bukkit.getRecipe(key));
 
-        server.execute("uhc", admin, "set",
+        TestUtils.executeCommand(plugin, admin, "set",
                 "craftable.notch.apple=true"
         );
 
         assertEquals(new ItemStack(Material.ENCHANTED_GOLDEN_APPLE), Bukkit.getRecipe(key).getResult());
 
-        server.execute("uhc", admin, "set",
+        TestUtils.executeCommand(plugin, admin, "set",
                 "craftable.notch.apple=false"
         );
 
@@ -77,7 +78,7 @@ public class NotchAppleTest {
 
         assertEquals(new ItemStack(Material.AIR), off);
 
-        server.execute("uhc", admin, "set",
+        TestUtils.executeCommand(plugin, admin, "set",
                 "craftable.notch.apple=true"
         );
 
@@ -89,7 +90,7 @@ public class NotchAppleTest {
 
         assertEquals(new ItemStack(Material.ENCHANTED_GOLDEN_APPLE), on);
 
-        server.execute("uhc", admin, "set",
+        TestUtils.executeCommand(plugin, admin, "set",
                 "craftable.notch.apple=false"
         );
 

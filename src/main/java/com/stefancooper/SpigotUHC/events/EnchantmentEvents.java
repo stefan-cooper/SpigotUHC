@@ -66,10 +66,10 @@ public class EnchantmentEvents implements Listener {
         // TNT enchants
         if (item.getType() == Material.TNT &&
                 config.getProperty(ConfigKey.ADDITIONAL_ENCHANTS_TNT, Defaults.ADDITIONAL_ENCHANTS_TNT)) {
-            final EnchantTNT shieldEnchants = new EnchantTNT(item, Map.of(event.getEnchantmentHint(), event.getLevelHint()));
+            final EnchantTNT tntEnchants = new EnchantTNT(item, Map.of(event.getEnchantmentHint(), event.getLevelHint()), config.getManagedResources(), event.getEnchantmentHint(), event.getLevelHint());
             // Note - In the future, if base minecraft adds their own enchants for tnts, we may want to remove this
             event.getEnchantsToAdd().clear();
-            event.getEnchantsToAdd().putAll(shieldEnchants.getEnchantsToAdd());
+            event.getEnchantsToAdd().putAll(tntEnchants.getEnchantsToAdd());
         }
     }
 

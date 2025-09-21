@@ -223,6 +223,10 @@ public class EnchantmentEvents implements Listener {
         return item.containsEnchantment(config.getManagedResources().getQuickboomEnchantment());
     }
 
+    private boolean hasBlastwaveEnchantment(final ItemStack item) {
+        return item.containsEnchantment(config.getManagedResources().getBlastwaveEnchantment());
+    }
+
     // get uuid from block
     private static String keyFromBlock(final Block b) {
         return b.getWorld().getUID() + ":" + b.getX() + "," + b.getY() + "," + b.getZ();
@@ -248,22 +252,51 @@ public class EnchantmentEvents implements Listener {
         }
     }
 
+    // apply correct fuse time to primed TNT
+    private void handleBlastwave(final TNTPrimed tnt, final List<MetadataValue> metadata) {
+        final int level = metadata.getFirst().asInt();
+        switch (level) {
+            case 4:
+                tnt.setYield(50f);
+                break;
+            case 3:
+                tnt.setYield(20f);
+                break;
+            case 2:
+                tnt.setYield(12f);
+                break;
+            case 1:
+            default:
+                tnt.setYield(8f);
+                break;
+        }
+    }
+
     // save owners who place quickboom enchantment to memory so that we can make sure we dont damage them later
     @EventHandler
     public void onBlockPlace(final BlockPlaceEvent event) {
         if (event.getBlockPlaced().getType() != Material.TNT) return;
         final ItemStack item = event.getItemInHand();
-        if (hasQuickboomEnchantment(item)) {
+        if (hasQuickboomEnchantment(item) || hasBlastwaveEnchantment(item)) {
             final Player placer = event.getPlayer();
             final String key = keyFromBlock(event.getBlockPlaced());
             tntOwners.put(key, placer.getUniqueId());
-
-            event.getBlockPlaced().setMetadata(Constants.QUICKBOOM_ENCHANTMENT,
-                    new FixedMetadataValue(config.getPlugin(),
-                            item.getEnchantmentLevel(config.getManagedResources().getQuickboomEnchantment())
-                    )
-            );
+            if (hasQuickboomEnchantment(item)) {
+                event.getBlockPlaced().setMetadata(Constants.QUICKBOOM_ENCHANTMENT,
+                        new FixedMetadataValue(config.getPlugin(),
+                                item.getEnchantmentLevel(config.getManagedResources().getQuickboomEnchantment())
+                        )
+                );
+            }
+            if (hasBlastwaveEnchantment(item)) {
+                event.getBlockPlaced().setMetadata(Constants.BLASTWAVE_ENCHANTMENT,
+                        new FixedMetadataValue(config.getPlugin(),
+                                item.getEnchantmentLevel(config.getManagedResources().getBlastwaveEnchantment())
+                        )
+                );
+            }
         }
+
     }
 
     // when a tnt is primed, check our owners and set the source if it is in memory so that we can remove any damage
@@ -295,15 +328,17 @@ public class EnchantmentEvents implements Listener {
     @EventHandler
     public void onTNTPrimeEvent(final TNTPrimeEvent event) {
         final Block block = event.getBlock();
-        final List<MetadataValue> metadata = block.getMetadata(Constants.QUICKBOOM_ENCHANTMENT);
-        if (!metadata.isEmpty()) {
+        final List<MetadataValue> quickboomMetadata = block.getMetadata(Constants.QUICKBOOM_ENCHANTMENT);
+        final List<MetadataValue> blastwaveMetadata = block.getMetadata(Constants.BLASTWAVE_ENCHANTMENT);
+        if (!quickboomMetadata.isEmpty() || !blastwaveMetadata.isEmpty()) {
             Bukkit.getScheduler().runTask(config.getPlugin(), () -> {
                 block.getWorld().getNearbyEntities(block.getLocation().add(0.5, 0.5, 0.5), 1, 1, 1)
                     .stream()
                     .filter(ent -> ent instanceof TNTPrimed)
                     .map(ent -> (TNTPrimed) ent)
                     .forEach(tnt -> {
-                        handleQuickboom(tnt, metadata);
+                        if (!quickboomMetadata.isEmpty()) handleQuickboom(tnt, quickboomMetadata);
+                        if (!blastwaveMetadata.isEmpty()) handleBlastwave(tnt, blastwaveMetadata);
                     });
             });
         }

@@ -1,31 +1,50 @@
 package com.stefancooper.SpigotUHC.events;
 
+import com.destroystokyo.paper.event.block.BlockDestroyEvent;
+import com.destroystokyo.paper.event.entity.EntityAddToWorldEvent;
 import com.destroystokyo.paper.event.entity.EntityKnockbackByEntityEvent;
 import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.Defaults;
 import com.stefancooper.SpigotUHC.enchants.EnchantShield;
+import com.stefancooper.SpigotUHC.enchants.EnchantTNT;
 import com.stefancooper.SpigotUHC.enchants.PrepareShieldEnchant;
+import com.stefancooper.SpigotUHC.enchants.PrepareTNTEnchant;
 import com.stefancooper.SpigotUHC.enums.ConfigKey;
+import com.stefancooper.SpigotUHC.utils.Constants;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.Directional;
 import org.bukkit.damage.DamageType;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.enchantments.EnchantmentOffer;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockDispenseEvent;
+import org.bukkit.event.block.BlockDropItemEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.TNTPrimeEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import io.papermc.paper.event.entity.EntityKnockbackEvent;
+import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.util.Vector;
 
 import java.util.*;
+import java.util.logging.Level;
 
 public class EnchantmentEvents implements Listener {
 
@@ -47,6 +66,15 @@ public class EnchantmentEvents implements Listener {
             event.getEnchantsToAdd().clear();
             event.getEnchantsToAdd().putAll(shieldEnchants.getEnchantsToAdd());
         }
+
+        // TNT enchants
+        if (item.getType() == Material.TNT &&
+                config.getProperty(ConfigKey.ADDITIONAL_ENCHANTS_TNT, Defaults.ADDITIONAL_ENCHANTS_TNT)) {
+            final EnchantTNT tntEnchants = new EnchantTNT(item, Map.of(event.getEnchantmentHint(), event.getLevelHint()), config.getManagedResources(), event.getEnchantmentHint(), event.getLevelHint());
+            // Note - In the future, if base minecraft adds their own enchants for tnts, we may want to remove this
+            event.getEnchantsToAdd().clear();
+            event.getEnchantsToAdd().putAll(tntEnchants.getEnchantsToAdd());
+        }
     }
 
     @EventHandler
@@ -65,6 +93,26 @@ public class EnchantmentEvents implements Listener {
             event.getOffers()[2] = prepareShieldEnchant.getOffers()[2];
 
             event.setCancelled(false); // Allow GUI to appear for shields
+
+            // force client to refresh inventory to show new offers
+            config.getManagedResources().runTaskLater(() -> {
+                event.getEnchanter().updateInventory();
+            }, 1L);
+            return;
+        }
+
+        if (item.getType() == Material.TNT &&
+                config.getProperty(ConfigKey.ADDITIONAL_ENCHANTS_TNT, Defaults.ADDITIONAL_ENCHANTS_TNT)) {
+
+            final PrepareTNTEnchant prepareTNTEnchant = new PrepareTNTEnchant(config, item, event.getView().getEnchantmentSeed(), event.getEnchantmentBonus());
+
+            if (prepareTNTEnchant.getOffers().length != 3 || prepareTNTEnchant.getOffers()[0] == null) return;
+
+            event.getOffers()[0] = prepareTNTEnchant.getOffers()[0];
+            event.getOffers()[1] = prepareTNTEnchant.getOffers()[1];
+            event.getOffers()[2] = prepareTNTEnchant.getOffers()[2];
+
+            event.setCancelled(false); // Allow GUI to appear for TNT
 
             // force client to refresh inventory to show new offers
             config.getManagedResources().runTaskLater(() -> {
@@ -173,4 +221,129 @@ public class EnchantmentEvents implements Listener {
     }
 
     /* ----- End of shield events ----- */
+
+    /* ----- TNT Events ----- */
+
+//    private final Map<String, UUID> tntOwners = new HashMap<>();
+
+    // check if item has quickboom enchant
+    private boolean hasQuickboomEnchantment(final ItemStack item) {
+        return item.containsEnchantment(config.getManagedResources().getQuickboomEnchantment());
+    }
+
+    private boolean hasBlastwaveEnchantment(final ItemStack item) {
+        return item.containsEnchantment(config.getManagedResources().getBlastwaveEnchantment());
+    }
+
+    private void storeTNTMetadata(final ItemStack item, final Block tntBlock) {
+        if (hasQuickboomEnchantment(item) || hasBlastwaveEnchantment(item)) {
+            if (hasQuickboomEnchantment(item)) {
+                tntBlock.setMetadata(Constants.QUICKBOOM_ENCHANTMENT,
+                        new FixedMetadataValue(config.getPlugin(),
+                                item.getEnchantmentLevel(config.getManagedResources().getQuickboomEnchantment())
+                        )
+                );
+            }
+            if (hasBlastwaveEnchantment(item)) {
+                tntBlock.setMetadata(Constants.BLASTWAVE_ENCHANTMENT,
+                        new FixedMetadataValue(config.getPlugin(),
+                                item.getEnchantmentLevel(config.getManagedResources().getBlastwaveEnchantment())
+                        )
+                );
+            }
+        }
+    }
+
+    private void doTNTExplosion(final Block block) {
+        final List<MetadataValue> quickboomMetadata = block.getMetadata(Constants.QUICKBOOM_ENCHANTMENT);
+        final List<MetadataValue> blastwaveMetadata = block.getMetadata(Constants.BLASTWAVE_ENCHANTMENT);
+        if (!quickboomMetadata.isEmpty() || !blastwaveMetadata.isEmpty()) {
+            Bukkit.getScheduler().runTask(config.getPlugin(), () -> {
+                block.getWorld().getNearbyEntities(block.getLocation().add(0.5, 0.5, 0.5), 1, 1, 1)
+                        .stream()
+                        .filter(ent -> ent instanceof TNTPrimed)
+                        .map(ent -> (TNTPrimed) ent)
+                        .forEach(tnt -> {
+                            if (!quickboomMetadata.isEmpty() || !blastwaveMetadata.isEmpty())
+                                handleTNTEnchantments(tnt, quickboomMetadata, blastwaveMetadata);
+                            block.removeMetadata(Constants.QUICKBOOM_ENCHANTMENT, config.getPlugin());
+                            block.removeMetadata(Constants.BLASTWAVE_ENCHANTMENT, config.getPlugin());
+                        });
+            });
+        }
+    }
+
+    private void handleTNTEnchantments(final TNTPrimed tnt, final List<MetadataValue> quickboomMetadata, final List<MetadataValue> blastwaveMetadata) {
+        final int quickboomLevel = quickboomMetadata.isEmpty() ? 0 : quickboomMetadata.getFirst().asInt();
+        final int blastwaveLevel = blastwaveMetadata.isEmpty() ? 0 : blastwaveMetadata.getFirst().asInt();
+        final float yield = switch (blastwaveLevel) {
+            case 4 -> 50f;
+            case 3 -> 20f;
+            case 2 -> 12f;
+            case 1 -> 8f;
+            default -> 4f;
+        };
+        final int fuseTime = switch (quickboomLevel) {
+            case 4 -> 10;
+            case 3 -> 20;
+            case 2 -> 30;
+            case 1 -> 40;
+            default -> 80;
+        };
+        // blastwave
+        tnt.setYield(yield);
+        // quickboom
+        tnt.setFuseTicks(fuseTime);
+        if (blastwaveLevel > 0) config.getManagedResources().runTaskLater(() -> tnt.getWorld().spawnParticle(Particle.EXPLOSION, tnt.getLocation(), 1000), (long) fuseTime);
+    }
+
+    @EventHandler
+    public void onTNTBlockBreak(final BlockDropItemEvent event) {
+        final List<Item> tnts = event.getItems().stream().filter(item -> item.getItemStack().getType().equals(Material.TNT)).toList();
+        final Block destroyedBlock = event.getBlockState().getBlock();
+
+        final List<MetadataValue> quickboomMetadata = destroyedBlock.getMetadata(Constants.QUICKBOOM_ENCHANTMENT);
+        final List<MetadataValue> blastwaveMetadata = destroyedBlock.getMetadata(Constants.BLASTWAVE_ENCHANTMENT);
+
+        if (!quickboomMetadata.isEmpty()) tnts.forEach(tnt -> tnt.getItemStack().addUnsafeEnchantments(Map.of(config.getManagedResources().getQuickboomEnchantment(), quickboomMetadata.getFirst().asInt())));
+        if (!blastwaveMetadata.isEmpty()) tnts.forEach(tnt -> tnt.getItemStack().addUnsafeEnchantments(Map.of(config.getManagedResources().getBlastwaveEnchantment(), blastwaveMetadata.getFirst().asInt())));
+    }
+
+    // store metadata when tnts are placed so we can track them later
+    @EventHandler
+    public void onTNTPlace(final BlockPlaceEvent event) {
+        if (event.getBlockPlaced().getType() != Material.TNT) return;
+        storeTNTMetadata(event.getItemInHand(), event.getBlockPlaced());
+    }
+
+    @EventHandler
+    public void onTNTDispenseEvent(final BlockDispenseEvent event) {
+        if (!event.getItem().getType().equals(Material.TNT)) return;
+        final ItemStack item = event.getItem();
+        if (hasQuickboomEnchantment(item) || hasBlastwaveEnchantment(item)) {
+            final Block dispenser = event.getBlock();
+            final BlockFace facing = ((Directional) dispenser.getBlockData()).getFacing();
+            final Location spawnLoc = dispenser.getRelative(facing).getLocation().add(0.5, 0.5, 0.5);
+            final Block eventualTntBlock = event.getBlock().getWorld().getBlockAt(spawnLoc);
+            storeTNTMetadata(item, eventualTntBlock);
+        }
+    }
+
+
+
+    // when a tnt is primed via dispenser
+    @EventHandler
+    public void onPrimeTNTSpawnEvent(final EntitySpawnEvent event) {
+        if (event.getEntity() instanceof TNTPrimed primed) {
+            doTNTExplosion(primed.getLocation().getBlock());
+        }
+    }
+
+    // when a tnt is primed, check if it has any enchantments we care about and apply any effects
+    @EventHandler
+    public void onTNTPrimeEvent(final TNTPrimeEvent event) {
+        doTNTExplosion(event.getBlock());
+    }
+
+    /* ----- End of TNT events ----- */
 }

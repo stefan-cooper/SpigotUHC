@@ -16,6 +16,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import utils.TestUtils;
+
 import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
 
 public class LateStartTest {
@@ -64,7 +66,7 @@ public class LateStartTest {
         Assertions.assertEquals(1, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
 
         // uhc starts
-        server.execute("uhc", admin, "start");
+        TestUtils.executeCommand(plugin, admin, "start");
 
         Assertions.assertEquals(0, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
 
@@ -102,7 +104,7 @@ public class LateStartTest {
         Assertions.assertEquals(GameMode.SURVIVAL, player2.getGameMode());
 
         // late start is execute for late joiner
-        server.execute("uhc", admin, "latestart", "sean");
+        TestUtils.executeCommand(plugin, admin, "latestart", "sean");
 
         // check that late joiner has the usual stats reset
         Assertions.assertEquals(20.0, player2.getHealth());
@@ -133,7 +135,7 @@ public class LateStartTest {
 
         schedule.performOneTick();
 
-        server.execute("uhc", admin, "set",
+        TestUtils.executeCommand(plugin, admin, "set",
                 "team.red=jawad,pavey"
         );
 
@@ -144,7 +146,7 @@ public class LateStartTest {
         player2.setLocation(new Location(world, 0, 100, 0));
 
         // late start is execute for late joiner
-        server.execute("uhc", admin, "latestart", "pavey");
+        TestUtils.executeCommand(plugin, admin, "latestart", "pavey");
 
         // check that late joiner has the usual stats reset
         Assertions.assertEquals(new Location(world, 1250, 100, 1250), player1.getLocation());

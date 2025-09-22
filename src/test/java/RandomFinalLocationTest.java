@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import utils.TestUtils;
 
 import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -45,7 +46,7 @@ public class RandomFinalLocationTest {
         PlayerMock admin = server.addPlayer();
         admin.setOp(true);
 
-        server.execute("uhc", admin, "set",
+        TestUtils.executeCommand(plugin, admin, "set",
                 "world.border.center.x=0",
                 "world.border.center.z=0",
                 "random.final.location=false"
@@ -54,7 +55,7 @@ public class RandomFinalLocationTest {
         assertEquals(0, world.getWorldBorder().getCenter().getX());
         assertEquals(0, world.getWorldBorder().getCenter().getZ());
 
-        server.execute("uhc", admin, "start");
+        TestUtils.executeCommand(plugin, admin, "start");
 
         assertEquals(0, world.getWorldBorder().getCenter().getX());
         assertEquals(0, world.getWorldBorder().getCenter().getZ());
@@ -70,7 +71,7 @@ public class RandomFinalLocationTest {
         PlayerMock admin = server.addPlayer();
         admin.setOp(true);
 
-        server.execute("uhc", admin, "set",
+        TestUtils.executeCommand(plugin, admin, "set",
                 "world.border.center.x=0",
                 "world.border.center.z=0",
                 "random.final.location=true"
@@ -79,7 +80,7 @@ public class RandomFinalLocationTest {
         assertEquals(0, world.getWorldBorder().getCenter().getX());
         assertEquals(0, world.getWorldBorder().getCenter().getZ());
 
-        server.execute("uhc", admin, "start");
+        TestUtils.executeCommand(plugin, admin, "start");
 
         assertTrue(world.getWorldBorder().getCenter().getX() != 0);
         assertTrue(world.getWorldBorder().getCenter().getZ() != 0);

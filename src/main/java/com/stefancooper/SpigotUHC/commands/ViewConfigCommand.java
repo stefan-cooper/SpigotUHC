@@ -11,7 +11,7 @@ public class ViewConfigCommand extends AbstractCommand {
 
     public static final String COMMAND_KEY = "view";
 
-    public ViewConfigCommand(CommandSender sender, Command cmd, String[] args, Config config) {
+    public ViewConfigCommand(CommandSender sender, String cmd, String[] args, Config config) {
         super(sender, cmd, args, config);
     }
 

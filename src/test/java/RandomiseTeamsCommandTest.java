@@ -8,6 +8,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import utils.TestUtils;
+
 import java.util.List;
 import java.util.Set;
 import static com.stefancooper.SpigotUHC.Defaults.END_WORLD_NAME;
@@ -56,11 +58,11 @@ public class RandomiseTeamsCommandTest {
         List<String> pot2 = List.of("two1,two2,two3");
         List<String> pot3 = List.of("three1,three2,three3");
 
-        server.execute("uhc", admin, "set", String.format("random.teams.pot.1=%s", String.join(",", pot1)));
-        server.execute("uhc", admin, "set", String.format("random.teams.pot.2=%s", String.join(",", pot2)));
-        server.execute("uhc", admin, "set", String.format("random.teams.pot.3=%s", String.join(",", pot3)));
+        TestUtils.executeCommand(plugin, admin, "set", String.format("random.teams.pot.1=%s", String.join(",", pot1)));
+        TestUtils.executeCommand(plugin, admin, "set", String.format("random.teams.pot.2=%s", String.join(",", pot2)));
+        TestUtils.executeCommand(plugin, admin, "set", String.format("random.teams.pot.3=%s", String.join(",", pot3)));
 
-        server.execute("uhc", admin, "randomise", "3");
+        TestUtils.executeCommand(plugin, admin, "randomise", "3");
 
         final Set<String> redTeam = server.getScoreboardManager().getMainScoreboard().getTeam("Red").getEntries();
         assertEquals(3, redTeam.size()); // 1, 2, 3
@@ -91,11 +93,11 @@ public class RandomiseTeamsCommandTest {
         List<String> pot2 = List.of("two1,two2,two3,two4,two5");
         List<String> pot3 = List.of("three1,three2");
 
-        server.execute("uhc", admin, "set", String.format("random.teams.pot.1=%s", String.join(",", pot1)));
-        server.execute("uhc", admin, "set", String.format("random.teams.pot.2=%s", String.join(",", pot2)));
-        server.execute("uhc", admin, "set", String.format("random.teams.pot.3=%s", String.join(",", pot3)));
+        TestUtils.executeCommand(plugin, admin, "set", String.format("random.teams.pot.1=%s", String.join(",", pot1)));
+        TestUtils.executeCommand(plugin, admin, "set", String.format("random.teams.pot.2=%s", String.join(",", pot2)));
+        TestUtils.executeCommand(plugin, admin, "set", String.format("random.teams.pot.3=%s", String.join(",", pot3)));
 
-        server.execute("uhc", admin, "randomise", "3");
+        TestUtils.executeCommand(plugin, admin, "randomise", "3");
 
         final Set<String> redTeam = server.getScoreboardManager().getMainScoreboard().getTeam("Red").getEntries();
         assertEquals(3, redTeam.size()); // 1, 2, 3
@@ -126,11 +128,11 @@ public class RandomiseTeamsCommandTest {
         List<String> pot2 = List.of("two1,two2,two3,two4");
         List<String> pot3 = List.of("three1,three2,three3,three4");
 
-        server.execute("uhc", admin, "set", String.format("random.teams.pot.1=%s", String.join(",", pot1)));
-        server.execute("uhc", admin, "set", String.format("random.teams.pot.2=%s", String.join(",", pot2)));
-        server.execute("uhc", admin, "set", String.format("random.teams.pot.3=%s", String.join(",", pot3)));
+        TestUtils.executeCommand(plugin, admin, "set", String.format("random.teams.pot.1=%s", String.join(",", pot1)));
+        TestUtils.executeCommand(plugin, admin, "set", String.format("random.teams.pot.2=%s", String.join(",", pot2)));
+        TestUtils.executeCommand(plugin, admin, "set", String.format("random.teams.pot.3=%s", String.join(",", pot3)));
 
-        server.execute("uhc", admin, "randomise", "2");
+        TestUtils.executeCommand(plugin, admin, "randomise", "2");
 
         final Set<String> redTeam = server.getScoreboardManager().getMainScoreboard().getTeam("Red").getEntries();
         assertEquals(2, redTeam.size()); // 1, 3
@@ -179,11 +181,11 @@ public class RandomiseTeamsCommandTest {
         List<String> pot2 = List.of("two1,two2,two3,two4,two5,two6,two7,two8");
         List<String> pot3 = List.of("three1,three2");
 
-        server.execute("uhc", admin, "set", String.format("random.teams.pot.1=%s", String.join(",", pot1)));
-        server.execute("uhc", admin, "set", String.format("random.teams.pot.2=%s", String.join(",", pot2)));
-        server.execute("uhc", admin, "set", String.format("random.teams.pot.3=%s", String.join(",", pot3)));
+        TestUtils.executeCommand(plugin, admin, "set", String.format("random.teams.pot.1=%s", String.join(",", pot1)));
+        TestUtils.executeCommand(plugin, admin, "set", String.format("random.teams.pot.2=%s", String.join(",", pot2)));
+        TestUtils.executeCommand(plugin, admin, "set", String.format("random.teams.pot.3=%s", String.join(",", pot3)));
 
-        server.execute("uhc", admin, "randomise", "2");
+        TestUtils.executeCommand(plugin, admin, "randomise", "2");
 
         final Set<String> redTeam = server.getScoreboardManager().getMainScoreboard().getTeam("Red").getEntries();
         assertEquals(2, redTeam.size()); // 1, 3
@@ -232,11 +234,11 @@ public class RandomiseTeamsCommandTest {
         List<String> pot2 = List.of("two1,two2,two3,two4");
         List<String> pot3 = List.of("three1,three2,three3,three4");
 
-        server.execute("uhc", admin, "set", String.format("random.teams.pot.1=%s", String.join(",", pot1)));
-        server.execute("uhc", admin, "set", String.format("random.teams.pot.2=%s", String.join(",", pot2)));
-        server.execute("uhc", admin, "set", String.format("random.teams.pot.3=%s", String.join(",", pot3)));
+        TestUtils.executeCommand(plugin, admin, "set", String.format("random.teams.pot.1=%s", String.join(",", pot1)));
+        TestUtils.executeCommand(plugin, admin, "set", String.format("random.teams.pot.2=%s", String.join(",", pot2)));
+        TestUtils.executeCommand(plugin, admin, "set", String.format("random.teams.pot.3=%s", String.join(",", pot3)));
 
-        server.execute("uhc", admin, "randomise", "4");
+        TestUtils.executeCommand(plugin, admin, "randomise", "4");
 
         final Set<String> redTeam = server.getScoreboardManager().getMainScoreboard().getTeam("Red").getEntries();
         assertEquals(4, redTeam.size()); // 1,2,2,3
@@ -267,11 +269,11 @@ public class RandomiseTeamsCommandTest {
         List<String> pot2 = List.of("two1,two2,two3,two4,two5,two6,two7,two8");
         List<String> pot3 = List.of("three1,three2");
 
-        server.execute("uhc", admin, "set", String.format("random.teams.pot.1=%s", String.join(",", pot1)));
-        server.execute("uhc", admin, "set", String.format("random.teams.pot.2=%s", String.join(",", pot2)));
-        server.execute("uhc", admin, "set", String.format("random.teams.pot.3=%s", String.join(",", pot3)));
+        TestUtils.executeCommand(plugin, admin, "set", String.format("random.teams.pot.1=%s", String.join(",", pot1)));
+        TestUtils.executeCommand(plugin, admin, "set", String.format("random.teams.pot.2=%s", String.join(",", pot2)));
+        TestUtils.executeCommand(plugin, admin, "set", String.format("random.teams.pot.3=%s", String.join(",", pot3)));
 
-        server.execute("uhc", admin, "randomise", "4");
+        TestUtils.executeCommand(plugin, admin, "randomise", "4");
 
         final Set<String> redTeam = server.getScoreboardManager().getMainScoreboard().getTeam("Red").getEntries();
         assertEquals(4, redTeam.size()); // 1,2,2,3

@@ -25,7 +25,7 @@ public class LateStartCommand extends StartCommand {
 
     public static final String COMMAND_KEY = "latestart";
 
-    public LateStartCommand(CommandSender sender, Command cmd, String[] args, Config config) {
+    public LateStartCommand(CommandSender sender, String cmd, String[] args, Config config) {
         super(sender, cmd, args, config);
     }
 

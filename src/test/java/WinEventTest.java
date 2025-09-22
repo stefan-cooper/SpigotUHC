@@ -5,6 +5,7 @@ import org.mockbukkit.mockbukkit.scheduler.BukkitSchedulerMock;
 import com.stefancooper.SpigotUHC.Plugin;
 import org.bukkit.*;
 import org.junit.jupiter.api.*;
+import utils.TestUtils;
 
 import static com.stefancooper.SpigotUHC.Defaults.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -56,7 +57,7 @@ public class WinEventTest {
         int newY = 64;
         int newZ = 7586;
 
-        server.execute("uhc", admin, "set",
+        TestUtils.executeCommand(plugin, admin, "set",
                 "world.border.initial.size=50",
                 "world.border.final.size=10",
                 "countdown.timer.length=5",
@@ -76,7 +77,7 @@ public class WinEventTest {
         assertNull(loser1.nextTitle());
         assertNull(loser2.nextTitle());
 
-        server.execute("uhc", admin, "start");
+        TestUtils.executeCommand(plugin, admin, "start");
 
         schedule.performTicks(200);
 
@@ -134,7 +135,7 @@ public class WinEventTest {
         int newY = 64;
         int newZ = 7586;
 
-        server.execute("uhc", admin, "set",
+        TestUtils.executeCommand(plugin, admin, "set",
                 "world.border.initial.size=50",
                 "world.border.final.size=10",
                 "countdown.timer.length=5",
@@ -160,7 +161,7 @@ public class WinEventTest {
         assertNull(yellowLoser2.nextTitle());
         assertNull(yellowLoser3.nextTitle());
 
-        server.execute("uhc", admin, "start");
+        TestUtils.executeCommand(plugin, admin, "start");
 
         schedule.performTicks(200);
 

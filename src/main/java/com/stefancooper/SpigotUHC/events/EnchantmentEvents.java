@@ -16,6 +16,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.Directional;
 import org.bukkit.damage.DamageType;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -26,6 +28,7 @@ import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.TNTPrimeEvent;
@@ -34,6 +37,7 @@ import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import io.papermc.paper.event.entity.EntityKnockbackEvent;
+import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
@@ -231,6 +235,44 @@ public class EnchantmentEvents implements Listener {
         return item.containsEnchantment(config.getManagedResources().getBlastwaveEnchantment());
     }
 
+    private void storeTNTMetadata(final ItemStack item, final Block tntBlock) {
+        if (hasQuickboomEnchantment(item) || hasBlastwaveEnchantment(item)) {
+            if (hasQuickboomEnchantment(item)) {
+                tntBlock.setMetadata(Constants.QUICKBOOM_ENCHANTMENT,
+                        new FixedMetadataValue(config.getPlugin(),
+                                item.getEnchantmentLevel(config.getManagedResources().getQuickboomEnchantment())
+                        )
+                );
+            }
+            if (hasBlastwaveEnchantment(item)) {
+                tntBlock.setMetadata(Constants.BLASTWAVE_ENCHANTMENT,
+                        new FixedMetadataValue(config.getPlugin(),
+                                item.getEnchantmentLevel(config.getManagedResources().getBlastwaveEnchantment())
+                        )
+                );
+            }
+        }
+    }
+
+    private void doTNTExplosion(final Block block) {
+        final List<MetadataValue> quickboomMetadata = block.getMetadata(Constants.QUICKBOOM_ENCHANTMENT);
+        final List<MetadataValue> blastwaveMetadata = block.getMetadata(Constants.BLASTWAVE_ENCHANTMENT);
+        if (!quickboomMetadata.isEmpty() || !blastwaveMetadata.isEmpty()) {
+            Bukkit.getScheduler().runTask(config.getPlugin(), () -> {
+                block.getWorld().getNearbyEntities(block.getLocation().add(0.5, 0.5, 0.5), 1, 1, 1)
+                        .stream()
+                        .filter(ent -> ent instanceof TNTPrimed)
+                        .map(ent -> (TNTPrimed) ent)
+                        .forEach(tnt -> {
+                            if (!quickboomMetadata.isEmpty() || !blastwaveMetadata.isEmpty())
+                                handleTNTEnchantments(tnt, quickboomMetadata, blastwaveMetadata);
+                            block.removeMetadata(Constants.QUICKBOOM_ENCHANTMENT, config.getPlugin());
+                            block.removeMetadata(Constants.BLASTWAVE_ENCHANTMENT, config.getPlugin());
+                        });
+            });
+        }
+    }
+
     private void handleTNTEnchantments(final TNTPrimed tnt, final List<MetadataValue> quickboomMetadata, final List<MetadataValue> blastwaveMetadata) {
         final int quickboomLevel = quickboomMetadata.isEmpty() ? 0 : quickboomMetadata.getFirst().asInt();
         final int blastwaveLevel = blastwaveMetadata.isEmpty() ? 0 : blastwaveMetadata.getFirst().asInt();
@@ -255,9 +297,6 @@ public class EnchantmentEvents implements Listener {
         if (blastwaveLevel > 0) config.getManagedResources().runTaskLater(() -> tnt.getWorld().spawnParticle(Particle.EXPLOSION, tnt.getLocation(), 1000), (long) fuseTime);
     }
 
-// - dispenser tnt
-// - minecart tnt
-
     @EventHandler
     public void onTNTBlockBreak(final BlockDropItemEvent event) {
         final List<Item> tnts = event.getItems().stream().filter(item -> item.getItemStack().getType().equals(Material.TNT)).toList();
@@ -274,45 +313,36 @@ public class EnchantmentEvents implements Listener {
     @EventHandler
     public void onTNTPlace(final BlockPlaceEvent event) {
         if (event.getBlockPlaced().getType() != Material.TNT) return;
-        final ItemStack item = event.getItemInHand();
+        storeTNTMetadata(event.getItemInHand(), event.getBlockPlaced());
+    }
+
+    @EventHandler
+    public void onTNTDispenseEvent(final BlockDispenseEvent event) {
+        if (!event.getItem().getType().equals(Material.TNT)) return;
+        final ItemStack item = event.getItem();
         if (hasQuickboomEnchantment(item) || hasBlastwaveEnchantment(item)) {
-            if (hasQuickboomEnchantment(item)) {
-                event.getBlockPlaced().setMetadata(Constants.QUICKBOOM_ENCHANTMENT,
-                        new FixedMetadataValue(config.getPlugin(),
-                                item.getEnchantmentLevel(config.getManagedResources().getQuickboomEnchantment())
-                        )
-                );
-            }
-            if (hasBlastwaveEnchantment(item)) {
-                event.getBlockPlaced().setMetadata(Constants.BLASTWAVE_ENCHANTMENT,
-                        new FixedMetadataValue(config.getPlugin(),
-                                item.getEnchantmentLevel(config.getManagedResources().getBlastwaveEnchantment())
-                        )
-                );
-            }
+            final Block dispenser = event.getBlock();
+            final BlockFace facing = ((Directional) dispenser.getBlockData()).getFacing();
+            final Location spawnLoc = dispenser.getRelative(facing).getLocation().add(0.5, 0.5, 0.5);
+            final Block eventualTntBlock = event.getBlock().getWorld().getBlockAt(spawnLoc);
+            storeTNTMetadata(item, eventualTntBlock);
+        }
+    }
+
+
+
+    // when a tnt is primed via dispenser
+    @EventHandler
+    public void onPrimeTNTSpawnEvent(final EntitySpawnEvent event) {
+        if (event.getEntity() instanceof TNTPrimed primed) {
+            doTNTExplosion(primed.getLocation().getBlock());
         }
     }
 
     // when a tnt is primed, check if it has any enchantments we care about and apply any effects
     @EventHandler
     public void onTNTPrimeEvent(final TNTPrimeEvent event) {
-        final Block block = event.getBlock();
-        final List<MetadataValue> quickboomMetadata = block.getMetadata(Constants.QUICKBOOM_ENCHANTMENT);
-        final List<MetadataValue> blastwaveMetadata = block.getMetadata(Constants.BLASTWAVE_ENCHANTMENT);
-        if (!quickboomMetadata.isEmpty() || !blastwaveMetadata.isEmpty()) {
-            Bukkit.getScheduler().runTask(config.getPlugin(), () -> {
-                block.getWorld().getNearbyEntities(block.getLocation().add(0.5, 0.5, 0.5), 1, 1, 1)
-                    .stream()
-                    .filter(ent -> ent instanceof TNTPrimed)
-                    .map(ent -> (TNTPrimed) ent)
-                    .forEach(tnt -> {
-                        if (!quickboomMetadata.isEmpty() || !blastwaveMetadata.isEmpty())
-                            handleTNTEnchantments(tnt, quickboomMetadata, blastwaveMetadata);
-                        block.removeMetadata(Constants.QUICKBOOM_ENCHANTMENT, config.getPlugin());
-                        block.removeMetadata(Constants.BLASTWAVE_ENCHANTMENT, config.getPlugin());
-                    });
-            });
-        }
+        doTNTExplosion(event.getBlock());
     }
 
     /* ----- End of TNT events ----- */

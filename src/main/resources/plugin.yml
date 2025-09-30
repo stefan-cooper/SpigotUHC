@@ -1,8 +1,8 @@
 name: SpigotUHC
-version: 7.7.1
+version: 8.0.0
 author: Stefan Cooper
 main: com.stefancooper.SpigotUHC.Plugin
-api-version: 1.21.8
+api-version: 1.21.9
 website: https://stefancooper.com
 commands:
   uhc:

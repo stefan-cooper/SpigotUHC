@@ -27,7 +27,7 @@ public class RandomiseTeamsCommand extends AbstractCommand {
     public static final String COMMAND_KEY = "randomise";
     public static final String TOO_MANY_TEAMS = "tooManyTeams";
 
-    public RandomiseTeamsCommand(CommandSender sender, Command cmd, String[] args, Config config) {
+    public RandomiseTeamsCommand(CommandSender sender, String cmd, String[] args, Config config) {
         super(sender, cmd, args, config);
     }
 

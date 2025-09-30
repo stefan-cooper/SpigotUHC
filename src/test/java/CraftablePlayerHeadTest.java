@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.AfterEach;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import utils.TestUtils;
 
 import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
 import static com.stefancooper.SpigotUHC.utils.Constants.CRAFTABLE_PLAYER_HEAD;
@@ -23,8 +25,8 @@ public class CraftablePlayerHeadTest {
     private static World world;
     private static PlayerMock admin;
 
-    @BeforeAll
-    public static void load() {
+    @BeforeEach
+    public void setup() {
         server = MockBukkit.mock();
         plugin = MockBukkit.load(Plugin.class);
         world = server.getWorld(WORLD_NAME);
@@ -32,14 +34,8 @@ public class CraftablePlayerHeadTest {
         admin.setOp(true);
     }
 
-    @BeforeEach
-    public void cleanUp() {
-        plugin.getUHCConfig().resetToDefaults();
-    }
-
-    @AfterAll
-    public static void unload() {
-        plugin.getUHCConfig().resetToDefaults();
+    @AfterEach
+    public void tearDown() {
         MockBukkit.unmock();
     }
 
@@ -49,15 +45,11 @@ public class CraftablePlayerHeadTest {
 
         assertEquals(null, Bukkit.getRecipe(key));
 
-        server.execute("uhc", admin, "set",
-                "craftable.player.head=true"
-        );
+        TestUtils.executeCommand(plugin, admin, "set", "craftable.player.head=true");
 
         assertEquals(new ItemStack(Material.PLAYER_HEAD), Bukkit.getRecipe(key).getResult());
 
-        server.execute("uhc", admin, "set",
-                "craftable.player.head=false"
-        );
+        TestUtils.executeCommand(plugin, admin, "set", "craftable.player.head=false");
 
         assertEquals(null, Bukkit.getRecipe(key));
 
@@ -76,9 +68,7 @@ public class CraftablePlayerHeadTest {
 
         assertEquals(new ItemStack(Material.AIR), off);
 
-        server.execute("uhc", admin, "set",
-                "craftable.player.head=true"
-        );
+        TestUtils.executeCommand(plugin, admin, "set", "craftable.player.head=true");
 
         final ItemStack on = Bukkit.craftItem(new ItemStack[]{
                 new ItemStack(Material.DIAMOND), new ItemStack(Material.DIAMOND), new ItemStack(Material.DIAMOND),
@@ -88,9 +78,7 @@ public class CraftablePlayerHeadTest {
 
         assertEquals(new ItemStack(Material.PLAYER_HEAD), on);
 
-        server.execute("uhc", admin, "set",
-                "craftable.player.head=false"
-        );
+        TestUtils.executeCommand(plugin, admin, "set", "craftable.player.head=false");
 
         final ItemStack offAgain = Bukkit.craftItem(new ItemStack[]{
                 new ItemStack(Material.DIAMOND), new ItemStack(Material.DIAMOND), new ItemStack(Material.DIAMOND),

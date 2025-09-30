@@ -7,6 +7,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import utils.TestUtils;
 
 import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -58,7 +59,7 @@ public class WorldSpawnTest {
         assertNotEquals(newZ, player1.getLocation().getZ());
 
         // set world spawn
-        server.execute("uhc", admin, "set",
+        TestUtils.executeCommand(plugin, admin, "set",
                 String.format("world.spawn.x=%s", newX),
                 String.format("world.spawn.y=%s", newY),
                 String.format("world.spawn.z=%s", newZ)
@@ -77,7 +78,7 @@ public class WorldSpawnTest {
         assertEquals(newZ, player1.getLocation().getZ());
 
         // start uhc (so the world spawn should now be ignored)
-        server.execute("uhc", admin, "start");
+        TestUtils.executeCommand(plugin, admin, "start");
 
         // new player joins and is not at the new world spawn
         PlayerMock player3 = server.addPlayer();

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import utils.TestUtils;
 
 import java.util.stream.Stream;
 
@@ -66,7 +67,7 @@ public class PvpCommandTest {
         Assertions.assertEquals(false, end.getPVP());
 
         // manually set uhc pvp
-        server.execute("uhc", admin, "pvp", commandArg);
+        TestUtils.executeCommand(plugin, admin, "pvp", commandArg);
 
         // assert the value is the expected value
         Assertions.assertEquals(expected, world.getPVP());

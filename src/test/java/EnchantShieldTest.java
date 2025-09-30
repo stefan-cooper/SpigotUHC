@@ -6,14 +6,18 @@ import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
+import org.mockito.Mockito;
 
 import java.util.Map;
 
+import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,16 +29,15 @@ public class EnchantShieldTest {
     private static Plugin plugin;
     private static World world;
 
-    @BeforeAll
-    public static void load()
-    {
+    @BeforeEach
+    public void setup() {
         server = MockBukkit.mock();
         plugin = MockBukkit.load(Plugin.class);
+        world = server.getWorld(WORLD_NAME);
     }
 
-    @AfterAll
-    public static void unload() {
-        plugin.getUHCConfig().resetToDefaults();
+    @AfterEach
+    public void tearDown() {
         MockBukkit.unmock();
     }
 

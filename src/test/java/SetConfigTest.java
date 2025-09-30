@@ -1,3 +1,4 @@
+import com.stefancooper.SpigotUHC.commands.UHCCommand;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
@@ -11,6 +12,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.scoreboard.Scoreboard;
 import org.junit.jupiter.api.*;
+import org.mockbukkit.mockbukkit.scheduler.BukkitSchedulerMock;
+import utils.TestUtils;
 
 import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
 import static com.stefancooper.SpigotUHC.utils.Constants.PLAYER_HEAD;
@@ -47,7 +50,7 @@ public class SetConfigTest {
         PlayerMock player = server.addPlayer();
         player.setOp(true);
         Assertions.assertEquals(Double.parseDouble("2000"), world.getWorldBorder().getSize());
-        server.execute("uhc", player, "set", "world.border.initial.size=50");
+        TestUtils.executeCommand(plugin, player, "set", "world.border.initial.size=50");
         Assertions.assertEquals(Double.parseDouble("50"), world.getWorldBorder().getSize());
     }
 
@@ -56,7 +59,11 @@ public class SetConfigTest {
     void testPlayerSetWorldBorderCenterX() {
         PlayerMock player = server.addPlayer();
         player.setOp(true);
-        server.execute("uhc", player, "set", "world.border.center.x=25");
+//        BukkitSchedulerMock schedule = server.getScheduler();
+//        schedule.performOneTick();
+//        server.getCommandMap().register("uhc", new UHCCommand(plugin.getUHCConfig()));
+//        server.dispatchCommand(player, "uhc set world.border.center.x=25");
+        TestUtils.executeCommand(plugin, player, "set", "world.border.center.x=25");
         Assertions.assertEquals(Double.parseDouble("25"), world.getWorldBorder().getCenter().getX());
     }
 
@@ -65,7 +72,7 @@ public class SetConfigTest {
     void testPlayerSetWorldBorderCenterZ() {
         PlayerMock player = server.addPlayer();
         player.setOp(true);
-        server.execute("uhc", player, "set", "world.border.center.z=25");
+        TestUtils.executeCommand(plugin, player, "set", "world.border.center.z=25");
         Assertions.assertEquals(Double.parseDouble("25"), world.getWorldBorder().getCenter().getZ());
     }
 
@@ -90,12 +97,12 @@ public class SetConfigTest {
         PlayerMock tim = server.addPlayer();
         tim.setName("tim");
 
-        server.execute("uhc", admin, "set", "team.red=stefan,jawad");
-        server.execute("uhc", admin, "set", "team.blue=shurf");
-        server.execute("uhc", admin, "set", "team.green=sean");
-        server.execute("uhc", admin, "set", "team.orange=pavey");
-        server.execute("uhc", admin, "set", "team.pink=luke");
-        server.execute("uhc", admin, "set", "team.purple=tim");
+        TestUtils.executeCommand(plugin, admin, "set", "team.red=stefan,jawad");
+        TestUtils.executeCommand(plugin, admin, "set", "team.blue=shurf");
+        TestUtils.executeCommand(plugin, admin, "set", "team.green=sean");
+        TestUtils.executeCommand(plugin, admin, "set", "team.orange=pavey");
+        TestUtils.executeCommand(plugin, admin, "set", "team.pink=luke");
+        TestUtils.executeCommand(plugin, admin, "set", "team.purple=tim");
 
         Scoreboard scoreboard = admin.getScoreboard();
 
@@ -107,7 +114,7 @@ public class SetConfigTest {
         assertTrue(scoreboard.getEntityTeam(luke).getName().equals("Pink"));
         assertTrue(scoreboard.getEntityTeam(tim).getName().equals("Purple"));
 
-        server.execute("uhc", admin, "set", "team.yellow=jawad");
+        TestUtils.executeCommand(plugin, admin, "set", "team.yellow=jawad");
         assertTrue(scoreboard.getEntityTeam(stefan).getName().equals("Red"));
         assertTrue(scoreboard.getEntityTeam(jawad).getName().equals("Yellow"));
     }
@@ -117,7 +124,7 @@ public class SetConfigTest {
     void testPlayerCanCraftGoldenAppleFromPlayerHead() {
         PlayerMock player = server.addPlayer();
         player.setOp(true);
-        server.execute("uhc", player, "set", "player.head.golden.apple=true");
+        TestUtils.executeCommand(plugin, player, "set", "player.head.golden.apple=true");
         ItemStack apple = new ItemStack(Material.GOLDEN_APPLE);
         NamespacedKey key = new NamespacedKey(plugin, PLAYER_HEAD);
         ShapedRecipe recipe = (ShapedRecipe) Bukkit.getRecipe(key);

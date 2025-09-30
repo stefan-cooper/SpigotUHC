@@ -47,7 +47,7 @@ public class StartCommand extends AbstractCommand {
     private static int shrinkYBorderBlock;
     private BukkitTask runner;
 
-    public StartCommand(CommandSender sender, Command cmd, String[] args, Config config) {
+    public StartCommand(CommandSender sender, String cmd, String[] args, Config config) {
         super(sender, cmd, args, config);
     }
 

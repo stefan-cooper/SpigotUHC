@@ -14,6 +14,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import utils.TestUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -62,7 +63,7 @@ public class UHCLootTest {
         int lootFrequency = 5; // 100 ticks
 
         // set world spawn
-        server.execute("uhc", admin, "set",
+        TestUtils.executeCommand(plugin, admin, "set",
                 String.format("countdown.timer.length=%s", "5"),
                 String.format("loot.chest.x=%s", x),
                 String.format("loot.chest.y=%s", y),
@@ -72,7 +73,7 @@ public class UHCLootTest {
                 String.format("loot.chest.high.loot.odds=%s", "0")
         );
 
-        server.execute("uhc", admin, "start");
+        TestUtils.executeCommand(plugin, admin, "start");
 
         schedule.performOneTick();
         admin.assertSaid("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!");
@@ -100,7 +101,7 @@ public class UHCLootTest {
         int lootFrequency = 5; // 100 ticks
 
         // set world spawn
-        server.execute("uhc", admin, "set",
+        TestUtils.executeCommand(plugin, admin, "set",
                 String.format("countdown.timer.length=%s", "3"),
                 String.format("loot.chest.x=%s", x),
                 String.format("loot.chest.y=%s", y),
@@ -110,7 +111,7 @@ public class UHCLootTest {
                 String.format("loot.chest.high.loot.odds=%s", "100")
         );
 
-        server.execute("uhc", admin, "start");
+        TestUtils.executeCommand(plugin, admin, "start");
 
         schedule.performOneTick();
         admin.assertSaid("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!");
@@ -129,7 +130,7 @@ public class UHCLootTest {
         int lootFrequency = 5; // 100 ticks
 
         // set world spawn
-        server.execute("uhc", admin, "set",
+        TestUtils.executeCommand(plugin, admin, "set",
                 String.format("countdown.timer.length=%s", "5"),
                 String.format("loot.chest.x.range=%s", x),
                 String.format("loot.chest.z.range=%s", z),
@@ -138,7 +139,7 @@ public class UHCLootTest {
                 String.format("loot.chest.high.loot.odds=%s", "0")
         );
 
-        server.execute("uhc", admin, "start");
+        TestUtils.executeCommand(plugin, admin, "start");
 
         schedule.performOneTick();
         admin.assertSaid("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!");

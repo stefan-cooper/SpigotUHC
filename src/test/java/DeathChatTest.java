@@ -11,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
+import utils.TestUtils;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -66,7 +67,7 @@ public class DeathChatTest {
         player3.setName("shurf");
         player4.setName("sean");
 
-        server.execute("uhc", admin, "set",
+        TestUtils.executeCommand(plugin, admin, "set",
                 "team.red=stefan",
                 "team.blue=jawad",
                 "team.yellow=shurf",
@@ -74,7 +75,7 @@ public class DeathChatTest {
                 "enable.death.chat=true"
         );
 
-        server.execute("uhc", admin, "start");
+        TestUtils.executeCommand(plugin, admin, "start");
 
         schedule.performOneTick();
 
@@ -99,7 +100,7 @@ public class DeathChatTest {
         player3.setName("shurf");
         player4.setName("sean");
 
-        server.execute("uhc", admin, "set",
+        TestUtils.executeCommand(plugin, admin, "set",
                 "team.red=stefan",
                 "team.blue=jawad",
                 "team.yellow=shurf",
@@ -107,7 +108,7 @@ public class DeathChatTest {
                 "enable.death.chat=true"
         );
 
-        server.execute("uhc", admin, "start");
+        TestUtils.executeCommand(plugin, admin, "start");
 
         schedule.performOneTick();
 

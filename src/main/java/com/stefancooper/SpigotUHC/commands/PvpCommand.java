@@ -13,7 +13,7 @@ public class PvpCommand extends AbstractCommand {
 
     public static final String COMMAND_KEY = "pvp";
 
-    public PvpCommand(CommandSender sender, Command cmd, String[] args, Config config) {
+    public PvpCommand(CommandSender sender, String cmd, String[] args, Config config) {
         super(sender, cmd, args, config);
     }
 

@@ -2,9 +2,11 @@ package com.stefancooper.SpigotUHC.utils;
 
 public final class Constants {
 
-    public static final String PLAYER_HEAD = "PLAYER_HEAD";
-    public static final String CRAFTABLE_PLAYER_HEAD = "CRAFTABLE_PLAYER_HEAD";
-    public static final String NOTCH_APPLE = "NOTCH_APPLE";
+    public static final String SPIGOT_NAMESPACE = "spigotuhc";
+    public static final String PLAYER_HEAD = "player_head";
+    public static final String CRAFTABLE_PLAYER_HEAD = "craftable_player_head";
+    public static final String NOTCH_APPLE = "notch_apple";
+    public static final String QUICKBOOM_ENCHANTMENT = "quickboom";
     public static final int MAXIMUM_FINAL_SIZE_FOR_Y_SHRINK = 300;
 
     // File locations

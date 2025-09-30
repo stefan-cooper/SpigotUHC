@@ -1,17 +1,15 @@
 package com.stefancooper.SpigotUHC.commands;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import com.stefancooper.SpigotUHC.Config;
-
 
 public class CancelCommand extends AbstractCommand {
 
     public static final String COMMAND_KEY = "cancel";
 
-    public CancelCommand(CommandSender sender, Command cmd, String[] args, Config config) {
+    public CancelCommand(CommandSender sender, String cmd, String[] args, Config config) {
         super(sender, cmd, args, config);
     }
 

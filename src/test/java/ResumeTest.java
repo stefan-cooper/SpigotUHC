@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import utils.TestUtils;
 
 import java.util.stream.Stream;
 
@@ -52,7 +53,7 @@ public class ResumeTest {
         plugin.getUHCConfig().resetToDefaults();
         PlayerMock admin = server.addPlayer();
         admin.setOp(true);
-        server.execute("uhc", admin, "cancel");
+        TestUtils.executeCommand(plugin, admin, "cancel");
     }
 
     @AfterAll
@@ -85,7 +86,7 @@ public class ResumeTest {
 
         Assertions.assertEquals(1, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
 
-        server.execute("uhc", admin, "resume");
+        TestUtils.executeCommand(plugin, admin, "resume");
 
         Assertions.assertEquals(1, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
         Assertions.assertEquals(10.0, player1.getHealth());
@@ -123,7 +124,7 @@ public class ResumeTest {
 
         int initialSize = 100;
 
-        server.execute("uhc", admin, "set",
+        TestUtils.executeCommand(plugin, admin, "set",
                 "world.border.initial.size=" + initialSize,
                 "world.border.final.size=10",
                 "countdown.timer.length=10",
@@ -142,7 +143,7 @@ public class ResumeTest {
             Assertions.assertEquals(GameMode.ADVENTURE, player.getGameMode());
         });
 
-        server.execute("uhc", admin, "resume", Integer.toString(minutesProgressed));
+        TestUtils.executeCommand(plugin, admin, "resume", Integer.toString(minutesProgressed));
 
         schedule.performOneTick();
 
@@ -175,7 +176,7 @@ public class ResumeTest {
         int initialSize = 100;
         int finalSize = 100;
 
-        server.execute("uhc", admin, "set",
+        TestUtils.executeCommand(plugin, admin, "set",
                 "world.border.initial.size=" + initialSize,
                 "world.border.final.size=" + finalSize,
                 "countdown.timer.length=10",
@@ -189,7 +190,7 @@ public class ResumeTest {
             Assertions.assertEquals(GameMode.ADVENTURE, player.getGameMode());
         });
 
-        server.execute("uhc", admin, "resume", Integer.toString(minutesProgressed));
+        TestUtils.executeCommand(plugin, admin, "resume", Integer.toString(minutesProgressed));
 
         schedule.performOneTick();
 

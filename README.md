@@ -274,12 +274,6 @@ The following commands are available in game:
 
 e.g: `/uhc resume 30`
 
-#### Manually enable/disable PVP:
-
-`/uhc pvp <true|false>`
-
-e.g: `/uhc pvp true`
-
 #### Randomise teams:
 
 `/uhc randomise <teamSize>`

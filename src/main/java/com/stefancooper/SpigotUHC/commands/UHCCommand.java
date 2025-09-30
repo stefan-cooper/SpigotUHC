@@ -54,9 +54,6 @@ public class UHCCommand extends Command {
                 case LateStartCommand.COMMAND_KEY:
                     new LateStartCommand(sender, cmd, getCommandArgs(args), config).execute();
                     return true;
-                case PvpCommand.COMMAND_KEY:
-                    new PvpCommand(sender, cmd, getCommandArgs(args), config).execute();
-                    return true;
                 case RandomiseTeamsCommand.COMMAND_KEY:
                     new RandomiseTeamsCommand(sender, cmd, getCommandArgs(args), config).execute();
                     return true;

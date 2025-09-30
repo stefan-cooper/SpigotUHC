@@ -50,7 +50,3 @@ commands:
       End/cancel the UHC:
       
       /uhc cancel
-      
-      Manually enable/disable pvp:
-      
-      /uhc pvp true

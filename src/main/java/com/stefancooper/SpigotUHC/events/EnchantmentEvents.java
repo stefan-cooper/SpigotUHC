@@ -277,8 +277,8 @@ public class EnchantmentEvents implements Listener {
         final int quickboomLevel = quickboomMetadata.isEmpty() ? 0 : quickboomMetadata.getFirst().asInt();
         final int blastwaveLevel = blastwaveMetadata.isEmpty() ? 0 : blastwaveMetadata.getFirst().asInt();
         final float yield = switch (blastwaveLevel) {
-            case 4 -> 50f;
-            case 3 -> 20f;
+            case 4 -> 20f;
+            case 3 -> 16f;
             case 2 -> 12f;
             case 1 -> 8f;
             default -> 4f;

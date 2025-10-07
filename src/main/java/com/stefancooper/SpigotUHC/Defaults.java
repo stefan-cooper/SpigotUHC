@@ -112,7 +112,7 @@ public class Defaults {
             world.setGameRule(GameRule.COMMAND_MODIFICATION_BLOCK_LIMIT, MAXIMUM_FINAL_SIZE_FOR_Y_SHRINK * MAXIMUM_FINAL_SIZE_FOR_Y_SHRINK); // square the maximum final size to be used in y shrink
             world.setGameRule(GameRule.REDUCED_DEBUG_INFO, true); // ban F3 + B (and maybe other potentially cheat-y debug info)
             // set pvp to false, will be enabled when /uhc start is ran
-            world.setPVP(false);
+            world.setGameRule(GameRule.PVP, false);
         });
         config.getPlugin().setCountingDown(false);
         Bukkit.getOnlinePlayers().forEach(player -> player.setGameMode(GameMode.ADVENTURE));

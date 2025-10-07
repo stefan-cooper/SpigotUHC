@@ -8,6 +8,7 @@ import org.bukkit.World;
 import org.junit.jupiter.api.*;
 
 import static com.stefancooper.SpigotUHC.Defaults.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PluginTest {
 
@@ -39,10 +40,10 @@ public class PluginTest {
     void testGameRules() {
         PlayerMock player = server.addPlayer();
         Assertions.assertNotNull(world);
-        Assertions.assertFalse(world.getGameRuleValue(GameRule.DO_INSOMNIA));
-        Assertions.assertFalse(world.getGameRuleValue(GameRule.NATURAL_REGENERATION));
-        Assertions.assertFalse(world.getGameRuleValue(GameRule.LOCATOR_BAR));
-        Assertions.assertFalse(world.getPVP());
+        Assertions.assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.DO_INSOMNIA));
+        Assertions.assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.NATURAL_REGENERATION));
+        Assertions.assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.LOCATOR_BAR));
+        Assertions.assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.PVP));
         Assertions.assertEquals(GameMode.ADVENTURE, player.getGameMode());
     }
 

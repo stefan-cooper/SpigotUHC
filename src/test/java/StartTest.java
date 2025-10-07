@@ -80,12 +80,12 @@ public class StartTest {
         world.dropItem(new Location(world, 0, 100, 0), ItemStack.of(Material.DIAMOND_SWORD));
 
         assertEquals(1, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
-        assertFalse(world.getPVP());
+        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.PVP));
         assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.FALL_DAMAGE));
 
         TestUtils.executeCommand(plugin, admin, "start");
 
-        assertFalse(world.getPVP());
+        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.PVP));
         assertEquals(0, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
         assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRule.FALL_DAMAGE));
 
@@ -142,7 +142,7 @@ public class StartTest {
         assertWorldValues((world) -> {
             assertEquals(0, world.getWorldBorder().getDamageAmount());
             assertEquals(5, world.getWorldBorder().getDamageBuffer());
-            assertFalse(world.getPVP());
+            assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.PVP));
         });
         assertEquals(Difficulty.PEACEFUL, world.getDifficulty());
         assertEquals(50, world.getWorldBorder().getSize());
@@ -164,7 +164,7 @@ public class StartTest {
             assertEquals(0, world.getWorldBorder().getDamageAmount());
             assertEquals(5, world.getWorldBorder().getDamageBuffer());
             assertEquals(50, world.getWorldBorder().getSize());
-            assertFalse(world.getPVP());
+            assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.PVP));
         });
 
         schedule.performTicks(Utils.secondsToTicks(20));
@@ -172,7 +172,7 @@ public class StartTest {
 
         // Grace period finished
         assertEquals(Difficulty.HARD, world.getDifficulty());
-        assertTrue(world.getPVP());
+        assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRule.PVP));
         server.getOnlinePlayers().forEach(player -> {
             assertNull(player.getPotionEffect(PotionEffectType.MINING_FATIGUE));
         });
@@ -180,7 +180,7 @@ public class StartTest {
             assertEquals(0, world.getWorldBorder().getDamageAmount());
             assertEquals(5, world.getWorldBorder().getDamageBuffer());
             assertEquals(50, world.getWorldBorder().getSize());
-            assertTrue(world.getPVP());
+            assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRule.PVP));
         });
 
         schedule.performTicks(Utils.secondsToTicks(10)); // advance ticks for potion effect
@@ -195,7 +195,7 @@ public class StartTest {
             assertEquals(0.2, world.getWorldBorder().getDamageAmount());
             assertEquals(5, world.getWorldBorder().getDamageBuffer());
             assertEquals(50, Math.round(world.getWorldBorder().getSize()));
-            assertTrue(world.getPVP());
+            assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRule.PVP));
         });
 
         schedule.performTicks(Utils.secondsToTicks(30)); // advance ticks for potion effect
@@ -209,7 +209,7 @@ public class StartTest {
             assertEquals(0.2, world.getWorldBorder().getDamageAmount());
             assertEquals(5, world.getWorldBorder().getDamageBuffer());
             assertEquals( 10, Math.round(world.getWorldBorder().getSize()));
-            assertTrue(world.getPVP());
+            assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRule.PVP));
         });
         admin.assertNoMoreSaid();
     }

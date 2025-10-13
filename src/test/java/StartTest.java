@@ -149,6 +149,7 @@ public class StartTest {
         server.getOnlinePlayers().forEach(player -> {
             assertEquals(GameMode.SURVIVAL, player.getGameMode());
             assertEquals(3, player.getPotionEffect(PotionEffectType.MINING_FATIGUE).getAmplifier());
+            assertEquals(3, player.getPotionEffect(PotionEffectType.REGENERATION).getAmplifier());
         });
 
         admin.assertSaid("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!");
@@ -159,6 +160,7 @@ public class StartTest {
         assertEquals(Difficulty.HARD, world.getDifficulty());
         server.getOnlinePlayers().forEach(player -> {
             assertNull(player.getPotionEffect(PotionEffectType.MINING_FATIGUE));
+            assertEquals(3, player.getPotionEffect(PotionEffectType.REGENERATION).getAmplifier());
         });
         assertWorldValues((world) -> {
             assertEquals(0, world.getWorldBorder().getDamageAmount());
@@ -175,6 +177,7 @@ public class StartTest {
         assertTrue(world.getPVP());
         server.getOnlinePlayers().forEach(player -> {
             assertNull(player.getPotionEffect(PotionEffectType.MINING_FATIGUE));
+            assertEquals(3, player.getPotionEffect(PotionEffectType.REGENERATION).getAmplifier());
         });
         assertWorldValues((world) -> {
             assertEquals(0, world.getWorldBorder().getDamageAmount());
@@ -190,6 +193,7 @@ public class StartTest {
         assertEquals(Difficulty.HARD, world.getDifficulty());
         server.getOnlinePlayers().forEach(player -> {
             assertNull(player.getPotionEffect(PotionEffectType.MINING_FATIGUE));
+            assertNull(player.getPotionEffect(PotionEffectType.REGENERATION));
         });
         assertWorldValues((world) -> {
             assertEquals(0.2, world.getWorldBorder().getDamageAmount());
@@ -204,6 +208,7 @@ public class StartTest {
         assertEquals(Difficulty.HARD, world.getDifficulty());
         server.getOnlinePlayers().forEach(player -> {
             assertNull(player.getPotionEffect(PotionEffectType.MINING_FATIGUE));
+            assertNull(player.getPotionEffect(PotionEffectType.REGENERATION));
         });
         assertWorldValues((world) -> {
             assertEquals(0.2, world.getWorldBorder().getDamageAmount());

@@ -1,3 +1,4 @@
+import org.bukkit.GameRule;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
@@ -27,6 +28,7 @@ import java.util.stream.Stream;
 import static com.stefancooper.SpigotUHC.Defaults.END_WORLD_NAME;
 import static com.stefancooper.SpigotUHC.Defaults.NETHER_WORLD_NAME;
 import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static utils.TestUtils.WorldAssertion;
 
 
@@ -84,16 +86,16 @@ public class ResumeTest {
         player3.setFoodLevel(3);
         world.dropItem(new Location(world, 0, 100, 0), ItemStack.of(Material.DIAMOND_SWORD));
 
-        Assertions.assertEquals(1, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
+        assertEquals(1, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
 
         TestUtils.executeCommand(plugin, admin, "resume");
 
-        Assertions.assertEquals(1, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
-        Assertions.assertEquals(10.0, player1.getHealth());
-        Assertions.assertEquals(6, Math.round(player1.getExp() * 10));
-        Assertions.assertEquals(12, player1.getLevel());
+        assertEquals(1, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
+        assertEquals(10.0, player1.getHealth());
+        assertEquals(6, Math.round(player1.getExp() * 10));
+        assertEquals(12, player1.getLevel());
         Assertions.assertTrue(player2.getInventory().contains(ItemStack.of(Material.DIAMOND_SWORD)));
-        Assertions.assertEquals(3, player3.getFoodLevel());
+        assertEquals(3, player3.getFoodLevel());
     }
 
     private static Stream<Arguments> resumeConfigGracePeriod() {
@@ -135,32 +137,32 @@ public class ResumeTest {
         );
 
         assertWorldValues((world) -> {
-            Assertions.assertEquals(0, world.getWorldBorder().getDamageAmount());
-            Assertions.assertEquals(5, world.getWorldBorder().getDamageBuffer());
+            assertEquals(0, world.getWorldBorder().getDamageAmount());
+            assertEquals(5, world.getWorldBorder().getDamageBuffer());
         });
 
         server.getOnlinePlayers().forEach(player -> {
-            Assertions.assertEquals(GameMode.ADVENTURE, player.getGameMode());
+            assertEquals(GameMode.ADVENTURE, player.getGameMode());
         });
 
         TestUtils.executeCommand(plugin, admin, "resume", Integer.toString(minutesProgressed));
 
         schedule.performOneTick();
 
-        Assertions.assertEquals(Difficulty.HARD, world.getDifficulty());
+        assertEquals(Difficulty.HARD, world.getDifficulty());
         server.getOnlinePlayers().forEach(player -> {
-            Assertions.assertEquals(GameMode.SURVIVAL, player.getGameMode());
+            assertEquals(GameMode.SURVIVAL, player.getGameMode());
         });
 
         int secondsProgressed = minutesProgressed * 60;
 
         if (secondsProgressed > gracePeriodTimer + countdown) {
-            assertWorldValues((world) -> Assertions.assertTrue(world.getPVP()));
+            assertWorldValues((world) -> assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRule.PVP)));
         } else {
-            assertWorldValues((world) -> Assertions.assertFalse(world.getPVP()));
+            assertWorldValues((world) -> assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.PVP)));
             int difference = gracePeriodTimer + countdown - (minutesProgressed * 60);
             schedule.performTicks(Utils.secondsToTicks(difference));
-            assertWorldValues((world) -> Assertions.assertTrue(world.getPVP()));
+            assertWorldValues((world) -> assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRule.PVP)));
         }
     }
 
@@ -187,7 +189,7 @@ public class ResumeTest {
         );
 
         server.getOnlinePlayers().forEach(player -> {
-            Assertions.assertEquals(GameMode.ADVENTURE, player.getGameMode());
+            assertEquals(GameMode.ADVENTURE, player.getGameMode());
         });
 
         TestUtils.executeCommand(plugin, admin, "resume", Integer.toString(minutesProgressed));
@@ -195,35 +197,35 @@ public class ResumeTest {
         schedule.performOneTick();
 
         server.getOnlinePlayers().forEach(player -> {
-            Assertions.assertEquals(GameMode.SURVIVAL, player.getGameMode());
+            assertEquals(GameMode.SURVIVAL, player.getGameMode());
         });
 
         int secondsProgressed = minutesProgressed * 60;
         assertWorldValues((world) -> {
-            Assertions.assertEquals(Difficulty.HARD, world.getDifficulty());
-            Assertions.assertEquals(initialSize, world.getWorldBorder().getSize());
+            assertEquals(Difficulty.HARD, world.getDifficulty());
+            assertEquals(initialSize, world.getWorldBorder().getSize());
         });
 
         if (secondsProgressed > countdown + worldBorderGracePeriodTimer + worldBorderShrinkingPeriod) {
             schedule.performTicks(Utils.secondsToTicks(secondsProgressed));
             assertWorldValues((world) -> {
-                Assertions.assertEquals(0.2, world.getWorldBorder().getDamageAmount());
-                Assertions.assertEquals(5, world.getWorldBorder().getDamageBuffer());
-                Assertions.assertEquals(finalSize, world.getWorldBorder().getSize());
+                assertEquals(0.2, world.getWorldBorder().getDamageAmount());
+                assertEquals(5, world.getWorldBorder().getDamageBuffer());
+                assertEquals(finalSize, world.getWorldBorder().getSize());
             });
         } else if (secondsProgressed > countdown + worldBorderGracePeriodTimer) {
             schedule.performTicks(Utils.secondsToTicks(secondsProgressed));
             assertWorldValues((world) -> {
-                Assertions.assertEquals(0.2, world.getWorldBorder().getDamageAmount());
-                Assertions.assertEquals(5, world.getWorldBorder().getDamageBuffer());
+                assertEquals(0.2, world.getWorldBorder().getDamageAmount());
+                assertEquals(5, world.getWorldBorder().getDamageBuffer());
                 Assertions.assertTrue(world.getWorldBorder().getSize() < initialSize && world.getWorldBorder().getSize() > finalSize);
             });
         } else {
             schedule.performTicks(Utils.secondsToTicks(secondsProgressed));
             assertWorldValues((world) -> {
-                Assertions.assertEquals(0, world.getWorldBorder().getDamageAmount());
-                Assertions.assertEquals(5, world.getWorldBorder().getDamageBuffer());
-                Assertions.assertEquals(initialSize, world.getWorldBorder().getSize());
+                assertEquals(0, world.getWorldBorder().getDamageAmount());
+                assertEquals(5, world.getWorldBorder().getDamageBuffer());
+                assertEquals(initialSize, world.getWorldBorder().getSize());
             });
         }
     }

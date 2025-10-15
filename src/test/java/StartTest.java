@@ -1,3 +1,4 @@
+import org.bukkit.potion.PotionEffect;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
@@ -73,6 +74,7 @@ public class StartTest {
         player1.setHealth(10);
         player1.giveExp(100);
         player1.setLevel(12);
+        player1.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 100, 3));
         PlayerMock player2 = server.addPlayer();
         player2.getInventory().setItem(1, ItemStack.of(Material.DIAMOND_SWORD));
         PlayerMock player3 = server.addPlayer();
@@ -82,6 +84,7 @@ public class StartTest {
         assertEquals(1, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
         assertFalse(world.getPVP());
         assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.FALL_DAMAGE));
+        assertEquals(3, player1.getPotionEffect(PotionEffectType.JUMP_BOOST).getAmplifier());
 
         TestUtils.executeCommand(plugin, admin, "start");
 
@@ -96,6 +99,7 @@ public class StartTest {
             assertEquals(0, player.getLevel());
             assertEquals(0, Arrays.stream(player.getInventory().getContents()).filter(item -> item != null && item.getType() != Material.AIR).toList().size());
             assertEquals(GameMode.SURVIVAL, player.getGameMode());
+            assertNull(player.getPotionEffect(PotionEffectType.JUMP_BOOST));
             assertEquals(3, player.getPotionEffect(PotionEffectType.MINING_FATIGUE).getAmplifier());
         });
     }

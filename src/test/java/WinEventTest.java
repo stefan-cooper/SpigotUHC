@@ -108,7 +108,8 @@ public class WinEventTest {
 
         schedule.performTicks(100);
 
-        assertEquals(new Location(world, newX, newY, newZ), winner.getLocation());
+        // winner should still be in same location after winning
+        assertEquals(new Location(world, 0, 5, 0), winner.getLocation());
 
     }
 
@@ -233,7 +234,9 @@ public class WinEventTest {
 
         schedule.performTicks(100);
 
-        assertEquals(new Location(world, newX, newY, newZ), redWinner2.getLocation());
-        assertEquals(new Location(world, newX, newY, newZ), redWinner3.getLocation());
+
+        // winners should still be in same location after winning
+        assertEquals(new Location(world, 0, 5, 0), redWinner2.getLocation());
+        assertEquals(new Location(world, 0, 5, 0), redWinner3.getLocation());
     }
 }

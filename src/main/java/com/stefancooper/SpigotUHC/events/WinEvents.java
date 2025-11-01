@@ -61,31 +61,10 @@ public class WinEvents implements Listener {
                 for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
                     onlinePlayer.sendTitle(ChatColor.GOLD + "Thank you all for playing!", "Hope it was fun!", 10, 40, 10);
                 }
-                endGame();
             }, 5);
         }
 
         Bukkit.getLogger().log(Level.FINE,"Updated teams with survivors after " + playerName + "'s death.");
-    }
-
-    private void endGame() {
-        config.getPlugin().setStarted(false);
-        config.trigger();
-        config.getManagedResources().cancelTimer();
-
-        Optional<Integer> worldSpawnX = Optional.ofNullable(config.getProperty(WORLD_SPAWN_X));
-        Optional<Integer> worldSpawnY = Optional.ofNullable(config.getProperty(WORLD_SPAWN_Y));
-        Optional<Integer> worldSpawnZ = Optional.ofNullable(config.getProperty(WORLD_SPAWN_Z));
-
-        if (worldSpawnX.isPresent() && worldSpawnZ.isPresent() && worldSpawnY.isPresent()) {
-            int x = worldSpawnX.get();
-            int y = worldSpawnY.get();
-            int z = worldSpawnZ.get();
-
-            for(Player player : Bukkit.getOnlinePlayers()) {
-                player.teleport(new Location(config.getWorlds().getOverworld(), x, y, z));
-            }
-        }
     }
 
     private List<UHCTeam> getTeamsWithSurvivors() {

@@ -1,6 +1,6 @@
 name: SpigotUHC
-version: 7.7.1
+version: 8.0.0
 main: com.stefancooper.SpigotUHC.Plugin
 description: Spigot UHC Plugin
-api-version: 1.21.8
+api-version: 1.21.10
 bootstrapper: com.stefancooper.SpigotUHC.Bootstrap

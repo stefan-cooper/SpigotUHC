@@ -184,7 +184,7 @@ public class StartCommand extends AbstractCommand {
         return () -> {
             Bukkit.broadcastMessage("UHC: PVP grace period is now over.");
             getConfig().getManagedResources().addTimestamp("[Meta] PVP grace period is now over.");
-            Utils.setWorldEffects(List.of(getConfig().getWorlds().getOverworld(), getConfig().getWorlds().getNether(), getConfig().getWorlds().getEnd()), (cbWorld) -> cbWorld.setPVP(true));
+            Utils.setWorldEffects(List.of(getConfig().getWorlds().getOverworld(), getConfig().getWorlds().getNether(), getConfig().getWorlds().getEnd()), (cbWorld) -> cbWorld.setGameRule(GameRule.PVP, true));
             Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle("Grace period over", "\uD83D\uDC40 Watch your back \uD83D\uDC40", 10, 70, 20));
         };
     }

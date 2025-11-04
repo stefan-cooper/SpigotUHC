@@ -8,6 +8,8 @@ import org.bukkit.World;
 import org.junit.jupiter.api.*;
 
 import static com.stefancooper.SpigotUHC.Defaults.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class PluginTest {
 
@@ -38,30 +40,30 @@ public class PluginTest {
     @DisplayName("Test correct game rules were applied")
     void testGameRules() {
         PlayerMock player = server.addPlayer();
-        Assertions.assertNotNull(world);
-        Assertions.assertFalse(world.getGameRuleValue(GameRule.DO_INSOMNIA));
-        Assertions.assertFalse(world.getGameRuleValue(GameRule.NATURAL_REGENERATION));
-        Assertions.assertFalse(world.getGameRuleValue(GameRule.LOCATOR_BAR));
-        Assertions.assertTrue(world.getGameRuleValue(GameRule.REDUCED_DEBUG_INFO));
-        Assertions.assertFalse(world.getPVP());
-        Assertions.assertEquals(GameMode.ADVENTURE, player.getGameMode());
+        assertNotNull(world);
+        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.DO_INSOMNIA));
+        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.NATURAL_REGENERATION));
+        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.LOCATOR_BAR));
+        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.PVP));
+        assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRule.REDUCED_DEBUG_INFO));
+        assertEquals(GameMode.ADVENTURE, player.getGameMode());
     }
 
     @Test
     @DisplayName("Test player scoreboard objective is added")
     void testPlayerScoreboard() {
         PlayerMock player = server.addPlayer();
-        Assertions.assertNotNull(player.getScoreboard().getObjective(HEALTH_OBJECTIVE));
+        assertNotNull(player.getScoreboard().getObjective(HEALTH_OBJECTIVE));
     }
 
     @Test
     @DisplayName("World border configs are set to the default")
     void testWorldBorderDefaults() {
-        Assertions.assertNotNull(world.getWorldBorder());
-        Assertions.assertEquals(0, world.getWorldBorder().getDamageAmount());
-        Assertions.assertEquals(5, world.getWorldBorder().getDamageBuffer());
-        Assertions.assertEquals(WORLD_BORDER_INITIAL_SIZE, world.getWorldBorder().getSize());
-        Assertions.assertEquals(WORLD_BORDER_CENTER_X, world.getWorldBorder().getCenter().getX());
-        Assertions.assertEquals(WORLD_BORDER_CENTER_Z, world.getWorldBorder().getCenter().getZ());
+        assertNotNull(world.getWorldBorder());
+        assertEquals(0, world.getWorldBorder().getDamageAmount());
+        assertEquals(5, world.getWorldBorder().getDamageBuffer());
+        assertEquals(WORLD_BORDER_INITIAL_SIZE, world.getWorldBorder().getSize());
+        assertEquals(WORLD_BORDER_CENTER_X, world.getWorldBorder().getCenter().getX());
+        assertEquals(WORLD_BORDER_CENTER_Z, world.getWorldBorder().getCenter().getZ());
     }
 }

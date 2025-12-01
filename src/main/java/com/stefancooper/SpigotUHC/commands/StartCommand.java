@@ -153,6 +153,11 @@ public class StartCommand extends AbstractCommand {
             getConfig().getManagedResources().addTimestamp("[Meta] UHC Started", false);
         }
 
+        // Performance Tracking
+        if (getConfig().getProperty(ConfigKey.ENABLE_PERFORMANCE_TRACKING, Defaults.ENABLE_PERFORMANCE_TRACKING)) {
+            getConfig().getManagedResources().createPerformanceTrackingFile();
+        }
+
         // UHC Loot
         if (UHCLoot.isConfigured(getConfig())) {
             getConfig().getManagedResources().runTaskLater(() -> new UHCLoot(getConfig()), countdownTimer);

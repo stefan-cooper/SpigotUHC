@@ -3,6 +3,7 @@ package com.stefancooper.SpigotUHC;
 import com.stefancooper.SpigotUHC.commands.UHCCommand;
 import com.stefancooper.SpigotUHC.events.BaseEvents;
 import com.stefancooper.SpigotUHC.events.EnchantmentEvents;
+import com.stefancooper.SpigotUHC.events.PerformanceEvents;
 import com.stefancooper.SpigotUHC.events.ReviveEvents;
 import com.stefancooper.SpigotUHC.events.TimestampEvents;
 import com.stefancooper.SpigotUHC.events.UHCLootEvents;
@@ -37,6 +38,7 @@ public class Plugin extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(new WinEvents(config), this);
         Bukkit.getPluginManager().registerEvents(new UHCLootEvents(config), this);
         Bukkit.getPluginManager().registerEvents(new EnchantmentEvents(config), this);
+        Bukkit.getPluginManager().registerEvents(new PerformanceEvents(config), this);
         started = false;
 
         this.getLogger().log(Level.INFO, "UHC Plugin enabled");

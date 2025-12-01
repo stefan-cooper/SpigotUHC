@@ -45,6 +45,7 @@ public enum ConfigKey {
     CRAFTABLE_PLAYER_HEAD("craftable.player.head"), // add craftable player head
     WHISPER_TEAMMATE_DEAD_LOCATION("whisper.teammate.dead.location"), // whisper the location of dead teammates when they die
     ALL_TREES_SPAWN_APPLES("all.trees.spawn.apples"), // make it so that all trees spawn apples
+    ENABLE_PERFORMANCE_TRACKING("enable.performance.tracking"), // Generate a json file that tracks the performance of each player
 
     // Revive config
     REVIVE_ENABLED("revive.enabled"), // Enable revive

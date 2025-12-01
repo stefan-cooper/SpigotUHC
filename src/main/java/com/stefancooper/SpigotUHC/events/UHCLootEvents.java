@@ -14,6 +14,7 @@ import java.util.Optional;
 
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.*;
 import static com.stefancooper.SpigotUHC.types.UHCLoot.getChestLocation;
+import static com.stefancooper.SpigotUHC.types.UHCLoot.isSameLocation;
 
 public class UHCLootEvents implements Listener {
 
@@ -21,12 +22,6 @@ public class UHCLootEvents implements Listener {
 
     public UHCLootEvents (Config config) {
         this.config = config;
-    }
-
-    private boolean isSameLocation(Location loc1, Location loc2) {
-        return loc1.getBlockX() == loc2.getBlockX()
-                && loc1.getBlockY() == loc2.getBlockY()
-                && loc1.getBlockZ() == loc2.getBlockZ();
     }
 
     // View docs for various events https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/event/package-summary.html

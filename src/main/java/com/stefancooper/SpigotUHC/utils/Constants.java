@@ -12,5 +12,6 @@ public final class Constants {
 
     // File locations
     public final static String TIMESTAMPS_LOCATION = Utils.getResourceLocation("timestamps.txt");
+    public final static String PERFORMANCE_TRACKING_LOCATION = Utils.getResourceLocation("statistics.json");
     public final static String CONFIG_LOCATION = Utils.getResourceLocation("uhc_config.properties");
 }

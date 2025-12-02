@@ -53,7 +53,7 @@
     </build>
 
     <properties>
-        <UHCPlugin.version>8.0.0</UHCPlugin.version>
+        <UHCPlugin.version>8.1.0</UHCPlugin.version>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
     </properties>
@@ -89,6 +89,12 @@
             <artifactId>paper-api</artifactId>
             <version>1.21.10-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <!--This adds json parsing functionality-->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20250517</version>
         </dependency>
         <!-- JUnit for unit testing -->
         <dependency>

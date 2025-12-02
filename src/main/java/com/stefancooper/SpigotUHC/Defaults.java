@@ -47,6 +47,7 @@ public class Defaults {
     public static boolean WHISPER_TEAMMATE_DEAD_LOCATION = false;
     public static boolean RANDOM_FINAL_LOCATION = false;
     public static boolean ENABLE_TIMESTAMPS = true;
+    public static boolean ENABLE_PERFORMANCE_TRACKING = true;
     public static boolean ENABLE_DEATHCHAT = true;
     public static boolean DISABLE_END_GAME_AUTOMATICALLY = false;
     public static boolean DISABLE_WITCHES = false;

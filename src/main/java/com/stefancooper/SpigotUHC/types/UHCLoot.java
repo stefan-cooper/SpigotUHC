@@ -299,6 +299,12 @@ public class UHCLoot {
         return Optional.empty();
     }
 
+    public static boolean isSameLocation(Location loc1, Location loc2) {
+        return loc1.getBlockX() == loc2.getBlockX()
+                && loc1.getBlockY() == loc2.getBlockY()
+                && loc1.getBlockZ() == loc2.getBlockZ();
+    }
+
     public enum Tier {
         HIGH,
         MID,

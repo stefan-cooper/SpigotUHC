@@ -61,8 +61,6 @@ public class BaseEvents implements Listener {
         return null;
     }
 
-    // DamageSource API is experimental, so this may break in a spigot update
-    @SuppressWarnings("UnstableApiUsage")
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
         switch (DeathAction.fromString(config.getProperty(ON_DEATH_ACTION, Defaults.ON_DEATH_ACTION))) {

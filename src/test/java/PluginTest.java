@@ -45,7 +45,6 @@ public class PluginTest {
         assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.NATURAL_REGENERATION));
         assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.LOCATOR_BAR));
         assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.PVP));
-        assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRule.REDUCED_DEBUG_INFO));
         assertEquals(GameMode.ADVENTURE, player.getGameMode());
     }
 

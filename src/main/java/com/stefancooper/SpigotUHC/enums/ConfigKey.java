@@ -46,6 +46,7 @@ public enum ConfigKey {
     WHISPER_TEAMMATE_DEAD_LOCATION("whisper.teammate.dead.location"), // whisper the location of dead teammates when they die
     ALL_TREES_SPAWN_APPLES("all.trees.spawn.apples"), // make it so that all trees spawn apples
     ENABLE_PERFORMANCE_TRACKING("enable.performance.tracking"), // Generate a json file that tracks the performance of each player
+    DISABLE_DEBUG_INFO("disable.debug.info"), // disable all debug info from f3 (including F3 + B for cheat-y hitboxes). Enabling this will mean that players will get a compass with their current location on it
 
     // Revive config
     REVIVE_ENABLED("revive.enabled"), // Enable revive

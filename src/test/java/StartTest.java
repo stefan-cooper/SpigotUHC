@@ -1,3 +1,4 @@
+import org.bukkit.ChatColor;
 import org.bukkit.potion.PotionEffect;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
@@ -84,6 +85,7 @@ public class StartTest {
         assertEquals(1, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
         assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.PVP));
         assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.FALL_DAMAGE));
+        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.REDUCED_DEBUG_INFO));
         assertEquals(3, player1.getPotionEffect(PotionEffectType.JUMP_BOOST).getAmplifier());
 
         TestUtils.executeCommand(plugin, admin, "start");
@@ -91,6 +93,7 @@ public class StartTest {
         assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.PVP));
         assertEquals(0, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
         assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRule.FALL_DAMAGE));
+        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.REDUCED_DEBUG_INFO));
 
         server.getOnlinePlayers().forEach(player -> {
             assertEquals(20.0, player.getHealth());
@@ -102,6 +105,105 @@ public class StartTest {
             assertNull(player.getPotionEffect(PotionEffectType.JUMP_BOOST));
             assertEquals(3, player.getPotionEffect(PotionEffectType.MINING_FATIGUE).getAmplifier());
         });
+    }
+
+    @Test
+    @DisplayName("When start is run with debug (f3) disabled, they get a compass with their location")
+    void playerHasCompassWhenDebugInfoDisabled() {
+        BukkitSchedulerMock schedule = server.getScheduler();
+        PlayerMock admin = server.addPlayer();
+        admin.setOp(true);
+
+        world.setGameRule(GameRule.FALL_DAMAGE, false);
+
+        TestUtils.executeCommand(plugin, admin, "set",
+                "disable.debug.info=true"
+        );
+
+        PlayerMock player1 = server.addPlayer();
+        player1.setHealth(10);
+        player1.giveExp(100);
+        player1.setLevel(12);
+        player1.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, 100, 3));
+        PlayerMock player2 = server.addPlayer();
+        player2.getInventory().setItem(1, ItemStack.of(Material.DIAMOND_SWORD));
+        PlayerMock player3 = server.addPlayer();
+        player3.setFoodLevel(3);
+        world.dropItem(new Location(world, 0, 100, 0), ItemStack.of(Material.DIAMOND_SWORD));
+
+        assertEquals(1, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
+        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.PVP));
+        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.FALL_DAMAGE));
+        assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRule.REDUCED_DEBUG_INFO));
+        assertEquals(3, player1.getPotionEffect(PotionEffectType.JUMP_BOOST).getAmplifier());
+
+        TestUtils.executeCommand(plugin, admin, "start");
+
+        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.PVP));
+        assertEquals(0, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
+        assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRule.FALL_DAMAGE));
+        assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRule.REDUCED_DEBUG_INFO));
+
+        schedule.performOneTick();
+
+        server.getOnlinePlayers().forEach(player -> {
+            assertEquals(20.0, player.getHealth());
+            assertEquals(20.0, player.getFoodLevel());
+            assertEquals(0, player.getExp());
+            assertEquals(0, player.getLevel());
+            assertEquals(1, Arrays.stream(player.getInventory().getContents()).filter(item -> item != null && item.getType() != Material.AIR).toList().size());
+            assertEquals(GameMode.SURVIVAL, player.getGameMode());
+            assertNull(player.getPotionEffect(PotionEffectType.JUMP_BOOST));
+            assertEquals(3, player.getPotionEffect(PotionEffectType.MINING_FATIGUE).getAmplifier());
+            assertTrue(player.getInventory().contains(Material.COMPASS));
+            final ItemStack compass = player.getInventory().getItem(0);
+            // all players are in default position
+            assertEquals(ChatColor.AQUA + "X: 0  Y: 5  Z: 0", compass.getItemMeta().getDisplayName());
+        });
+
+        schedule.performTicks(Utils.secondsToTicks(10));
+
+        server.getOnlinePlayers().forEach(player -> {
+            assertTrue(player.getInventory().contains(Material.COMPASS));
+            final ItemStack compass = player.getInventory().getItem(0);
+            // they havent moved so all players still in default position
+            assertEquals(ChatColor.AQUA + "X: 0  Y: 5  Z: 0", compass.getItemMeta().getDisplayName());
+        });
+
+        // 2 players move
+        player1.simulatePlayerMove(new Location(world, 10, 5, 10));
+        player2.simulatePlayerMove(new Location(world, -5, 5, 20));
+
+        // time hasnt passed yet so compass still shows old position
+        assertTrue(player1.getInventory().contains(Material.COMPASS));
+        final ItemStack compass1 = player1.getInventory().getItem(0);
+        assertEquals(ChatColor.AQUA + "X: 0  Y: 5  Z: 0", compass1.getItemMeta().getDisplayName());
+
+        assertTrue(player2.getInventory().contains(Material.COMPASS));
+        final ItemStack compass2 = player2.getInventory().getItem(0);
+        assertEquals(ChatColor.AQUA + "X: 0  Y: 5  Z: 0", compass2.getItemMeta().getDisplayName());
+
+        assertTrue(player3.getInventory().contains(Material.COMPASS));
+        final ItemStack compass3 = player3.getInventory().getItem(0);
+        assertEquals(ChatColor.AQUA + "X: 0  Y: 5  Z: 0", compass3.getItemMeta().getDisplayName());
+
+        // 1 second passes (which triggers the compass update)
+        schedule.performTicks(Utils.secondsToTicks(1));
+
+        // players positions have updated on the compass
+        assertTrue(player1.getInventory().contains(Material.COMPASS));
+        final ItemStack compass4 = player1.getInventory().getItem(0);
+        assertEquals(ChatColor.AQUA + "X: 10  Y: 5  Z: 10", compass4.getItemMeta().getDisplayName());
+
+        assertTrue(player2.getInventory().contains(Material.COMPASS));
+        final ItemStack compass5 = player2.getInventory().getItem(0);
+        assertEquals(ChatColor.AQUA + "X: -5  Y: 5  Z: 20", compass5.getItemMeta().getDisplayName());
+
+        assertTrue(player3.getInventory().contains(Material.COMPASS));
+        final ItemStack compass6 = player3.getInventory().getItem(0);
+        assertEquals(ChatColor.AQUA + "X: 0  Y: 5  Z: 0", compass6.getItemMeta().getDisplayName());
+
+
     }
 
     private void assertWorldValues(WorldAssertion assertion) {

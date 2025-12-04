@@ -23,10 +23,16 @@ The following configurations are available for managing your UHC:
 world.name=world
 # Name of the minecraft nether world
 nether.world.name=world_nether
+# enable timestamps of notable events (defaults to true)
+enable.timestamps=false|true
+# enable timestamps of notable events (defaults to true)
+enable.performance.tracker=false|true
 # Name of the minecraft end world
 end.world.name=world_end
 # Difficulty of the game when UHC is live
 difficulty=EASY
+# Disable debug info from being shown to clients (coordinates, chunk info, hitboxes, etc). Enabling this will give a compass with coordinates to players during the UHC
+disable.debug.info=false
 # Countdown to start the game after UHC start command issued
 countdown.timer.length=5
 # Grace period time (in seconds) before PVP is enabled
@@ -205,8 +211,6 @@ These enchantments are scaled with bookcases as such:
 player.head.golden.apple=false|true
 # (optional) show the current progress of the world border in the boss bar
 world.border.in.bossbar=false|true
-# (optional) enable timestamps of notable events
-enable.timestamps=false|true
 # (optional) generate a random final location within the initial world border
 random.final.location=false|true
 # (optional) X coordinate for world spawn when a UHC is not active

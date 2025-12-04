@@ -10,6 +10,7 @@ import com.stefancooper.SpigotUHC.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Difficulty;
+import org.bukkit.GameRule;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
@@ -24,6 +25,7 @@ import static com.stefancooper.SpigotUHC.enums.ConfigKey.COUNTDOWN_TIMER_LENGTH;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.CRAFTABLE_NOTCH_APPLE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.CRAFTABLE_PLAYER_HEAD;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DIFFICULTY;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.DISABLE_DEBUG_INFO;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DISABLE_END_GAME_AUTOMATICALLY;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DISABLE_WITCHES;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.ENABLE_DEATH_CHAT;
@@ -134,6 +136,7 @@ public class ConfigParser {
             case CRAFTABLE_PLAYER_HEAD -> new Configurable<>(CRAFTABLE_PLAYER_HEAD, Boolean.parseBoolean(value));
             case WHISPER_TEAMMATE_DEAD_LOCATION -> new Configurable<>(WHISPER_TEAMMATE_DEAD_LOCATION, Boolean.parseBoolean(value));
             case ALL_TREES_SPAWN_APPLES -> new Configurable<>(ALL_TREES_SPAWN_APPLES, Boolean.parseBoolean(value));
+            case DISABLE_DEBUG_INFO -> new Configurable<>(DISABLE_DEBUG_INFO, Boolean.parseBoolean(value));
             // Revive config
             case REVIVE_ENABLED -> new Configurable<>(REVIVE_ENABLED, Boolean.parseBoolean(value));
             case REVIVE_TIME -> new Configurable<>(REVIVE_TIME, Integer.parseInt(value));
@@ -277,6 +280,11 @@ public class ConfigParser {
                         Bukkit.removeRecipe(craftablePlayerHeadKey);
                     }
                 }
+                break;
+            case DISABLE_DEBUG_INFO:
+                Utils.setWorldEffects(List.of(overworld, nether, end), (world) -> {
+                    world.setGameRule(GameRule.REDUCED_DEBUG_INFO, (boolean) configurable.value());
+                });
                 break;
             case WORLD_NAME:
             case WORLD_NAME_NETHER:

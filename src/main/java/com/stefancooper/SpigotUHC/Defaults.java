@@ -38,6 +38,8 @@ public class Defaults {
     public static boolean ALL_TREES_SPAWN_LEAVES = true;
     public static int MIN_SPREAD_DISTANCE = 250;
     public static Difficulty DIFFICULTY = Difficulty.EASY;
+    public static boolean ENABLE_TIMESTAMPS = true;
+    public static boolean ENABLE_PERFORMANCE_TRACKING = true;
     /* -- End of defaults written to uhc_config.properties -- */
 
     /* -- Other internal defaults -- */
@@ -46,12 +48,11 @@ public class Defaults {
     public static boolean PLAYER_HEAD_GOLDEN_APPLE = false;
     public static boolean WHISPER_TEAMMATE_DEAD_LOCATION = false;
     public static boolean RANDOM_FINAL_LOCATION = false;
-    public static boolean ENABLE_TIMESTAMPS = true;
-    public static boolean ENABLE_PERFORMANCE_TRACKING = true;
     public static boolean ENABLE_DEATHCHAT = true;
     public static boolean DISABLE_END_GAME_AUTOMATICALLY = false;
     public static boolean DISABLE_WITCHES = false;
     public static boolean ALL_TREES_SPAWN_APPLES = true;
+    public static boolean DISABLE_DEBUG_INFO = false;
 
     // Craftables
     public static boolean CRAFTABLE_NOTCH_APPLE = false;
@@ -101,7 +102,10 @@ public class Defaults {
         defaults.setProperty(ConfigKey.COUNTDOWN_TIMER_LENGTH.configName, Integer.toString(COUNTDOWN_TIMER_LENGTH));
         defaults.setProperty(SPREAD_MIN_DISTANCE.configName, Integer.toString(MIN_SPREAD_DISTANCE));
         defaults.setProperty(ConfigKey.DIFFICULTY.configName, DIFFICULTY.name());
-        defaults.setProperty(ConfigKey.ALL_TREES_SPAWN_APPLES.configName, Boolean.toString(true));
+        defaults.setProperty(ConfigKey.ALL_TREES_SPAWN_APPLES.configName, Boolean.toString(ALL_TREES_SPAWN_APPLES));
+        defaults.setProperty(ConfigKey.DISABLE_DEBUG_INFO.configName, Boolean.toString(DISABLE_DEBUG_INFO));
+        defaults.setProperty(ConfigKey.ENABLE_TIMESTAMPS.configName, Boolean.toString(ENABLE_TIMESTAMPS));
+        defaults.setProperty(ConfigKey.ENABLE_PERFORMANCE_TRACKING.configName, Boolean.toString(ENABLE_PERFORMANCE_TRACKING));
         return defaults;
     }
 
@@ -111,7 +115,6 @@ public class Defaults {
             world.setGameRule(GameRule.DO_INSOMNIA, false);
             world.setGameRule(GameRule.LOCATOR_BAR, false);
             world.setGameRule(GameRule.COMMAND_MODIFICATION_BLOCK_LIMIT, MAXIMUM_FINAL_SIZE_FOR_Y_SHRINK * MAXIMUM_FINAL_SIZE_FOR_Y_SHRINK); // square the maximum final size to be used in y shrink
-            world.setGameRule(GameRule.REDUCED_DEBUG_INFO, true); // ban F3 + B (and maybe other potentially cheat-y debug info)
             // set pvp to false, will be enabled when /uhc start is ran
             world.setGameRule(GameRule.PVP, false);
         });

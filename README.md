@@ -31,7 +31,7 @@ enable.performance.tracker=false|true
 end.world.name=world_end
 # Difficulty of the game when UHC is live
 difficulty=EASY
-# Disable debug info from being shown to clients (coordinates, chunk info, hitboxes, etc). Enabling this will give a compass with coordinates to players during the UHC
+# Disable debug info from being shown to clients (coordinates, chunk info, hitboxes, etc). Enabling this will show coordinates to players during the UHC in the action bar
 disable.debug.info=false
 # Countdown to start the game after UHC start command issued
 countdown.timer.length=5
@@ -203,6 +203,26 @@ These enchantments are scaled with bookcases as such:
 | 0 Bookcases  | Knockback I             | Thorns I             |
 | 1 Bookcase   | Knockback II            | Thorns II            |
 | 2+ Bookcases | Knockback II            | Thorns III           |
+
+#### TNT (false by default)
+
+```properties
+additional.enchants.tnt=false|true
+```
+
+Adds the following enchantments:
+
+`Quickboom I` -> `Quickboom IV` - Decrease the fuse time of your TNT.
+
+`Blastwave I` -> `Blastwave III` - Increase the blast and damage of your TNT.
+
+These enchantments are scaled with bookcases as such:
+
+| Bookcases    | Max Quickboom Available | Max Blastwave Available |
+|--------------|-------------------------|-------------------------|
+| 0 Bookcases  | Quickboom I             | Blastwave II            |
+| 1 Bookcase   | Quickboom III           | Blastwave III           |
+| 2+ Bookcases | Quickboom IV            | Blastwave IV            |
 
 #### Misc configuration
 

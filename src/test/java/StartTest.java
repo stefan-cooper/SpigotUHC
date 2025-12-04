@@ -1,3 +1,4 @@
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.ChatColor;
 import org.bukkit.potion.PotionEffect;
 import org.mockbukkit.mockbukkit.MockBukkit;
@@ -108,8 +109,8 @@ public class StartTest {
     }
 
     @Test
-    @DisplayName("When start is run with debug (f3) disabled, they get a compass with their location")
-    void playerHasCompassWhenDebugInfoDisabled() {
+    @DisplayName("When start is run with debug (f3) disabled, their action bar shows their coordinates")
+    void playerHasCoordinatesInActionBarWhenDebugInfoDisabled() {
         BukkitSchedulerMock schedule = server.getScheduler();
         PlayerMock admin = server.addPlayer();
         admin.setOp(true);
@@ -151,59 +152,34 @@ public class StartTest {
             assertEquals(20.0, player.getFoodLevel());
             assertEquals(0, player.getExp());
             assertEquals(0, player.getLevel());
-            assertEquals(1, Arrays.stream(player.getInventory().getContents()).filter(item -> item != null && item.getType() != Material.AIR).toList().size());
+            assertEquals(0, Arrays.stream(player.getInventory().getContents()).filter(item -> item != null && item.getType() != Material.AIR).toList().size());
             assertEquals(GameMode.SURVIVAL, player.getGameMode());
             assertNull(player.getPotionEffect(PotionEffectType.JUMP_BOOST));
             assertEquals(3, player.getPotionEffect(PotionEffectType.MINING_FATIGUE).getAmplifier());
-            assertTrue(player.getInventory().contains(Material.COMPASS));
-            final ItemStack compass = player.getInventory().getItem(0);
-            // all players are in default position
-            assertEquals(ChatColor.AQUA + "X: 0  Y: 5  Z: 0", compass.getItemMeta().getDisplayName());
+            assertEquals(ChatColor.AQUA + "X: 0 Y: 5 Z: 0", PlainTextComponentSerializer.plainText().serialize(player.nextActionBar()));
         });
 
-        schedule.performTicks(Utils.secondsToTicks(10));
+        schedule.performOneTick();
 
+        // havent moved yet so still all the same
         server.getOnlinePlayers().forEach(player -> {
-            assertTrue(player.getInventory().contains(Material.COMPASS));
-            final ItemStack compass = player.getInventory().getItem(0);
             // they havent moved so all players still in default position
-            assertEquals(ChatColor.AQUA + "X: 0  Y: 5  Z: 0", compass.getItemMeta().getDisplayName());
+            assertEquals(ChatColor.AQUA + "X: 0 Y: 5 Z: 0", PlainTextComponentSerializer.plainText().serialize(player.nextActionBar()));
         });
 
         // 2 players move
-        player1.simulatePlayerMove(new Location(world, 10, 5, 10));
-        player2.simulatePlayerMove(new Location(world, -5, 5, 20));
+        player1.teleport(new Location(world, 10, 5, 10));
+        player2.teleport(new Location(world, -5, 5, 20));
 
-        // time hasnt passed yet so compass still shows old position
-        assertTrue(player1.getInventory().contains(Material.COMPASS));
-        final ItemStack compass1 = player1.getInventory().getItem(0);
-        assertEquals(ChatColor.AQUA + "X: 0  Y: 5  Z: 0", compass1.getItemMeta().getDisplayName());
+        schedule.performOneTick();
 
-        assertTrue(player2.getInventory().contains(Material.COMPASS));
-        final ItemStack compass2 = player2.getInventory().getItem(0);
-        assertEquals(ChatColor.AQUA + "X: 0  Y: 5  Z: 0", compass2.getItemMeta().getDisplayName());
+        // players positions have updated
+        assertEquals(ChatColor.AQUA + "X: 10 Y: 5 Z: 10", PlainTextComponentSerializer.plainText().serialize(player1.nextActionBar()));
+        assertEquals(ChatColor.AQUA + "X: -5 Y: 5 Z: 20", PlainTextComponentSerializer.plainText().serialize(player2.nextActionBar()));
+        assertEquals(ChatColor.AQUA + "X: 0 Y: 5 Z: 0", PlainTextComponentSerializer.plainText().serialize(player3.nextActionBar()));
 
-        assertTrue(player3.getInventory().contains(Material.COMPASS));
-        final ItemStack compass3 = player3.getInventory().getItem(0);
-        assertEquals(ChatColor.AQUA + "X: 0  Y: 5  Z: 0", compass3.getItemMeta().getDisplayName());
-
-        // 1 second passes (which triggers the compass update)
-        schedule.performTicks(Utils.secondsToTicks(1));
-
-        // players positions have updated on the compass
-        assertTrue(player1.getInventory().contains(Material.COMPASS));
-        final ItemStack compass4 = player1.getInventory().getItem(0);
-        assertEquals(ChatColor.AQUA + "X: 10  Y: 5  Z: 10", compass4.getItemMeta().getDisplayName());
-
-        assertTrue(player2.getInventory().contains(Material.COMPASS));
-        final ItemStack compass5 = player2.getInventory().getItem(0);
-        assertEquals(ChatColor.AQUA + "X: -5  Y: 5  Z: 20", compass5.getItemMeta().getDisplayName());
-
-        assertTrue(player3.getInventory().contains(Material.COMPASS));
-        final ItemStack compass6 = player3.getInventory().getItem(0);
-        assertEquals(ChatColor.AQUA + "X: 0  Y: 5  Z: 0", compass6.getItemMeta().getDisplayName());
-
-
+        schedule.performTicks(Utils.secondsToTicks(10));
+        TestUtils.executeCommand(plugin, admin, "cancel");
     }
 
     private void assertWorldValues(WorldAssertion assertion) {
@@ -223,6 +199,7 @@ public class StartTest {
         TestUtils.executeCommand(plugin, admin, "set",
                 "world.border.initial.size=50",
                 "world.border.final.size=10",
+                "disable.debug.info=false",
                 "countdown.timer.length=10",
                 "grace.period.timer=20",
                 "world.border.grace.period=30",

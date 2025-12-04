@@ -1,31 +1,25 @@
 package com.stefancooper.SpigotUHC.commands;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
 import com.stefancooper.SpigotUHC.Defaults;
 import com.stefancooper.SpigotUHC.enums.ConfigKey;
 import com.stefancooper.SpigotUHC.types.BossBarBorder;
 import com.stefancooper.SpigotUHC.types.RandomFinalLocation;
 import com.stefancooper.SpigotUHC.types.UHCLoot;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Difficulty;
 import org.bukkit.GameMode;
 import org.bukkit.GameRule;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.utils.Utils;
@@ -115,14 +109,8 @@ public class StartCommand extends AbstractCommand {
             player.clearActivePotionEffects();
             player.addPotionEffect(PotionEffectType.MINING_FATIGUE.createEffect((int) Utils.secondsToTicks(countdownTimer), 3));
             player.addPotionEffect(PotionEffectType.REGENERATION.createEffect((int) Utils.secondsToTicks(countdownTimer) + (int) Utils.secondsToTicks(30), 3));
-            if (getConfig().getProperty(RANDOM_FINAL_LOCATION, Defaults.RANDOM_FINAL_LOCATION) || getConfig().getProperty(DISABLE_DEBUG_INFO, Defaults.DISABLE_DEBUG_INFO)) {
-                final ItemStack compass = RandomFinalLocation.generateWorldCenterCompass();
+            if (getConfig().getProperty(RANDOM_FINAL_LOCATION, Defaults.RANDOM_FINAL_LOCATION)) {
                 player.getInventory().addItem(RandomFinalLocation.generateWorldCenterCompass());
-                if (getConfig().getProperty(DISABLE_DEBUG_INFO, Defaults.DISABLE_DEBUG_INFO)) {
-                    final ItemMeta meta = compass.getItemMeta();
-                    meta.setDisplayName(ChatColor.AQUA + "X: " + player.getLocation().getBlockX() + "  Y: " + player.getLocation().getBlockY() + "  Z: " + player.getLocation().getBlockZ());
-                    compass.setItemMeta(meta);
-                }
                 player.setCompassTarget(world.getWorldBorder().getCenter());
             }
         });
@@ -178,7 +166,7 @@ public class StartCommand extends AbstractCommand {
         }
 
         if (getConfig().getProperty(DISABLE_DEBUG_INFO, Defaults.DISABLE_DEBUG_INFO)) {
-            getConfig().getManagedResources().runRepeatingTask(updateCompassLocation(), 1);
+            getConfig().getManagedResources().runRepeatingTask(updateActionBarLocation(), 1L);
         }
 
         getConfig().getPlugin().setStarted(true);
@@ -267,17 +255,10 @@ public class StartCommand extends AbstractCommand {
         };
     }
 
-    protected Runnable updateCompassLocation() {
-        return () -> {
-            Bukkit.getOnlinePlayers().forEach(player -> {
-                final List<ItemStack> coordinateCompasses = Arrays.stream(player.getInventory().getContents()).filter(item -> item != null && item.getType() == Material.COMPASS && item.getItemMeta() != null && item.getItemMeta().hasLore()).toList();
-                if (coordinateCompasses.size() == 1) {
-                    final ItemStack compass = coordinateCompasses.getFirst();
-                    final ItemMeta meta = compass.getItemMeta();
-                    meta.setDisplayName(ChatColor.AQUA + "X: " + player.getLocation().getBlockX() + "  Y: " + player.getLocation().getBlockY() + "  Z: " + player.getLocation().getBlockZ());
-                    compass.setItemMeta(meta);
-                }
-            });
-        };
+    protected Runnable updateActionBarLocation() {
+        return () -> Bukkit.getOnlinePlayers().forEach(player -> {
+            player.sendActionBar(Component.text(ChatColor.AQUA + "X: " + player.getLocation().getBlockX() + " Y: " + player.getLocation().getBlockY() + " Z: " + player.getLocation().getBlockZ()));
+
+        });
     }
 }

@@ -1,5 +1,7 @@
 package com.stefancooper.SpigotUHC.commands;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,10 +11,12 @@ import com.stefancooper.SpigotUHC.types.BossBarBorder;
 import com.stefancooper.SpigotUHC.types.RandomFinalLocation;
 import com.stefancooper.SpigotUHC.types.UHCLoot;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Difficulty;
 import org.bukkit.GameMode;
 import org.bukkit.GameRule;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.attribute.Attribute;
@@ -20,6 +24,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.utils.Utils;
@@ -27,6 +33,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.COUNTDOWN_TIMER_LENGTH;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DIFFICULTY;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.DISABLE_DEBUG_INFO;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.GRACE_PERIOD_TIMER;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_FINAL_LOCATION;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.SPREAD_MIN_DISTANCE;
@@ -91,6 +98,7 @@ public class StartCommand extends AbstractCommand {
             world.setDifficulty(Difficulty.PEACEFUL);
             world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).forEach(Entity::remove);
             world.setGameRule(GameRule.FALL_DAMAGE, true);
+            world.setGameRule(GameRule.REDUCED_DEBUG_INFO, getConfig().getProperty(DISABLE_DEBUG_INFO, Defaults.DISABLE_DEBUG_INFO));
         });
 
         // Actions on the player
@@ -107,8 +115,14 @@ public class StartCommand extends AbstractCommand {
             player.clearActivePotionEffects();
             player.addPotionEffect(PotionEffectType.MINING_FATIGUE.createEffect((int) Utils.secondsToTicks(countdownTimer), 3));
             player.addPotionEffect(PotionEffectType.REGENERATION.createEffect((int) Utils.secondsToTicks(countdownTimer) + (int) Utils.secondsToTicks(30), 3));
-            if (getConfig().getProperty(RANDOM_FINAL_LOCATION, Defaults.RANDOM_FINAL_LOCATION)) {
+            if (getConfig().getProperty(RANDOM_FINAL_LOCATION, Defaults.RANDOM_FINAL_LOCATION) || getConfig().getProperty(DISABLE_DEBUG_INFO, Defaults.DISABLE_DEBUG_INFO)) {
+                final ItemStack compass = RandomFinalLocation.generateWorldCenterCompass();
                 player.getInventory().addItem(RandomFinalLocation.generateWorldCenterCompass());
+                if (getConfig().getProperty(DISABLE_DEBUG_INFO, Defaults.DISABLE_DEBUG_INFO)) {
+                    final ItemMeta meta = compass.getItemMeta();
+                    meta.setDisplayName(ChatColor.AQUA + "X: " + player.getLocation().getBlockX() + "  Y: " + player.getLocation().getBlockY() + "  Z: " + player.getLocation().getBlockZ());
+                    compass.setItemMeta(meta);
+                }
                 player.setCompassTarget(world.getWorldBorder().getCenter());
             }
         });
@@ -161,6 +175,10 @@ public class StartCommand extends AbstractCommand {
         // UHC Loot
         if (UHCLoot.isConfigured(getConfig())) {
             getConfig().getManagedResources().runTaskLater(() -> new UHCLoot(getConfig()), countdownTimer);
+        }
+
+        if (getConfig().getProperty(DISABLE_DEBUG_INFO, Defaults.DISABLE_DEBUG_INFO)) {
+            getConfig().getManagedResources().runRepeatingTask(updateCompassLocation(), 1);
         }
 
         getConfig().getPlugin().setStarted(true);
@@ -246,6 +264,20 @@ public class StartCommand extends AbstractCommand {
                     }
                 }, interval);
             }
+        };
+    }
+
+    protected Runnable updateCompassLocation() {
+        return () -> {
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                final List<ItemStack> coordinateCompasses = Arrays.stream(player.getInventory().getContents()).filter(item -> item != null && item.getType() == Material.COMPASS && item.getItemMeta() != null && item.getItemMeta().hasLore()).toList();
+                if (coordinateCompasses.size() == 1) {
+                    final ItemStack compass = coordinateCompasses.getFirst();
+                    final ItemMeta meta = compass.getItemMeta();
+                    meta.setDisplayName(ChatColor.AQUA + "X: " + player.getLocation().getBlockX() + "  Y: " + player.getLocation().getBlockY() + "  Z: " + player.getLocation().getBlockZ());
+                    compass.setItemMeta(meta);
+                }
+            });
         };
     }
 }

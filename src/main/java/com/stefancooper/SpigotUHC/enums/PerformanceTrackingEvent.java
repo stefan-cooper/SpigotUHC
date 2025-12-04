@@ -7,6 +7,7 @@ public enum PerformanceTrackingEvent {
     PVE_DAMAGE("pve_damage"),
     GOLD_ORE_MINED("gold_ore_mined"),
     LOOT_CHEST_CLAIMED("loot_chests_claimed"),
+    REVIVE("revives"),
     RANKING("ranking");
 
     public final String name;

@@ -1,5 +1,6 @@
 package com.stefancooper.SpigotUHC;
 
+import com.stefancooper.SpigotUHC.enums.ConfigKey;
 import com.stefancooper.SpigotUHC.enums.PerformanceTrackingEvent;
 import com.stefancooper.SpigotUHC.types.BossBarBorder;
 import com.stefancooper.SpigotUHC.types.InstantRevive;
@@ -77,6 +78,9 @@ public class ManagedResources {
 
     public void instantRevive(Player reviver, String revivee, ArmorStand armorStand) {
         new InstantRevive(config, reviver, revivee, true, armorStand);
+        if (config.getProperty(ConfigKey.ENABLE_PERFORMANCE_TRACKING, Defaults.ENABLE_PERFORMANCE_TRACKING)) {
+            config.getManagedResources().addPerformanceTrackingEvent(PerformanceTrackingEvent.REVIVE, reviver.getName(), 1);
+        }
     }
 
     public void cancelRevive() {
@@ -133,12 +137,15 @@ public class ManagedResources {
     }
 
     public void addTimestamp(String event, boolean append) {
-        try {
-            new File(TIMESTAMPS_LOCATION).createNewFile();
-            final FileWriter writer = new FileWriter(TIMESTAMPS_LOCATION, append);
-            writer.write(String.format("%s : %s\n", new Date(), event));
-            writer.close();
-        } catch (Exception ignored) {}
+        if (config.getProperty(ConfigKey.ENABLE_TIMESTAMPS, Defaults.ENABLE_TIMESTAMPS)) {
+            try {
+                new File(TIMESTAMPS_LOCATION).createNewFile();
+                final FileWriter writer = new FileWriter(TIMESTAMPS_LOCATION, append);
+                writer.write(String.format("%s : %s\n", new Date(), event));
+                writer.close();
+            } catch (Exception ignored) {
+            }
+        }
     }
 
     public void createPerformanceTrackingFile() {
@@ -156,6 +163,7 @@ public class ManagedResources {
             .put(PerformanceTrackingEvent.PVE_DAMAGE.name, 0)
             .put(PerformanceTrackingEvent.DEATH.name, 0)
             .put(PerformanceTrackingEvent.DAMAGE_DEALT.name, 0)
+            .put(PerformanceTrackingEvent.REVIVE.name, 0)
             .put(PerformanceTrackingEvent.GOLD_ORE_MINED.name, 0)
             .put(PerformanceTrackingEvent.KILL.name, 0)
             .put(PerformanceTrackingEvent.LOOT_CHEST_CLAIMED.name, 0)

@@ -103,6 +103,7 @@ public class PerformanceTrackingTest {
         assertPerformanceValue(player1Name, PerformanceTrackingEvent.DEATH, 1);
         // 20 pve damage
         assertPerformanceValue(player1Name, PerformanceTrackingEvent.PVE_DAMAGE, 20);
+        assertPerformanceValue(player1Name, PerformanceTrackingEvent.REVIVE, 0);
         assertPerformanceValue(player1Name, PerformanceTrackingEvent.KILL, 0);
         assertPerformanceValue(player1Name, PerformanceTrackingEvent.DAMAGE_DEALT, 0);
         assertPerformanceValue(player1Name, PerformanceTrackingEvent.GOLD_ORE_MINED, 0);
@@ -115,6 +116,7 @@ public class PerformanceTrackingTest {
         assertPerformanceValue(player2Name, PerformanceTrackingEvent.KILL, 1);
         // damage dealt
         assertPerformanceValue(player2Name, PerformanceTrackingEvent.DAMAGE_DEALT, 20);
+        assertPerformanceValue(player1Name, PerformanceTrackingEvent.REVIVE, 0);
         assertPerformanceValue(player2Name, PerformanceTrackingEvent.DEATH, 0);
         assertPerformanceValue(player2Name, PerformanceTrackingEvent.PVE_DAMAGE, 0);
         assertPerformanceValue(player2Name, PerformanceTrackingEvent.GOLD_ORE_MINED, 0);
@@ -124,6 +126,7 @@ public class PerformanceTrackingTest {
         assertPerformanceValue(player3Name, PerformanceTrackingEvent.DEATH, 1);
         // 0 pve damage
         assertPerformanceValue(player3Name, PerformanceTrackingEvent.PVE_DAMAGE, 0);
+        assertPerformanceValue(player1Name, PerformanceTrackingEvent.REVIVE, 0);
         assertPerformanceValue(player3Name, PerformanceTrackingEvent.KILL, 0);
         assertPerformanceValue(player3Name, PerformanceTrackingEvent.DAMAGE_DEALT, 0);
         assertPerformanceValue(player3Name, PerformanceTrackingEvent.GOLD_ORE_MINED, 0);
@@ -135,6 +138,7 @@ public class PerformanceTrackingTest {
         player2.simulateBlockBreak(world.getBlockAt(new Location(world, 0, 0, 0)));
 
         assertPerformanceValue(player2Name, PerformanceTrackingEvent.DEATH, 0);
+        assertPerformanceValue(player1Name, PerformanceTrackingEvent.REVIVE, 0);
         assertPerformanceValue(player2Name, PerformanceTrackingEvent.PVE_DAMAGE, 0);
         assertPerformanceValue(player2Name, PerformanceTrackingEvent.KILL, 1);
         assertPerformanceValue(player2Name, PerformanceTrackingEvent.DAMAGE_DEALT, 20);

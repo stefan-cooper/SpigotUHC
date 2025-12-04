@@ -1,6 +1,7 @@
 package com.stefancooper.SpigotUHC.events;
 
 import com.stefancooper.SpigotUHC.Config;
+import com.stefancooper.SpigotUHC.Defaults;
 import com.stefancooper.SpigotUHC.utils.Utils;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.NamespacedKey;
@@ -30,7 +31,7 @@ public class TimestampEvents implements Listener {
     }
 
     boolean isTimestampsEnabled () {
-        return Optional.ofNullable(config.<Boolean>getProperty(ENABLE_TIMESTAMPS)).orElse(false);
+        return config.getProperty(ENABLE_TIMESTAMPS, Defaults.ENABLE_TIMESTAMPS);
     }
 
     @EventHandler

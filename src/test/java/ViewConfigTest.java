@@ -40,7 +40,6 @@ public class ViewConfigTest {
         player.setOp(true);
         TestUtils.executeCommand(plugin, player, "view", "config");
         player.assertSaid(String.format("""
-                        all.trees.spawn.apples=%s
                         countdown.timer.length=%s
                         difficulty=%s
                         disable.debug.info=%s
@@ -58,7 +57,7 @@ public class ViewConfigTest {
                         world.border.initial.size=%s
                         world.border.shrinking.period=%s
                         world.name=%s
-                        """, ALL_TREES_SPAWN_LEAVES, COUNTDOWN_TIMER_LENGTH, DIFFICULTY, DISABLE_DEBUG_INFO, ENABLE_PERFORMANCE_TRACKING, ENABLE_TIMESTAMPS, END_WORLD_NAME, GRACE_PERIOD_TIMER, NETHER_WORLD_NAME, ON_DEATH_ACTION, MIN_SPREAD_DISTANCE, WORLD_BORDER_CENTER_X, WORLD_BORDER_CENTER_Z,
+                        """, COUNTDOWN_TIMER_LENGTH, DIFFICULTY, DISABLE_DEBUG_INFO, ENABLE_PERFORMANCE_TRACKING, ENABLE_TIMESTAMPS, END_WORLD_NAME, GRACE_PERIOD_TIMER, NETHER_WORLD_NAME, ON_DEATH_ACTION, MIN_SPREAD_DISTANCE, WORLD_BORDER_CENTER_X, WORLD_BORDER_CENTER_Z,
                 WORLD_BORDER_FINAL_SIZE, WORLD_BORDER_GRACE_PERIOD, WORLD_BORDER_INITIAL_SIZE, WORLD_BORDER_SHRINKING_PERIOD, WORLD_NAME
                         )
         );

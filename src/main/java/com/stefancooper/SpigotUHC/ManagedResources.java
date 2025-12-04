@@ -104,6 +104,10 @@ public class ManagedResources {
         return scheduler.runTaskTimer(config.getPlugin(), runnable, 0, Utils.secondsToTicks(interval));
     }
 
+    public BukkitTask runRepeatingTask(Runnable runnable, long interval) {
+        return scheduler.runTaskTimer(config.getPlugin(), runnable, 0, interval);
+    }
+
     public void cancelRepeatingTask(int id) {
         scheduler.cancelTask(id);
     }

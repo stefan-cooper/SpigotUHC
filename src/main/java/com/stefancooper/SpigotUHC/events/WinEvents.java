@@ -40,7 +40,7 @@ public class WinEvents implements Listener {
 
         final boolean doNotEndGameAutomatically = config.getProperty(DISABLE_END_GAME_AUTOMATICALLY, Defaults.DISABLE_END_GAME_AUTOMATICALLY);
 
-        if (!doNotEndGameAutomatically && teamsWithSurvivors.size() == 1) {
+        if (!doNotEndGameAutomatically && config.getPlugin().getStarted() && teamsWithSurvivors.size() == 1) {
             UHCTeam winningTeam = teamsWithSurvivors.getFirst();
             String winningTeamName = winningTeam.getName();
             List<String> winningTeamMembers = new ArrayList<>(Bukkit.getScoreboardManager().getMainScoreboard().getTeam(winningTeamName).getEntries());
@@ -56,6 +56,9 @@ public class WinEvents implements Listener {
             for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
                 onlinePlayer.sendTitle(ChatColor.GOLD + "Congratulations to Team " + winningTeamName + "!", "GG " + formattedWinningMembers + "!", 10, 100, 10);
             }
+
+            // cancel timers that might have been running
+            config.getManagedResources().cancelTimer();
 
             config.getManagedResources().runTaskLater(() -> {
                 for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {

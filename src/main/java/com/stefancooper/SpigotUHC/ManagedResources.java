@@ -21,6 +21,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Date;
@@ -46,6 +47,7 @@ public class ManagedResources {
     final NamespacedKey notchApple;
     final NamespacedKey quickboomEnchantment;
     final NamespacedKey blastwaveEnchantment;
+    final JSONObject statistics;
     Revive currentRevive = null;
     BukkitTask reviveDebounce = null;
     Block dynamicLootChestLocation = null;
@@ -59,6 +61,27 @@ public class ManagedResources {
         this.notchApple = new NamespacedKey(config.getPlugin(), NOTCH_APPLE);
         this.quickboomEnchantment = new NamespacedKey(SPIGOT_NAMESPACE, QUICKBOOM_ENCHANTMENT);
         this.blastwaveEnchantment = new NamespacedKey(SPIGOT_NAMESPACE, BLASTWAVE_ENCHANTMENT);
+        final boolean fileAlreadyExists;
+        JSONObject json = null;
+        try {
+            fileAlreadyExists = new File(PERFORMANCE_TRACKING_LOCATION).createNewFile();
+            if (!fileAlreadyExists) {
+                final String content = new String(Files.readAllBytes(Paths.get(PERFORMANCE_TRACKING_LOCATION)));
+                json = new JSONObject(content);
+            } else {
+                json = new JSONObject();
+                final FileWriter writer = new FileWriter(PERFORMANCE_TRACKING_LOCATION, false);
+                writer.write("{}");
+                writer.close();
+            }
+        } catch (final IOException e) {
+            if (json == null) {
+                json = new JSONObject();
+            }
+            config.getPlugin().getLogger().log(Level.WARNING, "Failed to create performance tracking file.");
+        }
+        statistics = json;
+
     }
 
     public Optional<Revive> getRevive() {
@@ -152,17 +175,6 @@ public class ManagedResources {
         }
     }
 
-    public void createPerformanceTrackingFile() {
-        try {
-            new File(PERFORMANCE_TRACKING_LOCATION).createNewFile();
-            final FileWriter writer = new FileWriter(PERFORMANCE_TRACKING_LOCATION, false);
-            writer.write("{}");
-            writer.close();
-        } catch (Exception ignored) {
-            config.getPlugin().getLogger().log(Level.FINE, "Error occurred creating performance tracking file");
-        }
-    }
-
     private static final JSONObject DEFAULT_PERFORMANCE_VALUE = new JSONObject()
             .put(PerformanceTrackingEvent.PVE_DAMAGE.name, 0)
             .put(PerformanceTrackingEvent.DEATH.name, 0)
@@ -174,23 +186,32 @@ public class ManagedResources {
             .put(PerformanceTrackingEvent.RANKING.name, 0);
 
     public void addPerformanceTrackingEvent(PerformanceTrackingEvent event, String player, int value) {
-        try {
-            new File(PERFORMANCE_TRACKING_LOCATION).createNewFile();
-
-            final String content = new String(Files.readAllBytes(Paths.get(PERFORMANCE_TRACKING_LOCATION)));
-            final JSONObject json = new JSONObject(content);
-
-            final JSONObject playerStats = json.optJSONObject(player, new JSONObject(DEFAULT_PERFORMANCE_VALUE.toString()));
-            final int currentValue = playerStats.getInt(event.name);
-            playerStats.put(event.name, currentValue + value);
-            json.put(player, playerStats);
-
-            final FileWriter writer = new FileWriter(PERFORMANCE_TRACKING_LOCATION, false);
-            writer.write(json.toString(2));
-            writer.close();
-        } catch (Exception ignored) {
-            config.getPlugin().getLogger().log(Level.FINE, String.format("Error occurred updating performance event for %s - (%s: %s)", player, event.name, value));
+        if (config.getPlugin().getStarted()) {
+            try {
+                final JSONObject playerStats = statistics.optJSONObject(player, new JSONObject(DEFAULT_PERFORMANCE_VALUE.toString()));
+                final int currentValue = playerStats.getInt(event.name);
+                playerStats.put(event.name, currentValue + value);
+                statistics.put(player, playerStats);
+            } catch (Exception ignored) {
+                config.getPlugin().getLogger().log(Level.FINE, String.format("Error occurred updating performance event for %s - (%s: %s)", player, event.name, value));
+            }
+        } else {
+            config.getPlugin().getLogger().log(Level.FINE, "Performance event triggered but the UHC has not started");
         }
+
+    }
+
+    public Runnable updatePerformanceStatistics() {
+        return () -> {
+            final FileWriter writer;
+            try {
+                writer = new FileWriter(PERFORMANCE_TRACKING_LOCATION, false);
+                writer.write(statistics.toString(2));
+                writer.close();
+            } catch (Exception e) {
+                config.getPlugin().getLogger().log(Level.WARNING, "Error occurred updating performance file");
+            }
+        };
     }
 
     public Block getDynamicLootChestLocation() { return dynamicLootChestLocation; }

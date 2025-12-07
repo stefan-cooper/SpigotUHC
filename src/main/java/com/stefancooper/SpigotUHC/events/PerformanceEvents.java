@@ -4,10 +4,10 @@ import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.Defaults;
 import com.stefancooper.SpigotUHC.enums.PerformanceTrackingEvent;
 import com.stefancooper.SpigotUHC.types.UHCLoot;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.damage.DamageType;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,7 +18,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -62,7 +61,7 @@ public class PerformanceEvents implements Listener {
     @EventHandler
     public void onLootChestOpenEvent(PlayerInteractEvent event) {
         if (config.getProperty(ENABLE_PERFORMANCE_TRACKING, Defaults.ENABLE_PERFORMANCE_TRACKING) && event.getClickedBlock() != null && event.getClickedBlock().getType().equals(Material.CHEST)) {
-            if (UHCLoot.isConfigured(config) && getChestLocation(config).isPresent()) {
+            if (event.getPlayer().getGameMode().equals(GameMode.SURVIVAL) && UHCLoot.isConfigured(config) && getChestLocation(config).isPresent()) {
                 final Location chestLocation = event.getClickedBlock().getLocation();
                 if (isSameLocation(getChestLocation(config).get(), chestLocation) && !lootChestLocations.contains(chestLocation)) {
                     lootChestLocations.add(chestLocation);

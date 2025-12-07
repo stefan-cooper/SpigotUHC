@@ -28,6 +28,7 @@ import org.bukkit.scheduler.BukkitTask;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.COUNTDOWN_TIMER_LENGTH;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DIFFICULTY;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DISABLE_DEBUG_INFO;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.ENABLE_PERFORMANCE_TRACKING;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.GRACE_PERIOD_TIMER;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_FINAL_LOCATION;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.SPREAD_MIN_DISTANCE;
@@ -157,7 +158,7 @@ public class StartCommand extends AbstractCommand {
 
         // Performance Tracking
         if (getConfig().getProperty(ConfigKey.ENABLE_PERFORMANCE_TRACKING, Defaults.ENABLE_PERFORMANCE_TRACKING)) {
-            getConfig().getManagedResources().createPerformanceTrackingFile();
+            getConfig().getManagedResources().runRepeatingTask(getConfig().getManagedResources().updatePerformanceStatistics(), 60);
         }
 
         // UHC Loot

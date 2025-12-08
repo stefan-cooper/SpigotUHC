@@ -20,6 +20,7 @@ import org.mockbukkit.mockbukkit.entity.PlayerMock;
 import org.mockbukkit.mockbukkit.scheduler.BukkitSchedulerMock;
 import utils.TestUtils;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -47,8 +48,11 @@ public class PerformanceTrackingTest {
     }
 
     @AfterEach
-    public void tearDown() {
+    public void tearDown() throws IOException {
         MockBukkit.unmock();
+        final FileWriter writer = new FileWriter(PERFORMANCE_TRACKING_LOCATION, false);
+        writer.write("{}");
+        writer.close();
     }
 
     private void assertFileContainsText(String match, boolean shouldFind) throws IOException {
@@ -76,6 +80,8 @@ public class PerformanceTrackingTest {
     @DisplayName("When start is run, the performance tracking file is created")
     void fileIsCreated() throws IOException {
         TestUtils.executeCommand(plugin, admin, "set", "enable.performance.tracking=true");
+
+
         TestUtils.executeCommand(plugin, admin, "start");
         assertFileContainsText("{}", true);
         assertTotalLines(1);
@@ -84,6 +90,7 @@ public class PerformanceTrackingTest {
     @Test
     @DisplayName("When start is run, and a player dies, the performance tracking is updated")
     void performanceTracking() throws IOException {
+        BukkitSchedulerMock schedule = server.getScheduler();
         String player1Name = String.format("%s-%s", "jawad", UUID.randomUUID());
         String player2Name = String.format("%s-%s", "stefan", UUID.randomUUID());
         String player3Name = String.format("%s-%s", "sean", UUID.randomUUID());
@@ -97,7 +104,11 @@ public class PerformanceTrackingTest {
         TestUtils.executeCommand(plugin, admin, "set", "enable.performance.tracking=true");
         TestUtils.executeCommand(plugin, admin, "start");
 
+        schedule.performOneTick();
+
         player1.simulateDamage(20, DamageSource.builder(DamageType.DROWN).build());
+
+        schedule.performTicks(Utils.secondsToTicks(60));
 
         // player1 stats after dying
         assertPerformanceValue(player1Name, PerformanceTrackingEvent.DEATH, 1);
@@ -111,6 +122,8 @@ public class PerformanceTrackingTest {
 
         // player2 kills player3
         player3.simulateDamage(20, player2);
+
+        schedule.performTicks(Utils.secondsToTicks(60));
 
         // player2 stats after killing
         assertPerformanceValue(player2Name, PerformanceTrackingEvent.KILL, 1);
@@ -132,17 +145,28 @@ public class PerformanceTrackingTest {
         assertPerformanceValue(player3Name, PerformanceTrackingEvent.GOLD_ORE_MINED, 0);
         assertPerformanceValue(player3Name, PerformanceTrackingEvent.LOOT_CHEST_CLAIMED, 0);
 
-
         // player 2 mines gold ore
         world.getBlockAt(new Location(world, 0, 0, 0)).setType(Material.GOLD_ORE);
+        world.getBlockAt(new Location(world, 1, 0, 0)).setType(Material.GOLD_ORE);
+        world.getBlockAt(new Location(world, 2, 0, 0)).setType(Material.GOLD_ORE);
+        world.getBlockAt(new Location(world, 3, 0, 0)).setType(Material.GOLD_ORE);
+        world.getBlockAt(new Location(world, 4, 0, 0)).setType(Material.GOLD_ORE);
+        world.getBlockAt(new Location(world, 5, 0, 0)).setType(Material.GOLD_ORE);
         player2.simulateBlockBreak(world.getBlockAt(new Location(world, 0, 0, 0)));
+        player2.simulateBlockBreak(world.getBlockAt(new Location(world, 1, 0, 0)));
+        player2.simulateBlockBreak(world.getBlockAt(new Location(world, 2, 0, 0)));
+        player2.simulateBlockBreak(world.getBlockAt(new Location(world, 3, 0, 0)));
+        player2.simulateBlockBreak(world.getBlockAt(new Location(world, 4, 0, 0)));
+        player2.simulateBlockBreak(world.getBlockAt(new Location(world, 5, 0, 0)));
+
+        schedule.performTicks(Utils.secondsToTicks(60));
 
         assertPerformanceValue(player2Name, PerformanceTrackingEvent.DEATH, 0);
         assertPerformanceValue(player1Name, PerformanceTrackingEvent.REVIVE, 0);
         assertPerformanceValue(player2Name, PerformanceTrackingEvent.PVE_DAMAGE, 0);
         assertPerformanceValue(player2Name, PerformanceTrackingEvent.KILL, 1);
         assertPerformanceValue(player2Name, PerformanceTrackingEvent.DAMAGE_DEALT, 20);
-        assertPerformanceValue(player2Name, PerformanceTrackingEvent.GOLD_ORE_MINED, 1);
+        assertPerformanceValue(player2Name, PerformanceTrackingEvent.GOLD_ORE_MINED, 6);
         assertPerformanceValue(player2Name, PerformanceTrackingEvent.LOOT_CHEST_CLAIMED, 0);
     }
 }

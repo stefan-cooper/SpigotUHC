@@ -148,10 +148,10 @@ public class PerformanceTrackingTest {
         // player 2 mines gold ore
         world.getBlockAt(new Location(world, 0, 0, 0)).setType(Material.GOLD_ORE);
         world.getBlockAt(new Location(world, 1, 0, 0)).setType(Material.GOLD_ORE);
-        world.getBlockAt(new Location(world, 2, 0, 0)).setType(Material.GOLD_ORE);
-        world.getBlockAt(new Location(world, 3, 0, 0)).setType(Material.GOLD_ORE);
+        world.getBlockAt(new Location(world, 2, 0, 0)).setType(Material.DEEPSLATE_GOLD_ORE);
+        world.getBlockAt(new Location(world, 3, 0, 0)).setType(Material.DEEPSLATE_GOLD_ORE);
         world.getBlockAt(new Location(world, 4, 0, 0)).setType(Material.GOLD_ORE);
-        world.getBlockAt(new Location(world, 5, 0, 0)).setType(Material.GOLD_ORE);
+        world.getBlockAt(new Location(world, 5, 0, 0)).setType(Material.DEEPSLATE_GOLD_ORE);
         player2.simulateBlockBreak(world.getBlockAt(new Location(world, 0, 0, 0)));
         player2.simulateBlockBreak(world.getBlockAt(new Location(world, 1, 0, 0)));
         player2.simulateBlockBreak(world.getBlockAt(new Location(world, 2, 0, 0)));

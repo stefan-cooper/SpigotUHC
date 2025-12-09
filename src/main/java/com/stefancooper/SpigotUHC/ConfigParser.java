@@ -26,6 +26,7 @@ import static com.stefancooper.SpigotUHC.enums.ConfigKey.CRAFTABLE_NOTCH_APPLE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.CRAFTABLE_PLAYER_HEAD;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DIFFICULTY;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DISABLE_DEBUG_INFO;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.DISABLE_ENDER_PEARL_DAMAGE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DISABLE_END_GAME_AUTOMATICALLY;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DISABLE_WITCHES;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.ENABLE_DEATH_CHAT;
@@ -137,6 +138,7 @@ public class ConfigParser {
             case WHISPER_TEAMMATE_DEAD_LOCATION -> new Configurable<>(WHISPER_TEAMMATE_DEAD_LOCATION, Boolean.parseBoolean(value));
             case ALL_TREES_SPAWN_APPLES -> new Configurable<>(ALL_TREES_SPAWN_APPLES, Boolean.parseBoolean(value));
             case DISABLE_DEBUG_INFO -> new Configurable<>(DISABLE_DEBUG_INFO, Boolean.parseBoolean(value));
+            case DISABLE_ENDER_PEARL_DAMAGE -> new Configurable<>(DISABLE_ENDER_PEARL_DAMAGE, Boolean.parseBoolean(value));
             // Revive config
             case REVIVE_ENABLED -> new Configurable<>(REVIVE_ENABLED, Boolean.parseBoolean(value));
             case REVIVE_TIME -> new Configurable<>(REVIVE_TIME, Integer.parseInt(value));

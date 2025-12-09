@@ -214,7 +214,7 @@ Adds the following enchantments:
 
 `Quickboom I` -> `Quickboom IV` - Decrease the fuse time of your TNT.
 
-`Blastwave I` -> `Blastwave III` - Increase the blast and damage of your TNT.
+`Blastwave I` -> `Blastwave IV` - Increase the blast and damage of your TNT.
 
 These enchantments are scaled with bookcases as such:
 
@@ -253,7 +253,8 @@ disable.end.game.automatically=false
 enable.death.chat=true
 # (optional) turn off all leaves having chance of dropping apples (by default this is on)
 all.trees.spawn.apples=false
-
+# (optional) turn off damage from ender pearls (by default, this is off)
+disable.ender.pearl.damage=false
 ```
 
 ## Commands
@@ -334,17 +335,15 @@ Contact @stefan-cooper for information about contributing. This is an open sourc
 
 1. Clone the repo
 
-2. Run the following command to build the spigot server dev env
+2. Run the following command to build the server dev env
 
    ```
    REFRESH_BUILD=true ./setup_server.sh
    ```
 
-   Note: This may take a long time (10-15min)
-
 ### Running
 
-1. Run Spigot server
+1. Run server
 
    ```
    ./run_server.sh

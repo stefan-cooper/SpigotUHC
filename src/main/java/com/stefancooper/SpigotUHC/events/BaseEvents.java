@@ -13,6 +13,7 @@ import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
+import org.bukkit.damage.DamageType;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.HappyGhast;
 import org.bukkit.entity.Player;
@@ -21,11 +22,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -222,6 +225,13 @@ public class BaseEvents implements Listener {
             if (isBlockLeaves(event.getBlock()) && Utils.checkOddsOf(2, 200)) {
                 event.getBlock().getWorld().dropItem(event.getBlock().getLocation(), new ItemStack(Material.APPLE));
             }
+        }
+    }
+
+    @EventHandler
+    public void onPearlTeleport(EntityDamageEvent event) {
+        if (config.getProperty(DISABLE_ENDER_PEARL_DAMAGE, Defaults.DISABLE_ENDER_PEARL_DAMAGE) && event.getDamageSource().getDamageType().equals(DamageType.ENDER_PEARL)) {
+            event.setCancelled(true);
         }
     }
 

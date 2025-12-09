@@ -8,8 +8,10 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.damage.DamageType;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -17,6 +19,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.projectiles.ProjectileSource;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -52,7 +55,8 @@ public class PerformanceEvents implements Listener {
 
     @EventHandler
     public void onGoldOreBreak(BlockBreakEvent event) {
-        if (config.getProperty(ENABLE_PERFORMANCE_TRACKING, Defaults.ENABLE_PERFORMANCE_TRACKING) && event.getBlock().getType().equals(Material.GOLD_ORE)) {
+        if (config.getProperty(ENABLE_PERFORMANCE_TRACKING, Defaults.ENABLE_PERFORMANCE_TRACKING) &&
+                (event.getBlock().getType().equals(Material.GOLD_ORE) || event.getBlock().getType().equals(Material.DEEPSLATE_GOLD_ORE))) {
             final Player player = event.getPlayer();
             config.getManagedResources().addPerformanceTrackingEvent(PerformanceTrackingEvent.GOLD_ORE_MINED, player.getName(), 1);
         }
@@ -88,8 +92,14 @@ public class PerformanceEvents implements Listener {
         if (event.getDamageSource().getDamageType() == DamageType.THORNS || !config.getProperty(ENABLE_PERFORMANCE_TRACKING, Defaults.ENABLE_PERFORMANCE_TRACKING)) {
             return;
         }
-        if (event.getEntity() instanceof final Player damagee && event.getDamager() instanceof final Player damager) {
-            config.getManagedResources().addPerformanceTrackingEvent(PerformanceTrackingEvent.DAMAGE_DEALT, damager.getName(), (int) event.getFinalDamage());
+        if (event.getEntity() instanceof Player) {
+            if (event.getDamager() instanceof final Player attacker) {
+                // Melee
+                config.getManagedResources().addPerformanceTrackingEvent(PerformanceTrackingEvent.DAMAGE_DEALT, attacker.getName(), (int) event.getFinalDamage());
+            } else if (event.getDamager() instanceof final Projectile projectile && projectile instanceof Arrow && projectile.getShooter() instanceof final Player attacker) {
+                // Bow or Crossbow
+                config.getManagedResources().addPerformanceTrackingEvent(PerformanceTrackingEvent.DAMAGE_DEALT, attacker.getName(), (int) event.getFinalDamage());
+            }
         }
     }
 

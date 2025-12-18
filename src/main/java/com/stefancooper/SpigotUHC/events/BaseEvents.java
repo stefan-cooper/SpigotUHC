@@ -1,9 +1,11 @@
 package com.stefancooper.SpigotUHC.events;
 
+import com.destroystokyo.paper.event.player.PlayerStartSpectatingEntityEvent;
 import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.Defaults;
 import com.stefancooper.SpigotUHC.enums.DeathAction;
 import com.stefancooper.SpigotUHC.types.BossBarBorder;
+import com.stefancooper.SpigotUHC.types.UHCTeam;
 import com.stefancooper.SpigotUHC.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -243,4 +245,18 @@ public class BaseEvents implements Listener {
             default -> false;
         };
     }
+
+    @EventHandler
+    public void onSpectatorTarget(PlayerStartSpectatingEntityEvent event) {
+        if (event.getNewSpectatorTarget() instanceof final Player newSpectated) {
+            final List<UHCTeam> teamsWithSurvivors = Utils.getTeamsWithSurvivors();
+            // do any of the surviving teams have the spectator on them?
+            final Optional<UHCTeam> spectatorTeam = teamsWithSurvivors.stream().filter(team -> team.getPlayers().contains(event.getPlayer().getName())).findFirst();
+            // if the spectators team is still alive, and they try to spectate someone else, cancel the event
+            if (spectatorTeam.isPresent() && !spectatorTeam.get().getPlayers().contains(newSpectated.getName())) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
 }

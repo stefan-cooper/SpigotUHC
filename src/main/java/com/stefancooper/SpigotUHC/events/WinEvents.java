@@ -2,6 +2,7 @@ package com.stefancooper.SpigotUHC.events;
 
 import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.Defaults;
+import com.stefancooper.SpigotUHC.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -36,7 +37,7 @@ public class WinEvents implements Listener {
 
         Bukkit.getLogger().log(Level.FINE, "Player Death Event triggered for: " + playerName);
 
-        List<UHCTeam> teamsWithSurvivors = getTeamsWithSurvivors();
+        List<UHCTeam> teamsWithSurvivors = Utils.getTeamsWithSurvivors();
 
         final boolean doNotEndGameAutomatically = config.getProperty(DISABLE_END_GAME_AUTOMATICALLY, Defaults.DISABLE_END_GAME_AUTOMATICALLY);
 
@@ -68,31 +69,5 @@ public class WinEvents implements Listener {
         }
 
         Bukkit.getLogger().log(Level.FINE,"Updated teams with survivors after " + playerName + "'s death.");
-    }
-
-    private List<UHCTeam> getTeamsWithSurvivors() {
-        List<UHCTeam> teamsWithSurvivors = new ArrayList<>();
-        Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
-
-        for (Team team : scoreboard.getTeams()) {
-            boolean hasSurvivor = false;
-            List<String> playerNames = new ArrayList<>();
-
-            for (String playerName : team.getEntries()) {
-                Player player = Bukkit.getPlayer(playerName);
-                if (player != null && player.getGameMode() == GameMode.SURVIVAL) {
-                    hasSurvivor = true;
-                }
-                playerNames.add(playerName);
-            }
-
-            if (hasSurvivor) {
-                String playersAsString = String.join(", ", playerNames);
-                UHCTeam uhcTeam = new UHCTeam(team.getName(), playersAsString, team.getColor());
-                teamsWithSurvivors.add(uhcTeam);
-            }
-        }
-
-        return teamsWithSurvivors;
     }
 }

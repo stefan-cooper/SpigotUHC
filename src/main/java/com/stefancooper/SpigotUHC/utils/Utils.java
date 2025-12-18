@@ -2,12 +2,18 @@ package com.stefancooper.SpigotUHC.utils;
 
 import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.Defaults;
+import com.stefancooper.SpigotUHC.types.UHCTeam;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
+import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -102,5 +108,32 @@ public class Utils {
     public static boolean checkOddsOf(final int odds, final int outOf) {
         Random random = new Random();
         return random.nextInt(outOf) < odds;
+    }
+
+    public static List<UHCTeam> getTeamsWithSurvivors() {
+        List<UHCTeam> teamsWithSurvivors = new ArrayList<>();
+        Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
+
+        for (Team team : scoreboard.getTeams()) {
+
+            boolean hasSurvivor = false;
+            List<String> playerNames = new ArrayList<>();
+
+            for (String playerName : team.getEntries()) {
+                Player player = Bukkit.getPlayer(playerName);
+                if (player != null && player.getGameMode() == GameMode.SURVIVAL) {
+                    hasSurvivor = true;
+                }
+                playerNames.add(playerName);
+            }
+
+            if (hasSurvivor) {
+                String playersAsString = String.join(", ", playerNames);
+                UHCTeam uhcTeam = new UHCTeam(team.getName(), playersAsString, team.getColor());
+                teamsWithSurvivors.add(uhcTeam);
+            }
+        }
+
+        return teamsWithSurvivors;
     }
 }

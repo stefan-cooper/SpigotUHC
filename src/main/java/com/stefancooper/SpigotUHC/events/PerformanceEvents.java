@@ -8,10 +8,12 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.damage.DamageType;
+import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.entity.SpectralArrow;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -96,7 +98,7 @@ public class PerformanceEvents implements Listener {
             if (event.getDamager() instanceof final Player attacker) {
                 // Melee
                 config.getManagedResources().addPerformanceTrackingEvent(PerformanceTrackingEvent.DAMAGE_DEALT, attacker.getName(), (int) event.getFinalDamage());
-            } else if (event.getDamager() instanceof final Projectile projectile && projectile instanceof Arrow && projectile.getShooter() instanceof final Player attacker) {
+            } else if (event.getDamager() instanceof final Projectile projectile && projectile instanceof AbstractArrow && projectile.getShooter() instanceof final Player attacker) {
                 // Bow or Crossbow
                 config.getManagedResources().addPerformanceTrackingEvent(PerformanceTrackingEvent.DAMAGE_DEALT, attacker.getName(), (int) event.getFinalDamage());
             }

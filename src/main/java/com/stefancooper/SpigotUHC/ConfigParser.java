@@ -29,6 +29,7 @@ import static com.stefancooper.SpigotUHC.enums.ConfigKey.DISABLE_DEBUG_INFO;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DISABLE_ENDER_PEARL_DAMAGE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DISABLE_END_GAME_AUTOMATICALLY;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DISABLE_WITCHES;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.ENABLE_AUTOSMELT;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.ENABLE_DEATH_CHAT;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.ENABLE_PERFORMANCE_TRACKING;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.ENABLE_TIMESTAMPS;
@@ -139,6 +140,7 @@ public class ConfigParser {
             case ALL_TREES_SPAWN_APPLES -> new Configurable<>(ALL_TREES_SPAWN_APPLES, Boolean.parseBoolean(value));
             case DISABLE_DEBUG_INFO -> new Configurable<>(DISABLE_DEBUG_INFO, Boolean.parseBoolean(value));
             case DISABLE_ENDER_PEARL_DAMAGE -> new Configurable<>(DISABLE_ENDER_PEARL_DAMAGE, Boolean.parseBoolean(value));
+            case ENABLE_AUTOSMELT -> new Configurable<>(ENABLE_AUTOSMELT, Boolean.parseBoolean(value));
             // Revive config
             case REVIVE_ENABLED -> new Configurable<>(REVIVE_ENABLED, Boolean.parseBoolean(value));
             case REVIVE_TIME -> new Configurable<>(REVIVE_TIME, Integer.parseInt(value));

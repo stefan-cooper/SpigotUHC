@@ -13,8 +13,10 @@ import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
+import org.bukkit.block.Container;
 import org.bukkit.damage.DamageType;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.HappyGhast;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,16 +31,21 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import javax.annotation.Nullable;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.*;
+import static com.stefancooper.SpigotUHC.utils.Utils.testMode;
 
 public class BaseEvents implements Listener {
 
@@ -208,12 +215,69 @@ public class BaseEvents implements Listener {
         }
     }
 
+    private static final Map<Material, Material> AUTOSMELT = Map.of(
+            Material.COPPER_ORE, Material.COPPER_INGOT,
+            Material.DEEPSLATE_COPPER_ORE, Material.COPPER_INGOT,
+            Material.IRON_ORE, Material.IRON_INGOT,
+            Material.DEEPSLATE_IRON_ORE, Material.IRON_INGOT,
+            Material.GOLD_ORE, Material.GOLD_INGOT,
+            Material.DEEPSLATE_GOLD_ORE, Material.GOLD_INGOT
+    );
+
+    private float getFurnaceXp(Material result) {
+        ItemStack stack = new ItemStack(result);
+
+        for (Recipe recipe : Bukkit.getRecipesFor(stack)) {
+            if (recipe instanceof FurnaceRecipe furnace) {
+                return furnace.getExperience();
+            }
+        }
+        return 0f;
+    }
+
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         if (config.getProperty(ALL_TREES_SPAWN_APPLES, Defaults.ALL_TREES_SPAWN_APPLES)) {
             // 1/200 chance when breaking leaves to spawn an apple
             if (isBlockLeaves(event.getBlock()) && Utils.checkOddsOf(2, 200)) {
                 event.getBlock().getWorld().dropItem(event.getBlock().getLocation(), new ItemStack(Material.APPLE));
+            }
+        }
+        if (config.getProperty(ENABLE_AUTOSMELT, Defaults.ENABLE_AUTOSMELT)) {
+            final Block block = event.getBlock();
+            final Player player = event.getPlayer();
+
+            // get drops from block
+            final Collection<ItemStack> drops = block.getDrops(
+                    player.getInventory().getItemInMainHand(),
+                    player
+            );
+            // if no drops, ignore - don't break out early in test mode because .drops is always empty in MockBukkit
+            if (drops.isEmpty() && !testMode()) return;
+            // map the drop to the smelt
+            final Material smeltResult = AUTOSMELT.get(block.getType());
+            if (smeltResult == null) return;
+
+            // cancel the original drop
+            event.setDropItems(false);
+
+            int total = drops.stream()
+                    .mapToInt(ItemStack::getAmount)
+                    .sum();
+            if (testMode()) total = 1;
+            else if (total <= 0) return;
+            // drop the smelted items
+            block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(smeltResult, total));
+
+            // give the xp you would have gotten for smelting
+            final float xpPerItem = getFurnaceXp(smeltResult);
+            final int totalXp = Math.round(xpPerItem * total);
+
+            if (totalXp > 0) {
+                block.getWorld().spawn(block.getLocation(),
+                        ExperienceOrb.class,
+                        orb -> orb.setExperience(totalXp)
+                );
             }
         }
     }

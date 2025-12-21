@@ -255,6 +255,8 @@ enable.death.chat=true
 all.trees.spawn.apples=false
 # (optional) turn off damage from ender pearls (by default, this is off)
 disable.ender.pearl.damage=false
+# (optional) enable automselt on iron, gold and copper ore to ingots (by default, this is off)
+enable.autosmelt=false
 ```
 
 ## Commands

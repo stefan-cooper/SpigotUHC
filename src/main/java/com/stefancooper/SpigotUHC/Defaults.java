@@ -51,6 +51,7 @@ public class Defaults {
     public static boolean DISABLE_END_GAME_AUTOMATICALLY = false;
     public static boolean DISABLE_WITCHES = false;
     public static boolean ALL_TREES_SPAWN_APPLES = true;
+    public static boolean ENABLE_AUTOSMELT = false;
     public static boolean DISABLE_DEBUG_INFO = false;
     public static boolean DISABLE_ENDER_PEARL_DAMAGE = false;
 

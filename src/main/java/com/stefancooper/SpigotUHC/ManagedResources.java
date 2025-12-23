@@ -101,9 +101,7 @@ public class ManagedResources {
 
     public void instantRevive(Player reviver, String revivee, ArmorStand armorStand) {
         new InstantRevive(config, reviver, revivee, true, armorStand);
-        if (config.getProperty(ConfigKey.ENABLE_PERFORMANCE_TRACKING, Defaults.ENABLE_PERFORMANCE_TRACKING)) {
-            config.getManagedResources().addPerformanceTrackingEvent(PerformanceTrackingEvent.REVIVE, reviver.getName(), 1);
-        }
+        config.getManagedResources().addPerformanceTrackingEvent(PerformanceTrackingEvent.REVIVE, reviver.getName(), 1);
     }
 
     public void cancelRevive() {
@@ -185,8 +183,8 @@ public class ManagedResources {
             .put(PerformanceTrackingEvent.LOOT_CHEST_CLAIMED.name, 0)
             .put(PerformanceTrackingEvent.RANKING.name, 0);
 
-    public void addPerformanceTrackingEvent(PerformanceTrackingEvent event, String player, int value) {
-        if (config.getPlugin().getStarted()) {
+    public void addPerformanceTrackingEvent(final PerformanceTrackingEvent event, final String player, final int value) {
+        if (config.getProperty(ConfigKey.ENABLE_PERFORMANCE_TRACKING, Defaults.ENABLE_PERFORMANCE_TRACKING) && config.getPlugin().isUHCLive()) {
             try {
                 final JSONObject playerStats = statistics.optJSONObject(player, new JSONObject(DEFAULT_PERFORMANCE_VALUE.toString()));
                 final int currentValue = playerStats.getInt(event.name);

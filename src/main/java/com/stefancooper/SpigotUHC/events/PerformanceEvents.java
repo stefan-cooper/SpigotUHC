@@ -19,7 +19,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.projectiles.ProjectileSource;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -40,23 +39,21 @@ public class PerformanceEvents implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
-        if (config.getProperty(ENABLE_PERFORMANCE_TRACKING, Defaults.ENABLE_PERFORMANCE_TRACKING)) {
-            final Player player = event.getEntity();
-            config.getManagedResources().addPerformanceTrackingEvent(PerformanceTrackingEvent.DEATH, player.getName(), 1);
-            if (event.getEntity().getLastDamageCause() != null &&
-                    event.getEntity().getLastDamageCause().getDamageSource().getDirectEntity() != null &&
-                    event.getEntity().getLastDamageCause().getDamageSource().getDirectEntity().getType() == EntityType.PLAYER
-            ) {
-                final Player killer = (Player) event.getEntity().getLastDamageCause().getDamageSource().getDirectEntity();
-                config.getManagedResources().addPerformanceTrackingEvent(PerformanceTrackingEvent.KILL, killer.getName(), 1);
-            }
+        final Player player = event.getEntity();
+        config.getManagedResources().addPerformanceTrackingEvent(PerformanceTrackingEvent.DEATH, player.getName(), 1);
+        if (event.getEntity().getLastDamageCause() != null &&
+                event.getEntity().getLastDamageCause().getDamageSource().getDirectEntity() != null &&
+                event.getEntity().getLastDamageCause().getDamageSource().getDirectEntity().getType() == EntityType.PLAYER
+        ) {
+            final Player killer = (Player) event.getEntity().getLastDamageCause().getDamageSource().getDirectEntity();
+            config.getManagedResources().addPerformanceTrackingEvent(PerformanceTrackingEvent.KILL, killer.getName(), 1);
         }
+
     }
 
     @EventHandler
     public void onGoldOreBreak(BlockBreakEvent event) {
-        if (config.getProperty(ENABLE_PERFORMANCE_TRACKING, Defaults.ENABLE_PERFORMANCE_TRACKING) &&
-                (event.getBlock().getType().equals(Material.GOLD_ORE) || event.getBlock().getType().equals(Material.DEEPSLATE_GOLD_ORE))) {
+        if (event.getBlock().getType().equals(Material.GOLD_ORE) || event.getBlock().getType().equals(Material.DEEPSLATE_GOLD_ORE)) {
             final Player player = event.getPlayer();
             config.getManagedResources().addPerformanceTrackingEvent(PerformanceTrackingEvent.GOLD_ORE_MINED, player.getName(), 1);
         }
@@ -64,7 +61,7 @@ public class PerformanceEvents implements Listener {
 
     @EventHandler
     public void onLootChestOpenEvent(PlayerInteractEvent event) {
-        if (config.getProperty(ENABLE_PERFORMANCE_TRACKING, Defaults.ENABLE_PERFORMANCE_TRACKING) && event.getClickedBlock() != null && event.getClickedBlock().getType().equals(Material.CHEST)) {
+        if (event.getClickedBlock() != null && event.getClickedBlock().getType().equals(Material.CHEST)) {
             if (event.getPlayer().getGameMode().equals(GameMode.SURVIVAL) && UHCLoot.isConfigured(config) && getChestLocation(config).isPresent()) {
                 final Location chestLocation = event.getClickedBlock().getLocation();
                 if (isSameLocation(getChestLocation(config).get(), chestLocation) && !lootChestLocations.contains(chestLocation)) {
@@ -78,7 +75,7 @@ public class PerformanceEvents implements Listener {
     @EventHandler
     public void onPVEDamage(EntityDamageEvent event) {
         // if damage is thorns, ignore
-        if (event.getDamageSource().getDamageType() == DamageType.THORNS || !config.getProperty(ENABLE_PERFORMANCE_TRACKING, Defaults.ENABLE_PERFORMANCE_TRACKING)) {
+        if (event.getDamageSource().getDamageType() == DamageType.THORNS) {
             return;
         }
         if (event.getEntity() instanceof final Player damagee && !(event.getDamageSource().getCausingEntity() instanceof Player) && !(event.getDamageSource().getDirectEntity() instanceof Player)) {
@@ -89,7 +86,7 @@ public class PerformanceEvents implements Listener {
     @EventHandler
     public void onPlayerDamage(EntityDamageByEntityEvent event) {
         // if damage is thorns, ignore
-        if (event.getDamageSource().getDamageType() == DamageType.THORNS || !config.getProperty(ENABLE_PERFORMANCE_TRACKING, Defaults.ENABLE_PERFORMANCE_TRACKING)) {
+        if (event.getDamageSource().getDamageType() == DamageType.THORNS) {
             return;
         }
         if (event.getEntity() instanceof Player) {

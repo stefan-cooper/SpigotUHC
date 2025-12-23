@@ -236,7 +236,7 @@
   <properties>
     <maven.compiler.target>21</maven.compiler.target>
     <maven.compiler.source>21</maven.compiler.source>
-    <UHCPlugin.version>8.6.0</UHCPlugin.version>
+    <UHCPlugin.version>8.6.1</UHCPlugin.version>
   </properties>
 </project>
 

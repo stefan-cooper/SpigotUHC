@@ -5,7 +5,6 @@ import com.stefancooper.SpigotUHC.Defaults;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,7 +15,6 @@ import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Level;
 
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.*;
@@ -40,7 +38,7 @@ public class WinEvents implements Listener {
 
         final boolean doNotEndGameAutomatically = config.getProperty(DISABLE_END_GAME_AUTOMATICALLY, Defaults.DISABLE_END_GAME_AUTOMATICALLY);
 
-        if (!doNotEndGameAutomatically && config.getPlugin().getStarted() && teamsWithSurvivors.size() == 1) {
+        if (!doNotEndGameAutomatically && config.getPlugin().isUHCLive() && teamsWithSurvivors.size() == 1) {
             UHCTeam winningTeam = teamsWithSurvivors.getFirst();
             String winningTeamName = winningTeam.getName();
             List<String> winningTeamMembers = new ArrayList<>(Bukkit.getScoreboardManager().getMainScoreboard().getTeam(winningTeamName).getEntries());
@@ -59,6 +57,8 @@ public class WinEvents implements Listener {
 
             // cancel timers that might have been running
             config.getManagedResources().cancelTimer();
+
+            config.getManagedResources().runTaskLater(() -> config.getPlugin().setUHCLive(false), 61);
 
             config.getManagedResources().runTaskLater(() -> {
                 for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {

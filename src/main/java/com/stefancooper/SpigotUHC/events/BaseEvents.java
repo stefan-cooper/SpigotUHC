@@ -13,7 +13,6 @@ import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
-import org.bukkit.block.Container;
 import org.bukkit.damage.DamageType;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ExperienceOrb;
@@ -30,7 +29,6 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemRarity;
 import org.bukkit.inventory.ItemStack;
@@ -126,7 +124,7 @@ public class BaseEvents implements Listener {
         }
 
         // Play death cannon
-        if (config.getPlugin().getStarted()) {
+        if (config.getPlugin().isUHCLive()) {
             Bukkit.getOnlinePlayers().forEach(player -> player.playSound(player, Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 1, 1));
         }
     }
@@ -138,7 +136,7 @@ public class BaseEvents implements Listener {
         if (deathLocation != null && player.getGameMode().equals(GameMode.SPECTATOR)) {
             event.setRespawnLocation(deathLocation);
         }
-        if (!config.getPlugin().getStarted()) {
+        if (!config.getPlugin().isUHCLive()) {
             final Location worldSpawn = getWorldSpawn();
             if (worldSpawn != null) {
                 event.setRespawnLocation(worldSpawn);
@@ -152,7 +150,7 @@ public class BaseEvents implements Listener {
         GameMode currentGamemode = event.getPlayer().getGameMode();
         if (currentGamemode == GameMode.SPECTATOR) {
             return;
-        } else if (config.getPlugin().getStarted()) {
+        } else if (config.getPlugin().isUHCLive()) {
             event.getPlayer().setGameMode(GameMode.SURVIVAL);
         } else {
             event.getPlayer().setGameMode(GameMode.ADVENTURE);
@@ -165,7 +163,7 @@ public class BaseEvents implements Listener {
         }
 
         /* -- Setting boss bar -- */
-        if (config.getPlugin().getStarted() && config.getProperty(WORLD_BORDER_IN_BOSSBAR, Defaults.WORLD_BORDER_IN_BOSSBAR)) {
+        if (config.getPlugin().isUHCLive() && config.getProperty(WORLD_BORDER_IN_BOSSBAR, Defaults.WORLD_BORDER_IN_BOSSBAR)) {
             BossBarBorder bossBarBorder = config.getManagedResources().getBossBarBorder();
             bossBarBorder.getBossBar().addPlayer(event.getPlayer());
             bossBarBorder.getBossBar().setVisible(true);

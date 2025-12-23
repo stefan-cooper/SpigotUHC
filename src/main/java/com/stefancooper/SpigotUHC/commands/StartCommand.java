@@ -28,7 +28,6 @@ import org.bukkit.scheduler.BukkitTask;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.COUNTDOWN_TIMER_LENGTH;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DIFFICULTY;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DISABLE_DEBUG_INFO;
-import static com.stefancooper.SpigotUHC.enums.ConfigKey.ENABLE_PERFORMANCE_TRACKING;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.GRACE_PERIOD_TIMER;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_FINAL_LOCATION;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.SPREAD_MIN_DISTANCE;
@@ -170,7 +169,7 @@ public class StartCommand extends AbstractCommand {
             getConfig().getManagedResources().runRepeatingTask(updateActionBarLocation(), 1L);
         }
 
-        getConfig().getPlugin().setStarted(true);
+        getConfig().getPlugin().setUHCLive(true);
     }
 
     protected Runnable countdown(int remaining, World world) {

@@ -24,7 +24,7 @@ import java.util.logging.Level;
 public class Plugin extends JavaPlugin implements Listener {
 
     private Config config;
-    private boolean started;
+    private boolean isLive;
     private boolean countingDown;
 
     @Override
@@ -39,7 +39,7 @@ public class Plugin extends JavaPlugin implements Listener {
         Bukkit.getPluginManager().registerEvents(new UHCLootEvents(config), this);
         Bukkit.getPluginManager().registerEvents(new EnchantmentEvents(config), this);
         Bukkit.getPluginManager().registerEvents(new PerformanceEvents(config), this);
-        started = false;
+        isLive = false;
 
         this.getLogger().log(Level.INFO, "UHC Plugin enabled");
         getServer().getCommandMap().register("uhc", new UHCCommand(config));
@@ -62,12 +62,12 @@ public class Plugin extends JavaPlugin implements Listener {
     // This is called when the plugin is unloaded from the server.
     public void onDisable() {}
 
-    public void setStarted(boolean started) {
-        this.started = started;
+    public void setUHCLive(final boolean isLive) {
+        this.isLive = isLive;
     }
 
     // Has the UHC started?
-    public boolean getStarted() { return started; }
+    public boolean isUHCLive() { return isLive; }
 
     public boolean isCountingDown() { return countingDown; }
 

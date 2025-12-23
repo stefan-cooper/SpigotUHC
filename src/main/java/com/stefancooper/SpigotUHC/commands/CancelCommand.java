@@ -15,7 +15,7 @@ public class CancelCommand extends AbstractCommand {
 
     @Override
     public void execute() {
-        getConfig().getPlugin().setStarted(false);
+        getConfig().getPlugin().setUHCLive(false);
         getConfig().trigger();
         getConfig().getManagedResources().cancelTimer();
         for (Player player : Bukkit.getOnlinePlayers()) {

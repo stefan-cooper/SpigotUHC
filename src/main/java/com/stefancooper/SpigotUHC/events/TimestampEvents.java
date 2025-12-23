@@ -15,7 +15,6 @@ import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -56,7 +55,7 @@ public class TimestampEvents implements Listener {
 
         completed.putIfAbsent(player.getUniqueId(), new HashSet<>());
         Set<NamespacedKey> done = completed.get(player.getUniqueId());
-        if (isTimestampsEnabled() && config.getPlugin().getStarted() && done.add(key) && event.getAdvancement().getDisplay() != null && !Utils.testMode()) {
+        if (isTimestampsEnabled() && config.getPlugin().isUHCLive() && done.add(key) && event.getAdvancement().getDisplay() != null && !Utils.testMode()) {
             config.getManagedResources().addTimestamp(String.format("[Achievement] %s awarded achievement \"%s\"", event.getPlayer().getDisplayName(), PlainTextComponentSerializer.plainText().serialize(event.getAdvancement().getDisplay().displayName())));
         }
     }

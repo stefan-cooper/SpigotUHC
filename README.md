@@ -53,6 +53,8 @@ world.border.initial.size=2000
 world.border.shrinking.period=7200
 # Action to undertake when a player dies ("spectate" | "kick")
 on.death.action=spectate
+# Mob grace period - period of time (in seconds) that the game will remain in 'Peaceful' mode (default: 0)
+mob.grace.period=0
 ```
 
 ### Optional properties:

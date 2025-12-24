@@ -29,6 +29,7 @@ import static com.stefancooper.SpigotUHC.enums.ConfigKey.COUNTDOWN_TIMER_LENGTH;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DIFFICULTY;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DISABLE_DEBUG_INFO;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.GRACE_PERIOD_TIMER;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.MOB_GRACE_PERIOD;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_FINAL_LOCATION;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.SPREAD_MIN_DISTANCE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_CENTER_X;
@@ -169,11 +170,17 @@ public class StartCommand extends AbstractCommand {
             getConfig().getManagedResources().runRepeatingTask(updateActionBarLocation(), 1L);
         }
 
+        final int endMobGracePeriod = getConfig().getProperty(MOB_GRACE_PERIOD, Defaults.MOB_GRACE_PERIOD);
+        if (endMobGracePeriod > 0) {
+            getConfig().getManagedResources().runTaskLater(endMobGracePeriod(List.of(world, nether, end)), endMobGracePeriod + countdownTimer);
+        }
+
         getConfig().getPlugin().setUHCLive(true);
     }
 
-    protected Runnable countdown(int remaining, World world) {
-        int countdownTimer = getConfig().getProperty(COUNTDOWN_TIMER_LENGTH, Defaults.COUNTDOWN_TIMER_LENGTH);
+    protected Runnable countdown(final int remaining, final World world) {
+        final int countdownTimer = getConfig().getProperty(COUNTDOWN_TIMER_LENGTH, Defaults.COUNTDOWN_TIMER_LENGTH);
+        final boolean mobGracePeriodIsZero = getConfig().getProperty(MOB_GRACE_PERIOD, Defaults.MOB_GRACE_PERIOD) == 0;
         return () -> {
             int timeLeft = countdownTimer - remaining;
             if (timeLeft == 2) {
@@ -183,7 +190,9 @@ public class StartCommand extends AbstractCommand {
             } else if (timeLeft == 0) {
                 // Countdown over!
                 Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle(Integer.toString(timeLeft), "Go!", 10, 70, 20));
-                world.setDifficulty(getConfig().getProperty(DIFFICULTY, Defaults.DIFFICULTY));
+                if (mobGracePeriodIsZero) {
+                    world.setDifficulty(getConfig().getProperty(DIFFICULTY, Defaults.DIFFICULTY));
+                }
                 getConfig().getPlugin().setCountingDown(false);
             } else {
                 Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle(Integer.toString(timeLeft), "Starting soon...", 10, 70, 20));
@@ -260,5 +269,13 @@ public class StartCommand extends AbstractCommand {
             player.sendActionBar(Component.text(ChatColor.AQUA + "X: " + player.getLocation().getBlockX() + " Y: " + player.getLocation().getBlockY() + " Z: " + player.getLocation().getBlockZ()));
 
         });
+    }
+
+    protected Runnable endMobGracePeriod(final List<World> worlds) {
+        return () -> {
+            Bukkit.broadcastMessage("UHC: Mob grace period is over");
+            getConfig().getManagedResources().addTimestamp("[Meta] World Border shrink grace period is now over.");
+            Utils.setWorldEffects(worlds, (cb) -> cb.setDifficulty(getConfig().getProperty(DIFFICULTY, Defaults.DIFFICULTY)));
+        };
     }
 }

@@ -42,6 +42,7 @@ public class StartTest {
     private static World world;
     private static World nether;
     private static World end;
+    private static PlayerMock serverOp;
 
     @BeforeAll
     public static void load()
@@ -51,10 +52,13 @@ public class StartTest {
         world = server.getWorld(WORLD_NAME);
         nether = server.getWorld(NETHER_WORLD_NAME);
         end = server.getWorld(END_WORLD_NAME);
+        serverOp = server.addPlayer();
+        serverOp.setOp(true);
     }
 
     @BeforeEach
     public void cleanUp() {
+        TestUtils.executeCommand(plugin, serverOp, "cancel");
         plugin.getUHCConfig().resetToDefaults();
     }
 
@@ -300,5 +304,44 @@ public class StartTest {
             assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRule.PVP));
         });
         admin.assertNoMoreSaid();
+    }
+
+    @Test
+    @DisplayName("When start is ran, including a mob grace period will affect when the difficulty changes")
+    void startCommandTimersMobGracePeriod() throws InterruptedException {
+        BukkitSchedulerMock schedule = server.getScheduler();
+
+        PlayerMock admin = server.addPlayer();
+        admin.setOp(true);
+
+        TestUtils.executeCommand(plugin, admin, "set",
+                "world.border.initial.size=50",
+                "world.border.final.size=10",
+                "disable.debug.info=false",
+                "countdown.timer.length=10",
+                "mob.grace.period=5",
+                "grace.period.timer=20",
+                "world.border.grace.period=30",
+                "world.border.shrinking.period=30",
+                "difficulty=HARD"
+        );
+
+        TestUtils.executeCommand(plugin, admin, "start");
+
+        schedule.performOneTick();
+
+        // Initial start
+        assertEquals(Difficulty.PEACEFUL, world.getDifficulty());
+
+        admin.assertSaid("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!");
+
+        schedule.performTicks(Utils.secondsToTicks(10));
+
+        // Countdown finished
+        assertEquals(Difficulty.PEACEFUL, world.getDifficulty());
+
+        schedule.performTicks(Utils.secondsToTicks(5));
+        admin.assertSaid("UHC: Mob grace period is over");
+        assertEquals(Difficulty.HARD, world.getDifficulty());
     }
 }

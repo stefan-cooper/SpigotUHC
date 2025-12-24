@@ -33,6 +33,7 @@ public class Defaults {
     public static int WORLD_BORDER_CENTER_X = 0;
     public static int WORLD_BORDER_CENTER_Z = 0;
     public static int GRACE_PERIOD_TIMER = 600;
+    public static int MOB_GRACE_PERIOD = 0;
     public static String ON_DEATH_ACTION = SPECTATE.name;
     public static int COUNTDOWN_TIMER_LENGTH = 10;
     public static int MIN_SPREAD_DISTANCE = 250;

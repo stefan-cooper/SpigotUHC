@@ -44,6 +44,7 @@ import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_Y;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_Z;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_FREQUENCY;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_Z_RANGE;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.MOB_GRACE_PERIOD;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.ON_DEATH_ACTION;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.PLAYER_HEAD_GOLDEN_APPLE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_FINAL_LOCATION;
@@ -120,6 +121,7 @@ public class ConfigParser {
             case TEAM_PURPLE -> new Configurable<>(TEAM_PURPLE, value);
             case SPREAD_MIN_DISTANCE -> new Configurable<>(SPREAD_MIN_DISTANCE, Integer.parseInt(value));
             case GRACE_PERIOD_TIMER -> new Configurable<>(GRACE_PERIOD_TIMER, Integer.parseInt(value));
+            case MOB_GRACE_PERIOD -> new Configurable<>(MOB_GRACE_PERIOD, Integer.parseInt(value));
             case ON_DEATH_ACTION -> new Configurable<>(ON_DEATH_ACTION, value);
             case COUNTDOWN_TIMER_LENGTH -> new Configurable<>(COUNTDOWN_TIMER_LENGTH, Integer.parseInt(value));
             case PLAYER_HEAD_GOLDEN_APPLE -> new Configurable<>(PLAYER_HEAD_GOLDEN_APPLE, Boolean.parseBoolean((value)));

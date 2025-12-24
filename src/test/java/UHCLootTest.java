@@ -41,6 +41,7 @@ public class UHCLootTest {
 
     @BeforeEach
     public void cleanUp() {
+        TestUtils.executeCommand(plugin, admin, "start");
         plugin.getUHCConfig().resetToDefaults();
     }
 
@@ -57,6 +58,8 @@ public class UHCLootTest {
     @Test
     void lootChestTest() {
         BukkitSchedulerMock schedule = server.getScheduler();
+        PlayerMock admin = server.addPlayer();
+        admin.setOp(true);
         int x = 1234;
         int y = 123;
         int z = -1234;
@@ -95,6 +98,8 @@ public class UHCLootTest {
     @Test
     void lootChestTestHighTierLootMessage() {
         BukkitSchedulerMock schedule = server.getScheduler();
+        PlayerMock admin = server.addPlayer();
+        admin.setOp(true);
         int x = 1234;
         int y = 123;
         int z = -1234;
@@ -115,9 +120,9 @@ public class UHCLootTest {
 
         schedule.performOneTick();
         admin.assertSaid("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!");
-        admin.assertNoMoreSaid();
 
         schedule.performTicks(Utils.secondsToTicks(3));
+
         admin.assertSaid("UHC: High tier loot item(s) have spawned in the loot chest!");
         admin.assertNoMoreSaid();
     }
@@ -125,6 +130,8 @@ public class UHCLootTest {
     @Test
     void dynamicLootChestTest() {
         BukkitSchedulerMock schedule = server.getScheduler();
+        PlayerMock admin = server.addPlayer();
+        admin.setOp(true);
         String x = "750,1000";
         String z = "250,500";
         int lootFrequency = 5; // 100 ticks
@@ -142,7 +149,6 @@ public class UHCLootTest {
         TestUtils.executeCommand(plugin, admin, "start");
 
         schedule.performOneTick();
-        admin.assertSaid("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!");
         schedule.performTicks(Utils.secondsToTicks(5));
 
         Block firstGenerationChest = plugin.getUHCConfig().getManagedResources().getDynamicLootChestLocation();

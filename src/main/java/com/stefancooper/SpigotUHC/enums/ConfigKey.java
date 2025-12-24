@@ -19,6 +19,7 @@ public enum ConfigKey {
     WORLD_BORDER_Y_SHRINKING_PERIOD("world.border.y.shrinking.period"), // World border time to shrink to the final y coord
     SPREAD_MIN_DISTANCE("spread.min.distance"), // minimum distance that players will be spread across the world
     ON_DEATH_ACTION("on.death.action"), // Action to undertake when a player dies ("spectate" | "kick")
+    MOB_GRACE_PERIOD("mob.grace.period"), // period of time that the game remains in peaceful mode before enabling the difficulty
     // ----- End required config -----
 
     // Team Enums

@@ -19,6 +19,7 @@ import utils.TestUtils;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.stefancooper.SpigotUHC.Defaults.NETHER_WORLD_NAME;
 import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -28,6 +29,7 @@ public class UHCLootTest {
     private static ServerMock server;
     private static Plugin plugin;
     private static World world;
+    private static World nether;
     private static PlayerMock admin;
 
     @BeforeAll
@@ -35,6 +37,7 @@ public class UHCLootTest {
         server = MockBukkit.mock();
         plugin = MockBukkit.load(Plugin.class);
         world = server.getWorld(WORLD_NAME);
+        nether = server.getWorld(NETHER_WORLD_NAME);
         admin = server.addPlayer();
         admin.setOp(true);
     }
@@ -84,15 +87,19 @@ public class UHCLootTest {
 
         // start uhc (so the world spawn should now be ignored)
         final List<ItemStack> firstGeneration = getLatestChestContents((ChestStateMock) world.getBlockAt(new Location(world, x, y, z)).getState());
+        final List<ItemStack> netherFirstGeneration = getLatestChestContents((ChestStateMock) nether.getBlockAt(new Location(nether, x, y, z)).getState());
         assertNotEquals(0, firstGeneration.size());
-        assertEquals(firstGeneration, firstGeneration);
+        assertNotEquals(0, netherFirstGeneration.size());
 
         schedule.performTicks(Utils.secondsToTicks(5));
 
         final List<ItemStack> secondGeneration = getLatestChestContents((ChestStateMock) world.getBlockAt(new Location(world, x, y, z)).getState());
+        final List<ItemStack> netherSecondGeneration = getLatestChestContents((ChestStateMock) nether.getBlockAt(new Location(nether, x, y, z)).getState());
 
         assertNotEquals(0, secondGeneration.size());
+        assertNotEquals(0, netherSecondGeneration.size());
         assertNotEquals(firstGeneration, secondGeneration);
+        assertNotEquals(netherFirstGeneration, netherSecondGeneration);
     }
 
     @Test
@@ -152,21 +159,31 @@ public class UHCLootTest {
         schedule.performTicks(Utils.secondsToTicks(5));
 
         Block firstGenerationChest = plugin.getUHCConfig().getManagedResources().getDynamicLootChestLocation();
+        Block netherFirstGenerationChest = plugin.getUHCConfig().getManagedResources().getDynamicNetherLootChestLocation();
         assertEquals(Material.CHEST, firstGenerationChest.getType());
+        assertEquals(Material.CHEST, netherFirstGenerationChest.getType());
 
         // start uhc (so the world spawn should now be ignored)
         final List<ItemStack> firstGeneration = getLatestChestContents((ChestStateMock) world.getBlockAt(firstGenerationChest.getLocation()).getState());
+        final List<ItemStack> netherFirstGeneration = getLatestChestContents((ChestStateMock) nether.getBlockAt(netherFirstGenerationChest.getLocation()).getState());
         assertNotEquals(0, firstGeneration.size());
-        assertEquals(firstGeneration, firstGeneration);
+        assertNotEquals(0, netherFirstGeneration.size());
 
         schedule.performTicks(Utils.secondsToTicks(5));
 
         Block secondGenerationChest = plugin.getUHCConfig().getManagedResources().getDynamicLootChestLocation();
+        Block netherSecondGenerationChest = plugin.getUHCConfig().getManagedResources().getDynamicNetherLootChestLocation();
         assertEquals(Material.AIR, firstGenerationChest.getType());
+        assertEquals(Material.AIR, netherFirstGenerationChest.getType());
         assertEquals(Material.CHEST, secondGenerationChest.getType());
+        assertEquals(Material.CHEST, netherSecondGenerationChest.getType());
 
         final List<ItemStack> secondGeneration = getLatestChestContents((ChestStateMock) world.getBlockAt(secondGenerationChest.getLocation()).getState());
+        final List<ItemStack> netherSecondGeneration = getLatestChestContents((ChestStateMock) nether.getBlockAt(netherSecondGenerationChest.getLocation()).getState());
+
         assertNotEquals(0, secondGeneration.size());
+        assertNotEquals(0, netherSecondGeneration.size());
         assertNotEquals(firstGeneration, secondGeneration);
+        assertNotEquals(netherFirstGeneration, netherSecondGeneration);
     }
 }

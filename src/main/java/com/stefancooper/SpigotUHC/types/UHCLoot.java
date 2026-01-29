@@ -5,7 +5,6 @@ import com.stefancooper.SpigotUHC.Defaults;
 import com.stefancooper.SpigotUHC.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
-import org.bukkit.HeightMap;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;

@@ -51,6 +51,7 @@ public class ManagedResources {
     Revive currentRevive = null;
     BukkitTask reviveDebounce = null;
     Block dynamicLootChestLocation = null;
+    Block dynamicNetherLootChestLocation = null;
 
     public ManagedResources(final Config config) {
         this.config = config;
@@ -215,5 +216,9 @@ public class ManagedResources {
     public Block getDynamicLootChestLocation() { return dynamicLootChestLocation; }
 
     public void setDynamicLootChestLocation(final Block block) { dynamicLootChestLocation = block; }
+
+    public Block getDynamicNetherLootChestLocation() { return dynamicNetherLootChestLocation; }
+
+    public void setDynamicNetherLootChestLocation(final Block block) { dynamicNetherLootChestLocation = block; }
 
 }

@@ -97,6 +97,11 @@ public class ResumeCommand extends StartCommand {
             new UHCLoot(getConfig());
         }
 
+        // Timestamps
+        if (getConfig().getProperty(ConfigKey.ENABLE_TIMESTAMPS, Defaults.ENABLE_TIMESTAMPS)) {
+            getConfig().getManagedResources().addTimestamp(String.format("[Meta] UHC Resumed after %s mintes", minutesProgressed), false);
+        }
+
         getConfig().getPlugin().setUHCLive(true);
     }
 

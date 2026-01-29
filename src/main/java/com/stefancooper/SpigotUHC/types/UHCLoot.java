@@ -5,6 +5,7 @@ import com.stefancooper.SpigotUHC.Defaults;
 import com.stefancooper.SpigotUHC.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
+import org.bukkit.HeightMap;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -120,32 +121,51 @@ public class UHCLoot {
                 return;
             }
             final World world = config.getWorlds().getOverworld();
+            final World nether = config.getWorlds().getNether();
 
             final Block lootChestBlock;
+            final Block netherLootChestBlock;
             if (usingStaticLootChestLocation) {
                 lootChestBlock = world.getBlockAt(chestX, chestY, chestZ);
+                netherLootChestBlock = nether.getBlockAt(chestX, chestY, chestZ);
             } else {
                 final String[] chestXRangeList = chestXRange.split(",");
                 final String[] chestZRangeList = chestZRange.split(",");
-                final Block surfaceBlock = world.getHighestBlockAt(
+                final Block overworldSurfaceBlock = world.getHighestBlockAt(
                         random.nextInt(Integer.parseInt(chestXRangeList[0]), Integer.parseInt(chestXRangeList[1])),
                         random.nextInt(Integer.parseInt(chestZRangeList[0]), Integer.parseInt(chestZRangeList[1]))
                 );
-                lootChestBlock = world.getBlockAt(surfaceBlock.getX(), surfaceBlock.getY() + 1, surfaceBlock.getZ());
+                final Block netherSurfaceBlock = nether.getBlockAt(
+                        new Location(
+                                nether,
+                                random.nextInt(Integer.parseInt(chestXRangeList[0]), Integer.parseInt(chestXRangeList[1])),
+                                random.nextInt(32, 48),
+                                random.nextInt(Integer.parseInt(chestZRangeList[0]), Integer.parseInt(chestZRangeList[1]))
+                        )
+                );
+                lootChestBlock = world.getBlockAt(overworldSurfaceBlock.getX(), overworldSurfaceBlock.getY() + 1, overworldSurfaceBlock.getZ());
+                netherLootChestBlock = nether.getBlockAt(netherSurfaceBlock.getX(), netherSurfaceBlock.getY() + 1, netherSurfaceBlock.getZ());
                 BukkitTask beam = config.getManagedResources().runRepeatingTask(() -> {
                     for (int y = lootChestBlock.getY() + 3; y < 256; y += 3) {
                         Utils.spawnDustParticle(world, new Location(world, lootChestBlock.getLocation().getX() + 0.5, y, lootChestBlock.getZ() + 0.5), 10, new Particle.DustOptions(Color.FUCHSIA, 100));
                     }
+                    for (int y = netherLootChestBlock.getY() + 3; y < 256; y += 3) {
+                        Utils.spawnDustParticle(nether, new Location(nether, netherLootChestBlock.getLocation().getX() + 0.5, y, netherLootChestBlock.getZ() + 0.5), 10, new Particle.DustOptions(Color.FUCHSIA, 100));
+                    }
                 }, 2);
                 config.getManagedResources().setDynamicLootChestLocation(lootChestBlock);
+                config.getManagedResources().setDynamicNetherLootChestLocation(netherLootChestBlock);
                 config.getManagedResources().runTaskLater(() -> {
                     lootChestBlock.setType(Material.AIR);
+                    netherLootChestBlock.setType(Material.AIR);
                     config.getManagedResources().cancelRepeatingTask(beam.getTaskId());
                 }, lootFrequency);
             }
 
             lootChestBlock.setType(Material.CHEST);
+            netherLootChestBlock.setType(Material.CHEST);
             final Chest lootChest = (Chest) lootChestBlock.getState();
+            final Chest netherLootChest = (Chest) netherLootChestBlock.getState();
 
             final int spawnRate = config.getProperty(LOOT_CHEST_SPINS_PER_GEN, Defaults.LOOT_CHEST_SPINS_PER_GEN);
             final int highLootOdds = config.getProperty(LOOT_CHEST_HIGH_LOOT_ODDS, Defaults.LOOT_CHEST_HIGH_LOOT_ODDS);
@@ -153,6 +173,33 @@ public class UHCLoot {
 
             Utils.spawnParticle(world, Particle.ENCHANT, new Location(world, lootChest.getX() + 0.5, lootChest.getY() + 1.5, lootChest.getZ() + 0.5), 1000);
             lootChest.getBlockInventory().clear();
+            netherLootChest.getBlockInventory().clear();
+
+            // Nether
+            // Nether loot chest has same rates but double the spins
+            for (int i = 0; i < spawnRate * 2; i++) {
+                final int spin = random.nextInt(100) + 1;
+                final Material itemToAdd;
+                Tier tier;
+
+                if (spin < highLootOdds) {
+                    itemToAdd = highTier.get(random.nextInt(highTier.size()));
+                    tier = Tier.HIGH;
+                } else if (spin < midLootOdds) {
+                    itemToAdd = midTier.get(random.nextInt(midTier.size()));
+                    tier = Tier.MID;
+                } else {
+                    itemToAdd = lowTier.get(random.nextInt(lowTier.size()));
+                    tier = Tier.LOW;
+                }
+                final ItemStack item = new ItemStack(itemToAdd);
+                addEnchantments(item);
+                multiplyItems(item);
+                addPotionEffects(item, tier);
+                netherLootChest.getBlockInventory().addItem(item);
+            }
+
+            // Overworld
             boolean didHighTierSpawn = false;
             for (int i = 0; i < spawnRate; i++) {
                 final int spin = random.nextInt(100) + 1;

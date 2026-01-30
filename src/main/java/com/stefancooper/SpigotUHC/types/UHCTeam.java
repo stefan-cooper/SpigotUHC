@@ -1,20 +1,20 @@
 package com.stefancooper.SpigotUHC.types;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
-
 import java.util.Arrays;
 import java.util.List;
 
 public class UHCTeam {
 
-    private final ChatColor color;
+    private final NamedTextColor color;
     private final String players;
     private final String name;
 
-    public UHCTeam(String name, String players, ChatColor color) {
+    public UHCTeam(String name, String players, NamedTextColor color) {
         this.name = name;
         this.players = players;
         this.color = color;
@@ -28,7 +28,7 @@ public class UHCTeam {
         return Arrays.stream(players.split(",")).map(String::trim).toList();
     }
 
-    public ChatColor getColor() {
+    public NamedTextColor getColor() {
         return color;
     }
 
@@ -47,8 +47,8 @@ public class UHCTeam {
             }
             team.addEntry(player);
         });
-        team.setColor(uhcTeam.getColor());
+        team.color(uhcTeam.getColor());
         team.setAllowFriendlyFire(false);
-        team.setPrefix(String.format("[%s] ", uhcTeam.getName()));
+        team.prefix(Component.text(String.format("[%s] ", uhcTeam.getName())));
     }
 }

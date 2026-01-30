@@ -1,9 +1,9 @@
+import org.bukkit.GameRules;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
 import com.stefancooper.SpigotUHC.Plugin;
 import org.bukkit.GameMode;
-import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.junit.jupiter.api.*;
 
@@ -41,10 +41,10 @@ public class PluginTest {
     void testGameRules() {
         PlayerMock player = server.addPlayer();
         assertNotNull(world);
-        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.DO_INSOMNIA));
-        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.NATURAL_REGENERATION));
-        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.LOCATOR_BAR));
-        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.PVP));
+        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRules.SPAWN_PHANTOMS));
+        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRules.NATURAL_HEALTH_REGENERATION));
+        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRules.LOCATOR_BAR));
+        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRules.PVP));
         assertEquals(GameMode.ADVENTURE, player.getGameMode());
     }
 

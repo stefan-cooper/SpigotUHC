@@ -3,7 +3,6 @@ import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
 import org.mockbukkit.mockbukkit.scheduler.BukkitSchedulerMock;
 import com.stefancooper.SpigotUHC.Plugin;
-import com.stefancooper.SpigotUHC.utils.Utils;
 import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
@@ -12,13 +11,9 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 import utils.TestUtils;
-
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-
-import static com.stefancooper.SpigotUHC.Defaults.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DeathChatTest {

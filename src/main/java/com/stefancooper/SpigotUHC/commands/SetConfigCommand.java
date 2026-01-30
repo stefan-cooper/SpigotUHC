@@ -2,7 +2,6 @@ package com.stefancooper.SpigotUHC.commands;
 
 import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.enums.ConfigKey;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import java.util.Arrays;
 import java.util.logging.Level;

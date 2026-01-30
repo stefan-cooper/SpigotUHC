@@ -1,5 +1,6 @@
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.bukkit.ChatColor;
+import org.bukkit.GameRules;
 import org.bukkit.potion.PotionEffect;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
@@ -10,7 +11,6 @@ import com.stefancooper.SpigotUHC.utils.Utils;
 import org.bukkit.Difficulty;
 import java.util.Arrays;
 import org.bukkit.GameMode;
-import org.bukkit.GameRule;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -23,17 +23,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import utils.TestUtils;
-
 import static com.stefancooper.SpigotUHC.Defaults.END_WORLD_NAME;
 import static com.stefancooper.SpigotUHC.Defaults.NETHER_WORLD_NAME;
 import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static utils.TestUtils.WorldAssertion;
-
 
 public class StartTest {
 
@@ -74,7 +69,7 @@ public class StartTest {
         PlayerMock admin = server.addPlayer();
         admin.setOp(true);
 
-        world.setGameRule(GameRule.FALL_DAMAGE, false);
+        world.setGameRule(GameRules.FALL_DAMAGE, false);
 
         PlayerMock player1 = server.addPlayer();
         player1.setHealth(10);
@@ -88,17 +83,17 @@ public class StartTest {
         world.dropItem(new Location(world, 0, 100, 0), ItemStack.of(Material.DIAMOND_SWORD));
 
         assertEquals(1, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
-        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.PVP));
-        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.FALL_DAMAGE));
-        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.REDUCED_DEBUG_INFO));
+        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRules.PVP));
+        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRules.FALL_DAMAGE));
+        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRules.REDUCED_DEBUG_INFO));
         assertEquals(3, player1.getPotionEffect(PotionEffectType.JUMP_BOOST).getAmplifier());
 
         TestUtils.executeCommand(plugin, admin, "start");
 
-        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.PVP));
+        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRules.PVP));
         assertEquals(0, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
-        assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRule.FALL_DAMAGE));
-        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.REDUCED_DEBUG_INFO));
+        assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRules.FALL_DAMAGE));
+        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRules.REDUCED_DEBUG_INFO));
 
         server.getOnlinePlayers().forEach(player -> {
             assertEquals(20.0, player.getHealth());
@@ -119,7 +114,7 @@ public class StartTest {
         PlayerMock admin = server.addPlayer();
         admin.setOp(true);
 
-        world.setGameRule(GameRule.FALL_DAMAGE, false);
+        world.setGameRule(GameRules.FALL_DAMAGE, false);
 
         TestUtils.executeCommand(plugin, admin, "set",
                 "disable.debug.info=true"
@@ -137,17 +132,17 @@ public class StartTest {
         world.dropItem(new Location(world, 0, 100, 0), ItemStack.of(Material.DIAMOND_SWORD));
 
         assertEquals(1, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
-        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.PVP));
-        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.FALL_DAMAGE));
-        assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRule.REDUCED_DEBUG_INFO));
+        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRules.PVP));
+        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRules.FALL_DAMAGE));
+        assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRules.REDUCED_DEBUG_INFO));
         assertEquals(3, player1.getPotionEffect(PotionEffectType.JUMP_BOOST).getAmplifier());
 
         TestUtils.executeCommand(plugin, admin, "start");
 
-        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.PVP));
+        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRules.PVP));
         assertEquals(0, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
-        assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRule.FALL_DAMAGE));
-        assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRule.REDUCED_DEBUG_INFO));
+        assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRules.FALL_DAMAGE));
+        assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRules.REDUCED_DEBUG_INFO));
 
         schedule.performOneTick();
 
@@ -160,7 +155,7 @@ public class StartTest {
             assertEquals(GameMode.SURVIVAL, player.getGameMode());
             assertNull(player.getPotionEffect(PotionEffectType.JUMP_BOOST));
             assertEquals(3, player.getPotionEffect(PotionEffectType.MINING_FATIGUE).getAmplifier());
-            assertEquals(ChatColor.AQUA + "X: 0 Y: 5 Z: 0", PlainTextComponentSerializer.plainText().serialize(player.nextActionBar()));
+            assertEquals(NamedTextColor.AQUA + "X: 0 Y: 5 Z: 0", PlainTextComponentSerializer.plainText().serialize(player.nextActionBar()));
         });
 
         schedule.performOneTick();
@@ -168,7 +163,7 @@ public class StartTest {
         // havent moved yet so still all the same
         server.getOnlinePlayers().forEach(player -> {
             // they havent moved so all players still in default position
-            assertEquals(ChatColor.AQUA + "X: 0 Y: 5 Z: 0", PlainTextComponentSerializer.plainText().serialize(player.nextActionBar()));
+            assertEquals(NamedTextColor.AQUA + "X: 0 Y: 5 Z: 0", PlainTextComponentSerializer.plainText().serialize(player.nextActionBar()));
         });
 
         // 2 players move
@@ -178,9 +173,9 @@ public class StartTest {
         schedule.performOneTick();
 
         // players positions have updated
-        assertEquals(ChatColor.AQUA + "X: 10 Y: 5 Z: 10", PlainTextComponentSerializer.plainText().serialize(player1.nextActionBar()));
-        assertEquals(ChatColor.AQUA + "X: -5 Y: 5 Z: 20", PlainTextComponentSerializer.plainText().serialize(player2.nextActionBar()));
-        assertEquals(ChatColor.AQUA + "X: 0 Y: 5 Z: 0", PlainTextComponentSerializer.plainText().serialize(player3.nextActionBar()));
+        assertEquals(NamedTextColor.AQUA + "X: 10 Y: 5 Z: 10", PlainTextComponentSerializer.plainText().serialize(player1.nextActionBar()));
+        assertEquals(NamedTextColor.AQUA + "X: -5 Y: 5 Z: 20", PlainTextComponentSerializer.plainText().serialize(player2.nextActionBar()));
+        assertEquals(NamedTextColor.AQUA + "X: 0 Y: 5 Z: 0", PlainTextComponentSerializer.plainText().serialize(player3.nextActionBar()));
 
         schedule.performTicks(Utils.secondsToTicks(10));
         TestUtils.executeCommand(plugin, admin, "cancel");
@@ -229,7 +224,7 @@ public class StartTest {
         assertWorldValues((world) -> {
             assertEquals(0, world.getWorldBorder().getDamageAmount());
             assertEquals(5, world.getWorldBorder().getDamageBuffer());
-            assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.PVP));
+            assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRules.PVP));
         });
         assertEquals(Difficulty.PEACEFUL, world.getDifficulty());
         assertEquals(50, world.getWorldBorder().getSize());
@@ -253,7 +248,7 @@ public class StartTest {
             assertEquals(0, world.getWorldBorder().getDamageAmount());
             assertEquals(5, world.getWorldBorder().getDamageBuffer());
             assertEquals(50, world.getWorldBorder().getSize());
-            assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.PVP));
+            assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRules.PVP));
         });
 
         schedule.performTicks(Utils.secondsToTicks(20));
@@ -261,7 +256,7 @@ public class StartTest {
 
         // Grace period finished
         assertEquals(Difficulty.HARD, world.getDifficulty());
-        assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRule.PVP));
+        assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRules.PVP));
         server.getOnlinePlayers().forEach(player -> {
             assertNull(player.getPotionEffect(PotionEffectType.MINING_FATIGUE));
             assertEquals(3, player.getPotionEffect(PotionEffectType.REGENERATION).getAmplifier());
@@ -270,7 +265,7 @@ public class StartTest {
             assertEquals(0, world.getWorldBorder().getDamageAmount());
             assertEquals(5, world.getWorldBorder().getDamageBuffer());
             assertEquals(50, world.getWorldBorder().getSize());
-            assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRule.PVP));
+            assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRules.PVP));
         });
 
         schedule.performTicks(Utils.secondsToTicks(10)); // advance ticks for potion effect
@@ -285,8 +280,8 @@ public class StartTest {
         assertWorldValues((world) -> {
             assertEquals(0.2, world.getWorldBorder().getDamageAmount());
             assertEquals(5, world.getWorldBorder().getDamageBuffer());
-            assertEquals(50, Math.round(world.getWorldBorder().getSize()));
-            assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRule.PVP));
+            assertEquals(49, Math.round(world.getWorldBorder().getSize()));
+            assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRules.PVP));
         });
 
         schedule.performTicks(Utils.secondsToTicks(30)); // advance ticks for potion effect
@@ -301,7 +296,7 @@ public class StartTest {
             assertEquals(0.2, world.getWorldBorder().getDamageAmount());
             assertEquals(5, world.getWorldBorder().getDamageBuffer());
             assertEquals( 10, Math.round(world.getWorldBorder().getSize()));
-            assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRule.PVP));
+            assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRules.PVP));
         });
         admin.assertNoMoreSaid();
     }

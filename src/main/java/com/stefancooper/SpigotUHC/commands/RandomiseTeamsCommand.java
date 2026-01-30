@@ -1,23 +1,17 @@
 package com.stefancooper.SpigotUHC.commands;
 
 import com.stefancooper.SpigotUHC.Config;
-import com.stefancooper.SpigotUHC.enums.ConfigKey;
 import com.stefancooper.SpigotUHC.types.UHCTeam;
-import com.stefancooper.SpigotUHC.types.Worlds;
-import com.stefancooper.SpigotUHC.utils.Utils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.logging.Level;
-
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_TEAMS_POT_ONE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_TEAMS_POT_THREE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_TEAMS_POT_TWO;
@@ -101,7 +95,7 @@ public class RandomiseTeamsCommand extends AbstractCommand {
                         return;
                     }
                     final String teamPlayers = String.join(",", teams.get(i));
-                    Bukkit.broadcastMessage(String.format("Team %s: %s", teamColor, teamPlayers));
+                    Bukkit.getServer().broadcast(Component.text(String.format("Team %s: %s", teamColor, teamPlayers)));
                     final UHCTeam team = new UHCTeam(teamColor, teamPlayers, mapColorToTeamColor(teamColor));
                     UHCTeam.createTeam(team);
                 }
@@ -125,15 +119,15 @@ public class RandomiseTeamsCommand extends AbstractCommand {
         throw new IllegalStateException("Error picking a random player from pot");
     }
 
-    private ChatColor mapColorToTeamColor(String teamColor) {
+    private NamedTextColor mapColorToTeamColor(String teamColor) {
         return switch (teamColor) {
-            case "Red" -> ChatColor.RED;
-            case "Orange" -> ChatColor.GOLD;
-            case "Blue" -> ChatColor.AQUA;
-            case "Green" -> ChatColor.GREEN;
-            case "Yellow" -> ChatColor.YELLOW;
-            case "Pink" -> ChatColor.LIGHT_PURPLE;
-            default -> ChatColor.DARK_PURPLE;
+            case "Red" -> NamedTextColor.RED;
+            case "Orange" -> NamedTextColor.GOLD;
+            case "Blue" -> NamedTextColor.AQUA;
+            case "Green" -> NamedTextColor.GREEN;
+            case "Yellow" -> NamedTextColor.YELLOW;
+            case "Pink" -> NamedTextColor.LIGHT_PURPLE;
+            default -> NamedTextColor.DARK_PURPLE;
         };
     }
 

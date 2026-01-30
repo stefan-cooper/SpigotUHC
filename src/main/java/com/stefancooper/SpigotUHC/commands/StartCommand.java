@@ -8,11 +8,14 @@ import com.stefancooper.SpigotUHC.types.BossBarBorder;
 import com.stefancooper.SpigotUHC.types.RandomFinalLocation;
 import com.stefancooper.SpigotUHC.types.UHCLoot;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Difficulty;
 import org.bukkit.GameMode;
-import org.bukkit.GameRule;
+import org.bukkit.GameRules;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
@@ -92,8 +95,8 @@ public class StartCommand extends AbstractCommand {
             world.setTime(1000);
             world.setDifficulty(Difficulty.PEACEFUL);
             world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).forEach(Entity::remove);
-            world.setGameRule(GameRule.FALL_DAMAGE, true);
-            world.setGameRule(GameRule.REDUCED_DEBUG_INFO, getConfig().getProperty(DISABLE_DEBUG_INFO, Defaults.DISABLE_DEBUG_INFO));
+            world.setGameRule(GameRules.FALL_DAMAGE, true);
+            world.setGameRule(GameRules.REDUCED_DEBUG_INFO, getConfig().getProperty(DISABLE_DEBUG_INFO, Defaults.DISABLE_DEBUG_INFO));
         });
 
         // Actions on the player
@@ -116,7 +119,7 @@ public class StartCommand extends AbstractCommand {
             }
         });
 
-        Bukkit.broadcastMessage("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!");
+        Bukkit.getServer().broadcast(Component.text("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
 
         // Spread players
         // spreadplayers <x> <z> <spreadDistance> <maxRange> <teams> <targets>
@@ -184,28 +187,28 @@ public class StartCommand extends AbstractCommand {
         return () -> {
             int timeLeft = countdownTimer - remaining;
             if (timeLeft == 2) {
-                Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle(Integer.toString(timeLeft), "Ready", 10, 70, 20));
+                Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.text(Integer.toString(timeLeft)), Component.text("Ready"), 10, 70, 20)));
             } else if (timeLeft == 1) {
-                Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle(Integer.toString(timeLeft), "Set", 10, 70, 20));
+                Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.text(Integer.toString(timeLeft)), Component.text("Set"), 10, 70, 20)));
             } else if (timeLeft == 0) {
                 // Countdown over!
-                Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle(Integer.toString(timeLeft), "Go!", 10, 70, 20));
+                Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.text(Integer.toString(timeLeft)), Component.text("Go!"), 10, 70, 20)));
                 if (mobGracePeriodIsZero) {
                     world.setDifficulty(getConfig().getProperty(DIFFICULTY, Defaults.DIFFICULTY));
                 }
                 getConfig().getPlugin().setCountingDown(false);
             } else {
-                Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle(Integer.toString(timeLeft), "Starting soon...", 10, 70, 20));
+                Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.text(Integer.toString(timeLeft)), Component.text("Starting soon..."), 10, 70, 20)));
             }
         };
     }
 
     protected Runnable endGracePeriod () {
         return () -> {
-            Bukkit.broadcastMessage("UHC: PVP grace period is now over.");
+            Bukkit.getServer().broadcast(Component.text("UHC: PVP grace period is now over.", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
             getConfig().getManagedResources().addTimestamp("[Meta] PVP grace period is now over.");
-            Utils.setWorldEffects(List.of(getConfig().getWorlds().getOverworld(), getConfig().getWorlds().getNether(), getConfig().getWorlds().getEnd()), (cbWorld) -> cbWorld.setGameRule(GameRule.PVP, true));
-            Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle("Grace period over", "\uD83D\uDC40 Watch your back \uD83D\uDC40", 10, 70, 20));
+            Utils.setWorldEffects(List.of(getConfig().getWorlds().getOverworld(), getConfig().getWorlds().getNether(), getConfig().getWorlds().getEnd()), (cbWorld) -> cbWorld.setGameRule(GameRules.PVP, true));
+            Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.text("Grace period over"), Component.text("\uD83D\uDC40 Watch your back \uD83D\uDC40"), 10, 70, 20)));
         };
     }
 
@@ -219,7 +222,7 @@ public class StartCommand extends AbstractCommand {
                 WorldBorder wb = cbWorld.getWorldBorder();
                 wb.setDamageBuffer(5);
                 wb.setDamageAmount(0.2);
-                wb.setSize(finalWorldBorderSize, shrinkingTime);
+                wb.changeSize(finalWorldBorderSize, shrinkingTime);
             });
 
             if (Optional.ofNullable(getConfig().getProperty(WORLD_BORDER_Y_SHRINKING_PERIOD)).isPresent() &&
@@ -228,9 +231,9 @@ public class StartCommand extends AbstractCommand {
                 getConfig().getManagedResources().runTaskLater(shrinkYBorderOverTime(), shrinkingTime);
             }
 
-            Bukkit.broadcastMessage("UHC: World Border shrink grace period is now over.");
+            Bukkit.getServer().broadcast(Component.text("UHC: World Border shrink grace period is now over.", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
             getConfig().getManagedResources().addTimestamp("[Meta] World Border shrink grace period is now over.");
-            Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle("World border shrinking", "Don't get caught...", 10, 70, 20));
+            Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.text("World border shrinking"), Component.text("Don't get caught..."), 10, 70, 20)));
         };
     }
 
@@ -250,7 +253,7 @@ public class StartCommand extends AbstractCommand {
             int corner2Z = centerZ - eitherSide;
 
             if (shrinkTime > 0) {
-                Bukkit.broadcastMessage("UHC: Y Border shrink grace period over.");
+                Bukkit.getServer().broadcast(Component.text("UHC: Y Border shrink grace period over.", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
                 getConfig().getManagedResources().addTimestamp("[Meta] Y Border shrink grace period over.");
                 runner = getConfig().getManagedResources().runRepeatingTask(() -> {
                     shrinkYBorderBlock++;
@@ -265,15 +268,12 @@ public class StartCommand extends AbstractCommand {
     }
 
     protected Runnable updateActionBarLocation() {
-        return () -> Bukkit.getOnlinePlayers().forEach(player -> {
-            player.sendActionBar(Component.text(ChatColor.AQUA + "X: " + player.getLocation().getBlockX() + " Y: " + player.getLocation().getBlockY() + " Z: " + player.getLocation().getBlockZ()));
-
-        });
+        return () -> Bukkit.getOnlinePlayers().forEach(player -> player.sendActionBar(Component.text("X: " + player.getLocation().getBlockX() + " Y: " + player.getLocation().getBlockY() + " Z: " + player.getLocation().getBlockZ(), NamedTextColor.AQUA)));
     }
 
     protected Runnable endMobGracePeriod(final List<World> worlds) {
         return () -> {
-            Bukkit.broadcastMessage("UHC: Mob grace period is over");
+            Bukkit.getServer().broadcast(Component.text("UHC: Mob grace period is over", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
             getConfig().getManagedResources().addTimestamp("[Meta] World Border shrink grace period is now over.");
             Utils.setWorldEffects(worlds, (cb) -> cb.setDifficulty(getConfig().getProperty(DIFFICULTY, Defaults.DIFFICULTY)));
         };

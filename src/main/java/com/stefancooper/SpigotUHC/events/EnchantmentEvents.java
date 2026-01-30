@@ -1,7 +1,5 @@
 package com.stefancooper.SpigotUHC.events;
 
-import com.destroystokyo.paper.event.block.BlockDestroyEvent;
-import com.destroystokyo.paper.event.entity.EntityAddToWorldEvent;
 import com.destroystokyo.paper.event.entity.EntityKnockbackByEntityEvent;
 import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.Defaults;
@@ -27,7 +25,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDispenseEvent;
 import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -42,9 +39,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.util.Vector;
-
 import java.util.*;
-import java.util.logging.Level;
 
 public class EnchantmentEvents implements Listener {
 
@@ -95,9 +90,7 @@ public class EnchantmentEvents implements Listener {
             event.setCancelled(false); // Allow GUI to appear for shields
 
             // force client to refresh inventory to show new offers
-            config.getManagedResources().runTaskLater(() -> {
-                event.getEnchanter().updateInventory();
-            }, 1L);
+            config.getManagedResources().runTaskLater(() -> event.getEnchanter().updateInventory(), 1L);
             return;
         }
 
@@ -115,9 +108,7 @@ public class EnchantmentEvents implements Listener {
             event.setCancelled(false); // Allow GUI to appear for TNT
 
             // force client to refresh inventory to show new offers
-            config.getManagedResources().runTaskLater(() -> {
-                event.getEnchanter().updateInventory();
-            }, 1L);
+            config.getManagedResources().runTaskLater(() -> event.getEnchanter().updateInventory(), 1L);
         }
     }
 
@@ -258,18 +249,16 @@ public class EnchantmentEvents implements Listener {
         final List<MetadataValue> quickboomMetadata = block.getMetadata(Constants.QUICKBOOM_ENCHANTMENT);
         final List<MetadataValue> blastwaveMetadata = block.getMetadata(Constants.BLASTWAVE_ENCHANTMENT);
         if (!quickboomMetadata.isEmpty() || !blastwaveMetadata.isEmpty()) {
-            Bukkit.getScheduler().runTask(config.getPlugin(), () -> {
-                block.getWorld().getNearbyEntities(block.getLocation().add(0.5, 0.5, 0.5), 1, 1, 1)
-                        .stream()
-                        .filter(ent -> ent instanceof TNTPrimed)
-                        .map(ent -> (TNTPrimed) ent)
-                        .forEach(tnt -> {
-                            if (!quickboomMetadata.isEmpty() || !blastwaveMetadata.isEmpty())
-                                handleTNTEnchantments(tnt, quickboomMetadata, blastwaveMetadata);
-                            block.removeMetadata(Constants.QUICKBOOM_ENCHANTMENT, config.getPlugin());
-                            block.removeMetadata(Constants.BLASTWAVE_ENCHANTMENT, config.getPlugin());
-                        });
-            });
+            Bukkit.getScheduler().runTask(config.getPlugin(), () -> block.getWorld().getNearbyEntities(block.getLocation().add(0.5, 0.5, 0.5), 1, 1, 1)
+                    .stream()
+                    .filter(ent -> ent instanceof TNTPrimed)
+                    .map(ent -> (TNTPrimed) ent)
+                    .forEach(tnt -> {
+                        if (!quickboomMetadata.isEmpty() || !blastwaveMetadata.isEmpty())
+                            handleTNTEnchantments(tnt, quickboomMetadata, blastwaveMetadata);
+                        block.removeMetadata(Constants.QUICKBOOM_ENCHANTMENT, config.getPlugin());
+                        block.removeMetadata(Constants.BLASTWAVE_ENCHANTMENT, config.getPlugin());
+                    }));
         }
     }
 

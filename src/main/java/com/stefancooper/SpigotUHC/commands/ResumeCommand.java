@@ -6,6 +6,8 @@ import com.stefancooper.SpigotUHC.types.UHCLoot;
 import com.stefancooper.SpigotUHC.utils.Utils;
 import com.stefancooper.SpigotUHC.enums.ConfigKey;
 import com.stefancooper.SpigotUHC.types.BossBarBorder;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.World;
@@ -50,17 +52,13 @@ public class ResumeCommand extends StartCommand {
         }
 
         // Actions on the player
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            player.setGameMode(GameMode.SURVIVAL);
-        });
+        Bukkit.getOnlinePlayers().forEach(player -> player.setGameMode(GameMode.SURVIVAL));
 
         Bukkit.setDefaultGameMode(GameMode.SURVIVAL);
 
         // Actions on the world
         Utils.setWorldEffects(List.of(world, nether, end), (cbWorld) -> world.getWorldBorder().setSize(getConfig().getProperty(WORLD_BORDER_INITIAL_SIZE, Defaults.WORLD_BORDER_INITIAL_SIZE)));
-        Utils.setWorldEffects(List.of(getConfig().getWorlds().getOverworld(), getConfig().getWorlds().getNether(), getConfig().getWorlds().getEnd()), (cbWorld) -> {
-            cbWorld.setDifficulty(getConfig().getProperty(DIFFICULTY, Defaults.DIFFICULTY));
-        });
+        Utils.setWorldEffects(List.of(getConfig().getWorlds().getOverworld(), getConfig().getWorlds().getNether(), getConfig().getWorlds().getEnd()), (cbWorld) -> cbWorld.setDifficulty(getConfig().getProperty(DIFFICULTY, Defaults.DIFFICULTY)));
 
         if (getConfig().getProperty(ConfigKey.WORLD_BORDER_IN_BOSSBAR, Defaults.WORLD_BORDER_IN_BOSSBAR)) {
             BossBarBorder bossBarBorder = getConfig().getManagedResources().getBossBarBorder();
@@ -112,7 +110,7 @@ public class ResumeCommand extends StartCommand {
             WorldBorder wb = cbWorld.getWorldBorder();
             wb.setDamageBuffer(5);
             wb.setDamageAmount(0.2);
-            wb.setSize(finalWorldBorderSize, shrinkingTime - progressedSeconds);
+            wb.changeSize(finalWorldBorderSize, shrinkingTime - progressedSeconds);
         });
 
         if (Optional.ofNullable(getConfig().getProperty(WORLD_BORDER_Y_SHRINKING_PERIOD)).isPresent() &&
@@ -121,6 +119,6 @@ public class ResumeCommand extends StartCommand {
             getConfig().getManagedResources().runTaskLater(shrinkYBorderOverTime(), shrinkingTime);
         }
 
-        Bukkit.getOnlinePlayers().forEach(player -> player.sendTitle("World border shrinking", "Don't get caught...", 10, 70, 20));
+        Bukkit.getOnlinePlayers().forEach(player -> player.showTitle(Title.title(Component.text("World border shrinking"), Component.text("Don't get caught..."), 10, 70, 20)));
     }
 }

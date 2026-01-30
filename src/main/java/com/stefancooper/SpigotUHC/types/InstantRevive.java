@@ -2,6 +2,10 @@ package com.stefancooper.SpigotUHC.types;
 
 import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.Defaults;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Particle;
@@ -40,9 +44,7 @@ public class InstantRevive {
         }
 
         if (playSound) {
-            Bukkit.getOnlinePlayers().forEach(player -> {
-                player.playSound(player, Sound.BLOCK_END_PORTAL_SPAWN, 1, 1);
-            });
+            Bukkit.getOnlinePlayers().forEach(player -> player.playSound(player, Sound.BLOCK_END_PORTAL_SPAWN, 1, 1));
         }
 
         revivePlayer();
@@ -51,7 +53,7 @@ public class InstantRevive {
 
     void revivePlayer () {
         // double check that the reviver still has the player head
-        Bukkit.broadcastMessage(String.format("%s has been revived!", revivee.getDisplayName()));
+        Bukkit.getServer().broadcast(Component.text(String.format("%s has been revived!", revivee.getDisplayName()), Style.style(NamedTextColor.RED, TextDecoration.BOLD)));
 
         // Revivee effects
         revivee.getInventory().clear();

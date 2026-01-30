@@ -90,7 +90,7 @@ public class PrepareShieldEnchant {
     }
 
     private EnchantmentOffer getEnchantmentOfferFromSeed(final int seed, final List<EnchantmentOffer> offers) {
-        // enchantment seeds are a 32 bit signed int, so lets convert it into an unsigned int so that we can get an element from our list
+        // enchantment seeds are a 32-bit signed int, so lets convert it into an unsigned int so that we can get an element from our list
         long unsignedSeed = seed & 0xFFFFFFFFL;
         int index = (int) (unsignedSeed % offers.size());
         return offers.get(index);

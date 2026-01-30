@@ -1,4 +1,5 @@
-import org.bukkit.GameRule;
+
+import org.bukkit.GameRules;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
@@ -157,12 +158,12 @@ public class ResumeTest {
         int secondsProgressed = minutesProgressed * 60;
 
         if (secondsProgressed > gracePeriodTimer + countdown) {
-            assertWorldValues((world) -> assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRule.PVP)));
+            assertWorldValues((world) -> assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRules.PVP)));
         } else {
-            assertWorldValues((world) -> assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRule.PVP)));
+            assertWorldValues((world) -> assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRules.PVP)));
             int difference = gracePeriodTimer + countdown - (minutesProgressed * 60);
             schedule.performTicks(Utils.secondsToTicks(difference));
-            assertWorldValues((world) -> assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRule.PVP)));
+            assertWorldValues((world) -> assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRules.PVP)));
         }
     }
 

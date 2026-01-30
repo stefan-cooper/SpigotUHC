@@ -3,6 +3,10 @@ package com.stefancooper.SpigotUHC.types;
 import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.Defaults;
 import com.stefancooper.SpigotUHC.utils.Utils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -17,13 +21,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionType;
 import org.bukkit.scheduler.BukkitTask;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.logging.Level;
-
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_ENABLED;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_HIGH_LOOT_ODDS;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_MID_LOOT_ODDS;
@@ -225,7 +226,7 @@ public class UHCLoot {
 
             if (didHighTierSpawn) {
                 Bukkit.getOnlinePlayers().forEach(player -> player.playSound(player, Sound.ITEM_GOAT_HORN_SOUND_7, 2, 1));
-                Bukkit.broadcastMessage("UHC: High tier loot item(s) have spawned in the loot chest!");
+                Bukkit.getServer().broadcast(Component.text("UHC: High tier loot item(s) have spawned in the loot chest!", Style.style(NamedTextColor.GOLD, TextDecoration.BOLD)));
             }
 
         }, lootFrequency);

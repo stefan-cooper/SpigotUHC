@@ -2,17 +2,12 @@ package com.stefancooper.SpigotUHC.events;
 
 import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.types.UHCLoot;
-import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
-
-import java.util.Optional;
-
-import static com.stefancooper.SpigotUHC.enums.ConfigKey.*;
 import static com.stefancooper.SpigotUHC.types.UHCLoot.getChestLocation;
 import static com.stefancooper.SpigotUHC.types.UHCLoot.isSameLocation;
 

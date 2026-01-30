@@ -7,11 +7,8 @@ import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
-
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
-
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_ENABLED;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_VIA_ARMOR_STAND;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_VIA_PLATFORMS;

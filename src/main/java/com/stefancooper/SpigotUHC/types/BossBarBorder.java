@@ -17,7 +17,7 @@ public class BossBarBorder {
     private final Config config;
 
     public BossBarBorder (Config config) {
-        this.bossBar = Bukkit.createBossBar("World Border", BarColor.WHITE, BarStyle.SOLID);;
+        this.bossBar = Bukkit.createBossBar("World Border", BarColor.WHITE, BarStyle.SOLID);
         this.config = config;
     }
 

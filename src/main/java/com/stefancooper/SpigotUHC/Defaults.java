@@ -2,10 +2,11 @@ package com.stefancooper.SpigotUHC;
 
 import com.stefancooper.SpigotUHC.enums.ConfigKey;
 import com.stefancooper.SpigotUHC.utils.Utils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.GameMode;
-import org.bukkit.GameRule;
+import org.bukkit.GameRules;
 import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -112,19 +113,19 @@ public class Defaults {
 
     public static void setDefaultGameRules(Config config) {
         Utils.setWorldEffects(List.of(config.getWorlds().getOverworld(), config.getWorlds().getNether(), config.getWorlds().getEnd()), (world) -> {
-            world.setGameRule(GameRule.NATURAL_REGENERATION, false);
-            world.setGameRule(GameRule.DO_INSOMNIA, false);
-            world.setGameRule(GameRule.LOCATOR_BAR, false);
-            world.setGameRule(GameRule.COMMAND_MODIFICATION_BLOCK_LIMIT, MAXIMUM_FINAL_SIZE_FOR_Y_SHRINK * MAXIMUM_FINAL_SIZE_FOR_Y_SHRINK); // square the maximum final size to be used in y shrink
+            world.setGameRule(GameRules.NATURAL_HEALTH_REGENERATION, false);
+            world.setGameRule(GameRules.SPAWN_PHANTOMS, false);
+            world.setGameRule(GameRules.LOCATOR_BAR, false);
+            world.setGameRule(GameRules.MAX_BLOCK_MODIFICATIONS, MAXIMUM_FINAL_SIZE_FOR_Y_SHRINK * MAXIMUM_FINAL_SIZE_FOR_Y_SHRINK); // square the maximum final size to be used in y shrink
             // set pvp to false, will be enabled when /uhc start is ran
-            world.setGameRule(GameRule.PVP, false);
+            world.setGameRule(GameRules.PVP, false);
         });
         config.getPlugin().setCountingDown(false);
         Bukkit.getOnlinePlayers().forEach(player -> player.setGameMode(GameMode.ADVENTURE));
         final Scoreboard board = Bukkit.getScoreboardManager().getMainScoreboard();
         final Objective healthObjective;
         if (board.getObjective(HEALTH_OBJECTIVE) == null) {
-            healthObjective = board.registerNewObjective(HEALTH_OBJECTIVE, Criteria.HEALTH, "Health");
+            healthObjective = board.registerNewObjective(HEALTH_OBJECTIVE, Criteria.HEALTH, Component.text("Health"));
         } else {
             healthObjective = board.getObjective(HEALTH_OBJECTIVE);
         }

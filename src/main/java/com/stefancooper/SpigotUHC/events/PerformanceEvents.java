@@ -1,7 +1,6 @@
 package com.stefancooper.SpigotUHC.events;
 
 import com.stefancooper.SpigotUHC.Config;
-import com.stefancooper.SpigotUHC.Defaults;
 import com.stefancooper.SpigotUHC.enums.PerformanceTrackingEvent;
 import com.stefancooper.SpigotUHC.types.UHCLoot;
 import org.bukkit.GameMode;
@@ -19,11 +18,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-
 import java.util.HashSet;
 import java.util.Set;
-
-import static com.stefancooper.SpigotUHC.enums.ConfigKey.ENABLE_PERFORMANCE_TRACKING;
 import static com.stefancooper.SpigotUHC.types.UHCLoot.getChestLocation;
 import static com.stefancooper.SpigotUHC.types.UHCLoot.isSameLocation;
 

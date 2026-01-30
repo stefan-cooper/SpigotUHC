@@ -4,13 +4,12 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Level;
-
 import com.stefancooper.SpigotUHC.types.BossBarBorder;
 import com.stefancooper.SpigotUHC.utils.Utils;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Difficulty;
-import org.bukkit.GameRule;
+import org.bukkit.GameRules;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
@@ -18,7 +17,6 @@ import org.bukkit.WorldBorder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
-
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.ADDITIONAL_ENCHANTS_TNT;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.ALL_TREES_SPAWN_APPLES;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.COUNTDOWN_TIMER_LENGTH;
@@ -215,25 +213,25 @@ public class ConfigParser {
                 });
                 break;
             case TEAM_RED:
-                createTeam(new UHCTeam("Red", (String) configurable.value(), ChatColor.RED ));
+                createTeam(new UHCTeam("Red", (String) configurable.value(), NamedTextColor.RED ));
                 break;
             case TEAM_BLUE:
-                createTeam(new UHCTeam("Blue", (String) configurable.value(), ChatColor.AQUA ));
+                createTeam(new UHCTeam("Blue", (String) configurable.value(), NamedTextColor.AQUA ));
                 break;
             case TEAM_GREEN:
-                createTeam(new UHCTeam("Green", (String) configurable.value(), ChatColor.GREEN ));
+                createTeam(new UHCTeam("Green", (String) configurable.value(), NamedTextColor.GREEN ));
                 break;
             case TEAM_YELLOW:
-                createTeam(new UHCTeam("Yellow", (String) configurable.value(), ChatColor.YELLOW ));
+                createTeam(new UHCTeam("Yellow", (String) configurable.value(), NamedTextColor.YELLOW ));
                 break;
             case TEAM_ORANGE:
-                createTeam(new UHCTeam("Orange", (String) configurable.value(), ChatColor.GOLD ));
+                createTeam(new UHCTeam("Orange", (String) configurable.value(), NamedTextColor.GOLD ));
                 break;
             case TEAM_PINK:
-                createTeam(new UHCTeam("Pink", (String) configurable.value(), ChatColor.LIGHT_PURPLE ));
+                createTeam(new UHCTeam("Pink", (String) configurable.value(), NamedTextColor.LIGHT_PURPLE ));
                 break;
             case TEAM_PURPLE:
-                createTeam(new UHCTeam("Purple", (String) configurable.value(), ChatColor.DARK_PURPLE ));
+                createTeam(new UHCTeam("Purple", (String) configurable.value(), NamedTextColor.DARK_PURPLE ));
                 break;
             case PLAYER_HEAD_GOLDEN_APPLE:
                 NamespacedKey playerHeadKey = config.getManagedResources().getPlayerHeadKey();
@@ -289,7 +287,7 @@ public class ConfigParser {
                 break;
             case DISABLE_DEBUG_INFO:
                 Utils.setWorldEffects(List.of(overworld, nether, end), (world) -> {
-                    world.setGameRule(GameRule.REDUCED_DEBUG_INFO, (boolean) configurable.value());
+                    world.setGameRule(GameRules.REDUCED_DEBUG_INFO, (boolean) configurable.value());
                 });
                 break;
             case WORLD_NAME:

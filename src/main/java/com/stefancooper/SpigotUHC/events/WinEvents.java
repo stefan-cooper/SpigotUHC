@@ -2,8 +2,10 @@ package com.stefancooper.SpigotUHC.events;
 
 import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.Defaults;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -52,7 +54,7 @@ public class WinEvents implements Listener {
             }
 
             for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                onlinePlayer.sendTitle(ChatColor.GOLD + "Congratulations to Team " + winningTeamName + "!", "GG " + formattedWinningMembers + "!", 10, 100, 10);
+                onlinePlayer.sendTitle(NamedTextColor.GOLD + "Congratulations to Team " + winningTeamName + "!", "GG " + formattedWinningMembers + "!", 10, 100, 10);
             }
 
             // cancel timers that might have been running
@@ -62,7 +64,7 @@ public class WinEvents implements Listener {
 
             config.getManagedResources().runTaskLater(() -> {
                 for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                    onlinePlayer.sendTitle(ChatColor.GOLD + "Thank you all for playing!", "Hope it was fun!", 10, 40, 10);
+                    onlinePlayer.showTitle(Title.title(Component.text("Thank you all for playing!", NamedTextColor.GOLD), Component.text("Hope it was fun!"), 10, 40, 10));
                 }
             }, 5);
         }
@@ -88,7 +90,7 @@ public class WinEvents implements Listener {
 
             if (hasSurvivor) {
                 String playersAsString = String.join(", ", playerNames);
-                UHCTeam uhcTeam = new UHCTeam(team.getName(), playersAsString, team.getColor());
+                UHCTeam uhcTeam = new UHCTeam(team.getName(), playersAsString, NamedTextColor.namedColor(team.color().value()));
                 teamsWithSurvivors.add(uhcTeam);
             }
         }

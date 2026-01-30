@@ -1,6 +1,7 @@
 package com.stefancooper.SpigotUHC.types;
 
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -27,14 +28,12 @@ public class RandomFinalLocation {
     public static ItemStack generateWorldCenterCompass() {
         ItemStack centerCompass = new ItemStack (Material.COMPASS);
         ItemMeta meta = centerCompass.getItemMeta();
-        List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.RED + "Pointing at center");
+        List<Component> lore = new ArrayList<>();
+        lore.add(Component.text("Pointing at center", NamedTextColor.RED));
         if (meta.hasLore()) {
-            for (String l : meta.getLore()) {
-                lore.add(l);
-            }
+            lore.addAll(meta.lore());
         }
-        meta.setLore(lore);
+        meta.lore(lore);
         centerCompass.setItemMeta(meta);
         return centerCompass;
     }

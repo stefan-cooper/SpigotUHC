@@ -257,8 +257,10 @@ enable.death.chat=true
 all.trees.spawn.apples=false
 # (optional) turn off damage from ender pearls (by default, this is off)
 disable.ender.pearl.damage=false
-# (optional) enable automselt on iron, gold and copper ore to ingots (by default, this is off)
+# (optional) enable autosmelt on iron, gold and copper ore to ingots (by default, this is off)
 enable.autosmelt=false
+# (optional) respect teams when spreading players on uhc start (by default, this is on)
+respect.teams.on.spread=true
 ```
 
 ## Commands

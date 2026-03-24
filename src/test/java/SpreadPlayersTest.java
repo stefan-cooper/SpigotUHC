@@ -79,7 +79,7 @@ public class SpreadPlayersTest {
         TestUtils.executeCommand(plugin, admin, "start");
 
         admin.assertSaid(Component.text("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
-        // center.x, center.z, min distance, initial border size / 2, true = respectTeams, @a = all players
+        // center.x, center.z, min distance, initial border size / 2, false = respectTeams, @a = all players
         admin.assertSaid("spreadplayers 100.0 150.0 100 250 false @a");
     }
 

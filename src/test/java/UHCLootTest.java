@@ -1,4 +1,8 @@
 import com.stefancooper.SpigotUHC.utils.Utils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.block.state.ChestStateMock;
@@ -82,7 +86,8 @@ public class UHCLootTest {
         TestUtils.executeCommand(plugin, admin, "start");
 
         schedule.performOneTick();
-        admin.assertSaid("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!");
+
+        admin.assertSaid(Component.text("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
         schedule.performTicks(Utils.secondsToTicks(5));
 
         // start uhc (so the world spawn should now be ignored)
@@ -126,11 +131,11 @@ public class UHCLootTest {
         TestUtils.executeCommand(plugin, admin, "start");
 
         schedule.performOneTick();
-        admin.assertSaid("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!");
+        admin.assertSaid(Component.text("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
 
         schedule.performTicks(Utils.secondsToTicks(3));
 
-        admin.assertSaid("UHC: High tier loot item(s) have spawned in the loot chest!");
+        admin.assertSaid(Component.text("UHC: High tier loot item(s) have spawned in the overworld loot chest!", Style.style(NamedTextColor.GOLD, TextDecoration.BOLD)));
         admin.assertNoMoreSaid();
     }
 

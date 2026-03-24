@@ -1,4 +1,7 @@
+import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.GameRules;
 import org.bukkit.potion.PotionEffect;
@@ -155,7 +158,7 @@ public class StartTest {
             assertEquals(GameMode.SURVIVAL, player.getGameMode());
             assertNull(player.getPotionEffect(PotionEffectType.JUMP_BOOST));
             assertEquals(3, player.getPotionEffect(PotionEffectType.MINING_FATIGUE).getAmplifier());
-            assertEquals(NamedTextColor.AQUA + "X: 0 Y: 5 Z: 0", PlainTextComponentSerializer.plainText().serialize(player.nextActionBar()));
+            assertEquals("X: 0 Y: 5 Z: 0", PlainTextComponentSerializer.plainText().serialize(player.nextActionBar()));
         });
 
         schedule.performOneTick();
@@ -163,7 +166,7 @@ public class StartTest {
         // havent moved yet so still all the same
         server.getOnlinePlayers().forEach(player -> {
             // they havent moved so all players still in default position
-            assertEquals(NamedTextColor.AQUA + "X: 0 Y: 5 Z: 0", PlainTextComponentSerializer.plainText().serialize(player.nextActionBar()));
+            assertEquals("X: 0 Y: 5 Z: 0", PlainTextComponentSerializer.plainText().serialize(player.nextActionBar()));
         });
 
         // 2 players move
@@ -173,9 +176,9 @@ public class StartTest {
         schedule.performOneTick();
 
         // players positions have updated
-        assertEquals(NamedTextColor.AQUA + "X: 10 Y: 5 Z: 10", PlainTextComponentSerializer.plainText().serialize(player1.nextActionBar()));
-        assertEquals(NamedTextColor.AQUA + "X: -5 Y: 5 Z: 20", PlainTextComponentSerializer.plainText().serialize(player2.nextActionBar()));
-        assertEquals(NamedTextColor.AQUA + "X: 0 Y: 5 Z: 0", PlainTextComponentSerializer.plainText().serialize(player3.nextActionBar()));
+        assertEquals("X: 10 Y: 5 Z: 10", PlainTextComponentSerializer.plainText().serialize(player1.nextActionBar()));
+        assertEquals("X: -5 Y: 5 Z: 20", PlainTextComponentSerializer.plainText().serialize(player2.nextActionBar()));
+        assertEquals("X: 0 Y: 5 Z: 0", PlainTextComponentSerializer.plainText().serialize(player3.nextActionBar()));
 
         schedule.performTicks(Utils.secondsToTicks(10));
         TestUtils.executeCommand(plugin, admin, "cancel");
@@ -234,7 +237,7 @@ public class StartTest {
             assertEquals(3, player.getPotionEffect(PotionEffectType.REGENERATION).getAmplifier());
         });
 
-        admin.assertSaid("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!");
+        admin.assertSaid(Component.text("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
 
         schedule.performTicks(Utils.secondsToTicks(10));
 
@@ -252,7 +255,7 @@ public class StartTest {
         });
 
         schedule.performTicks(Utils.secondsToTicks(20));
-        admin.assertSaid("UHC: PVP grace period is now over.");
+        admin.assertSaid(Component.text("UHC: PVP grace period is now over.", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
 
         // Grace period finished
         assertEquals(Difficulty.HARD, world.getDifficulty());
@@ -269,7 +272,7 @@ public class StartTest {
         });
 
         schedule.performTicks(Utils.secondsToTicks(10)); // advance ticks for potion effect
-        admin.assertSaid("UHC: World Border shrink grace period is now over.");
+        admin.assertSaid(Component.text("UHC: World Border shrink grace period is now over.", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
 
         // World border grace period finished
         assertEquals(Difficulty.HARD, world.getDifficulty());
@@ -328,7 +331,7 @@ public class StartTest {
         // Initial start
         assertEquals(Difficulty.PEACEFUL, world.getDifficulty());
 
-        admin.assertSaid("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!");
+        admin.assertSaid(Component.text("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
 
         schedule.performTicks(Utils.secondsToTicks(10));
 
@@ -336,7 +339,7 @@ public class StartTest {
         assertEquals(Difficulty.PEACEFUL, world.getDifficulty());
 
         schedule.performTicks(Utils.secondsToTicks(5));
-        admin.assertSaid("UHC: Mob grace period is over");
+        admin.assertSaid(Component.text("UHC: Mob grace period is over", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
         assertEquals(Difficulty.HARD, world.getDifficulty());
     }
 }

@@ -1,3 +1,7 @@
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
@@ -53,7 +57,7 @@ public class SpreadPlayersTest {
 
         TestUtils.executeCommand(plugin, admin, "start");
 
-        admin.assertSaid("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!");
+        admin.assertSaid(Component.text("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
         // center.x, center.z, min distance, initial border size / 2, true = respectTeams, @a = all players
         admin.assertSaid("spreadplayers 100.0 150.0 100 250 true @a");
     }

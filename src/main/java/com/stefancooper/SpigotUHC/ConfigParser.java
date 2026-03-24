@@ -49,6 +49,7 @@ import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_FINAL_LOCATION;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_TEAMS_POT_ONE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_TEAMS_POT_THREE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_TEAMS_POT_TWO;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.RESPECT_TEAMS_ON_SPREAD;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_ANY_HEAD;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_ENABLED;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_HP;
@@ -141,6 +142,7 @@ public class ConfigParser {
             case DISABLE_DEBUG_INFO -> new Configurable<>(DISABLE_DEBUG_INFO, Boolean.parseBoolean(value));
             case DISABLE_ENDER_PEARL_DAMAGE -> new Configurable<>(DISABLE_ENDER_PEARL_DAMAGE, Boolean.parseBoolean(value));
             case ENABLE_AUTOSMELT -> new Configurable<>(ENABLE_AUTOSMELT, Boolean.parseBoolean(value));
+            case RESPECT_TEAMS_ON_SPREAD -> new Configurable<>(RESPECT_TEAMS_ON_SPREAD, Boolean.parseBoolean(value));
             // Revive config
             case REVIVE_ENABLED -> new Configurable<>(REVIVE_ENABLED, Boolean.parseBoolean(value));
             case REVIVE_TIME -> new Configurable<>(REVIVE_TIME, Integer.parseInt(value));

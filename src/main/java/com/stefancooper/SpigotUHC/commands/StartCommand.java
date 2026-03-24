@@ -34,6 +34,7 @@ import static com.stefancooper.SpigotUHC.enums.ConfigKey.DISABLE_DEBUG_INFO;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.GRACE_PERIOD_TIMER;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.MOB_GRACE_PERIOD;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_FINAL_LOCATION;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.RESPECT_TEAMS_ON_SPREAD;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.SPREAD_MIN_DISTANCE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_CENTER_X;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_CENTER_Z;
@@ -124,7 +125,8 @@ public class StartCommand extends AbstractCommand {
         // Spread players
         // spreadplayers <x> <z> <spreadDistance> <maxRange> <teams> <targets>
         // See: https://minecraft.fandom.com/wiki/Commands/spreadplayers
-        final String spreadCommand = String.format("spreadplayers %s %s %s %s true @a", finalLocation.getX(), finalLocation.getZ(), minDistance, maxDistance);
+        final boolean respectTeams = getConfig().getProperty(RESPECT_TEAMS_ON_SPREAD, true);
+        final String spreadCommand = String.format("spreadplayers %s %s %s %s %s @a", finalLocation.getX(), finalLocation.getZ(), minDistance, maxDistance, respectTeams);
         getSender().getServer().dispatchCommand(getSender(), spreadCommand);
 
         // Timed actions

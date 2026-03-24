@@ -50,6 +50,7 @@ public enum ConfigKey {
     DISABLE_DEBUG_INFO("disable.debug.info"), // disable all debug info from f3 (including F3 + B for cheat-y hitboxes). Enabling this will mean that players will get a compass with their current location on it
     DISABLE_ENDER_PEARL_DAMAGE("disable.ender.pearl.damage"), // disable ender pearl damage
     ENABLE_AUTOSMELT("enable.autosmelt"), // enable autosmelt for iron and copper
+    RESPECT_TEAMS_ON_SPREAD("respect.teams.on.spread"), // when we spread the players at the beginning of a UHC, should the teams stay together? (default = true)
 
     // Revive config
     REVIVE_ENABLED("revive.enabled"), // Enable revive

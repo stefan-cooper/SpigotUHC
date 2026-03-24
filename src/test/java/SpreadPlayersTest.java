@@ -43,7 +43,7 @@ public class SpreadPlayersTest {
     }
 
     @Test
-    @DisplayName("When start is ran, correct spread command is sent to the server")
+    @DisplayName("When start is ran, correct spread command is sent to the server (respect teams = default)")
     void correctSpreadCommandParametersAreUsed() {
         PlayerMock admin = server.addPlayer();
         admin.setOp(true);
@@ -53,6 +53,48 @@ public class SpreadPlayersTest {
                 "world.border.center.x=100",
                 "world.border.center.z=150",
                 "spread.min.distance=100"
+        );
+
+        TestUtils.executeCommand(plugin, admin, "start");
+
+        admin.assertSaid(Component.text("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
+        // center.x, center.z, min distance, initial border size / 2, true = respectTeams, @a = all players
+        admin.assertSaid("spreadplayers 100.0 150.0 100 250 true @a");
+    }
+
+    @Test
+    @DisplayName("When start is ran, correct spread command is sent to the server (respect teams = false)")
+    void correctSpreadCommandParametersAreUsedNoRespectTeams() {
+        PlayerMock admin = server.addPlayer();
+        admin.setOp(true);
+
+        TestUtils.executeCommand(plugin, admin, "set",
+                "world.border.initial.size=500",
+                "world.border.center.x=100",
+                "world.border.center.z=150",
+                "spread.min.distance=100",
+                "respect.teams.on.spread=false"
+        );
+
+        TestUtils.executeCommand(plugin, admin, "start");
+
+        admin.assertSaid(Component.text("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
+        // center.x, center.z, min distance, initial border size / 2, true = respectTeams, @a = all players
+        admin.assertSaid("spreadplayers 100.0 150.0 100 250 false @a");
+    }
+
+    @Test
+    @DisplayName("When start is ran, correct spread command is sent to the server (respect teams = true)")
+    void correctSpreadCommandParametersAreUsedWithRespectTeams() {
+        PlayerMock admin = server.addPlayer();
+        admin.setOp(true);
+
+        TestUtils.executeCommand(plugin, admin, "set",
+                "world.border.initial.size=500",
+                "world.border.center.x=100",
+                "world.border.center.z=150",
+                "spread.min.distance=100",
+                "respect.teams.on.spread=true"
         );
 
         TestUtils.executeCommand(plugin, admin, "start");

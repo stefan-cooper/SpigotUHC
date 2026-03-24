@@ -1,5 +1,7 @@
 package com.stefancooper.SpigotUHC.commands;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -19,7 +21,7 @@ public class CancelCommand extends AbstractCommand {
         getConfig().trigger();
         getConfig().getManagedResources().cancelTimer();
         for (Player player : Bukkit.getOnlinePlayers()) {
-            player.sendTitle("MATCH HAS ENDED","", 10, 70, 20);
+            player.showTitle(Title.title(Component.text("MATCH HAS ENDED"), Component.text(""), 10, 70, 20));
         }
     }
 }

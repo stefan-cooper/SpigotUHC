@@ -5,6 +5,7 @@ import com.stefancooper.SpigotUHC.Defaults;
 import com.stefancooper.SpigotUHC.enums.DeathAction;
 import com.stefancooper.SpigotUHC.types.BossBarBorder;
 import com.stefancooper.SpigotUHC.utils.Utils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -76,7 +77,7 @@ public class BaseEvents implements Listener {
                 event.getEntity().setGameMode(GameMode.SPECTATOR);
                 break;
             case KICK:
-                event.getEntity().kickPlayer("GG, you suck");
+                event.getEntity().kick(Component.text("GG, you suck"));
                 break;
             case null:
             default:
@@ -88,8 +89,8 @@ public class BaseEvents implements Listener {
             ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1);
             SkullMeta headMeta = (SkullMeta) head.getItemMeta();
             assert headMeta != null;
-            headMeta.setDisplayName(String.format("%s's head", player.getDisplayName()));
-            headMeta.setLore(List.of("Put this item in a bench", "For a Golden Apple"));
+            headMeta.displayName(Component.text(String.format("%s's head", player.getName())));
+            headMeta.lore(List.of(Component.text("Put this item in a bench"), Component.text("For a Golden Apple")));
             headMeta.setOwningPlayer(player);
             headMeta.setUnbreakable(true);
             headMeta.setFireResistant(true);
@@ -108,19 +109,17 @@ public class BaseEvents implements Listener {
             Player player = event.getEntity();
             Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
             Optional<Team> playerTeam = scoreboard.getTeams().stream().filter(team -> team.hasEntry(player.getDisplayName())).findFirst();
-            playerTeam.ifPresent(team -> {
-                team.getEntries().forEach(teammatePlayer -> {
-                    Player teammate = Bukkit.getPlayer(teammatePlayer);
-                    if (teammate != null) {
-                        teammate.sendMessage(String.format("(Only visible to your team) %s death location: %s, %s, %s",
-                                player.getDisplayName(),
-                                (int) player.getLocation().getX(),
-                                (int) player.getLocation().getY(),
-                                (int) player.getLocation().getZ()
-                        ));
-                    }
-                });
-            });
+            playerTeam.ifPresent(team -> team.getEntries().forEach(teammatePlayer -> {
+                Player teammate = Bukkit.getPlayer(teammatePlayer);
+                if (teammate != null) {
+                    teammate.sendMessage(Component.text(String.format("(Only visible to your team) %s death location: %s, %s, %s",
+                            player.getName(),
+                            (int) player.getLocation().getX(),
+                            (int) player.getLocation().getY(),
+                            (int) player.getLocation().getZ()
+                    )));
+                }
+            }));
         }
 
         // Play death cannon

@@ -1,3 +1,4 @@
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
@@ -102,9 +103,9 @@ public class WinEventTest {
 
         loser2.damage(20);
 
-        assertEquals(ChatColor.GOLD + "Congratulations to Team Red!", winner.nextTitle());
-        assertEquals(ChatColor.GOLD + "Congratulations to Team Red!", loser1.nextTitle());
-        assertEquals(ChatColor.GOLD + "Congratulations to Team Red!", loser2.nextTitle());
+        assertEquals(NamedTextColor.GOLD + "Congratulations to Team Red!", winner.nextTitle());
+        assertEquals(NamedTextColor.GOLD + "Congratulations to Team Red!", loser1.nextTitle());
+        assertEquals(NamedTextColor.GOLD + "Congratulations to Team Red!", loser2.nextTitle());
 
         schedule.performTicks(100);
 
@@ -222,15 +223,15 @@ public class WinEventTest {
 
         yellowLoser3.damage(20);
 
-        assertEquals(ChatColor.GOLD + "Congratulations to Team Red!", redWinner1.nextTitle());
-        assertEquals(ChatColor.GOLD + "Congratulations to Team Red!", redWinner2.nextTitle());
-        assertEquals(ChatColor.GOLD + "Congratulations to Team Red!", redWinner3.nextTitle());
-        assertEquals(ChatColor.GOLD + "Congratulations to Team Red!", blueLoser1.nextTitle());
-        assertEquals(ChatColor.GOLD + "Congratulations to Team Red!", blueLoser2.nextTitle());
-        assertEquals(ChatColor.GOLD + "Congratulations to Team Red!", blueLoser3.nextTitle());
-        assertEquals(ChatColor.GOLD + "Congratulations to Team Red!", yellowLoser1.nextTitle());
-        assertEquals(ChatColor.GOLD + "Congratulations to Team Red!", yellowLoser2.nextTitle());
-        assertEquals(ChatColor.GOLD + "Congratulations to Team Red!", yellowLoser3.nextTitle());
+        assertEquals(NamedTextColor.GOLD + "Congratulations to Team Red!", redWinner1.nextTitle());
+        assertEquals(NamedTextColor.GOLD + "Congratulations to Team Red!", redWinner2.nextTitle());
+        assertEquals(NamedTextColor.GOLD + "Congratulations to Team Red!", redWinner3.nextTitle());
+        assertEquals(NamedTextColor.GOLD + "Congratulations to Team Red!", blueLoser1.nextTitle());
+        assertEquals(NamedTextColor.GOLD + "Congratulations to Team Red!", blueLoser2.nextTitle());
+        assertEquals(NamedTextColor.GOLD + "Congratulations to Team Red!", blueLoser3.nextTitle());
+        assertEquals(NamedTextColor.GOLD + "Congratulations to Team Red!", yellowLoser1.nextTitle());
+        assertEquals(NamedTextColor.GOLD + "Congratulations to Team Red!", yellowLoser2.nextTitle());
+        assertEquals(NamedTextColor.GOLD + "Congratulations to Team Red!", yellowLoser3.nextTitle());
 
         schedule.performTicks(100);
 

@@ -1,3 +1,7 @@
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.Style;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.world.WorldMock;
@@ -93,7 +97,7 @@ public class ShrinkYBorderTest {
 
         TestUtils.executeCommand(plugin, admin, "start");
 
-        admin.assertSaid("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!");
+        admin.assertSaid(Component.text("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
         admin.assertSaid("spreadplayers 0.0 0.0 250 25 true @a");
         admin.assertNoMoreSaid();
 
@@ -103,18 +107,18 @@ public class ShrinkYBorderTest {
 
         // Wait for grace period (20 sec)
         schedule.performTicks(Utils.secondsToTicks(20));
-        admin.assertSaid("UHC: PVP grace period is now over.");
+        admin.assertSaid(Component.text("UHC: PVP grace period is now over.", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
         admin.assertNoMoreSaid();
 
 
         // Wait for world border grace period (10 more sec)
         schedule.performTicks(Utils.secondsToTicks(10)); // 30 ticks total after countdown, so 10 more
-        admin.assertSaid("UHC: World Border shrink grace period is now over.");
+        admin.assertSaid(Component.text("UHC: World Border shrink grace period is now over.", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
         admin.assertNoMoreSaid();
 
         // Wait for world border to shrink (30 sec)
         schedule.performTicks(Utils.secondsToTicks(30)); // advance ticks for potion effect
-        admin.assertSaid("UHC: Y Border shrink grace period over.");
+        admin.assertSaid(Component.text("UHC: Y Border shrink grace period over.", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
 
         // wait for first y border shrink
         schedule.performTicks(Utils.secondsToTicks(2));

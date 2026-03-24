@@ -1,10 +1,7 @@
 package com.stefancooper.SpigotUHC.commands;
 
 import com.stefancooper.SpigotUHC.Config;
-import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-
 import java.util.logging.Level;
 
 public class ViewConfigCommand extends AbstractCommand {

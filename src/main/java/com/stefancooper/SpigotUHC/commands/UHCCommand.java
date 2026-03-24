@@ -2,14 +2,9 @@ package com.stefancooper.SpigotUHC.commands;
 
 import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.utils.UHCCommandTabCompleter;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-
-import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

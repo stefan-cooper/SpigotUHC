@@ -2,6 +2,7 @@ package com.stefancooper.SpigotUHC.types;
 
 import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.Defaults;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -9,16 +10,12 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
-
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Level;
-
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_HP;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_LOCATION_SIZE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_LOCATION_X;
@@ -26,7 +23,6 @@ import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_LOCATION_Y;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_LOCATION_Z;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_LOSE_MAX_HEALTH;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_TIME;
-
 
 public class Revive {
 
@@ -100,7 +96,7 @@ public class Revive {
             reviver.sendMessage(String.format("%s is offline, so cannot be revived", revivee));
             return;
         } else {
-            Bukkit.broadcastMessage(String.format("%s is being revived!", this.revivee.getDisplayName()));
+            Bukkit.getServer().broadcast(Component.text(String.format("%s is being revived!", this.revivee.getName())));
         }
 
         if (playSound) {
@@ -115,7 +111,7 @@ public class Revive {
             playParticles.cancel();
             // double check that the reviver still has the player head
             if (reviver.getInventory().contains(playerHead)) {
-                Bukkit.broadcastMessage(String.format("%s has been revived!", revivee.getDisplayName()));
+                Bukkit.getServer().broadcast(Component.text(String.format("%s has been revived!", revivee.getName())));
                 reviveCallback.callback();
 
                 // Revivee effects
@@ -153,7 +149,7 @@ public class Revive {
     }
 
     public void cancelRevive() {
-        reviver.sendMessage(String.format("Revive of %s has been cancelled", revivee.getDisplayName()));
+        reviver.sendMessage(Component.text(String.format("Revive of %s has been cancelled", revivee.getName())));
         reviveTask.cancel();
         playParticles.cancel();
     }

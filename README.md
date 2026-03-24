@@ -246,7 +246,7 @@ disable.witches=true
 # (optional) re-add notch apples
 craftable.notch.apples=true
 # (optional) add a craftable player head (golden apple surrounded by diamonds)
-craftable.player.heads=true
+craftable.player.head=true
 # (optional) whisper the location of dead teammates when they die
 whisper.teammate.dead.location=true
 # (optional) disable the end game automatically (mainly for dev purposes)

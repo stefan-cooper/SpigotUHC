@@ -50,7 +50,7 @@ public enum ConfigKey {
     DISABLE_DEBUG_INFO("disable.debug.info"), // disable all debug info from f3 (including F3 + B for cheat-y hitboxes). Enabling this will mean that players will get a compass with their current location on it
     DISABLE_ENDER_PEARL_DAMAGE("disable.ender.pearl.damage"), // disable ender pearl damage
     ENABLE_AUTOSMELT("enable.autosmelt"), // enable autosmelt for iron and copper
-    RESPECT_TEAMS_ON_SPREAD("respect.teams.on.spread"), // when we spread the players at the beginning of a UHC, should the teams stay together? (default = true)
+    SPLIT_WITHIN_TEAMS_SIZE("split.within.teams.size"), // when we spread the players at the beginning of a UHC, should the team be split up? if so, this is the size of the split (default = -1 (no split))
 
     // Revive config
     REVIVE_ENABLED("revive.enabled"), // Enable revive
@@ -72,6 +72,7 @@ public enum ConfigKey {
 
     // UHC Loot
     LOOT_CHEST_ENABLED("loot.chest.enabled"), // Enable loot chest
+    LOOT_CHEST_GRACE_PERIOD("loot.chest.grace.period"), // time before loot chest starts spawning in (default = 0)
     LOOT_CHEST_X("loot.chest.x"), // Chest x
     LOOT_CHEST_Y("loot.chest.y"), // Chest y
     LOOT_CHEST_Z("loot.chest.z"), // Chest z

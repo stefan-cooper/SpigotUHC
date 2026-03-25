@@ -1,106 +1,184 @@
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.Style;
-import net.kyori.adventure.text.format.TextDecoration;
-import org.mockbukkit.mockbukkit.MockBukkit;
-import org.mockbukkit.mockbukkit.ServerMock;
-import org.mockbukkit.mockbukkit.entity.PlayerMock;
-import com.stefancooper.SpigotUHC.Plugin;
-import mocks.servers.DispatchCommandServerMock;
-import org.bukkit.World;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
+import com.stefancooper.SpigotUHC.types.Coordinate;
+import com.stefancooper.SpigotUHC.utils.SpreadPlayers;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import utils.TestUtils;
 
-import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
+import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SpreadPlayersTest {
 
-    private static ServerMock server;
-    private static Plugin plugin;
-    private static World world;
 
-    @BeforeAll
-    public static void load()
-    {
-        server = MockBukkit.mock(new DispatchCommandServerMock());
-        plugin = MockBukkit.load(Plugin.class);
-        world = server.getWorld(WORLD_NAME);
-    }
+    @Test
+    void singleCoordTest () {
+        final List<Coordinate> coords = SpreadPlayers.splitEvenly(0, 0, 100, 1);
 
-    @BeforeEach
-    public void cleanUp() {
-        plugin.getUHCConfig().resetToDefaults();
-    }
-
-    @AfterAll
-    public static void unload() {
-        plugin.getUHCConfig().resetToDefaults();
-        MockBukkit.unmock();
+        assertEquals(1, coords.size());
+        assertEquals(0.0, coords.getFirst().x());
+        assertEquals(0.0, coords.getFirst().z());
     }
 
     @Test
-    @DisplayName("When start is ran, correct spread command is sent to the server (respect teams = default)")
-    void correctSpreadCommandParametersAreUsed() {
-        PlayerMock admin = server.addPlayer();
-        admin.setOp(true);
+    void twoCoordTest () {
+        final List<Coordinate> coords = SpreadPlayers.splitEvenly(0, 0, 100, 2);
 
-        TestUtils.executeCommand(plugin, admin, "set",
-                "world.border.initial.size=500",
-                "world.border.center.x=100",
-                "world.border.center.z=150",
-                "spread.min.distance=100"
-        );
-
-        TestUtils.executeCommand(plugin, admin, "start");
-
-        admin.assertSaid(Component.text("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
-        // center.x, center.z, min distance, initial border size / 2, true = respectTeams, @a = all players
-        admin.assertSaid("spreadplayers 100.0 150.0 100 250 true @a");
+        assertEquals(2, coords.size());
+        assertEquals(-49, coords.getFirst().x());
+        assertEquals(-49, coords.getFirst().z());
+        assertEquals(49, coords.get(1).x());
+        assertEquals(-49, coords.get(1).z());
     }
 
     @Test
-    @DisplayName("When start is ran, correct spread command is sent to the server (respect teams = false)")
-    void correctSpreadCommandParametersAreUsedNoRespectTeams() {
-        PlayerMock admin = server.addPlayer();
-        admin.setOp(true);
+    void fourCoordTest () {
+        final List<Coordinate> coords = SpreadPlayers.splitEvenly(0, 0, 100, 4);
 
-        TestUtils.executeCommand(plugin, admin, "set",
-                "world.border.initial.size=500",
-                "world.border.center.x=100",
-                "world.border.center.z=150",
-                "spread.min.distance=100",
-                "respect.teams.on.spread=false"
-        );
+        assertEquals(4, coords.size());
+        // bottom left
+        assertEquals(-49, coords.getFirst().x());
+        assertEquals(-49, coords.getFirst().z());
+        // bottom right
+        assertEquals(49, coords.get(1).x());
+        assertEquals(-49, coords.get(1).z());
+        // top left
+        assertEquals(-49, coords.get(2).x());
+        assertEquals(49, coords.get(2).z());
+        // top right
+        assertEquals(49, coords.get(3).x());
+        assertEquals(49, coords.get(3).z());
 
-        TestUtils.executeCommand(plugin, admin, "start");
-
-        admin.assertSaid(Component.text("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
-        // center.x, center.z, min distance, initial border size / 2, false = respectTeams, @a = all players
-        admin.assertSaid("spreadplayers 100.0 150.0 100 250 false @a");
     }
 
     @Test
-    @DisplayName("When start is ran, correct spread command is sent to the server (respect teams = true)")
-    void correctSpreadCommandParametersAreUsedWithRespectTeams() {
-        PlayerMock admin = server.addPlayer();
-        admin.setOp(true);
+    void fiveCoordTest () {
+        final List<Coordinate> coords = SpreadPlayers.splitEvenly(0, 0, 100, 5);
 
-        TestUtils.executeCommand(plugin, admin, "set",
-                "world.border.initial.size=500",
-                "world.border.center.x=100",
-                "world.border.center.z=150",
-                "spread.min.distance=100",
-                "respect.teams.on.spread=true"
-        );
+        assertEquals(5, coords.size());
+        // bottom left
+        assertEquals(-49, coords.getFirst().x());
+        assertEquals(-49, coords.getFirst().z());
+        // bottom middle
+        assertEquals(0, coords.get(1).x());
+        assertEquals(-49, coords.get(1).z());
+        // bottom right
+        assertEquals(49, coords.get(2).x());
+        assertEquals(-49, coords.get(2).z());
+        // top left
+        assertEquals(-49, coords.get(3).x());
+        assertEquals(49, coords.get(3).z());
+        // top middle
+        assertEquals(0, coords.get(4).x());
+        assertEquals(49, coords.get(4).z());
 
-        TestUtils.executeCommand(plugin, admin, "start");
+    }
 
-        admin.assertSaid(Component.text("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
-        // center.x, center.z, min distance, initial border size / 2, true = respectTeams, @a = all players
-        admin.assertSaid("spreadplayers 100.0 150.0 100 250 true @a");
+    @Test
+    void nineCoordTest () {
+        final List<Coordinate> coords = SpreadPlayers.splitEvenly(0, 0, 100, 9);
+
+        assertEquals(9, coords.size());
+        // bottom left
+        assertEquals(-49, coords.getFirst().x());
+        assertEquals(-49, coords.getFirst().z());
+        // bottom middle
+        assertEquals(0, coords.get(1).x());
+        assertEquals(-49, coords.get(1).z());
+        // bottom right
+        assertEquals(49, coords.get(2).x());
+        assertEquals(-49, coords.get(2).z());
+        // middle left
+        assertEquals(-49, coords.get(3).x());
+        assertEquals(0, coords.get(3).z());
+        // middle middle
+        assertEquals(0, coords.get(4).x());
+        assertEquals(0, coords.get(4).z());
+        // middle left
+        assertEquals(49, coords.get(5).x());
+        assertEquals(0, coords.get(5).z());
+        // top left
+        assertEquals(-49, coords.get(6).x());
+        assertEquals(49, coords.get(6).z());
+        // top middle
+        assertEquals(0, coords.get(7).x());
+        assertEquals(49, coords.get(7).z());
+        // top right
+        assertEquals(49, coords.get(8).x());
+        assertEquals(49, coords.get(8).z());
+    }
+
+    @Test
+    void twentyCoordTest () {
+        final List<Coordinate> coords = SpreadPlayers.splitEvenly(0, 0, 1000, 20);
+
+        assertEquals(20, coords.size());
+        // bottom row
+        assertEquals(-499, coords.getFirst().x());
+        assertEquals(-499, coords.getFirst().z());
+        assertEquals(-249.5, coords.get(1).x());
+        assertEquals(-499, coords.get(1).z());
+        assertEquals(0, coords.get(2).x());
+        assertEquals(-499, coords.get(2).z());
+        assertEquals(249.5, coords.get(3).x());
+        assertEquals(-499, coords.get(3).z());
+        assertEquals(499, coords.get(4).x());
+        assertEquals(-499, coords.get(4).z());
+        // bottom middle row
+        assertEquals(-499, coords.get(5).x());
+        assertEquals(-166, (int) coords.get(5).z());
+        assertEquals(-249.5, coords.get(6).x());
+        assertEquals(-166, (int) coords.get(6).z());
+        assertEquals(0, coords.get(7).x());
+        assertEquals(-166, (int) coords.get(7).z());
+        assertEquals(249.5, coords.get(8).x());
+        assertEquals(-166, (int) coords.get(8).z());
+        assertEquals(499, coords.get(9).x());
+        assertEquals(-166, (int) coords.get(9).z());
+        // top middle row
+        assertEquals(-499, coords.get(10).x());
+        assertEquals(166, (int) coords.get(10).z());
+        assertEquals(-249.5, coords.get(11).x());
+        assertEquals(166, (int) coords.get(11).z());
+        assertEquals(0, coords.get(12).x());
+        assertEquals(166, (int) coords.get(12).z());
+        assertEquals(249.5, coords.get(13).x());
+        assertEquals(166, (int) coords.get(13).z());
+        assertEquals(499, coords.get(14).x());
+        assertEquals(166, (int) coords.get(14).z());
+        // top row
+        assertEquals(-499, coords.get(15).x());
+        assertEquals(499, coords.get(15).z());
+        assertEquals(-249.5, coords.get(16).x());
+        assertEquals(499, coords.get(16).z());
+        assertEquals(0, coords.get(17).x());
+        assertEquals(499, coords.get(17).z());
+        assertEquals(249.5, coords.get(18).x());
+        assertEquals(499, coords.get(18).z());
+        assertEquals(499, coords.get(19).x());
+        assertEquals(499, coords.get(19).z());
+    }
+
+    @Test
+    void bigCoordTest () {
+        final List<Coordinate> coords = SpreadPlayers.splitEvenly(0, 0, 1000, 100);
+
+        assertEquals(100, coords.size());
+        for (final Coordinate coord : coords) {
+            assertTrue(coord.x() > -500 && coord.x() < 500);
+            assertTrue(coord.z() > -500 && coord.z() < 500);
+        }
+    }
+
+    @Test
+    void badDiameterTest () {
+        assertEquals(List.of(), SpreadPlayers.splitEvenly(0, 0, -1, 3));
+    }
+
+    @Test
+    void badGroupsCoordTest () {
+        assertEquals(List.of(), SpreadPlayers.splitEvenly(0, 0, 100, -1));
+        assertEquals(List.of(), SpreadPlayers.splitEvenly(0, 0, 100, 0));
     }
 }

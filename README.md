@@ -146,6 +146,8 @@ loot.chest.high.loot.odds=5
 loot.chest.mid.loot.odds=40
 # items/spins per gen
 loot.chest.spins.per.gen=5
+# time in seconds before the first loot chest is spawned after the UHC has started (default 0 seconds)
+loot.chest.grace.period=0
 ```
 
 Static Loot Chest:
@@ -259,8 +261,8 @@ all.trees.spawn.apples=false
 disable.ender.pearl.damage=false
 # (optional) enable autosmelt on iron, gold and copper ore to ingots (by default, this is off)
 enable.autosmelt=false
-# (optional) respect teams when spreading players on uhc start (by default, this is on)
-respect.teams.on.spread=true
+# (optional) decide how the players are spread. this can be used to split up players despite their teams. (e.g. setting this to 1 will make all players be separated but retain their teams). Default is -1 (no split)
+split.within.teams.size=-1
 ```
 
 ## Commands

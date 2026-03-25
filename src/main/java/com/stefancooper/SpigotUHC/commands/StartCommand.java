@@ -2,11 +2,14 @@ package com.stefancooper.SpigotUHC.commands;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+
 import com.stefancooper.SpigotUHC.Defaults;
 import com.stefancooper.SpigotUHC.enums.ConfigKey;
 import com.stefancooper.SpigotUHC.types.BossBarBorder;
 import com.stefancooper.SpigotUHC.types.RandomFinalLocation;
 import com.stefancooper.SpigotUHC.types.UHCLoot;
+import com.stefancooper.SpigotUHC.utils.SpreadPlayers;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;
@@ -32,9 +35,9 @@ import static com.stefancooper.SpigotUHC.enums.ConfigKey.COUNTDOWN_TIMER_LENGTH;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DIFFICULTY;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.DISABLE_DEBUG_INFO;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.GRACE_PERIOD_TIMER;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_GRACE_PERIOD;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.MOB_GRACE_PERIOD;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_FINAL_LOCATION;
-import static com.stefancooper.SpigotUHC.enums.ConfigKey.RESPECT_TEAMS_ON_SPREAD;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.SPREAD_MIN_DISTANCE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_CENTER_X;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.WORLD_BORDER_CENTER_Z;
@@ -114,20 +117,18 @@ public class StartCommand extends AbstractCommand {
             player.clearActivePotionEffects();
             player.addPotionEffect(PotionEffectType.MINING_FATIGUE.createEffect((int) Utils.secondsToTicks(countdownTimer), 3));
             player.addPotionEffect(PotionEffectType.REGENERATION.createEffect((int) Utils.secondsToTicks(countdownTimer) + (int) Utils.secondsToTicks(30), 3));
+            player.addPotionEffect(PotionEffectType.FIRE_RESISTANCE.createEffect((int) Utils.secondsToTicks(countdownTimer) + (int) Utils.secondsToTicks(30), 3));
             if (getConfig().getProperty(RANDOM_FINAL_LOCATION, Defaults.RANDOM_FINAL_LOCATION)) {
                 player.getInventory().addItem(RandomFinalLocation.generateWorldCenterCompass());
                 player.setCompassTarget(world.getWorldBorder().getCenter());
             }
         });
 
-        Bukkit.getServer().broadcast(Component.text("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
-
         // Spread players
-        // spreadplayers <x> <z> <spreadDistance> <maxRange> <teams> <targets>
-        // See: https://minecraft.fandom.com/wiki/Commands/spreadplayers
-        final boolean respectTeams = getConfig().getProperty(RESPECT_TEAMS_ON_SPREAD, true);
-        final String spreadCommand = String.format("spreadplayers %s %s %s %s %s @a", finalLocation.getX(), finalLocation.getZ(), minDistance, maxDistance, respectTeams);
-        getSender().getServer().dispatchCommand(getSender(), spreadCommand);
+        final SpreadPlayers spread = new SpreadPlayers(getConfig());
+        spread.trigger();
+
+        Bukkit.getServer().broadcast(Component.text("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
 
         // Timed actions
         int gracePeriod = getConfig().getProperty(GRACE_PERIOD_TIMER, Defaults.GRACE_PERIOD_TIMER);
@@ -168,7 +169,8 @@ public class StartCommand extends AbstractCommand {
 
         // UHC Loot
         if (UHCLoot.isConfigured(getConfig())) {
-            getConfig().getManagedResources().runTaskLater(() -> new UHCLoot(getConfig()), countdownTimer);
+            final int uhcLootGracePeriod = getConfig().getProperty(LOOT_CHEST_GRACE_PERIOD, Defaults.LOOT_CHEST_GRACE_PERIOD);
+            getConfig().getManagedResources().runTaskLater(() -> new UHCLoot(getConfig()), countdownTimer + uhcLootGracePeriod);
         }
 
         if (getConfig().getProperty(DISABLE_DEBUG_INFO, Defaults.DISABLE_DEBUG_INFO)) {

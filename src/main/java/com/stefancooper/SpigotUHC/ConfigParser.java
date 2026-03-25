@@ -33,6 +33,7 @@ import static com.stefancooper.SpigotUHC.enums.ConfigKey.ENABLE_PERFORMANCE_TRAC
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.ENABLE_TIMESTAMPS;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.GRACE_PERIOD_TIMER;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_ENABLED;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_GRACE_PERIOD;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_HIGH_LOOT_ODDS;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_MID_LOOT_ODDS;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.LOOT_CHEST_SPINS_PER_GEN;
@@ -49,7 +50,6 @@ import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_FINAL_LOCATION;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_TEAMS_POT_ONE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_TEAMS_POT_THREE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.RANDOM_TEAMS_POT_TWO;
-import static com.stefancooper.SpigotUHC.enums.ConfigKey.RESPECT_TEAMS_ON_SPREAD;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_ANY_HEAD;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_ENABLED;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_HP;
@@ -61,6 +61,7 @@ import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_LOSE_MAX_HEALTH;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_TIME;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_VIA_ARMOR_STAND;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.REVIVE_VIA_PLATFORMS;
+import static com.stefancooper.SpigotUHC.enums.ConfigKey.SPLIT_WITHIN_TEAMS_SIZE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.SPREAD_MIN_DISTANCE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.TEAM_BLUE;
 import static com.stefancooper.SpigotUHC.enums.ConfigKey.TEAM_GREEN;
@@ -142,7 +143,7 @@ public class ConfigParser {
             case DISABLE_DEBUG_INFO -> new Configurable<>(DISABLE_DEBUG_INFO, Boolean.parseBoolean(value));
             case DISABLE_ENDER_PEARL_DAMAGE -> new Configurable<>(DISABLE_ENDER_PEARL_DAMAGE, Boolean.parseBoolean(value));
             case ENABLE_AUTOSMELT -> new Configurable<>(ENABLE_AUTOSMELT, Boolean.parseBoolean(value));
-            case RESPECT_TEAMS_ON_SPREAD -> new Configurable<>(RESPECT_TEAMS_ON_SPREAD, Boolean.parseBoolean(value));
+            case SPLIT_WITHIN_TEAMS_SIZE -> new Configurable<>(SPLIT_WITHIN_TEAMS_SIZE, Integer.parseInt(value));
             // Revive config
             case REVIVE_ENABLED -> new Configurable<>(REVIVE_ENABLED, Boolean.parseBoolean(value));
             case REVIVE_TIME -> new Configurable<>(REVIVE_TIME, Integer.parseInt(value));
@@ -165,6 +166,7 @@ public class ConfigParser {
             case WORLD_SPAWN_Z -> new Configurable<>(WORLD_SPAWN_Z, Integer.parseInt(value));
             // UHC Loot
             case LOOT_CHEST_ENABLED -> new Configurable<>(LOOT_CHEST_ENABLED, Boolean.parseBoolean(value));
+            case LOOT_CHEST_GRACE_PERIOD -> new Configurable<>(LOOT_CHEST_GRACE_PERIOD, Integer.parseInt(value));
             case LOOT_CHEST_X -> new Configurable<>(LOOT_CHEST_X, Integer.valueOf(value));
             case LOOT_CHEST_Y -> new Configurable<>(LOOT_CHEST_Y, Integer.valueOf(value));
             case LOOT_CHEST_Z -> new Configurable<>(LOOT_CHEST_Z, Integer.valueOf(value));

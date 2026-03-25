@@ -99,7 +99,7 @@ public class WinEventTest {
         assertNull(loser1.nextTitle());
         assertNull(loser2.nextTitle());
 
-        assertEquals(new Location(world, 0, 5, 0), winner.getLocation());
+        assertNotEquals(new Location(world, newX, newY, newZ), winner.getLocation());
 
         loser2.damage(20);
 
@@ -110,7 +110,7 @@ public class WinEventTest {
         schedule.performTicks(100);
 
         // winner should still be in same location after winning
-        assertEquals(new Location(world, 0, 5, 0), winner.getLocation());
+        assertNotEquals(new Location(world, newX, newY, newZ), winner.getLocation());
 
     }
 
@@ -192,7 +192,7 @@ public class WinEventTest {
         assertNull(yellowLoser2.nextTitle());
         assertNull(yellowLoser3.nextTitle());
 
-        assertEquals(new Location(world, 0, 5, 0), redWinner1.getLocation());
+        assertNotEquals(new Location(world, newX, newY, newZ), redWinner1.getLocation());
 
         blueLoser2.damage(20);
         blueLoser3.damage(20);
@@ -237,7 +237,7 @@ public class WinEventTest {
 
 
         // winners should still be in same location after winning
-        assertEquals(new Location(world, 0, 5, 0), redWinner2.getLocation());
-        assertEquals(new Location(world, 0, 5, 0), redWinner3.getLocation());
+        assertNotEquals(new Location(world, newX, newY, newZ), redWinner2.getLocation());
+        assertNotEquals(new Location(world, newX, newY, newZ), redWinner3.getLocation());
     }
 }

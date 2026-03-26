@@ -97,7 +97,7 @@ public class RandomiseTeamsCommand extends AbstractCommand {
                     final String teamPlayers = String.join(",", teams.get(i));
                     Bukkit.getServer().broadcast(Component.text(String.format("Team %s: %s", teamColor, teamPlayers)));
                     final UHCTeam team = new UHCTeam(teamColor, teamPlayers, mapColorToTeamColor(teamColor));
-                    UHCTeam.createTeam(team);
+                    UHCTeam.createTeam(team, getConfig());
                 }
             }
 

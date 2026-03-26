@@ -5,6 +5,7 @@ import com.stefancooper.SpigotUHC.enums.PerformanceTrackingEvent;
 import com.stefancooper.SpigotUHC.types.BossBarBorder;
 import com.stefancooper.SpigotUHC.types.InstantRevive;
 import com.stefancooper.SpigotUHC.types.Revive;
+import com.stefancooper.SpigotUHC.types.UHCTeam;
 import com.stefancooper.SpigotUHC.utils.Utils;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
@@ -24,7 +25,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 
@@ -48,6 +51,7 @@ public class ManagedResources {
     final NamespacedKey quickboomEnchantment;
     final NamespacedKey blastwaveEnchantment;
     final JSONObject statistics;
+    final List<UHCTeam> teams;
     Revive currentRevive = null;
     BukkitTask reviveDebounce = null;
     Block dynamicLootChestLocation = null;
@@ -63,6 +67,7 @@ public class ManagedResources {
         this.notchApple = new NamespacedKey(config.getPlugin(), NOTCH_APPLE);
         this.quickboomEnchantment = new NamespacedKey(SPIGOT_NAMESPACE, QUICKBOOM_ENCHANTMENT);
         this.blastwaveEnchantment = new NamespacedKey(SPIGOT_NAMESPACE, BLASTWAVE_ENCHANTMENT);
+        this.teams = new ArrayList<>();
         final boolean fileAlreadyExists;
         JSONObject json = null;
         try {
@@ -231,5 +236,12 @@ public class ManagedResources {
     public Block getDynamicNetherLootChestLocation() { return dynamicNetherLootChestLocation; }
 
     public void setDynamicNetherLootChestLocation(final Block block) { dynamicNetherLootChestLocation = block; }
+
+    public List<UHCTeam> getTeams() { return teams; }
+
+    public void addTeam(final UHCTeam team) {
+        teams.removeIf((existingTeam) -> existingTeam.getName().equals(team.getName()));
+        teams.add(team);
+    }
 
 }

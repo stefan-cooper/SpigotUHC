@@ -217,25 +217,25 @@ public class ConfigParser {
                 });
                 break;
             case TEAM_RED:
-                createTeam(new UHCTeam("Red", (String) configurable.value(), NamedTextColor.RED ));
+                createTeam(new UHCTeam("Red", (String) configurable.value(), NamedTextColor.RED ), config);
                 break;
             case TEAM_BLUE:
-                createTeam(new UHCTeam("Blue", (String) configurable.value(), NamedTextColor.AQUA ));
+                createTeam(new UHCTeam("Blue", (String) configurable.value(), NamedTextColor.AQUA ), config);
                 break;
             case TEAM_GREEN:
-                createTeam(new UHCTeam("Green", (String) configurable.value(), NamedTextColor.GREEN ));
+                createTeam(new UHCTeam("Green", (String) configurable.value(), NamedTextColor.GREEN ), config);
                 break;
             case TEAM_YELLOW:
-                createTeam(new UHCTeam("Yellow", (String) configurable.value(), NamedTextColor.YELLOW ));
+                createTeam(new UHCTeam("Yellow", (String) configurable.value(), NamedTextColor.YELLOW ), config);
                 break;
             case TEAM_ORANGE:
-                createTeam(new UHCTeam("Orange", (String) configurable.value(), NamedTextColor.GOLD ));
+                createTeam(new UHCTeam("Orange", (String) configurable.value(), NamedTextColor.GOLD ), config);
                 break;
             case TEAM_PINK:
-                createTeam(new UHCTeam("Pink", (String) configurable.value(), NamedTextColor.LIGHT_PURPLE ));
+                createTeam(new UHCTeam("Pink", (String) configurable.value(), NamedTextColor.LIGHT_PURPLE ), config);
                 break;
             case TEAM_PURPLE:
-                createTeam(new UHCTeam("Purple", (String) configurable.value(), NamedTextColor.DARK_PURPLE ));
+                createTeam(new UHCTeam("Purple", (String) configurable.value(), NamedTextColor.DARK_PURPLE ), config);
                 break;
             case PLAYER_HEAD_GOLDEN_APPLE:
                 NamespacedKey playerHeadKey = config.getManagedResources().getPlayerHeadKey();

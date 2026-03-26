@@ -1,5 +1,6 @@
 package com.stefancooper.SpigotUHC.types;
 
+import com.stefancooper.SpigotUHC.Config;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -32,7 +33,7 @@ public class UHCTeam {
         return color;
     }
 
-    public static void createTeam(UHCTeam uhcTeam) {
+    public static void createTeam(final UHCTeam uhcTeam, final Config config) {
         Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
 
         // if team already exists, redefine it
@@ -50,5 +51,6 @@ public class UHCTeam {
         team.color(uhcTeam.getColor());
         team.setAllowFriendlyFire(false);
         team.prefix(Component.text(String.format("[%s] ", uhcTeam.getName())));
+        config.getManagedResources().addTeam(uhcTeam);
     }
 }

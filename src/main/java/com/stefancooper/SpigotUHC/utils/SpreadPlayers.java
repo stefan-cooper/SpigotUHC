@@ -3,6 +3,7 @@ package com.stefancooper.SpigotUHC.utils;
 import com.stefancooper.SpigotUHC.Config;
 import com.stefancooper.SpigotUHC.Defaults;
 import com.stefancooper.SpigotUHC.types.Coordinate;
+import com.stefancooper.SpigotUHC.types.UHCTeam;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -64,12 +65,11 @@ public class SpreadPlayers {
     }
 
     private List<List<Player>> getAllTeams() {
-        Scoreboard scoreboard = Bukkit.getScoreboardManager().getMainScoreboard();
         List<List<Player>> teams = new ArrayList<>();
-        for (Team team : scoreboard.getTeams()) {
+        for (UHCTeam team : config.getManagedResources().getTeams()) {
             List<Player> teamPlayers = new ArrayList<>();
-            for (String playerName : team.getEntries()) {
-                teamPlayers.add(Bukkit.getPlayer(playerName));
+            for (String playerName : team.getPlayers()) {
+                teamPlayers.add(Bukkit.getPlayerExact(playerName));
             }
             teams.add(teamPlayers);
         }

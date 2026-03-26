@@ -1,7 +1,7 @@
-name: SpigotUHC
-version: 9.3.3
+name: EasyUHC
+version: 10.0.0
 author: Stefan Cooper
-main: com.stefancooper.SpigotUHC.Plugin
+main: com.stefancooper.EasyUHC.Plugin
 api-version: 1.21.11
 website: https://stefancooper.com
 commands:
@@ -9,6 +9,7 @@ commands:
     description: Configure and run a UHC
     permission: op
     usage: >
+      UHC Plugin Commands
       UHC Plugin Commands
       
       Set config value:

@@ -58,7 +58,8 @@ public class UHCLoot {
             Material.SNOWBALL,
             Material.ORANGE_HARNESS,
             Material.SADDLE,
-            Material.PAPER
+            Material.PAPER,
+            Material.PUFFERFISH
     );
 
     private static List<Material> midTier = List.of(
@@ -72,6 +73,7 @@ public class UHCLoot {
             Material.BOOKSHELF,
             Material.SPECTRAL_ARROW,
             Material.DIAMOND_HORSE_ARMOR,
+            Material.DIAMOND_NAUTILUS_ARMOR,
             Material.ENDER_PEARL,
             Material.GOLD_BLOCK,
             Material.ANVIL,
@@ -282,6 +284,7 @@ public class UHCLoot {
             case Material.WIND_CHARGE -> item.setAmount(3);
             case Material.SNOWBALL -> item.setAmount(16);
             case Material.PAPER -> item.setAmount(8);
+            case Material.PUFFERFISH -> item.setAmount(5);
         }
     }
 

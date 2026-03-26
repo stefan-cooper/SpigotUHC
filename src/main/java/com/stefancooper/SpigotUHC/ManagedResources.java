@@ -52,6 +52,7 @@ public class ManagedResources {
     BukkitTask reviveDebounce = null;
     Block dynamicLootChestLocation = null;
     Block dynamicNetherLootChestLocation = null;
+    long startTime = System.currentTimeMillis();
 
     public ManagedResources(final Config config) {
         this.config = config;
@@ -167,7 +168,17 @@ public class ManagedResources {
             try {
                 new File(TIMESTAMPS_LOCATION).createNewFile();
                 final FileWriter writer = new FileWriter(TIMESTAMPS_LOCATION, append);
-                writer.write(String.format("%s : %s\n", new Date(), event));
+                if (!append) {
+                    startTime = System.currentTimeMillis();
+                }
+                long now = System.currentTimeMillis();
+                long elapsed = now - startTime;
+                long seconds = elapsed / 1000;
+                long hours = seconds / 3600;
+                long minutes = (seconds % 3600) / 60;
+                long secs = seconds % 60;
+                String formattedTimestamp = String.format("%02d:%02d:%02d", hours, minutes, secs);
+                writer.write(String.format("%s : %s\n", formattedTimestamp, event));
                 writer.close();
             } catch (Exception ignored) {
             }

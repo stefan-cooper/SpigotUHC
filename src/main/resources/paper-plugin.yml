@@ -1,5 +1,5 @@
 name: SpigotUHC
-version: 9.3.1
+version: 9.3.2
 main: com.stefancooper.SpigotUHC.Plugin
 description: Spigot UHC Plugin
 api-version: 1.21.11

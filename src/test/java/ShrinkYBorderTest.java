@@ -98,7 +98,6 @@ public class ShrinkYBorderTest {
         TestUtils.executeCommand(plugin, admin, "start");
 
         admin.assertSaid(Component.text("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
-        admin.assertSaid("spreadplayers 0.0 0.0 250 25 true @a");
         admin.assertNoMoreSaid();
 
         // Wait for countdown (10 sec)

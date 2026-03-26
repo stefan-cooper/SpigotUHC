@@ -56,6 +56,7 @@ public class Defaults {
     public static boolean ENABLE_AUTOSMELT = false;
     public static boolean DISABLE_DEBUG_INFO = false;
     public static boolean DISABLE_ENDER_PEARL_DAMAGE = false;
+    public static int SPLIT_WITHIN_TEAMS_SIZE = -1;
 
     // Craftables
     public static boolean CRAFTABLE_NOTCH_APPLE = false;
@@ -78,6 +79,7 @@ public class Defaults {
 
     // Loot chest
     public static boolean LOOT_CHEST_ENABLED = false;
+    public static int LOOT_CHEST_GRACE_PERIOD = 0;
     public static int LOOT_CHEST_FREQUENCY = 300;
     public static int LOOT_CHEST_SPINS_PER_GEN = 5;
     public static int LOOT_CHEST_HIGH_LOOT_ODDS = 8;

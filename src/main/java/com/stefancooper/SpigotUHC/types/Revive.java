@@ -112,6 +112,7 @@ public class Revive {
             // double check that the reviver still has the player head
             if (reviver.getInventory().contains(playerHead)) {
                 Bukkit.getServer().broadcast(Component.text(String.format("%s has been revived!", revivee.getName())));
+                config.getManagedResources().addTimestamp(String.format("[Revive] %s has been revived", revivee.getName()));
                 reviveCallback.callback();
 
                 // Revivee effects

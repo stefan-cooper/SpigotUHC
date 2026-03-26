@@ -53,7 +53,8 @@ public class InstantRevive {
 
     void revivePlayer () {
         // double check that the reviver still has the player head
-        Bukkit.getServer().broadcast(Component.text(String.format("%s has been revived!", revivee.getDisplayName()), Style.style(NamedTextColor.RED, TextDecoration.BOLD)));
+        Bukkit.getServer().broadcast(Component.text(String.format("%s has been revisved!", revivee.displayName()), Style.style(NamedTextColor.RED, TextDecoration.BOLD)));
+        config.getManagedResources().addTimestamp(String.format("[Revive] %s has been revived", revivee.displayName()));
 
         // Revivee effects
         revivee.getInventory().clear();

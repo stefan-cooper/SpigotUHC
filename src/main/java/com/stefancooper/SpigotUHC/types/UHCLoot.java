@@ -229,6 +229,7 @@ public class UHCLoot {
             if (didHighTierSpawn) {
                 Bukkit.getOnlinePlayers().forEach(player -> player.playSound(player, Sound.ITEM_GOAT_HORN_SOUND_7, 2, 1));
                 Bukkit.getServer().broadcast(Component.text("UHC: High tier loot item(s) have spawned in the overworld loot chest!", Style.style(NamedTextColor.GOLD, TextDecoration.BOLD)));
+                config.getManagedResources().addTimestamp("[UHC Loot] High tier loot item(s) have spawned in the overworld loot chest");
             }
 
         }, lootFrequency);

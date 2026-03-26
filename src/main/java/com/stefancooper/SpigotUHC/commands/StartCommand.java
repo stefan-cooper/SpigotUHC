@@ -278,7 +278,7 @@ public class StartCommand extends AbstractCommand {
     protected Runnable endMobGracePeriod(final List<World> worlds) {
         return () -> {
             Bukkit.getServer().broadcast(Component.text("UHC: Mob grace period is over", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
-            getConfig().getManagedResources().addTimestamp("[Meta] World Border shrink grace period is now over.");
+            getConfig().getManagedResources().addTimestamp("[Meta] Mob grace period is over.");
             Utils.setWorldEffects(worlds, (cb) -> cb.setDifficulty(getConfig().getProperty(DIFFICULTY, Defaults.DIFFICULTY)));
         };
     }

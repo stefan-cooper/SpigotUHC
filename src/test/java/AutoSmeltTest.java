@@ -1,4 +1,4 @@
-import com.stefancooper.SpigotUHC.Plugin;
+import com.stefancooper.EasyUHC.Plugin;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -18,7 +18,7 @@ import org.mockbukkit.mockbukkit.entity.PlayerMock;
 import org.mockbukkit.mockbukkit.scheduler.BukkitSchedulerMock;
 import org.mockito.Mockito;
 import utils.TestUtils;
-import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
+import static com.stefancooper.EasyUHC.Defaults.WORLD_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.spy;

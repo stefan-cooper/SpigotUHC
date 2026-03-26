@@ -10,7 +10,7 @@ fi
 ./build_plugin.sh
 
 PLUGIN_VERSION=$(mvn help:evaluate -Dexpression=UHCPlugin.version -q -DforceStdout)
-PLUGIN_LOCATION="./build/SpigotUHC-${PLUGIN_VERSION}.jar"
+PLUGIN_LOCATION="./build/EasyUHC-${PLUGIN_VERSION}.jar"
 COMMIT_MSG=${COMMIT_MSG:-$(git log -1 --pretty=format:"%s")}
 COMMIT_SHA=${COMMIT_SHA:-$(git rev-parse HEAD)}
 
@@ -20,7 +20,7 @@ COMMIT_MSG=$(echo "${COMMIT_MSG}" | head -1)
 curl --fail-with-body \
   -H "Content-Type: multipart/form-data" \
   -X POST \
-  -F "payload_json={ \"content\":\"**SpigotUHC ${PLUGIN_VERSION}** is now available!\nCommit: ${COMMIT_MSG}\nView changes: <https://github.com/stefan-cooper/SpigotUHC/commit/${COMMIT_SHA}> \" }" \
+  -F "payload_json={ \"content\":\"**EasyUHC ${PLUGIN_VERSION}** is now available!\nCommit: ${COMMIT_MSG}\nView changes: <https://github.com/stefan-cooper/EasyUHC/commit/${COMMIT_SHA}> \" }" \
   -F "file1=@${PLUGIN_LOCATION}" \
   "${DISCORD_WEBHOOK}"
 

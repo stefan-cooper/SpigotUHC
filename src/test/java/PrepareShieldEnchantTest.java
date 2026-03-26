@@ -1,23 +1,14 @@
-import com.stefancooper.SpigotUHC.Plugin;
-import com.stefancooper.SpigotUHC.enchants.PrepareShieldEnchant;
-import com.stefancooper.SpigotUHC.utils.Utils;
+import com.stefancooper.EasyUHC.Plugin;
+import com.stefancooper.EasyUHC.enchants.PrepareShieldEnchant;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 
-import java.util.stream.Stream;
-
-import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.jupiter.api.Assertions.assertEquals;

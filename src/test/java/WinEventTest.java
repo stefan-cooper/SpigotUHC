@@ -3,12 +3,12 @@ import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
 import org.mockbukkit.mockbukkit.scheduler.BukkitSchedulerMock;
-import com.stefancooper.SpigotUHC.Plugin;
+import com.stefancooper.EasyUHC.Plugin;
 import org.bukkit.*;
 import org.junit.jupiter.api.*;
 import utils.TestUtils;
 
-import static com.stefancooper.SpigotUHC.Defaults.*;
+import static com.stefancooper.EasyUHC.Defaults.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 

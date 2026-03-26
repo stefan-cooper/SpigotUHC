@@ -1,6 +1,6 @@
-# SpigotUHC
+# EasyUHC
 
-Run a UHC on your Spigot Server.
+Run a UHC on your [Paper](https://papermc.io/) Server.
 
 Want to contribute? See [Contributing](#contributing)
 
@@ -8,7 +8,7 @@ Want to contribute? See [Contributing](#contributing)
 
 1. Download the plugin - we don't currently have any accessible download links. Contact @stefan-cooper or any other contributor to retrieve a .jar file
 
-2. Add the plugin to your `plugins` folder in your Spigot server
+2. Add the plugin to your `plugins` folder in your [Paper](https://papermc.io/) server
 
 ## Configure your UHC
 
@@ -104,35 +104,6 @@ revive.lose.max.health=4
 revive.any.head=false|true
 ```
 
-Armor stand config
-```properties
-# revive via armor stand + head. False by default
-revive.via.armor.stand=false|true
-```
-
-Platforms Revive config
-
-```properties
-# revive via the regular platforms (requires the location coords to be set too). False by default
-revive.via.platforms=false|true
-# How long it takes for the revive to happen
-revive.time=10
-# X coordinate for the center of the revive location
-revive.location.x=-30
-# for multiple revive locations, you can comma seperate each x coordinate of each location
-# revive.location.x=-30,100,45
-# Y coordinate for the center of the revive location
-revive.location.y=64
-# for multiple revive locations, you can comma seperate each y coordinate of each location
-# revive.location.y=64,68,75
-# Z coordinate for the center of the revive location
-revive.location.z=11
-# for multiple revive locations, you can comma seperate each z coordinate of each location
-# revive.location.z=11,222,-42
-# Diameter/size of the revive location
-revive.location.size=10
-```
-
 #### Loot chest configuration
 
 ```properties
@@ -148,19 +119,6 @@ loot.chest.mid.loot.odds=40
 loot.chest.spins.per.gen=5
 # time in seconds before the first loot chest is spawned after the UHC has started (default 0 seconds)
 loot.chest.grace.period=0
-```
-
-Static Loot Chest:
-
-A non-destructible loot chest is spawned at this location on uhc start.
-
-```properties
-# X coordinate for the loot chest
-loot.chest.x=100
-# Y coordinate for the loot chest
-loot.chest.y=64
-# Z coordinate for the loot chest
-loot.chest.z=100
 ```
 
 Dynamic Loot Chest:

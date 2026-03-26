@@ -1,6 +1,5 @@
-import com.stefancooper.SpigotUHC.types.Coordinate;
-import com.stefancooper.SpigotUHC.utils.SpreadPlayers;
-import org.junit.jupiter.api.Assertions;
+import com.stefancooper.EasyUHC.types.Coordinate;
+import com.stefancooper.EasyUHC.utils.SpreadPlayers;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

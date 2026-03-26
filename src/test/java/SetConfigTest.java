@@ -1,9 +1,8 @@
-import com.stefancooper.SpigotUHC.commands.UHCCommand;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
 import org.mockbukkit.mockbukkit.inventory.InventoryMock;
-import com.stefancooper.SpigotUHC.Plugin;
+import com.stefancooper.EasyUHC.Plugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -12,11 +11,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.scoreboard.Scoreboard;
 import org.junit.jupiter.api.*;
-import org.mockbukkit.mockbukkit.scheduler.BukkitSchedulerMock;
 import utils.TestUtils;
 
-import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
-import static com.stefancooper.SpigotUHC.utils.Constants.PLAYER_HEAD;
+import static com.stefancooper.EasyUHC.Defaults.WORLD_NAME;
+import static com.stefancooper.EasyUHC.utils.Constants.PLAYER_HEAD;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SetConfigTest {

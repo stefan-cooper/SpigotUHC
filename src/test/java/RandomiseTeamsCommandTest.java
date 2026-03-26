@@ -1,7 +1,7 @@
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
-import com.stefancooper.SpigotUHC.Plugin;
+import com.stefancooper.EasyUHC.Plugin;
 import org.bukkit.World;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -12,9 +12,9 @@ import utils.TestUtils;
 
 import java.util.List;
 import java.util.Set;
-import static com.stefancooper.SpigotUHC.Defaults.END_WORLD_NAME;
-import static com.stefancooper.SpigotUHC.Defaults.NETHER_WORLD_NAME;
-import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
+import static com.stefancooper.EasyUHC.Defaults.END_WORLD_NAME;
+import static com.stefancooper.EasyUHC.Defaults.NETHER_WORLD_NAME;
+import static com.stefancooper.EasyUHC.Defaults.WORLD_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

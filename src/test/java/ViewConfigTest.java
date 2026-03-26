@@ -1,12 +1,12 @@
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
-import com.stefancooper.SpigotUHC.Plugin;
+import com.stefancooper.EasyUHC.Plugin;
 import org.bukkit.World;
 import org.junit.jupiter.api.*;
 import utils.TestUtils;
 
-import static com.stefancooper.SpigotUHC.Defaults.*;
+import static com.stefancooper.EasyUHC.Defaults.*;
 
 public class ViewConfigTest {
 
@@ -49,7 +49,6 @@ public class ViewConfigTest {
                         grace.period.timer=%s
                         nether.world.name=%s
                         on.death.action=%s
-                        spread.min.distance=%s
                         world.border.center.x=%s
                         world.border.center.z=%s
                         world.border.final.size=%s
@@ -57,7 +56,7 @@ public class ViewConfigTest {
                         world.border.initial.size=%s
                         world.border.shrinking.period=%s
                         world.name=%s
-                        """, COUNTDOWN_TIMER_LENGTH, DIFFICULTY, DISABLE_DEBUG_INFO, ENABLE_PERFORMANCE_TRACKING, ENABLE_TIMESTAMPS, END_WORLD_NAME, GRACE_PERIOD_TIMER, NETHER_WORLD_NAME, ON_DEATH_ACTION, MIN_SPREAD_DISTANCE, WORLD_BORDER_CENTER_X, WORLD_BORDER_CENTER_Z,
+                        """, COUNTDOWN_TIMER_LENGTH, DIFFICULTY, DISABLE_DEBUG_INFO, ENABLE_PERFORMANCE_TRACKING, ENABLE_TIMESTAMPS, END_WORLD_NAME, GRACE_PERIOD_TIMER, NETHER_WORLD_NAME, ON_DEATH_ACTION, WORLD_BORDER_CENTER_X, WORLD_BORDER_CENTER_Z,
                 WORLD_BORDER_FINAL_SIZE, WORLD_BORDER_GRACE_PERIOD, WORLD_BORDER_INITIAL_SIZE, WORLD_BORDER_SHRINKING_PERIOD, WORLD_NAME
                         )
         );

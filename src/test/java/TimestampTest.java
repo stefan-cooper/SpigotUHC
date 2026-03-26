@@ -1,14 +1,11 @@
-import com.stefancooper.SpigotUHC.commands.UHCCommand;
 import org.junit.jupiter.api.AfterEach;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
-import com.stefancooper.SpigotUHC.Plugin;
-import com.stefancooper.SpigotUHC.utils.Utils;
+import com.stefancooper.EasyUHC.Plugin;
+import com.stefancooper.EasyUHC.utils.Utils;
 import org.bukkit.World;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,7 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
-import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
+import static com.stefancooper.EasyUHC.Defaults.WORLD_NAME;
 
 /**
  * Message for later me - If you've come here looking for tests related to testing timestamps

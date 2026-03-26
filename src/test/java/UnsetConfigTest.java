@@ -1,4 +1,4 @@
-import com.stefancooper.SpigotUHC.Plugin;
+import com.stefancooper.EasyUHC.Plugin;
 import org.bukkit.World;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -10,7 +10,7 @@ import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
 import utils.TestUtils;
 
-import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
+import static com.stefancooper.EasyUHC.Defaults.WORLD_NAME;
 
 public class UnsetConfigTest {
 

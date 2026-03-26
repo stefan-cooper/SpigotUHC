@@ -1,0 +1,27 @@
+package com.stefancooper.EasyUHC.commands;
+
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.title.Title;
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import com.stefancooper.EasyUHC.Config;
+
+public class CancelCommand extends AbstractCommand {
+
+    public static final String COMMAND_KEY = "cancel";
+
+    public CancelCommand(CommandSender sender, String cmd, String[] args, Config config) {
+        super(sender, cmd, args, config);
+    }
+
+    @Override
+    public void execute() {
+        getConfig().getPlugin().setUHCLive(false);
+        getConfig().trigger();
+        getConfig().getManagedResources().cancelTimer();
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            player.showTitle(Title.title(Component.text("MATCH HAS ENDED"), Component.text(""), 10, 70, 20));
+        }
+    }
+}

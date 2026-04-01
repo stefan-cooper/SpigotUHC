@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.stefancooper.EasyUHC.Defaults;
 import com.stefancooper.EasyUHC.enums.ConfigKey;
+import com.stefancooper.EasyUHC.types.EvolvingShield;
 import com.stefancooper.EasyUHC.types.BossBarBorder;
 import com.stefancooper.EasyUHC.types.RandomFinalLocation;
 import com.stefancooper.EasyUHC.types.UHCLoot;
@@ -33,6 +34,7 @@ import org.bukkit.scheduler.BukkitTask;
 import static com.stefancooper.EasyUHC.enums.ConfigKey.COUNTDOWN_TIMER_LENGTH;
 import static com.stefancooper.EasyUHC.enums.ConfigKey.DIFFICULTY;
 import static com.stefancooper.EasyUHC.enums.ConfigKey.DISABLE_DEBUG_INFO;
+import static com.stefancooper.EasyUHC.enums.ConfigKey.ENABLE_EVOLVING_SHIELDS;
 import static com.stefancooper.EasyUHC.enums.ConfigKey.GRACE_PERIOD_TIMER;
 import static com.stefancooper.EasyUHC.enums.ConfigKey.LOOT_CHEST_GRACE_PERIOD;
 import static com.stefancooper.EasyUHC.enums.ConfigKey.MOB_GRACE_PERIOD;
@@ -107,6 +109,9 @@ public class StartCommand extends AbstractCommand {
             player.setSaturation(20);
             player.setFoodLevel(20);
             player.getInventory().clear();
+            if (getConfig().getProperty(ENABLE_EVOLVING_SHIELDS, Defaults.ENABLE_EVOLVING_SHIELDS)) {
+                EvolvingShield.createEvolvingShield(getConfig(), player);
+            }
             player.setExp(0);
             player.setLevel(0);
             player.setGameMode(GameMode.SURVIVAL);

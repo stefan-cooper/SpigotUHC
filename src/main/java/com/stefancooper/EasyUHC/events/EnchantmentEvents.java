@@ -55,7 +55,9 @@ public class EnchantmentEvents implements Listener {
 
         // Shield enchants
         if (item.getType() == Material.SHIELD &&
-                config.getProperty(ConfigKey.ADDITIONAL_ENCHANTS_SHIELD, Defaults.ADDITIONAL_ENCHANTS_SHIELD)) {
+                config.getProperty(ConfigKey.ADDITIONAL_ENCHANTS_SHIELD, Defaults.ADDITIONAL_ENCHANTS_SHIELD) &&
+                !config.getProperty(ConfigKey.ENABLE_EVOLVING_SHIELDS, Defaults.ENABLE_EVOLVING_SHIELDS)
+        ) {
             final EnchantShield shieldEnchants = new EnchantShield(item, Map.of(event.getEnchantmentHint(), event.getLevelHint()));
             // Note - In the future, if base minecraft adds their own enchants for shields, we may want to remove this
             event.getEnchantsToAdd().clear();
@@ -77,7 +79,9 @@ public class EnchantmentEvents implements Listener {
         ItemStack item = event.getItem();
 
         if (item.getType() == Material.SHIELD &&
-                config.getProperty(ConfigKey.ADDITIONAL_ENCHANTS_SHIELD, Defaults.ADDITIONAL_ENCHANTS_SHIELD)) {
+                config.getProperty(ConfigKey.ADDITIONAL_ENCHANTS_SHIELD, Defaults.ADDITIONAL_ENCHANTS_SHIELD) &&
+                !config.getProperty(ConfigKey.ENABLE_EVOLVING_SHIELDS, Defaults.ENABLE_EVOLVING_SHIELDS)
+        ) {
 
             final PrepareShieldEnchant prepareShieldEnchant = new PrepareShieldEnchant(item, event.getView().getEnchantmentSeed(), event.getEnchantmentBonus());
 

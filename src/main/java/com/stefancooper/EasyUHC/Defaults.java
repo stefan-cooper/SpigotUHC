@@ -37,7 +37,6 @@ public class Defaults {
     public static int MOB_GRACE_PERIOD = 0;
     public static String ON_DEATH_ACTION = SPECTATE.name;
     public static int COUNTDOWN_TIMER_LENGTH = 10;
-    public static int MIN_SPREAD_DISTANCE = 250;
     public static Difficulty DIFFICULTY = Difficulty.EASY;
     public static boolean ENABLE_TIMESTAMPS = true;
     public static boolean ENABLE_PERFORMANCE_TRACKING = true;
@@ -69,12 +68,8 @@ public class Defaults {
 
     // Revives
     public static boolean REVIVE_ENABLED = false;
-    public static boolean REVIVE_VIA_PLATFORMS = false;
-    public static boolean REVIVE_VIA_ARMOR_STAND = true;
     public static int REVIVE_HP = 4;
     public static int REVIVE_LOSE_MAX_HEALTH = 4;
-    public static int REVIVE_LOCATION_SIZE = 10;
-    public static int REVIVE_TIME = 5;
     public static boolean REVIVE_ANY_HEAD = true;
 
     // Loot chest
@@ -88,6 +83,7 @@ public class Defaults {
     // Additional Enchants
     public static boolean ADDITIONAL_ENCHANTS_SHIELD = false;
     public static boolean ADDITIONAL_ENCHANTS_TNT = false;
+    public static boolean ENABLE_EVOLVING_SHIELDS = false;
 
     /* -- End of defaults -- */
 

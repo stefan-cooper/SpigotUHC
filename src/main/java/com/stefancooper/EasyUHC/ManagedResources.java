@@ -17,7 +17,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.scheduler.BukkitTask;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -25,9 +24,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Level;
-
+import static com.stefancooper.EasyUHC.utils.Constants.EVOLVING_SHIELD_USER_KEY;
+import static com.stefancooper.EasyUHC.utils.Constants.EVOLVING_SHIELD_XP_KEY;
 import static com.stefancooper.EasyUHC.utils.Constants.BLASTWAVE_ENCHANTMENT;
 import static com.stefancooper.EasyUHC.utils.Constants.CRAFTABLE_PLAYER_HEAD;
 import static com.stefancooper.EasyUHC.utils.Constants.NOTCH_APPLE;
@@ -47,9 +46,10 @@ public class ManagedResources {
     final NamespacedKey notchApple;
     final NamespacedKey quickboomEnchantment;
     final NamespacedKey blastwaveEnchantment;
+    final NamespacedKey evolvingShieldUserKey;
+    final NamespacedKey evolvingShieldXPKey;
     final JSONObject statistics;
     final List<UHCTeam> teams;
-    BukkitTask reviveDebounce = null;
     Block dynamicLootChestLocation = null;
     Block dynamicNetherLootChestLocation = null;
     long startTime = System.currentTimeMillis();
@@ -63,6 +63,8 @@ public class ManagedResources {
         this.notchApple = new NamespacedKey(config.getPlugin(), NOTCH_APPLE);
         this.quickboomEnchantment = new NamespacedKey(SPIGOT_NAMESPACE, QUICKBOOM_ENCHANTMENT);
         this.blastwaveEnchantment = new NamespacedKey(SPIGOT_NAMESPACE, BLASTWAVE_ENCHANTMENT);
+        this.evolvingShieldUserKey = new NamespacedKey(SPIGOT_NAMESPACE, EVOLVING_SHIELD_USER_KEY);
+        this.evolvingShieldXPKey = new NamespacedKey(SPIGOT_NAMESPACE, EVOLVING_SHIELD_XP_KEY);
         this.teams = new ArrayList<>();
         final boolean fileAlreadyExists;
         JSONObject json = null;
@@ -122,6 +124,14 @@ public class ManagedResources {
 
     public NamespacedKey getNotchAppleKey() {
         return notchApple;
+    }
+
+    public NamespacedKey getEvolvingShieldUserKey() {
+        return evolvingShieldUserKey;
+    }
+
+    public NamespacedKey getEvolvingShieldXPKey() {
+        return evolvingShieldXPKey;
     }
 
     public Enchantment getQuickboomEnchantment() {

@@ -29,6 +29,7 @@ import static com.stefancooper.EasyUHC.enums.ConfigKey.DISABLE_END_GAME_AUTOMATI
 import static com.stefancooper.EasyUHC.enums.ConfigKey.DISABLE_WITCHES;
 import static com.stefancooper.EasyUHC.enums.ConfigKey.ENABLE_AUTOSMELT;
 import static com.stefancooper.EasyUHC.enums.ConfigKey.ENABLE_DEATH_CHAT;
+import static com.stefancooper.EasyUHC.enums.ConfigKey.ENABLE_EVOLVING_SHIELDS;
 import static com.stefancooper.EasyUHC.enums.ConfigKey.ENABLE_PERFORMANCE_TRACKING;
 import static com.stefancooper.EasyUHC.enums.ConfigKey.ENABLE_TIMESTAMPS;
 import static com.stefancooper.EasyUHC.enums.ConfigKey.GRACE_PERIOD_TIMER;
@@ -156,6 +157,7 @@ public class ConfigParser {
             // Additional Enchants
             case ADDITIONAL_ENCHANTS_SHIELD -> new Configurable<>(ADDITIONAL_ENCHANTS_SHIELD, Boolean.parseBoolean(value));
             case ADDITIONAL_ENCHANTS_TNT -> new Configurable<>(ADDITIONAL_ENCHANTS_TNT, Boolean.parseBoolean(value));
+            case ENABLE_EVOLVING_SHIELDS -> new Configurable<>(ENABLE_EVOLVING_SHIELDS, Boolean.parseBoolean(value));
             case null -> null;
         };
     }

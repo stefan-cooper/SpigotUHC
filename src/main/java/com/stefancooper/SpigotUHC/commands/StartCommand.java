@@ -226,7 +226,7 @@ public class StartCommand extends AbstractCommand {
                 WorldBorder wb = cbWorld.getWorldBorder();
                 wb.setDamageBuffer(5);
                 wb.setDamageAmount(0.2);
-                wb.changeSize(finalWorldBorderSize, shrinkingTime);
+                wb.changeSize(finalWorldBorderSize, Utils.secondsToTicks(shrinkingTime));
             });
 
             if (Optional.ofNullable(getConfig().getProperty(WORLD_BORDER_Y_SHRINKING_PERIOD)).isPresent() &&

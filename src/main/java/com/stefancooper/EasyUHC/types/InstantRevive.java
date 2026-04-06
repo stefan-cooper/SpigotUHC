@@ -2,6 +2,7 @@ package com.stefancooper.EasyUHC.types;
 
 import com.stefancooper.EasyUHC.Config;
 import com.stefancooper.EasyUHC.Defaults;
+import com.stefancooper.EasyUHC.evolvingshield.EvolvingShield;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;

@@ -83,7 +83,10 @@ public class Defaults {
     // Additional Enchants
     public static boolean ADDITIONAL_ENCHANTS_SHIELD = false;
     public static boolean ADDITIONAL_ENCHANTS_TNT = false;
+
+    // Evolving shields
     public static boolean ENABLE_EVOLVING_SHIELDS = false;
+    public static int EVOLVING_SHIELDS_EXP_THRESHOLD = -1;
 
     /* -- End of defaults -- */
 

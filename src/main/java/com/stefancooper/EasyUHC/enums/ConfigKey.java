@@ -75,7 +75,10 @@ public enum ConfigKey {
     // Additional Enchants
     ADDITIONAL_ENCHANTS_SHIELD("additional.enchants.shield"), // Additional enchants for shield
     ADDITIONAL_ENCHANTS_TNT("additional.enchants.tnt"), // Additional enchants for tnt
-    ENABLE_EVOLVING_SHIELDS("enable.evolving.shields") // enable evolving shields
+
+    // Evolving Shields
+    ENABLE_EVOLVING_SHIELDS("enable.evolving.shields"), // enable evolving shields
+    EVOLVING_SHIELDS_EXP_THRESHOLD("evolving.shields.exp.threshold") // threshold in which you will require to do player damage to continue upgrading your shield
 
     ;
 

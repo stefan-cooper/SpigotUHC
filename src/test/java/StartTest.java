@@ -1,4 +1,4 @@
-import com.stefancooper.EasyUHC.types.EvolvingShield;
+import com.stefancooper.EasyUHC.evolvingshield.EvolvingShield;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;
@@ -64,6 +64,7 @@ public class StartTest {
     public void cleanUp() {
         TestUtils.executeCommand(plugin, serverOp, "cancel");
         plugin.getUHCConfig().resetToDefaults();
+        server.setPlayers(0);
     }
 
     @AfterAll
@@ -114,6 +115,8 @@ public class StartTest {
             assertNull(player.getPotionEffect(PotionEffectType.JUMP_BOOST));
             assertEquals(3, player.getPotionEffect(PotionEffectType.MINING_FATIGUE).getAmplifier());
         });
+
+        TestUtils.executeCommand(plugin, admin, "cancel");
     }
 
     @Test
@@ -473,12 +476,16 @@ public class StartTest {
         schedule.performTicks(Utils.secondsToTicks(5));
         admin.assertSaid(Component.text("UHC: Mob grace period is over", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
         assertEquals(Difficulty.HARD, world.getDifficulty());
+
+        TestUtils.executeCommand(plugin, admin, "cancel");
     }
 
     @Test
     @DisplayName("When start is ran, including a mob grace period will affect when the difficulty changes")
     void startSpreadPlayersChoosesAnIdealLocation() throws InterruptedException {
         BukkitSchedulerMock schedule = server.getScheduler();
+
+
 
         PlayerMock admin = server.addPlayer();
         admin.setOp(true);
@@ -529,6 +536,7 @@ public class StartTest {
 
         admin.assertSaid(Component.text("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
 
+        assertEquals(Material.BEDROCK, world.getBlockAt(99, 5,0).getType());
         assertEquals(99, Math.round(player.getLocation().getX()));
         assertEquals(6, Math.round(player.getLocation().getY()));
         assertEquals(0, Math.round(player.getLocation().getZ()));
@@ -568,13 +576,13 @@ public class StartTest {
             final ItemMeta meta = shield.getItemMeta();
             assertEquals(List.of(
                     Component.text(""),
-                    Component.text("Level this shield up by gaining XP,"),
+                    Component.text("Level this shield up by gaining EXP,"),
                     Component.text("dealing damage to players and getting kills!"),
                     Component.text(""),
                     Component.text("Current XP: 0")
             ), meta.lore());
-            assertEquals(player.getName(), meta.getPersistentDataContainer().get(plugin.getUHCConfig().getManagedResources().getEvolvingShieldUserKey(), PersistentDataType.STRING));
-            assertEquals(0, meta.getPersistentDataContainer().get(plugin.getUHCConfig().getManagedResources().getEvolvingShieldXPKey(), PersistentDataType.INTEGER));
+            assertEquals(player.getName(), meta.getPersistentDataContainer().get(plugin.getUHCConfig().getManagedResources().getKeys().getEvolvingShieldUserKey(), PersistentDataType.STRING));
+            assertEquals(0, meta.getPersistentDataContainer().get(plugin.getUHCConfig().getManagedResources().getKeys().getEvolvingShieldXPKey(), PersistentDataType.INTEGER));
         });
 
         TestUtils.executeCommand(plugin, admin, "cancel");

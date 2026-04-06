@@ -112,7 +112,7 @@ public class ResumeCommand extends StartCommand {
             WorldBorder wb = cbWorld.getWorldBorder();
             wb.setDamageBuffer(5);
             wb.setDamageAmount(0.2);
-            wb.changeSize(finalWorldBorderSize, shrinkingTime - progressedSeconds);
+            wb.changeSize(finalWorldBorderSize, Utils.secondsToTicks(shrinkingTime - progressedSeconds));
         });
 
         if (Optional.ofNullable(getConfig().getProperty(WORLD_BORDER_Y_SHRINKING_PERIOD)).isPresent() &&

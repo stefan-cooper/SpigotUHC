@@ -30,7 +30,7 @@ public class InstantRevive {
     private final int reviveHealth;
     private final int reviveLoseMaxHealth;
 
-    public InstantRevive(Config config, Player reviver, String revivee, boolean playSound, ArmorStand armorStand) {
+    public InstantRevive(final Config config, final Player reviver, final String revivee, final boolean playSound, final ArmorStand armorStand) {
         this.config = config;
         this.reviver = reviver;
         this.armorStand = armorStand;
@@ -53,8 +53,8 @@ public class InstantRevive {
 
     void revivePlayer () {
         // double check that the reviver still has the player head
-        Bukkit.getServer().broadcast(Component.text(String.format("%s has been revisved!", revivee.displayName()), Style.style(NamedTextColor.RED, TextDecoration.BOLD)));
-        config.getManagedResources().addTimestamp(String.format("[Revive] %s has been revived", revivee.displayName()));
+        Bukkit.getServer().broadcast(Component.text(String.format("%s has been revived!", revivee.getName()), Style.style(NamedTextColor.GOLD, TextDecoration.BOLD)));
+        config.getManagedResources().addTimestamp(String.format("[Revive] %s has been revived", revivee.getName()));
 
         // Revivee effects
         revivee.getInventory().clear();

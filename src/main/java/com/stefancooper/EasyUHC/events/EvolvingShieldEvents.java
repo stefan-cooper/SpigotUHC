@@ -3,8 +3,8 @@ package com.stefancooper.EasyUHC.events;
 import com.destroystokyo.paper.event.player.PlayerPickupExperienceEvent;
 import com.stefancooper.EasyUHC.Config;
 import com.stefancooper.EasyUHC.Defaults;
-import com.stefancooper.EasyUHC.enums.PerformanceTrackingEvent;
-import com.stefancooper.EasyUHC.types.EvolvingShield;
+import com.stefancooper.EasyUHC.evolvingshield.EvolvingShield;
+import com.stefancooper.EasyUHC.evolvingshield.EvolvingShieldUpgradeMenu;
 import org.bukkit.damage.DamageType;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.EntityType;
@@ -16,15 +16,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.ClickType;
-import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import java.util.*;
+
 import static com.stefancooper.EasyUHC.enums.ConfigKey.ENABLE_EVOLVING_SHIELDS;
 
 public class EvolvingShieldEvents implements Listener {
@@ -51,41 +50,58 @@ public class EvolvingShieldEvents implements Listener {
     // Cancel events that attempt to put the evolving shield in chests
     public void onInventoryClick(final InventoryClickEvent event) {
         final Inventory top = event.getView().getTopInventory();
+        final ItemStack current = event.getCurrentItem();
 
-        // Prevent placing into container with cursor ---
-        if (event.getClickedInventory() == top) {
-            final ItemStack cursor = event.getCursor();
-
-            if (EvolvingShield.isEvolvingShield(config, cursor)) {
+        if (event.getWhoClicked() instanceof final Player player) {
+            // Upgrade menu selection
+            if (current != null && current.getItemMeta() != null && current.getItemMeta().getPersistentDataContainer().has(config.getManagedResources().getKeys().getEvolvingShieldUpgradeTypeKey())) {
                 event.setCancelled(true);
-                return;
+                EvolvingShieldUpgradeMenu.applyEnchantments(config, player, current);
+                player.closeInventory();
             }
-        }
 
-        // Prevent shift-click into container ---
-        if (event.isShiftClick()) {
-            final ItemStack current = event.getCurrentItem();
+            // Prevent placing into container with cursor ---
+            if (event.getClickedInventory() == top) {
+                final ItemStack cursor = event.getCursor();
 
-            // Shift-click from player inventory → goes into top inventory
-            if (top.getType() != InventoryType.CRAFTING && event.getClickedInventory() == event.getView().getBottomInventory()) {
-                if (EvolvingShield.isEvolvingShield(config, current)) {
+                if (EvolvingShield.isEvolvingShield(config, cursor)) {
                     event.setCancelled(true);
                     return;
                 }
             }
-        }
 
-        // Prevent number key swaps into container ---
-        if (event.getClick() == ClickType.NUMBER_KEY) {
-            ItemStack hotbarItem = event.getWhoClicked()
-                    .getInventory()
-                    .getItem(event.getHotbarButton());
+            if (event.isShiftClick()) {
 
-            if (EvolvingShield.isEvolvingShield(config, hotbarItem)
-                    && event.getClickedInventory() == top) {
-                event.setCancelled(true);
+                // Handling of upgrading a shield
+                if (EvolvingShield.isEvolvingShield(config, current) && EvolvingShield.isUpgradeAvailable(config, current)) {
+                    event.setCancelled(true);
+                    new EvolvingShieldUpgradeMenu(config, player);
+                    return;
+                }
+
+                // Prevent shift-click from player inventory into a container
+                if (top.getType() != InventoryType.CRAFTING && event.getClickedInventory() == event.getView().getBottomInventory()) {
+                    if (EvolvingShield.isEvolvingShield(config, current)) {
+                        event.setCancelled(true);
+                        return;
+                    }
+                }
+            }
+
+            // Prevent number key swaps into container ---
+            if (event.getClick() == ClickType.NUMBER_KEY) {
+                ItemStack hotbarItem = event.getWhoClicked()
+                        .getInventory()
+                        .getItem(event.getHotbarButton());
+
+                if (EvolvingShield.isEvolvingShield(config, hotbarItem)
+                        && event.getClickedInventory() == top) {
+                    event.setCancelled(true);
+                }
             }
         }
+
+
     }
 
     @EventHandler
@@ -184,11 +200,6 @@ public class EvolvingShieldEvents implements Listener {
      * TODO
      * - Give XP on damage - needs manual testing
      * - Give XP on kills - needs manual testing
-     * - Update enchantments for XP as it goes up
-     * - Destroy item on death - done
-     * - Prevent item from being dropped - done
-     * - Prevent item from being put in chest
-     * - New enchantments
-     *
+     * - New enchantments/stages
      */
 }

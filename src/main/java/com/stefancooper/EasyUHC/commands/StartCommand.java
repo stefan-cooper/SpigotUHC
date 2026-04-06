@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import com.stefancooper.EasyUHC.Defaults;
 import com.stefancooper.EasyUHC.enums.ConfigKey;
-import com.stefancooper.EasyUHC.types.EvolvingShield;
+import com.stefancooper.EasyUHC.evolvingshield.EvolvingShield;
 import com.stefancooper.EasyUHC.types.BossBarBorder;
 import com.stefancooper.EasyUHC.types.RandomFinalLocation;
 import com.stefancooper.EasyUHC.types.UHCLoot;

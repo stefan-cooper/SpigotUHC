@@ -9,7 +9,6 @@ import com.stefancooper.EasyUHC.utils.Utils;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import org.bukkit.Bukkit;
-import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ArmorStand;
@@ -25,15 +24,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import static com.stefancooper.EasyUHC.utils.Constants.EVOLVING_SHIELD_USER_KEY;
-import static com.stefancooper.EasyUHC.utils.Constants.EVOLVING_SHIELD_XP_KEY;
-import static com.stefancooper.EasyUHC.utils.Constants.BLASTWAVE_ENCHANTMENT;
-import static com.stefancooper.EasyUHC.utils.Constants.CRAFTABLE_PLAYER_HEAD;
-import static com.stefancooper.EasyUHC.utils.Constants.NOTCH_APPLE;
+
 import static com.stefancooper.EasyUHC.utils.Constants.PERFORMANCE_TRACKING_LOCATION;
-import static com.stefancooper.EasyUHC.utils.Constants.PLAYER_HEAD;
-import static com.stefancooper.EasyUHC.utils.Constants.QUICKBOOM_ENCHANTMENT;
-import static com.stefancooper.EasyUHC.utils.Constants.SPIGOT_NAMESPACE;
 import static com.stefancooper.EasyUHC.utils.Constants.TIMESTAMPS_LOCATION;
 
 public class ManagedResources {
@@ -41,13 +33,7 @@ public class ManagedResources {
     final Config config;
     final BossBarBorder bossBarBorder;
     final BukkitScheduler scheduler;
-    final NamespacedKey playerHead;
-    final NamespacedKey craftablePlayerHead;
-    final NamespacedKey notchApple;
-    final NamespacedKey quickboomEnchantment;
-    final NamespacedKey blastwaveEnchantment;
-    final NamespacedKey evolvingShieldUserKey;
-    final NamespacedKey evolvingShieldXPKey;
+    final NamespaceKeys keys;
     final JSONObject statistics;
     final List<UHCTeam> teams;
     Block dynamicLootChestLocation = null;
@@ -58,13 +44,7 @@ public class ManagedResources {
         this.config = config;
         this.bossBarBorder = new BossBarBorder(config);
         this.scheduler = Bukkit.getScheduler();
-        this.playerHead = new NamespacedKey(config.getPlugin(), PLAYER_HEAD);
-        this.craftablePlayerHead = new NamespacedKey(config.getPlugin(), CRAFTABLE_PLAYER_HEAD);
-        this.notchApple = new NamespacedKey(config.getPlugin(), NOTCH_APPLE);
-        this.quickboomEnchantment = new NamespacedKey(SPIGOT_NAMESPACE, QUICKBOOM_ENCHANTMENT);
-        this.blastwaveEnchantment = new NamespacedKey(SPIGOT_NAMESPACE, BLASTWAVE_ENCHANTMENT);
-        this.evolvingShieldUserKey = new NamespacedKey(SPIGOT_NAMESPACE, EVOLVING_SHIELD_USER_KEY);
-        this.evolvingShieldXPKey = new NamespacedKey(SPIGOT_NAMESPACE, EVOLVING_SHIELD_XP_KEY);
+        this.keys = new NamespaceKeys(config);
         this.teams = new ArrayList<>();
         final boolean fileAlreadyExists;
         JSONObject json = null;
@@ -118,32 +98,14 @@ public class ManagedResources {
         scheduler.cancelTask(id);
     }
 
-    public NamespacedKey getPlayerHeadKey() {
-        return playerHead;
-    }
-
-    public NamespacedKey getNotchAppleKey() {
-        return notchApple;
-    }
-
-    public NamespacedKey getEvolvingShieldUserKey() {
-        return evolvingShieldUserKey;
-    }
-
-    public NamespacedKey getEvolvingShieldXPKey() {
-        return evolvingShieldXPKey;
-    }
+    public NamespaceKeys getKeys() { return keys; }
 
     public Enchantment getQuickboomEnchantment() {
-        return RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).get(quickboomEnchantment);
+        return RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).get(keys.getQuickboomEnchantment());
     }
 
     public Enchantment getBlastwaveEnchantment() {
-        return RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).get(blastwaveEnchantment);
-    }
-
-    public NamespacedKey getCraftablePlayerHeadKey() {
-        return craftablePlayerHead;
+        return RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT).get(keys.getBlastwaveEnchantment());
     }
 
     public void cancelTimer() {

@@ -10,6 +10,9 @@ public final class Constants {
     public static final String BLASTWAVE_ENCHANTMENT = "blastwave";
     public static final String EVOLVING_SHIELD_USER_KEY = "evolving_shield_user";
     public static final String EVOLVING_SHIELD_XP_KEY = "evolving_shield_xp";
+    public static final String EVOLVING_SHIELD_UPGRADE_TYPE_KEY = "evolving_shield_upgrade_type";
+    public static final String EVOLVING_SHIELD_UPGRADE_AVAILABLE_KEY= "evolving_shield_upgrade_available";
+    public static final String EVOLVING_SHIELD_UPGRADE_TOTAL_KEY= "evolving_shield_upgrade_total";
     public static final int MAXIMUM_FINAL_SIZE_FOR_Y_SHRINK = 300;
 
     // File locations

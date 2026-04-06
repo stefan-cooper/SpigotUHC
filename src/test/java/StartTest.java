@@ -1,4 +1,4 @@
-import com.stefancooper.EasyUHC.types.EvolvingShield;
+import com.stefancooper.EasyUHC.evolvingshield.EvolvingShield;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;
@@ -391,8 +391,8 @@ public class StartTest {
                     Component.text(""),
                     Component.text("Current XP: 0")
             ), meta.lore());
-            assertEquals(player.getName(), meta.getPersistentDataContainer().get(plugin.getUHCConfig().getManagedResources().getEvolvingShieldUserKey(), PersistentDataType.STRING));
-            assertEquals(0, meta.getPersistentDataContainer().get(plugin.getUHCConfig().getManagedResources().getEvolvingShieldXPKey(), PersistentDataType.INTEGER));
+            assertEquals(player.getName(), meta.getPersistentDataContainer().get(plugin.getUHCConfig().getManagedResources().getKeys().getEvolvingShieldUserKey(), PersistentDataType.STRING));
+            assertEquals(0, meta.getPersistentDataContainer().get(plugin.getUHCConfig().getManagedResources().getKeys().getEvolvingShieldXPKey(), PersistentDataType.INTEGER));
         });
 
         TestUtils.executeCommand(plugin, admin, "cancel");

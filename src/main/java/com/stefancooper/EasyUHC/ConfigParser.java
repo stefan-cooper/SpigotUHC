@@ -217,7 +217,7 @@ public class ConfigParser {
                 createTeam(new UHCTeam("Purple", (String) configurable.value(), NamedTextColor.DARK_PURPLE ), config);
                 break;
             case PLAYER_HEAD_GOLDEN_APPLE:
-                NamespacedKey playerHeadKey = config.getManagedResources().getPlayerHeadKey();
+                NamespacedKey playerHeadKey = config.getManagedResources().getKeys().getPlayerHeadKey();
                 if (config.getProperty(PLAYER_HEAD_GOLDEN_APPLE, Defaults.PLAYER_HEAD_GOLDEN_APPLE)) {
                     if (Bukkit.getRecipe(playerHeadKey) == null) {
                         ItemStack apple = new ItemStack(Material.GOLDEN_APPLE, 1);
@@ -235,7 +235,7 @@ public class ConfigParser {
                 }
                 break;
             case CRAFTABLE_NOTCH_APPLE:
-                NamespacedKey notchAppleKey = config.getManagedResources().getNotchAppleKey();
+                NamespacedKey notchAppleKey = config.getManagedResources().getKeys().getNotchAppleKey();
                 if (config.getProperty(CRAFTABLE_NOTCH_APPLE, Defaults.CRAFTABLE_NOTCH_APPLE)) {
                     if (Bukkit.getRecipe(notchAppleKey) == null) {
                         ItemStack apple = new ItemStack(Material.ENCHANTED_GOLDEN_APPLE, 1);
@@ -252,7 +252,7 @@ public class ConfigParser {
                 }
                 break;
             case CRAFTABLE_PLAYER_HEAD:
-                final NamespacedKey craftablePlayerHeadKey = config.getManagedResources().getCraftablePlayerHeadKey();
+                final NamespacedKey craftablePlayerHeadKey = config.getManagedResources().getKeys().getCraftablePlayerHeadKey();
                 if (config.getProperty(CRAFTABLE_PLAYER_HEAD, Defaults.CRAFTABLE_PLAYER_HEAD)) {
                     if (Bukkit.getRecipe(craftablePlayerHeadKey) == null) {
                         ItemStack playerHead = new ItemStack(Material.PLAYER_HEAD, 1);

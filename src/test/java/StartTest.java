@@ -287,7 +287,7 @@ public class StartTest {
         assertWorldValues((world) -> {
             assertEquals(0.2, world.getWorldBorder().getDamageAmount());
             assertEquals(5, world.getWorldBorder().getDamageBuffer());
-            assertEquals(49, Math.round(world.getWorldBorder().getSize()));
+            assertEquals(50, Math.round(world.getWorldBorder().getSize()));
             assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRules.PVP));
         });
 
@@ -307,6 +307,127 @@ public class StartTest {
             assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRules.PVP));
         });
         admin.assertNoMoreSaid();
+    }
+
+    @Test
+    @DisplayName("When start is ran, the world borders shrink as expected")
+    void startCommandBorders() throws InterruptedException {
+        BukkitSchedulerMock schedule = server.getScheduler();
+
+        PlayerMock admin = server.addPlayer();
+        admin.setOp(true);
+
+        TestUtils.executeCommand(plugin, admin, "set",
+                "world.border.initial.size=1100",
+                "world.border.final.size=100",
+                "countdown.timer.length=1",
+                "grace.period.timer=2",
+                "world.border.grace.period=30",
+                "world.border.shrinking.period=100",
+                "difficulty=HARD"
+        );
+
+        TestUtils.executeCommand(plugin, admin, "start");
+
+        schedule.performOneTick();
+
+        // Initial start
+        assertWorldValues((world) -> {
+            assertEquals(0, world.getWorldBorder().getDamageAmount());
+            assertEquals(5, world.getWorldBorder().getDamageBuffer());
+            assertEquals(1100, world.getWorldBorder().getSize());
+        });
+
+        schedule.performTicks(Utils.secondsToTicks(1));
+
+        // Countdown finished
+        assertWorldValues((world) -> {
+            assertEquals(0, world.getWorldBorder().getDamageAmount());
+            assertEquals(5, world.getWorldBorder().getDamageBuffer());
+            assertEquals(1100, world.getWorldBorder().getSize());
+            assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRules.PVP));
+        });
+
+        schedule.performTicks(Utils.secondsToTicks(30));
+
+        // World border grace period finished
+        assertWorldValues((world) -> {
+            assertEquals(0.2, world.getWorldBorder().getDamageAmount());
+            assertEquals(5, world.getWorldBorder().getDamageBuffer());
+            assertEquals(1099.5, world.getWorldBorder().getSize());
+        });
+
+        schedule.performTicks(Utils.secondsToTicks(10));
+
+        // World border shrinking continues
+        assertWorldValues((world) -> {
+            assertEquals(0.2, world.getWorldBorder().getDamageAmount());
+            assertEquals(5, world.getWorldBorder().getDamageBuffer());
+            assertEquals( 1000, Math.round(world.getWorldBorder().getSize()));
+        });
+
+        schedule.performTicks(Utils.secondsToTicks(10));
+
+        // World border shrinking continues
+        assertWorldValues((world) -> {
+            assertEquals(0.2, world.getWorldBorder().getDamageAmount());
+            assertEquals(5, world.getWorldBorder().getDamageBuffer());
+            assertEquals( 900, Math.round(world.getWorldBorder().getSize()));
+        });
+
+        schedule.performTicks(Utils.secondsToTicks(10));
+
+        // World border shrinking continues
+        assertWorldValues((world) -> {
+            assertEquals(0.2, world.getWorldBorder().getDamageAmount());
+            assertEquals(5, world.getWorldBorder().getDamageBuffer());
+            assertEquals( 800, Math.round(world.getWorldBorder().getSize()));
+        });
+
+        schedule.performTicks(Utils.secondsToTicks(10));
+
+        // World border shrinking continues
+        assertWorldValues((world) -> {
+            assertEquals(0.2, world.getWorldBorder().getDamageAmount());
+            assertEquals(5, world.getWorldBorder().getDamageBuffer());
+            assertEquals( 700, Math.round(world.getWorldBorder().getSize()));
+        });
+
+        schedule.performTicks(Utils.secondsToTicks(10));
+
+        // World border shrinking continues
+        assertWorldValues((world) -> {
+            assertEquals(0.2, world.getWorldBorder().getDamageAmount());
+            assertEquals(5, world.getWorldBorder().getDamageBuffer());
+            assertEquals( 600, Math.round(world.getWorldBorder().getSize()));
+        });
+
+        schedule.performTicks(Utils.secondsToTicks(20));
+
+        // World border shrinking continues
+        assertWorldValues((world) -> {
+            assertEquals(0.2, world.getWorldBorder().getDamageAmount());
+            assertEquals(5, world.getWorldBorder().getDamageBuffer());
+            assertEquals( 400, Math.round(world.getWorldBorder().getSize()));
+        });
+
+        schedule.performTicks(Utils.secondsToTicks(20));
+
+        // World border shrinking continues
+        assertWorldValues((world) -> {
+            assertEquals(0.2, world.getWorldBorder().getDamageAmount());
+            assertEquals(5, world.getWorldBorder().getDamageBuffer());
+            assertEquals( 200, Math.round(world.getWorldBorder().getSize()));
+        });
+
+        schedule.performTicks(Utils.secondsToTicks(10));
+
+        // World border shrinking continues
+        assertWorldValues((world) -> {
+            assertEquals(0.2, world.getWorldBorder().getDamageAmount());
+            assertEquals(5, world.getWorldBorder().getDamageBuffer());
+            assertEquals( 100, Math.round(world.getWorldBorder().getSize()));
+        });
     }
 
     @Test

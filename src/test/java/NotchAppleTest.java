@@ -1,7 +1,7 @@
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
-import com.stefancooper.SpigotUHC.Plugin;
+import com.stefancooper.EasyUHC.Plugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -13,8 +13,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import utils.TestUtils;
 
-import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
-import static com.stefancooper.SpigotUHC.utils.Constants.NOTCH_APPLE;
+import static com.stefancooper.EasyUHC.Defaults.WORLD_NAME;
+import static com.stefancooper.EasyUHC.utils.Constants.NOTCH_APPLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 

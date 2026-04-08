@@ -1,7 +1,7 @@
 package utils;
 
-import com.stefancooper.SpigotUHC.Plugin;
-import com.stefancooper.SpigotUHC.commands.UHCCommand;
+import com.stefancooper.EasyUHC.Plugin;
+import com.stefancooper.EasyUHC.commands.UHCCommand;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 

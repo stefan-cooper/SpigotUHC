@@ -1,6 +1,6 @@
-name: SpigotUHC
-version: 9.3.4
-main: com.stefancooper.SpigotUHC.Plugin
-description: Spigot UHC Plugin
+name: EasyUHC
+version: 10.0.0
+main: com.stefancooper.EasyUHC.Plugin
+description: A Plugin for running UHCs on Paper servers
 api-version: 1.21.11
-bootstrapper: com.stefancooper.SpigotUHC.Bootstrap
+bootstrapper: com.stefancooper.EasyUHC.Bootstrap

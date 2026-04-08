@@ -2,12 +2,12 @@ import org.bukkit.GameRules;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
-import com.stefancooper.SpigotUHC.Plugin;
+import com.stefancooper.EasyUHC.Plugin;
 import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.junit.jupiter.api.*;
 
-import static com.stefancooper.SpigotUHC.Defaults.*;
+import static com.stefancooper.EasyUHC.Defaults.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

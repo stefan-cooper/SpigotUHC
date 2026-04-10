@@ -235,9 +235,34 @@ public class BaseEvents implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         if (config.getProperty(ALL_TREES_SPAWN_APPLES, Defaults.ALL_TREES_SPAWN_APPLES)) {
-            // 1/200 chance when breaking leaves to spawn an apple
-            if (isBlockLeaves(event.getBlock()) && Utils.checkOddsOf(2, 200)) {
-                event.getBlock().getWorld().dropItem(event.getBlock().getLocation(), new ItemStack(Material.APPLE));
+            if (isBlockLeaves(event.getBlock())) {
+                final ItemStack destroyedWith = event.getPlayer().getInventory().getItemInMainHand();
+                final boolean dropApple;
+                switch (destroyedWith.getType()) {
+                    case Material.NETHERITE_HOE:
+                        dropApple = Utils.checkOddsOf(16);
+                        break;
+                    case Material.DIAMOND_HOE:
+                        dropApple = Utils.checkOddsOf(32);
+                        break;
+                    case Material.IRON_HOE:
+                        dropApple = Utils.checkOddsOf(64);
+                        break;
+                    case Material.COPPER_HOE:
+                    case Material.GOLDEN_HOE:
+                        dropApple = Utils.checkOddsOf(96);
+                        break;
+                    case Material.STONE_HOE:
+                    case Material.WOODEN_HOE:
+                        dropApple = Utils.checkOddsOf(128);
+                        break;
+                    default:
+                        dropApple = Utils.checkOddsOf(200);
+                        break;
+                }
+                if (dropApple) {
+                    event.getBlock().getWorld().dropItem(event.getBlock().getLocation(), new ItemStack(Material.APPLE));
+                }
             }
         }
         if (config.getProperty(ENABLE_AUTOSMELT, Defaults.ENABLE_AUTOSMELT)) {
@@ -283,7 +308,7 @@ public class BaseEvents implements Listener {
     public void onLeavesDecay(LeavesDecayEvent event) {
         if (config.getProperty(ALL_TREES_SPAWN_APPLES, Defaults.ALL_TREES_SPAWN_APPLES)) {
             // 1/200 chance when leaves decay to spawn an apple
-            if (isBlockLeaves(event.getBlock()) && Utils.checkOddsOf(2, 200)) {
+            if (isBlockLeaves(event.getBlock()) && Utils.checkOddsOf(200)) {
                 event.getBlock().getWorld().dropItem(event.getBlock().getLocation(), new ItemStack(Material.APPLE));
             }
         }

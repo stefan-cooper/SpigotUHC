@@ -468,4 +468,65 @@ public class StartTest {
         admin.assertSaid(Component.text("UHC: Mob grace period is over", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
         assertEquals(Difficulty.HARD, world.getDifficulty());
     }
+
+    @Test
+    @DisplayName("When start is ran, including a mob grace period will affect when the difficulty changes")
+    void startSpreadPlayersChoosesAnIdealLocation() throws InterruptedException {
+        BukkitSchedulerMock schedule = server.getScheduler();
+
+        PlayerMock admin = server.addPlayer();
+        admin.setOp(true);
+
+        PlayerMock player = server.addPlayer();
+        player.setName("stefan");
+
+        TestUtils.executeCommand(plugin, admin, "set",
+                "world.border.initial.size=200",
+                "world.border.final.size=10",
+                "countdown.timer.length=10",
+                "mob.grace.period=5",
+                "grace.period.timer=20",
+                "world.border.grace.period=30",
+                "world.border.shrinking.period=30",
+                "difficulty=HARD",
+                "team.red=stefan"
+        );
+
+
+        // top left
+        world.getBlockAt(-99, 5,99).setType(Material.WATER);
+        // top middle
+        world.getBlockAt(0, 5,99).setType(Material.LAVA);
+        // top right
+        world.getBlockAt(99, 5,99).setType(Material.WATER);
+
+        // middle left
+        world.getBlockAt(-99, 5,0).setType(Material.LAVA);
+        // center
+        world.getBlockAt(0, 5,0).setType(Material.LAVA);
+        // middle right
+        world.getBlockAt(99, 5,0).setType(Material.COBBLESTONE); // ding ding ding, the only ideal location
+
+        // bottom left
+        world.getBlockAt(-99, 5,-99).setType(Material.WATER);
+        // bottom middle
+        world.getBlockAt(0, 5,-99).setType(Material.LAVA);
+        // bottom right
+        world.getBlockAt(99, 5,-99).setType(Material.WATER);
+
+        TestUtils.executeCommand(plugin, admin, "start");
+
+        schedule.performOneTick();
+
+        // Initial start
+        assertEquals(Difficulty.PEACEFUL, world.getDifficulty());
+
+        admin.assertSaid(Component.text("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
+
+        assertEquals(99, Math.round(player.getLocation().getX()));
+        assertEquals(6, Math.round(player.getLocation().getY()));
+        assertEquals(0, Math.round(player.getLocation().getZ()));
+
+        TestUtils.executeCommand(plugin, admin, "cancel");
+    }
 }

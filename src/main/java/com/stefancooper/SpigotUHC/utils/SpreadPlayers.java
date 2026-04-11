@@ -43,14 +43,40 @@ public class SpreadPlayers {
             groups = splitIntoClusters(groups, splitSize);
         }
 
-        final List<Coordinate> coordinatesToTeleportTo = splitEvenly(centerX, centerZ, diameter, groups.size());
-        Collections.shuffle(coordinatesToTeleportTo);
+        // minimum grid size of 3x3 (9)
+        int gridSize = Math.max(groups.size(), 9);
+        if (gridSize > 9) {
+            // if there are more than 9 groups to split, then round up to the nearest square number
+            // i.e. 10 groups == grid size of 16
+            // this will give us a better chance of preventing 'unideal' starting locations
+            int root = (int) Math.ceil(Math.sqrt(gridSize));
+            gridSize = root * root;
+        }
 
-        if (coordinatesToTeleportTo.size() != groups.size()) {
+        final List<Coordinate> coordinatesToTeleportTo = splitEvenly(centerX, centerZ, diameter, gridSize);
+        final List<Coordinate> notIdealCoordinates = new ArrayList<>();
+        for (final Coordinate startingLocation : coordinatesToTeleportTo) {
+            final Block startingBlock = overworld.getHighestBlockAt((int) startingLocation.x(), (int) startingLocation.z());
+            if (startingBlock.getType().equals(Material.LAVA) || startingBlock.getType().equals(Material.WATER)) {
+                notIdealCoordinates.add(startingLocation);
+            }
+        }
+        config.getPlugin().getLogger().log(Level.FINE, String.format("Unideal coordinates: %s", notIdealCoordinates));
+
+        for (Coordinate coordinateIndex : notIdealCoordinates) {
+            if (coordinatesToTeleportTo.size() <= groups.size()) {
+                break;
+            }
+            coordinatesToTeleportTo.remove(coordinateIndex);
+        }
+
+        if (coordinatesToTeleportTo.size() < groups.size()) {
             throw new RuntimeException("something went wrong!");
         }
 
-        for (int i = 0; i < coordinatesToTeleportTo.size(); i++) {
+        Collections.shuffle(coordinatesToTeleportTo);
+
+        for (int i = 0; i < groups.size(); i++) {
             final List<Player> team = groups.get(i);
             final Coordinate startingLocation = coordinatesToTeleportTo.get(i);
             for (final Player player : team) {
@@ -95,10 +121,10 @@ public class SpreadPlayers {
         if (totalGroups < 1) {
             return List.of();
         }
-        final List<Coordinate> coordinates = new ArrayList<>(totalGroups);
         if (totalGroups == 1) {
             return List.of(new Coordinate(centerX, centerZ));
         }
+        final List<Coordinate> coordinates = new ArrayList<>(totalGroups);
 
         final int cols = (int) Math.ceil(Math.sqrt(totalGroups));
         final int rows = (int) Math.ceil((double) totalGroups / cols);

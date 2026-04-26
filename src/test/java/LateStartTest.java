@@ -2,7 +2,7 @@ import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
 import org.mockbukkit.mockbukkit.scheduler.BukkitSchedulerMock;
-import com.stefancooper.SpigotUHC.Plugin;
+import com.stefancooper.EasyUHC.Plugin;
 import java.util.Arrays;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -18,7 +18,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import utils.TestUtils;
 
-import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
+import static com.stefancooper.EasyUHC.Defaults.WORLD_NAME;
 
 public class LateStartTest {
 

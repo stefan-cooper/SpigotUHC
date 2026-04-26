@@ -1,5 +1,5 @@
-import com.stefancooper.SpigotUHC.Plugin;
-import com.stefancooper.SpigotUHC.enchants.EnchantShield;
+import com.stefancooper.EasyUHC.Plugin;
+import com.stefancooper.EasyUHC.enchants.EnchantShield;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 import java.util.Map;
-import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
+import static com.stefancooper.EasyUHC.Defaults.WORLD_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EnchantShieldTest {

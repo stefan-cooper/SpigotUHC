@@ -1,0 +1,19 @@
+package com.stefancooper.EasyUHC.commands;
+
+import com.stefancooper.EasyUHC.Config;
+import org.bukkit.command.CommandSender;
+import java.util.Arrays;
+
+public class UnsetConfigCommand extends AbstractCommand {
+
+    public static final String COMMAND_KEY = "unset";
+
+    public UnsetConfigCommand(CommandSender sender, String cmd, String[] args, Config config) {
+        super(sender, cmd, args, config);
+    }
+
+    @Override
+    public void execute() {
+        Arrays.asList(getArgs()).forEach(arg -> getConfig().unsetProp(arg));
+    }
+}

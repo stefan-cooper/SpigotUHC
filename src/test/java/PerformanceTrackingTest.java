@@ -1,10 +1,9 @@
-import com.stefancooper.SpigotUHC.Plugin;
-import com.stefancooper.SpigotUHC.enums.PerformanceTrackingEvent;
-import com.stefancooper.SpigotUHC.utils.Utils;
+import com.stefancooper.EasyUHC.Plugin;
+import com.stefancooper.EasyUHC.enums.PerformanceTrackingEvent;
+import com.stefancooper.EasyUHC.utils.Utils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.damage.DamageSource;
 import org.bukkit.damage.DamageType;
 import org.json.JSONObject;
@@ -15,7 +14,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
-import org.mockbukkit.mockbukkit.block.state.ChestStateMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
 import org.mockbukkit.mockbukkit.scheduler.BukkitSchedulerMock;
 import utils.TestUtils;
@@ -24,12 +22,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 
-import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
-import static com.stefancooper.SpigotUHC.utils.Constants.PERFORMANCE_TRACKING_LOCATION;
+import static com.stefancooper.EasyUHC.Defaults.WORLD_NAME;
+import static com.stefancooper.EasyUHC.utils.Constants.PERFORMANCE_TRACKING_LOCATION;
 
 public class PerformanceTrackingTest {
 

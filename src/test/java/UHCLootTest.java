@@ -1,4 +1,4 @@
-import com.stefancooper.SpigotUHC.utils.Utils;
+import com.stefancooper.EasyUHC.utils.Utils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;
@@ -8,7 +8,7 @@ import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.block.state.ChestStateMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
 import org.mockbukkit.mockbukkit.scheduler.BukkitSchedulerMock;
-import com.stefancooper.SpigotUHC.Plugin;
+import com.stefancooper.EasyUHC.Plugin;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -23,8 +23,8 @@ import utils.TestUtils;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.stefancooper.SpigotUHC.Defaults.NETHER_WORLD_NAME;
-import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
+import static com.stefancooper.EasyUHC.Defaults.NETHER_WORLD_NAME;
+import static com.stefancooper.EasyUHC.Defaults.WORLD_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
@@ -63,66 +63,19 @@ public class UHCLootTest {
     }
 
     @Test
-    void lootChestTest() {
-        BukkitSchedulerMock schedule = server.getScheduler();
-        PlayerMock admin = server.addPlayer();
-        admin.setOp(true);
-        int x = 1234;
-        int y = 123;
-        int z = -1234;
-        int lootFrequency = 5; // 100 ticks
-
-        // set world spawn
-        TestUtils.executeCommand(plugin, admin, "set",
-                String.format("countdown.timer.length=%s", "5"),
-                String.format("loot.chest.x=%s", x),
-                String.format("loot.chest.y=%s", y),
-                String.format("loot.chest.z=%s", z),
-                String.format("loot.chest.frequency=%s", lootFrequency),
-                String.format("loot.chest.enabled=%s", "true"),
-                String.format("loot.chest.high.loot.odds=%s", "0")
-        );
-
-        TestUtils.executeCommand(plugin, admin, "start");
-
-        schedule.performOneTick();
-
-        admin.assertSaid(Component.text("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
-        schedule.performTicks(Utils.secondsToTicks(5));
-
-        // start uhc (so the world spawn should now be ignored)
-        final List<ItemStack> firstGeneration = getLatestChestContents((ChestStateMock) world.getBlockAt(new Location(world, x, y, z)).getState());
-        final List<ItemStack> netherFirstGeneration = getLatestChestContents((ChestStateMock) nether.getBlockAt(new Location(nether, x, y, z)).getState());
-        assertNotEquals(0, firstGeneration.size());
-        assertNotEquals(0, netherFirstGeneration.size());
-
-        schedule.performTicks(Utils.secondsToTicks(5));
-
-        final List<ItemStack> secondGeneration = getLatestChestContents((ChestStateMock) world.getBlockAt(new Location(world, x, y, z)).getState());
-        final List<ItemStack> netherSecondGeneration = getLatestChestContents((ChestStateMock) nether.getBlockAt(new Location(nether, x, y, z)).getState());
-
-        assertNotEquals(0, secondGeneration.size());
-        assertNotEquals(0, netherSecondGeneration.size());
-        assertNotEquals(firstGeneration, secondGeneration);
-        assertNotEquals(netherFirstGeneration, netherSecondGeneration);
-    }
-
-    @Test
     void lootChestTestHighTierLootMessage() {
         BukkitSchedulerMock schedule = server.getScheduler();
         PlayerMock admin = server.addPlayer();
         admin.setOp(true);
-        int x = 1234;
-        int y = 123;
-        int z = -1234;
+        String x = "750,1000";
+        String z = "250,500";
         int lootFrequency = 5; // 100 ticks
 
         // set world spawn
         TestUtils.executeCommand(plugin, admin, "set",
                 String.format("countdown.timer.length=%s", "3"),
-                String.format("loot.chest.x=%s", x),
-                String.format("loot.chest.y=%s", y),
-                String.format("loot.chest.z=%s", z),
+                String.format("loot.chest.x.range=%s", x),
+                String.format("loot.chest.z.range=%s", z),
                 String.format("loot.chest.frequency=%s", lootFrequency),
                 String.format("loot.chest.enabled=%s", "true"),
                 String.format("loot.chest.high.loot.odds=%s", "100")

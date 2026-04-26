@@ -4,8 +4,8 @@ import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
 import org.mockbukkit.mockbukkit.scheduler.BukkitSchedulerMock;
-import com.stefancooper.SpigotUHC.Plugin;
-import com.stefancooper.SpigotUHC.utils.Utils;
+import com.stefancooper.EasyUHC.Plugin;
+import com.stefancooper.EasyUHC.utils.Utils;
 import org.bukkit.Difficulty;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -26,9 +26,9 @@ import utils.TestUtils;
 
 import java.util.stream.Stream;
 
-import static com.stefancooper.SpigotUHC.Defaults.END_WORLD_NAME;
-import static com.stefancooper.SpigotUHC.Defaults.NETHER_WORLD_NAME;
-import static com.stefancooper.SpigotUHC.Defaults.WORLD_NAME;
+import static com.stefancooper.EasyUHC.Defaults.END_WORLD_NAME;
+import static com.stefancooper.EasyUHC.Defaults.NETHER_WORLD_NAME;
+import static com.stefancooper.EasyUHC.Defaults.WORLD_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static utils.TestUtils.WorldAssertion;
 

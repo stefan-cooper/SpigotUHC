@@ -63,6 +63,7 @@ public class PerformanceEvents implements Listener {
                 if (isSameLocation(getChestLocation(config).get(), chestLocation) && !lootChestLocations.contains(chestLocation)) {
                     lootChestLocations.add(chestLocation);
                     config.getManagedResources().addPerformanceTrackingEvent(PerformanceTrackingEvent.LOOT_CHEST_CLAIMED, event.getPlayer().getName(), 1);
+                    config.getManagedResources().addTimestamp(String.format("[UHC Loot] Loot chest claimed by %s", event.getPlayer().getName()));
                 }
             }
         }

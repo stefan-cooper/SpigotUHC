@@ -2,6 +2,7 @@ package com.stefancooper.EasyUHC.types;
 
 import com.stefancooper.EasyUHC.Config;
 import com.stefancooper.EasyUHC.Defaults;
+import com.stefancooper.EasyUHC.evolvingshield.EvolvingShield;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;
@@ -13,6 +14,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 
+import static com.stefancooper.EasyUHC.enums.ConfigKey.ENABLE_EVOLVING_SHIELDS;
 import static com.stefancooper.EasyUHC.enums.ConfigKey.REVIVE_HP;
 import static com.stefancooper.EasyUHC.enums.ConfigKey.REVIVE_LOSE_MAX_HEALTH;
 
@@ -74,6 +76,10 @@ public class InstantRevive {
             revivee.setMaxHealth(revivee.getMaxHealth() - reviveLoseMaxHealth);
         } else {
             revivee.setMaxHealth(1);
+        }
+
+        if (config.getProperty(ENABLE_EVOLVING_SHIELDS, Defaults.ENABLE_EVOLVING_SHIELDS)) {
+            EvolvingShield.createEvolvingShield(config, revivee);
         }
 
         revivee.spawnParticle(Particle.POOF, revivee.getLocation(), 1000);

@@ -1,0 +1,147 @@
+# Evolving Shields
+
+This file provides the details about the Evolving Shield feature.
+
+Index:
+
+- [Configuration](#configuration)
+- [Levelling up](#levelling-up)
+- [Stages](#stages)
+
+## Configuration
+
+### Enable evolving shields
+
+* Note - enabling evolving shields will disable shield enchantments in the enchantment bench, if you have that configured
+
+`/uhc set enable.evolving.shields=true`
+
+### Set experience -> damage threshold
+
+Set the experience threshold before levelling up the shield requires doing player damage instead of gaining minecraft exp.
+
+You can use this to ensure that higher stages can't be grinded with an XP farm.
+
+This defaults to -1 (no limit for minecraft XP)
+
+`/uhc set evolving.shields.exp.threshold=2000`
+
+## Levelling up
+
+As references in the prior section, levelling up your shield can be done in one of a couple ways.
+
+### Gaining minecraft XP
+
+Gaining minecraft XP will level up the shield (up to and including the `evolving.shields.exp.threshold` config value).
+
+Every `n` minecraft XP equals `n` EXP for the shield.
+
+What this means in real-world terms is (for example):
+
+- Killing a chicken: 1-3 EXP
+- Killing a creeper: 6-8 EXP
+- Mining/smelting iron: 0.7 EXP per ingot
+
+For more information, see https://minecraft.wiki/w/Experience
+
+### Dealing damage to oponnents
+
+Dealing damage to opponents will level up the shield. 
+
+This can be via melee or projectile.
+
+* Note - TNT damage is not included
+
+Every half a heart of post-armor calculated damage equals 200 EXP
+
+What this means in real-world terms is (for example):
+
+- Hitting a player with full iron armor with an Iron Sword: 600 EXP (1.5 hearts of damage)
+- Hitting a player with full iron armor with an Iron Axe: 1000 EXP (2.5 hearts of damage) 
+- Critting an unarmored player with a Golden Sword: 1200 EXP (3 hearts of damage)
+- Critting a player with full iron armor player with a Diamond Axe: 1800 EXP (4.5 hearts of damage)
+
+
+### Killing opponents
+
+Killing opponents will give you an extra bonus bit of EXP.
+
+Killing an opponent will give a 250 EXP bonus.
+
+## Stages
+
+As you level up, you will reach different stages of the evolving shield. Each stage will provide you with a choice of bonuses or upgrades to pick from. Once picked, there is no going back, so choose wisely.
+
+This could be subject to change, but see the stages below:
+
+### Stage 1 (100 EXP)
+
+- 32x Steak
+- 4x Book
+- 8x Apple
+- 24x Iron Ingots
+
+### Stage 2 (400 EXP)
+
+- Add 'Knockback I' to your shield
+- Add 'Thorns I' to your shield
+
+### Stage 3 (700 EXP)
+
+- Gain permanent Absorption (2 extra hearts)
+- Regenerate 4 hearts immediately
+- Gain a player head
+
+### Stage 4 (1000 EXP)
+
+- 32x Arrow
+- 16x Spectral Arrow
+- 1x Tipped Arrow with Instant Damage II applied
+
+### Stage 5 (1300 EXP)
+
+- Add 'Swift Defense' to your shield. Chance of gaining swiftness after blocking an attack (1/16)
+- Add 'Leap Guard' to your shield. Chance of gaining jump boost after blocking an attack (1/8)
+- Add 'Counterforce' to your shield. Chance of gaining strength after blocking an attack (1/24)
+
+### Stage 6 (1600 EXP)
+
+- Add 'Sapping Guard' to your shield. Chance of giving weakness after blocking an attack (1/16)
+- Add 'Snare Guard' to your shield. Chance of giving slowness after blocking an attack (1/8)
+
+### Stage 7 (1900 EXP)
+
+- Upgrade or add 'Knockback' to your shield.
+- Upgrade or add 'Thorns' to your shield.
+
+### Stage 8 (2500 EXP)
+
+- Gain the Reapers kit
+  - 4x Ender Pearl
+  - 32x Chorus Fruit
+  - 4x Tipped Arrow (Wekaness I applied for 240s)
+- Gain the Apothecary kit
+  - 1x Brewing Stand
+  - 3x Nether Wart
+  - 3x Blaze Powder
+  - 3x Water Bottle
+- Gain the Librarians kit
+  - 1x Knockback II Enchanted Book
+  - 1x Sharpness II Enchanted Book
+  - 1x Protection II Enchanted Book
+  - 4x Bookshelf
+  - 32x EXP Bottle
+
+### Stage 9 (3500 EXP)
+
+- 1x Quickboom IV TNT
+- 1x Blastwave IV TNT
+- 1x Quickboom II & Blastwave II TNT
+
+### Stage 10 (5000 EXP)
+
+- Add 'Fire Elemental' to your shield. Blocking whilst sneaking will shoot a fire charge (60 second cooldown)
+- Add 'Thunder Elemental' to your shield. Blocking whilst sneaking will strike a thunderbolt on the block you're looking at. (120 second cooldown)
+- Add 'Air Elemental' to your shield. Blocking whilst sneaking will shoot a wind charge (30 second cooldown)
+- Add 'Water Elemental' to your shield. Blocking whilst sneaking will shoot a snowball that creates a bucket of water (30 second cooldown)
+

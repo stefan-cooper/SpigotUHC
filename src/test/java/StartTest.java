@@ -1,9 +1,12 @@
+import com.stefancooper.EasyUHC.evolvingshield.EvolvingShield;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.GameRules;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
@@ -13,6 +16,8 @@ import com.stefancooper.EasyUHC.Plugin;
 import com.stefancooper.EasyUHC.utils.Utils;
 import org.bukkit.Difficulty;
 import java.util.Arrays;
+import java.util.List;
+
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,6 +36,7 @@ import static com.stefancooper.EasyUHC.Defaults.NETHER_WORLD_NAME;
 import static com.stefancooper.EasyUHC.Defaults.WORLD_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static utils.TestUtils.WorldAssertion;
 
 public class StartTest {
@@ -58,6 +64,7 @@ public class StartTest {
     public void cleanUp() {
         TestUtils.executeCommand(plugin, serverOp, "cancel");
         plugin.getUHCConfig().resetToDefaults();
+        server.setPlayers(0);
     }
 
     @AfterAll
@@ -108,6 +115,8 @@ public class StartTest {
             assertNull(player.getPotionEffect(PotionEffectType.JUMP_BOOST));
             assertEquals(3, player.getPotionEffect(PotionEffectType.MINING_FATIGUE).getAmplifier());
         });
+
+        TestUtils.executeCommand(plugin, admin, "cancel");
     }
 
     @Test
@@ -467,12 +476,16 @@ public class StartTest {
         schedule.performTicks(Utils.secondsToTicks(5));
         admin.assertSaid(Component.text("UHC: Mob grace period is over", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
         assertEquals(Difficulty.HARD, world.getDifficulty());
+
+        TestUtils.executeCommand(plugin, admin, "cancel");
     }
 
     @Test
     @DisplayName("When start is ran, including a mob grace period will affect when the difficulty changes")
     void startSpreadPlayersChoosesAnIdealLocation() throws InterruptedException {
         BukkitSchedulerMock schedule = server.getScheduler();
+
+
 
         PlayerMock admin = server.addPlayer();
         admin.setOp(true);
@@ -523,9 +536,54 @@ public class StartTest {
 
         admin.assertSaid(Component.text("UHC: Countdown starting now. Don't forget to record your POV if you can. GLHF!", Style.style(NamedTextColor.GRAY, TextDecoration.ITALIC)));
 
+        assertEquals(Material.BEDROCK, world.getBlockAt(99, 5,0).getType());
         assertEquals(99, Math.round(player.getLocation().getX()));
         assertEquals(6, Math.round(player.getLocation().getY()));
         assertEquals(0, Math.round(player.getLocation().getZ()));
+
+        TestUtils.executeCommand(plugin, admin, "cancel");
+    }
+
+    @Test
+    @DisplayName("When start is ran, players are given an evolving shield")
+    void evolvingShieldsOnStart() {
+        PlayerMock admin = server.addPlayer();
+        admin.setOp(true);
+
+        TestUtils.executeCommand(plugin, admin, "set",
+                "enable.evolving.shields=true"
+        );
+
+        world.setGameRule(GameRules.FALL_DAMAGE, false);
+
+        PlayerMock player1 = server.addPlayer();
+        player1.setName("stefan");
+        PlayerMock player2 = server.addPlayer();
+        player2.setName("pavey");
+        PlayerMock player3 = server.addPlayer();
+        player3.setName("shurf");
+
+        TestUtils.executeCommand(plugin, admin, "start");
+
+        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRules.PVP));
+        assertEquals(0, world.getEntities().stream().filter(entity -> entity.getType().equals(EntityType.ITEM)).toList().size());
+        assertEquals(Boolean.TRUE, world.getGameRuleValue(GameRules.FALL_DAMAGE));
+        assertEquals(Boolean.FALSE, world.getGameRuleValue(GameRules.REDUCED_DEBUG_INFO));
+
+        server.getOnlinePlayers().forEach(player -> {
+            final ItemStack shield = player.getInventory().getItemInMainHand();
+            assertTrue(EvolvingShield.isEvolvingShield(plugin.getUHCConfig(), shield));
+            final ItemMeta meta = shield.getItemMeta();
+            assertEquals(List.of(
+                    Component.text(""),
+                    Component.text("Level this shield up by gaining EXP,"),
+                    Component.text("dealing damage to players and getting kills!"),
+                    Component.text(""),
+                    Component.text("Current XP: 0")
+            ), meta.lore());
+            assertEquals(player.getName(), meta.getPersistentDataContainer().get(plugin.getUHCConfig().getManagedResources().getKeys().getEvolvingShieldUserKey(), PersistentDataType.STRING));
+            assertEquals(0, meta.getPersistentDataContainer().get(plugin.getUHCConfig().getManagedResources().getKeys().getEvolvingShieldXPKey(), PersistentDataType.INTEGER));
+        });
 
         TestUtils.executeCommand(plugin, admin, "cancel");
     }

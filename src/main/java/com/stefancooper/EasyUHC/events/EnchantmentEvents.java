@@ -9,7 +9,9 @@ import com.stefancooper.EasyUHC.enchants.PrepareShieldEnchant;
 import com.stefancooper.EasyUHC.enchants.PrepareTNTEnchant;
 import com.stefancooper.EasyUHC.enums.ConfigKey;
 import com.stefancooper.EasyUHC.utils.Constants;
+import com.stefancooper.EasyUHC.utils.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -19,10 +21,13 @@ import org.bukkit.block.data.Directional;
 import org.bukkit.damage.DamageType;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Snowball;
 import org.bukkit.entity.TNTPrimed;
+import org.bukkit.entity.WindCharge;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDispenseEvent;
@@ -35,9 +40,15 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import io.papermc.paper.event.entity.EntityKnockbackEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
+import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 import java.util.*;
 
@@ -55,7 +66,9 @@ public class EnchantmentEvents implements Listener {
 
         // Shield enchants
         if (item.getType() == Material.SHIELD &&
-                config.getProperty(ConfigKey.ADDITIONAL_ENCHANTS_SHIELD, Defaults.ADDITIONAL_ENCHANTS_SHIELD)) {
+                config.getProperty(ConfigKey.ADDITIONAL_ENCHANTS_SHIELD, Defaults.ADDITIONAL_ENCHANTS_SHIELD) &&
+                !config.getProperty(ConfigKey.ENABLE_EVOLVING_SHIELDS, Defaults.ENABLE_EVOLVING_SHIELDS)
+        ) {
             final EnchantShield shieldEnchants = new EnchantShield(item, Map.of(event.getEnchantmentHint(), event.getLevelHint()));
             // Note - In the future, if base minecraft adds their own enchants for shields, we may want to remove this
             event.getEnchantsToAdd().clear();
@@ -77,7 +90,9 @@ public class EnchantmentEvents implements Listener {
         ItemStack item = event.getItem();
 
         if (item.getType() == Material.SHIELD &&
-                config.getProperty(ConfigKey.ADDITIONAL_ENCHANTS_SHIELD, Defaults.ADDITIONAL_ENCHANTS_SHIELD)) {
+                config.getProperty(ConfigKey.ADDITIONAL_ENCHANTS_SHIELD, Defaults.ADDITIONAL_ENCHANTS_SHIELD) &&
+                !config.getProperty(ConfigKey.ENABLE_EVOLVING_SHIELDS, Defaults.ENABLE_EVOLVING_SHIELDS)
+        ) {
 
             final PrepareShieldEnchant prepareShieldEnchant = new PrepareShieldEnchant(item, event.getView().getEnchantmentSeed(), event.getEnchantmentBonus());
 

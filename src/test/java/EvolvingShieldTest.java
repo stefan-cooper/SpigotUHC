@@ -170,7 +170,7 @@ public class EvolvingShieldTest {
                 Map.of()
         );
 
-        addXPViaEvent(player1, 90);
+        addXPViaEvent(player1, 20);
         assertUpdatedXP(
                 player1.getInventory().getItemInMainHand(),
                 player1,
@@ -232,7 +232,7 @@ public class EvolvingShieldTest {
                 Map.of()
         );
 
-        addXPViaEvent(player1, 90);
+        addXPViaEvent(player1, 20);
         assertUpdatedXP(
                 player1.getInventory().getItemInMainHand(),
                 player1,
@@ -295,7 +295,7 @@ public class EvolvingShieldTest {
                 Map.of()
         );
 
-        addXPViaEvent(player1, 90);
+        addXPViaEvent(player1, 20);
         assertUpdatedXP(
                 player1.getInventory().getItemInMainHand(),
                 player1,

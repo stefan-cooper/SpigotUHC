@@ -415,7 +415,7 @@ public class EvolvingShieldUpgradeMenu {
 
                     player.give(new ItemStack(Material.BREWING_STAND, 1));
                     player.give(new ItemStack(Material.NETHER_WART, 3));
-                    player.give(new ItemStack(Material.BLAZE_POWDER, 3));
+                    player.give(new ItemStack(Material.BLAZE_POWDER, 1));
                     player.give(waterBottle1);
                     player.give(waterBottle2);
                     player.give(waterBottle3);

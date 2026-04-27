@@ -30,15 +30,15 @@ import static com.stefancooper.EasyUHC.evolvingshield.EvolvingShieldUpgradeMenu.
 
 public class EvolvingShield {
 
-    public static int STAGE_1 = 100;
-    public static int STAGE_2 = 400;
-    public static int STAGE_3 = 700;
-    public static int STAGE_4 = 1000;
-    public static int STAGE_5 = 1300;
+    public static int STAGE_1 = 30;
+    public static int STAGE_2 = 100;
+    public static int STAGE_3 = 400;
+    public static int STAGE_4 = 700;
+    public static int STAGE_5 = 1100;
     public static int STAGE_6 = 1600;
-    public static int STAGE_7 = 1900;
-    public static int STAGE_8 = 2500;
-    public static int STAGE_9 = 3500;
+    public static int STAGE_7 = 2100;
+    public static int STAGE_8 = 2600;
+    public static int STAGE_9 = 3100;
     public static int STAGE_10 = 5000;
 
     public static void createEvolvingShield(final Config config, final Player player) {

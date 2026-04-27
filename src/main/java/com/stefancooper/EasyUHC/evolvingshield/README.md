@@ -5,6 +5,7 @@ This file provides the details about the Evolving Shield feature.
 Index:
 
 - [Configuration](#configuration)
+- [What is an evolving shield?](#what-is-an-evolving-shield)
 - [Levelling up](#levelling-up)
 - [Stages](#stages)
 
@@ -25,6 +26,16 @@ You can use this to ensure that higher stages can't be grinded with an XP farm.
 This defaults to -1 (no limit for minecraft XP)
 
 `/uhc set evolving.shields.exp.threshold=2000`
+
+## What is an evolving shield?
+
+On UHC start, each player will be given a unique shield to them. They cannot drop, destroy or lose the shield in any way.
+
+You can [level up](#levelling-up) your shield and [unlock upgrades](#stages) from doing so.
+
+If you die, your shield is destroyed. It cannot be picked up by opponents, or teammates.
+
+If you are revived, you will be given a new evolving shield that has 0 XP.
 
 ## Levelling up
 
@@ -74,31 +85,31 @@ As you level up, you will reach different stages of the evolving shield. Each st
 
 This could be subject to change, but see the stages below:
 
-### Stage 1 (100 EXP)
+### Stage 1 (30 EXP)
 
 - 32x Steak
 - 4x Book
 - 8x Apple
 - 24x Iron Ingots
 
-### Stage 2 (400 EXP)
+### Stage 2 (100 EXP)
 
 - Add 'Knockback I' to your shield
 - Add 'Thorns I' to your shield
 
-### Stage 3 (700 EXP)
+### Stage 3 (400 EXP)
 
 - Gain permanent Absorption (2 extra hearts)
 - Regenerate 4 hearts immediately
 - Gain a player head
 
-### Stage 4 (1000 EXP)
+### Stage 4 (700 EXP)
 
 - 32x Arrow
 - 16x Spectral Arrow
 - 1x Tipped Arrow with Instant Damage II applied
 
-### Stage 5 (1300 EXP)
+### Stage 5 (1100 EXP)
 
 - Add 'Swift Defense' to your shield. Chance of gaining swiftness after blocking an attack (1/16)
 - Add 'Leap Guard' to your shield. Chance of gaining jump boost after blocking an attack (1/8)
@@ -109,12 +120,12 @@ This could be subject to change, but see the stages below:
 - Add 'Sapping Guard' to your shield. Chance of giving weakness after blocking an attack (1/16)
 - Add 'Snare Guard' to your shield. Chance of giving slowness after blocking an attack (1/8)
 
-### Stage 7 (1900 EXP)
+### Stage 7 (2100 EXP)
 
 - Upgrade or add 'Knockback' to your shield.
 - Upgrade or add 'Thorns' to your shield.
 
-### Stage 8 (2500 EXP)
+### Stage 8 (2600 EXP)
 
 - Gain the Reapers kit
   - 4x Ender Pearl
@@ -123,7 +134,7 @@ This could be subject to change, but see the stages below:
 - Gain the Apothecary kit
   - 1x Brewing Stand
   - 3x Nether Wart
-  - 3x Blaze Powder
+  - 1x Blaze Powder
   - 3x Water Bottle
 - Gain the Librarians kit
   - 1x Knockback II Enchanted Book
@@ -132,7 +143,7 @@ This could be subject to change, but see the stages below:
   - 4x Bookshelf
   - 32x EXP Bottle
 
-### Stage 9 (3500 EXP)
+### Stage 9 (3100 EXP)
 
 - 1x Quickboom IV TNT
 - 1x Blastwave IV TNT

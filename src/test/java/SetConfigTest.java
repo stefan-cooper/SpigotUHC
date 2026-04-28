@@ -14,7 +14,7 @@ import org.junit.jupiter.api.*;
 import utils.TestUtils;
 
 import static com.stefancooper.EasyUHC.Defaults.WORLD_NAME;
-import static com.stefancooper.EasyUHC.utils.Constants.PLAYER_HEAD;
+import static com.stefancooper.EasyUHC.base.Constants.PLAYER_HEAD;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SetConfigTest {

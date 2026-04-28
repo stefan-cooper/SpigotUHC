@@ -1,4 +1,4 @@
-package com.stefancooper.EasyUHC.types;
+package com.stefancooper.EasyUHC.base;
 
 import com.stefancooper.EasyUHC.Config;
 import net.kyori.adventure.text.Component;

@@ -2,7 +2,7 @@ package com.stefancooper.EasyUHC.events;
 
 import com.stefancooper.EasyUHC.Config;
 import com.stefancooper.EasyUHC.Defaults;
-import com.stefancooper.EasyUHC.utils.Utils;
+import com.stefancooper.EasyUHC.base.Utils;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.EntityType;
@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import static com.stefancooper.EasyUHC.enums.ConfigKey.ENABLE_TIMESTAMPS;
+import static com.stefancooper.EasyUHC.base.ConfigKey.ENABLE_TIMESTAMPS;
 
 public class TimestampEvents implements Listener {
 

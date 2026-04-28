@@ -1,4 +1,4 @@
-package com.stefancooper.EasyUHC.utils;
+package com.stefancooper.EasyUHC.base;
 
 import com.stefancooper.EasyUHC.Config;
 import com.stefancooper.EasyUHC.Defaults;
@@ -9,7 +9,7 @@ import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.REVIVE_ENABLED;
+import static com.stefancooper.EasyUHC.base.ConfigKey.REVIVE_ENABLED;
 
 public class Utils {
 

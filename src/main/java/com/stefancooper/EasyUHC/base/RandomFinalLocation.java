@@ -1,4 +1,4 @@
-package com.stefancooper.EasyUHC.types;
+package com.stefancooper.EasyUHC.base;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;

@@ -3,7 +3,7 @@ import org.mockbukkit.mockbukkit.MockBukkit;
 import org.mockbukkit.mockbukkit.ServerMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
 import com.stefancooper.EasyUHC.Plugin;
-import com.stefancooper.EasyUHC.utils.Utils;
+import com.stefancooper.EasyUHC.base.Utils;
 import org.bukkit.World;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import utils.TestUtils;
 
 import static com.stefancooper.EasyUHC.Defaults.WORLD_NAME;
-import static com.stefancooper.EasyUHC.utils.Constants.CRAFTABLE_PLAYER_HEAD;
+import static com.stefancooper.EasyUHC.base.Constants.CRAFTABLE_PLAYER_HEAD;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CraftablePlayerHeadTest {

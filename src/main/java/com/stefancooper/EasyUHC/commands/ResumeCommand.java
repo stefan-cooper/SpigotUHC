@@ -2,10 +2,10 @@ package com.stefancooper.EasyUHC.commands;
 
 import com.stefancooper.EasyUHC.Config;
 import com.stefancooper.EasyUHC.Defaults;
-import com.stefancooper.EasyUHC.types.UHCLoot;
-import com.stefancooper.EasyUHC.utils.Utils;
-import com.stefancooper.EasyUHC.enums.ConfigKey;
-import com.stefancooper.EasyUHC.types.BossBarBorder;
+import com.stefancooper.EasyUHC.uhcloot.UHCLoot;
+import com.stefancooper.EasyUHC.base.Utils;
+import com.stefancooper.EasyUHC.base.ConfigKey;
+import com.stefancooper.EasyUHC.base.BossBarBorder;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
@@ -17,16 +17,16 @@ import org.bukkit.command.CommandSender;
 import java.util.List;
 import java.util.Optional;
 
-import static com.stefancooper.EasyUHC.enums.ConfigKey.COUNTDOWN_TIMER_LENGTH;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.DIFFICULTY;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.GRACE_PERIOD_TIMER;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.WORLD_BORDER_FINAL_SIZE;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.WORLD_BORDER_FINAL_Y;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.WORLD_BORDER_GRACE_PERIOD;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.WORLD_BORDER_INITIAL_SIZE;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.WORLD_BORDER_SHRINKING_PERIOD;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.WORLD_BORDER_Y_SHRINKING_PERIOD;
-import static com.stefancooper.EasyUHC.utils.Constants.MAXIMUM_FINAL_SIZE_FOR_Y_SHRINK;
+import static com.stefancooper.EasyUHC.base.ConfigKey.COUNTDOWN_TIMER_LENGTH;
+import static com.stefancooper.EasyUHC.base.ConfigKey.DIFFICULTY;
+import static com.stefancooper.EasyUHC.base.ConfigKey.GRACE_PERIOD_TIMER;
+import static com.stefancooper.EasyUHC.base.ConfigKey.WORLD_BORDER_FINAL_SIZE;
+import static com.stefancooper.EasyUHC.base.ConfigKey.WORLD_BORDER_FINAL_Y;
+import static com.stefancooper.EasyUHC.base.ConfigKey.WORLD_BORDER_GRACE_PERIOD;
+import static com.stefancooper.EasyUHC.base.ConfigKey.WORLD_BORDER_INITIAL_SIZE;
+import static com.stefancooper.EasyUHC.base.ConfigKey.WORLD_BORDER_SHRINKING_PERIOD;
+import static com.stefancooper.EasyUHC.base.ConfigKey.WORLD_BORDER_Y_SHRINKING_PERIOD;
+import static com.stefancooper.EasyUHC.base.Constants.MAXIMUM_FINAL_SIZE_FOR_Y_SHRINK;
 
 public class ResumeCommand extends StartCommand {
 

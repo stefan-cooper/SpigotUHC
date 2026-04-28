@@ -3,15 +3,13 @@ package com.stefancooper.EasyUHC.events;
 import com.destroystokyo.paper.event.entity.EntityKnockbackByEntityEvent;
 import com.stefancooper.EasyUHC.Config;
 import com.stefancooper.EasyUHC.Defaults;
+import com.stefancooper.EasyUHC.enchants.Constants;
 import com.stefancooper.EasyUHC.enchants.EnchantShield;
 import com.stefancooper.EasyUHC.enchants.EnchantTNT;
 import com.stefancooper.EasyUHC.enchants.PrepareShieldEnchant;
 import com.stefancooper.EasyUHC.enchants.PrepareTNTEnchant;
-import com.stefancooper.EasyUHC.enums.ConfigKey;
-import com.stefancooper.EasyUHC.utils.Constants;
-import com.stefancooper.EasyUHC.utils.Utils;
+import com.stefancooper.EasyUHC.base.ConfigKey;
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -21,13 +19,10 @@ import org.bukkit.block.data.Directional;
 import org.bukkit.damage.DamageType;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Snowball;
 import org.bukkit.entity.TNTPrimed;
-import org.bukkit.entity.WindCharge;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDispenseEvent;
@@ -40,15 +35,9 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import io.papermc.paper.event.entity.EntityKnockbackEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
-import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 import java.util.*;
 
@@ -244,14 +233,14 @@ public class EnchantmentEvents implements Listener {
     private void storeTNTMetadata(final ItemStack item, final Block tntBlock) {
         if (hasQuickboomEnchantment(item) || hasBlastwaveEnchantment(item)) {
             if (hasQuickboomEnchantment(item)) {
-                tntBlock.setMetadata(Constants.QUICKBOOM_ENCHANTMENT,
+                tntBlock.setMetadata(com.stefancooper.EasyUHC.enchants.Constants.QUICKBOOM_ENCHANTMENT,
                         new FixedMetadataValue(config.getPlugin(),
                                 item.getEnchantmentLevel(config.getManagedResources().getQuickboomEnchantment())
                         )
                 );
             }
             if (hasBlastwaveEnchantment(item)) {
-                tntBlock.setMetadata(Constants.BLASTWAVE_ENCHANTMENT,
+                tntBlock.setMetadata(com.stefancooper.EasyUHC.enchants.Constants.BLASTWAVE_ENCHANTMENT,
                         new FixedMetadataValue(config.getPlugin(),
                                 item.getEnchantmentLevel(config.getManagedResources().getBlastwaveEnchantment())
                         )
@@ -261,8 +250,8 @@ public class EnchantmentEvents implements Listener {
     }
 
     private void doTNTExplosion(final Block block) {
-        final List<MetadataValue> quickboomMetadata = block.getMetadata(Constants.QUICKBOOM_ENCHANTMENT);
-        final List<MetadataValue> blastwaveMetadata = block.getMetadata(Constants.BLASTWAVE_ENCHANTMENT);
+        final List<MetadataValue> quickboomMetadata = block.getMetadata(com.stefancooper.EasyUHC.enchants.Constants.QUICKBOOM_ENCHANTMENT);
+        final List<MetadataValue> blastwaveMetadata = block.getMetadata(com.stefancooper.EasyUHC.enchants.Constants.BLASTWAVE_ENCHANTMENT);
         if (!quickboomMetadata.isEmpty() || !blastwaveMetadata.isEmpty()) {
             Bukkit.getScheduler().runTask(config.getPlugin(), () -> block.getWorld().getNearbyEntities(block.getLocation().add(0.5, 0.5, 0.5), 1, 1, 1)
                     .stream()
@@ -271,8 +260,8 @@ public class EnchantmentEvents implements Listener {
                     .forEach(tnt -> {
                         if (!quickboomMetadata.isEmpty() || !blastwaveMetadata.isEmpty())
                             handleTNTEnchantments(tnt, quickboomMetadata, blastwaveMetadata);
-                        block.removeMetadata(Constants.QUICKBOOM_ENCHANTMENT, config.getPlugin());
-                        block.removeMetadata(Constants.BLASTWAVE_ENCHANTMENT, config.getPlugin());
+                        block.removeMetadata(com.stefancooper.EasyUHC.enchants.Constants.QUICKBOOM_ENCHANTMENT, config.getPlugin());
+                        block.removeMetadata(com.stefancooper.EasyUHC.enchants.Constants.BLASTWAVE_ENCHANTMENT, config.getPlugin());
                     }));
         }
     }
@@ -306,7 +295,7 @@ public class EnchantmentEvents implements Listener {
         final List<Item> tnts = event.getItems().stream().filter(item -> item.getItemStack().getType().equals(Material.TNT)).toList();
         final Block destroyedBlock = event.getBlockState().getBlock();
 
-        final List<MetadataValue> quickboomMetadata = destroyedBlock.getMetadata(Constants.QUICKBOOM_ENCHANTMENT);
+        final List<MetadataValue> quickboomMetadata = destroyedBlock.getMetadata(com.stefancooper.EasyUHC.enchants.Constants.QUICKBOOM_ENCHANTMENT);
         final List<MetadataValue> blastwaveMetadata = destroyedBlock.getMetadata(Constants.BLASTWAVE_ENCHANTMENT);
 
         if (!quickboomMetadata.isEmpty()) tnts.forEach(tnt -> tnt.getItemStack().addUnsafeEnchantments(Map.of(config.getManagedResources().getQuickboomEnchantment(), quickboomMetadata.getFirst().asInt())));

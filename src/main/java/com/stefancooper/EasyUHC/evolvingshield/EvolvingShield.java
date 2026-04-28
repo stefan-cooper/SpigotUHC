@@ -2,7 +2,7 @@ package com.stefancooper.EasyUHC.evolvingshield;
 
 import com.stefancooper.EasyUHC.Config;
 import com.stefancooper.EasyUHC.Defaults;
-import com.stefancooper.EasyUHC.types.UHCTeam;
+import com.stefancooper.EasyUHC.base.UHCTeam;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.DyeColor;
@@ -25,7 +25,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Level;
 
-import static com.stefancooper.EasyUHC.enums.ConfigKey.EVOLVING_SHIELDS_EXP_THRESHOLD;
+import static com.stefancooper.EasyUHC.base.ConfigKey.EVOLVING_SHIELDS_EXP_THRESHOLD;
 import static com.stefancooper.EasyUHC.evolvingshield.EvolvingShieldUpgradeMenu.calculateUpgradeAvailable;
 
 public class EvolvingShield {

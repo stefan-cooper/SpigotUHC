@@ -1,13 +1,12 @@
-package com.stefancooper.EasyUHC.types;
+package com.stefancooper.EasyUHC.base;
 
 import com.stefancooper.EasyUHC.Config;
 import com.stefancooper.EasyUHC.Defaults;
-import com.stefancooper.EasyUHC.utils.Utils;
 import org.bukkit.World;
 
-import static com.stefancooper.EasyUHC.enums.ConfigKey.WORLD_NAME;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.WORLD_NAME_END;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.WORLD_NAME_NETHER;
+import static com.stefancooper.EasyUHC.base.ConfigKey.WORLD_NAME;
+import static com.stefancooper.EasyUHC.base.ConfigKey.WORLD_NAME_END;
+import static com.stefancooper.EasyUHC.base.ConfigKey.WORLD_NAME_NETHER;
 
 public class Worlds {
 

@@ -1,4 +1,4 @@
-import com.stefancooper.EasyUHC.utils.Utils;
+import com.stefancooper.EasyUHC.base.Utils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;

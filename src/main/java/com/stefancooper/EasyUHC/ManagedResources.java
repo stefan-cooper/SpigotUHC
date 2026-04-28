@@ -1,11 +1,12 @@
 package com.stefancooper.EasyUHC;
 
-import com.stefancooper.EasyUHC.enums.ConfigKey;
-import com.stefancooper.EasyUHC.enums.PerformanceTrackingEvent;
-import com.stefancooper.EasyUHC.types.BossBarBorder;
-import com.stefancooper.EasyUHC.types.InstantRevive;
-import com.stefancooper.EasyUHC.types.UHCTeam;
-import com.stefancooper.EasyUHC.utils.Utils;
+import com.stefancooper.EasyUHC.base.ConfigKey;
+import com.stefancooper.EasyUHC.base.NamespaceKeys;
+import com.stefancooper.EasyUHC.base.PerformanceTrackingEvent;
+import com.stefancooper.EasyUHC.base.BossBarBorder;
+import com.stefancooper.EasyUHC.revive.InstantRevive;
+import com.stefancooper.EasyUHC.base.UHCTeam;
+import com.stefancooper.EasyUHC.base.Utils;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
 import org.bukkit.Bukkit;
@@ -25,8 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-import static com.stefancooper.EasyUHC.utils.Constants.PERFORMANCE_TRACKING_LOCATION;
-import static com.stefancooper.EasyUHC.utils.Constants.TIMESTAMPS_LOCATION;
+import static com.stefancooper.EasyUHC.base.Constants.PERFORMANCE_TRACKING_LOCATION;
+import static com.stefancooper.EasyUHC.base.Constants.TIMESTAMPS_LOCATION;
 
 public class ManagedResources {
 

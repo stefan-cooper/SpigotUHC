@@ -2,7 +2,7 @@ package com.stefancooper.EasyUHC.events;
 
 import com.stefancooper.EasyUHC.Config;
 import com.stefancooper.EasyUHC.Defaults;
-import com.stefancooper.EasyUHC.utils.Utils;
+import com.stefancooper.EasyUHC.base.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -19,7 +19,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scoreboard.Team;
 import java.util.List;
 
-import static com.stefancooper.EasyUHC.enums.ConfigKey.*;
+import static com.stefancooper.EasyUHC.base.ConfigKey.*;
 
 public class ReviveEvents implements Listener {
 

@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 import utils.TestUtils;
 
 import static com.stefancooper.EasyUHC.Defaults.WORLD_NAME;
-import static com.stefancooper.EasyUHC.utils.Constants.NOTCH_APPLE;
+import static com.stefancooper.EasyUHC.base.Constants.NOTCH_APPLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 

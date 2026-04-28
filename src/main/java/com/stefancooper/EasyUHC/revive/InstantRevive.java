@@ -1,4 +1,4 @@
-package com.stefancooper.EasyUHC.types;
+package com.stefancooper.EasyUHC.revive;
 
 import com.stefancooper.EasyUHC.Config;
 import com.stefancooper.EasyUHC.Defaults;
@@ -14,9 +14,9 @@ import org.bukkit.Sound;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 
-import static com.stefancooper.EasyUHC.enums.ConfigKey.ENABLE_EVOLVING_SHIELDS;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.REVIVE_HP;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.REVIVE_LOSE_MAX_HEALTH;
+import static com.stefancooper.EasyUHC.base.ConfigKey.ENABLE_EVOLVING_SHIELDS;
+import static com.stefancooper.EasyUHC.base.ConfigKey.REVIVE_HP;
+import static com.stefancooper.EasyUHC.base.ConfigKey.REVIVE_LOSE_MAX_HEALTH;
 
 
 public class InstantRevive {

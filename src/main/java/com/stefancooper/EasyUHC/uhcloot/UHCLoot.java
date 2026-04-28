@@ -1,8 +1,8 @@
-package com.stefancooper.EasyUHC.types;
+package com.stefancooper.EasyUHC.uhcloot;
 
 import com.stefancooper.EasyUHC.Config;
 import com.stefancooper.EasyUHC.Defaults;
-import com.stefancooper.EasyUHC.utils.Utils;
+import com.stefancooper.EasyUHC.base.Utils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;
@@ -24,13 +24,13 @@ import org.bukkit.scheduler.BukkitTask;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.LOOT_CHEST_ENABLED;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.LOOT_CHEST_HIGH_LOOT_ODDS;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.LOOT_CHEST_MID_LOOT_ODDS;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.LOOT_CHEST_SPINS_PER_GEN;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.LOOT_CHEST_X_RANGE;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.LOOT_CHEST_FREQUENCY;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.LOOT_CHEST_Z_RANGE;
+import static com.stefancooper.EasyUHC.base.ConfigKey.LOOT_CHEST_ENABLED;
+import static com.stefancooper.EasyUHC.base.ConfigKey.LOOT_CHEST_HIGH_LOOT_ODDS;
+import static com.stefancooper.EasyUHC.base.ConfigKey.LOOT_CHEST_MID_LOOT_ODDS;
+import static com.stefancooper.EasyUHC.base.ConfigKey.LOOT_CHEST_SPINS_PER_GEN;
+import static com.stefancooper.EasyUHC.base.ConfigKey.LOOT_CHEST_X_RANGE;
+import static com.stefancooper.EasyUHC.base.ConfigKey.LOOT_CHEST_FREQUENCY;
+import static com.stefancooper.EasyUHC.base.ConfigKey.LOOT_CHEST_Z_RANGE;
 
 public class UHCLoot {
 

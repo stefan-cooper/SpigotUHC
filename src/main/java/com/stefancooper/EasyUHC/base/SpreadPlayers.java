@@ -1,9 +1,8 @@
-package com.stefancooper.EasyUHC.utils;
+package com.stefancooper.EasyUHC.base;
 
 import com.stefancooper.EasyUHC.Config;
 import com.stefancooper.EasyUHC.Defaults;
-import com.stefancooper.EasyUHC.types.Coordinate;
-import com.stefancooper.EasyUHC.types.UHCTeam;
+import com.stefancooper.EasyUHC.base.records.Coordinate;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -15,10 +14,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 
-import static com.stefancooper.EasyUHC.enums.ConfigKey.SPLIT_WITHIN_TEAMS_SIZE;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.WORLD_BORDER_CENTER_X;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.WORLD_BORDER_CENTER_Z;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.WORLD_BORDER_INITIAL_SIZE;
+import static com.stefancooper.EasyUHC.base.ConfigKey.SPLIT_WITHIN_TEAMS_SIZE;
+import static com.stefancooper.EasyUHC.base.ConfigKey.WORLD_BORDER_CENTER_X;
+import static com.stefancooper.EasyUHC.base.ConfigKey.WORLD_BORDER_CENTER_Z;
+import static com.stefancooper.EasyUHC.base.ConfigKey.WORLD_BORDER_INITIAL_SIZE;
 
 public class SpreadPlayers {
 

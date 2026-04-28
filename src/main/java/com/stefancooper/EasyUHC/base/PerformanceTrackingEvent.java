@@ -1,4 +1,4 @@
-package com.stefancooper.EasyUHC.enums;
+package com.stefancooper.EasyUHC.base;
 
 public enum PerformanceTrackingEvent {
     KILL("kills"),

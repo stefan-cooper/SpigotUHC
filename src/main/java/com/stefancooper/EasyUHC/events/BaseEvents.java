@@ -2,9 +2,9 @@ package com.stefancooper.EasyUHC.events;
 
 import com.stefancooper.EasyUHC.Config;
 import com.stefancooper.EasyUHC.Defaults;
-import com.stefancooper.EasyUHC.enums.DeathAction;
-import com.stefancooper.EasyUHC.types.BossBarBorder;
-import com.stefancooper.EasyUHC.utils.Utils;
+import com.stefancooper.EasyUHC.base.DeathAction;
+import com.stefancooper.EasyUHC.base.BossBarBorder;
+import com.stefancooper.EasyUHC.base.Utils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -43,8 +43,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.*;
-import static com.stefancooper.EasyUHC.utils.Utils.testMode;
+import static com.stefancooper.EasyUHC.base.ConfigKey.*;
+import static com.stefancooper.EasyUHC.base.Utils.testMode;
 
 public class BaseEvents implements Listener {
 

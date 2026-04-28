@@ -5,7 +5,7 @@ import com.stefancooper.EasyUHC.Config;
 import com.stefancooper.EasyUHC.Defaults;
 import com.stefancooper.EasyUHC.evolvingshield.EvolvingShield;
 import com.stefancooper.EasyUHC.evolvingshield.EvolvingShieldUpgradeMenu;
-import com.stefancooper.EasyUHC.utils.Utils;
+import com.stefancooper.EasyUHC.base.Utils;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -22,14 +22,12 @@ import org.bukkit.entity.Snowball;
 import org.bukkit.entity.WindCharge;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -40,9 +38,8 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.*;
-import java.util.logging.Level;
 
-import static com.stefancooper.EasyUHC.enums.ConfigKey.ENABLE_EVOLVING_SHIELDS;
+import static com.stefancooper.EasyUHC.base.ConfigKey.ENABLE_EVOLVING_SHIELDS;
 
 public class EvolvingShieldEvents implements Listener {
 

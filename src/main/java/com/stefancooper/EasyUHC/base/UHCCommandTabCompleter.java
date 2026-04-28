@@ -1,6 +1,5 @@
-package com.stefancooper.EasyUHC.utils;
+package com.stefancooper.EasyUHC.base;
 
-import com.stefancooper.EasyUHC.enums.ConfigKey;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

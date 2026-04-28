@@ -1,7 +1,7 @@
 package com.stefancooper.EasyUHC.commands;
 
 import com.stefancooper.EasyUHC.Config;
-import com.stefancooper.EasyUHC.enums.ConfigKey;
+import com.stefancooper.EasyUHC.base.ConfigKey;
 import org.bukkit.command.CommandSender;
 import java.util.Arrays;
 import java.util.logging.Level;

@@ -55,7 +55,7 @@ What this means in real-world terms is (for example):
 
 For more information, see https://minecraft.wiki/w/Experience
 
-### Dealing damage to oponnents
+### Dealing damage to opponents
 
 Dealing damage to opponents will level up the shield. 
 

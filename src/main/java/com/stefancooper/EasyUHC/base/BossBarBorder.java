@@ -1,15 +1,13 @@
-package com.stefancooper.EasyUHC.types;
+package com.stefancooper.EasyUHC.base;
 
 import com.stefancooper.EasyUHC.Config;
 import com.stefancooper.EasyUHC.Defaults;
-import com.stefancooper.EasyUHC.utils.Utils;
-import com.stefancooper.EasyUHC.enums.ConfigKey;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 
-import static com.stefancooper.EasyUHC.enums.ConfigKey.WORLD_BORDER_FINAL_SIZE;
+import static com.stefancooper.EasyUHC.base.ConfigKey.WORLD_BORDER_FINAL_SIZE;
 
 public class BossBarBorder {
 

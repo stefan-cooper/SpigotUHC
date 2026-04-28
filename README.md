@@ -55,6 +55,22 @@ on.death.action=spectate
 mob.grace.period=0
 ```
 
+#### Revive configuration
+
+See [Reviving players](./src/main/java/com/stefancooper/EasyUHC/revive/README.md)
+
+#### Loot chest configuration
+
+See [UHC Loot](./src/main/java/com/stefancooper/EasyUHC/uhcloot/README.md)
+
+#### Enchantment configuration
+
+See [enchantments](./src/main/java/com/stefancooper/EasyUHC/enchants/README.md)
+
+#### Evolving shield configuration
+
+See [evolving shields](./src/main/java/com/stefancooper/EasyUHC/evolvingshield/README.md)
+
 ### Optional properties:
 
 #### World border
@@ -89,46 +105,6 @@ team.pink=SimplySquare
 team.purple=Rking42
 ```
 
-#### Revive configuration
-
-```properties
-# Enable revive. False by default
-revive.enabled=false|true
-# HP that the revived player will start on (default: 4 (2 hearts))
-revive.hp=4
-# HP that the revived player will lose permanently on each revive (default 4 (2 hearts))
-revive.lose.max.health=4
-# revive with any player head. True by default
-revive.any.head=false|true
-```
-
-#### Loot chest configuration
-
-Loot chests spawn loot regularly based on your configuration below. For more information about what can spawn in a loot chest, see https://github.com/stefan-cooper/EasyUHC/blob/main/src/main/java/com/stefancooper/EasyUHC/types/UHCLoot.java
-
-* Notes:
-* - In the overworld, given the X & Z, it will spawn on the highest y coord available
-* - In the nether, it will use the same X & Z, but always spawn in a random coordinate between Y 32 and Y 48
-
-```properties
-# Enable loot chest
-loot.chest.enabled=false|true
-# How frequently loot is regenerated (in seconds)
-loot.chest.frequency=300
-# % odds of a high loot item spawning (per spin)
-loot.chest.high.loot.odds=5
-# % odds of a mid loot item spawning (per spin)
-loot.chest.mid.loot.odds=40
-# items/spins per gen
-loot.chest.spins.per.gen=5
-# time in seconds before the first loot chest is spawned after the UHC has started (default 0 seconds)
-loot.chest.grace.period=0
-# X coordinate for the loot chest
-loot.chest.x.range=-75,75
-# Z coordinate for the loot chest
-loot.chest.z.range=-75,75
-```
-
 #### Randomise team configuration
 
 ```properties
@@ -136,50 +112,6 @@ random.teams.pot.1=badTHREEEK,someoneelse
 random.teams.pot.2=chuckle_chuckle,someoneelse2
 random.teams.pot.3=JawadJ,someoneelse3
 ```
-
-#### Enchantments
-
-Enable custom/additional enchantments by tool/weapon:
-
-##### Shields (false by default):
-
-```properties
-additional.enchants.shield=false|true
-```
-
-Adds the following enchantments:
-
-`Knockback I` -> `Knockback II` - Applies knockback effect to enemy attacks when blocking
-
-`Thorns I` -> `Thorns III` - Applies thorns effect to enemy attacks when blocking
-
-These enchantments are scaled with bookcases as such:
-
-| Bookcases    | Max Knockback Available | Max Thorns Available |
-|--------------|-------------------------|----------------------|
-| 0 Bookcases  | Knockback I             | Thorns I             |
-| 1 Bookcase   | Knockback II            | Thorns II            |
-| 2+ Bookcases | Knockback II            | Thorns III           |
-
-#### TNT (false by default)
-
-```properties
-additional.enchants.tnt=false|true
-```
-
-Adds the following enchantments:
-
-`Quickboom I` -> `Quickboom IV` - Decrease the fuse time of your TNT.
-
-`Blastwave I` -> `Blastwave IV` - Increase the blast and damage of your TNT.
-
-These enchantments are scaled with bookcases as such:
-
-| Bookcases    | Max Quickboom Available | Max Blastwave Available |
-|--------------|-------------------------|-------------------------|
-| 0 Bookcases  | Quickboom I             | Blastwave II            |
-| 1 Bookcase   | Quickboom III           | Blastwave III           |
-| 2+ Bookcases | Quickboom IV            | Blastwave IV            |
 
 #### Misc configuration
 

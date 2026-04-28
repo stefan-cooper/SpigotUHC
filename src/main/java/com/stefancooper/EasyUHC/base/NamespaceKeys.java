@@ -1,27 +1,28 @@
-package com.stefancooper.EasyUHC;
+package com.stefancooper.EasyUHC.base;
 
+import com.stefancooper.EasyUHC.Config;
 import org.bukkit.NamespacedKey;
 
-import static com.stefancooper.EasyUHC.utils.Constants.BLASTWAVE_ENCHANTMENT;
-import static com.stefancooper.EasyUHC.utils.Constants.CRAFTABLE_PLAYER_HEAD;
-import static com.stefancooper.EasyUHC.utils.Constants.EVOLVING_SHIELD_UPGRADE_AVAILABLE_KEY;
-import static com.stefancooper.EasyUHC.utils.Constants.EVOLVING_SHIELD_UPGRADE_TOTAL_KEY;
-import static com.stefancooper.EasyUHC.utils.Constants.EVOLVING_SHIELD_UPGRADE_TYPE_KEY;
-import static com.stefancooper.EasyUHC.utils.Constants.EVOLVING_SHIELD_USER_KEY;
-import static com.stefancooper.EasyUHC.utils.Constants.EVOLVING_SHIELD_XP_KEY;
-import static com.stefancooper.EasyUHC.utils.Constants.NOTCH_APPLE;
-import static com.stefancooper.EasyUHC.utils.Constants.PLAYER_HEAD;
-import static com.stefancooper.EasyUHC.utils.Constants.QUICKBOOM_ENCHANTMENT;
-import static com.stefancooper.EasyUHC.utils.Constants.NAMESPACE;
-import static com.stefancooper.EasyUHC.utils.Constants.SHIELD_FIRE_ENCHANTMENT;
-import static com.stefancooper.EasyUHC.utils.Constants.SHIELD_JUMP_ENCHANTMENT;
-import static com.stefancooper.EasyUHC.utils.Constants.SHIELD_SLOWNESS_ENCHANTMENT;
-import static com.stefancooper.EasyUHC.utils.Constants.SHIELD_STRENGTH_ENCHANTMENT;
-import static com.stefancooper.EasyUHC.utils.Constants.SHIELD_SWIFTNESS_ENCHANTMENT;
-import static com.stefancooper.EasyUHC.utils.Constants.SHIELD_THUNDER_ENCHANTMENT;
-import static com.stefancooper.EasyUHC.utils.Constants.SHIELD_WATER_ENCHANTMENT;
-import static com.stefancooper.EasyUHC.utils.Constants.SHIELD_WEAKNESS_ENCHANTMENT;
-import static com.stefancooper.EasyUHC.utils.Constants.SHIELD_WIND_ENCHANTMENT;
+import static com.stefancooper.EasyUHC.enchants.Constants.BLASTWAVE_ENCHANTMENT;
+import static com.stefancooper.EasyUHC.base.Constants.CRAFTABLE_PLAYER_HEAD;
+import static com.stefancooper.EasyUHC.enchants.Constants.EVOLVING_SHIELD_UPGRADE_AVAILABLE_KEY;
+import static com.stefancooper.EasyUHC.enchants.Constants.EVOLVING_SHIELD_UPGRADE_TOTAL_KEY;
+import static com.stefancooper.EasyUHC.enchants.Constants.EVOLVING_SHIELD_UPGRADE_TYPE_KEY;
+import static com.stefancooper.EasyUHC.enchants.Constants.EVOLVING_SHIELD_USER_KEY;
+import static com.stefancooper.EasyUHC.enchants.Constants.EVOLVING_SHIELD_XP_KEY;
+import static com.stefancooper.EasyUHC.base.Constants.NOTCH_APPLE;
+import static com.stefancooper.EasyUHC.base.Constants.PLAYER_HEAD;
+import static com.stefancooper.EasyUHC.enchants.Constants.QUICKBOOM_ENCHANTMENT;
+import static com.stefancooper.EasyUHC.base.Constants.NAMESPACE;
+import static com.stefancooper.EasyUHC.enchants.Constants.SHIELD_FIRE_ENCHANTMENT;
+import static com.stefancooper.EasyUHC.enchants.Constants.SHIELD_JUMP_ENCHANTMENT;
+import static com.stefancooper.EasyUHC.enchants.Constants.SHIELD_SLOWNESS_ENCHANTMENT;
+import static com.stefancooper.EasyUHC.enchants.Constants.SHIELD_STRENGTH_ENCHANTMENT;
+import static com.stefancooper.EasyUHC.enchants.Constants.SHIELD_SWIFTNESS_ENCHANTMENT;
+import static com.stefancooper.EasyUHC.enchants.Constants.SHIELD_THUNDER_ENCHANTMENT;
+import static com.stefancooper.EasyUHC.enchants.Constants.SHIELD_WATER_ENCHANTMENT;
+import static com.stefancooper.EasyUHC.enchants.Constants.SHIELD_WEAKNESS_ENCHANTMENT;
+import static com.stefancooper.EasyUHC.enchants.Constants.SHIELD_WIND_ENCHANTMENT;
 
 public class NamespaceKeys {
 

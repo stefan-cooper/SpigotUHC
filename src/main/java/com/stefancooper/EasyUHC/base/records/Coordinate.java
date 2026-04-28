@@ -1,4 +1,4 @@
-package com.stefancooper.EasyUHC.types;
+package com.stefancooper.EasyUHC.base.records;
 
 public record Coordinate(double x, double z) {
 

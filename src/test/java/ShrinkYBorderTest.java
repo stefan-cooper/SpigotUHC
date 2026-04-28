@@ -8,7 +8,7 @@ import org.mockbukkit.mockbukkit.world.WorldMock;
 import org.mockbukkit.mockbukkit.entity.PlayerMock;
 import org.mockbukkit.mockbukkit.scheduler.BukkitSchedulerMock;
 import com.stefancooper.EasyUHC.Plugin;
-import com.stefancooper.EasyUHC.utils.Utils;
+import com.stefancooper.EasyUHC.base.Utils;
 import mocks.servers.DispatchCommandServerMock;
 import org.bukkit.Material;
 import org.bukkit.World;

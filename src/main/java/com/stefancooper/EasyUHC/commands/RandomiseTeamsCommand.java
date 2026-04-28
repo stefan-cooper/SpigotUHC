@@ -1,7 +1,7 @@
 package com.stefancooper.EasyUHC.commands;
 
 import com.stefancooper.EasyUHC.Config;
-import com.stefancooper.EasyUHC.types.UHCTeam;
+import com.stefancooper.EasyUHC.base.UHCTeam;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -12,9 +12,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.logging.Level;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.RANDOM_TEAMS_POT_ONE;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.RANDOM_TEAMS_POT_THREE;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.RANDOM_TEAMS_POT_TWO;
+import static com.stefancooper.EasyUHC.base.ConfigKey.RANDOM_TEAMS_POT_ONE;
+import static com.stefancooper.EasyUHC.base.ConfigKey.RANDOM_TEAMS_POT_THREE;
+import static com.stefancooper.EasyUHC.base.ConfigKey.RANDOM_TEAMS_POT_TWO;
 
 public class RandomiseTeamsCommand extends AbstractCommand {
 

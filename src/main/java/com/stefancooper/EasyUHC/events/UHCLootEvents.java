@@ -1,7 +1,7 @@
 package com.stefancooper.EasyUHC.events;
 
 import com.stefancooper.EasyUHC.Config;
-import com.stefancooper.EasyUHC.types.UHCLoot;
+import com.stefancooper.EasyUHC.uhcloot.UHCLoot;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -9,8 +9,8 @@ import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
-import static com.stefancooper.EasyUHC.types.UHCLoot.getChestLocation;
-import static com.stefancooper.EasyUHC.types.UHCLoot.isSameLocation;
+import static com.stefancooper.EasyUHC.uhcloot.UHCLoot.getChestLocation;
+import static com.stefancooper.EasyUHC.uhcloot.UHCLoot.isSameLocation;
 
 public class UHCLootEvents implements Listener {
 

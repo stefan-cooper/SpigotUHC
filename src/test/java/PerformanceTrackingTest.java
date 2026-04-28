@@ -1,6 +1,6 @@
 import com.stefancooper.EasyUHC.Plugin;
-import com.stefancooper.EasyUHC.enums.PerformanceTrackingEvent;
-import com.stefancooper.EasyUHC.utils.Utils;
+import com.stefancooper.EasyUHC.base.PerformanceTrackingEvent;
+import com.stefancooper.EasyUHC.base.Utils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.stefancooper.EasyUHC.Defaults.WORLD_NAME;
-import static com.stefancooper.EasyUHC.utils.Constants.PERFORMANCE_TRACKING_LOCATION;
+import static com.stefancooper.EasyUHC.base.Constants.PERFORMANCE_TRACKING_LOCATION;
 
 public class PerformanceTrackingTest {
 

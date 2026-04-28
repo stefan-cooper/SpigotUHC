@@ -1,7 +1,7 @@
 package com.stefancooper.EasyUHC.commands;
 
 import com.stefancooper.EasyUHC.Config;
-import com.stefancooper.EasyUHC.utils.UHCCommandTabCompleter;
+import com.stefancooper.EasyUHC.base.UHCCommandTabCompleter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;

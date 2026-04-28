@@ -12,14 +12,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.scoreboard.Scoreboard;
-import com.stefancooper.EasyUHC.types.UHCTeam;
+import com.stefancooper.EasyUHC.base.UHCTeam;
 import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-import static com.stefancooper.EasyUHC.enums.ConfigKey.*;
+import static com.stefancooper.EasyUHC.base.ConfigKey.*;
 
 public class WinEvents implements Listener {
 

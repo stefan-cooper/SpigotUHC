@@ -1,7 +1,7 @@
 package com.stefancooper.EasyUHC;
 
-import com.stefancooper.EasyUHC.enums.ConfigKey;
-import com.stefancooper.EasyUHC.utils.Utils;
+import com.stefancooper.EasyUHC.base.ConfigKey;
+import com.stefancooper.EasyUHC.base.Utils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
@@ -16,9 +16,9 @@ import org.bukkit.scoreboard.Scoreboard;
 import java.util.List;
 import java.util.Properties;
 
-import static com.stefancooper.EasyUHC.enums.ConfigKey.*;
-import static com.stefancooper.EasyUHC.enums.DeathAction.SPECTATE;
-import static com.stefancooper.EasyUHC.utils.Constants.MAXIMUM_FINAL_SIZE_FOR_Y_SHRINK;
+import static com.stefancooper.EasyUHC.base.ConfigKey.*;
+import static com.stefancooper.EasyUHC.base.DeathAction.SPECTATE;
+import static com.stefancooper.EasyUHC.base.Constants.MAXIMUM_FINAL_SIZE_FOR_Y_SHRINK;
 
 public class Defaults {
 

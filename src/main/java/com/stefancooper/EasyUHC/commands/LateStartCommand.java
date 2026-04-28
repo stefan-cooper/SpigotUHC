@@ -2,8 +2,8 @@ package com.stefancooper.EasyUHC.commands;
 
 import com.stefancooper.EasyUHC.Config;
 import com.stefancooper.EasyUHC.Defaults;
-import com.stefancooper.EasyUHC.enums.ConfigKey;
-import com.stefancooper.EasyUHC.types.BossBarBorder;
+import com.stefancooper.EasyUHC.base.ConfigKey;
+import com.stefancooper.EasyUHC.base.BossBarBorder;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.attribute.Attribute;

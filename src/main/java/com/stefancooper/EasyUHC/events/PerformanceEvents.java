@@ -1,8 +1,8 @@
 package com.stefancooper.EasyUHC.events;
 
 import com.stefancooper.EasyUHC.Config;
-import com.stefancooper.EasyUHC.enums.PerformanceTrackingEvent;
-import com.stefancooper.EasyUHC.types.UHCLoot;
+import com.stefancooper.EasyUHC.base.PerformanceTrackingEvent;
+import com.stefancooper.EasyUHC.uhcloot.UHCLoot;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -20,8 +20,8 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import java.util.HashSet;
 import java.util.Set;
-import static com.stefancooper.EasyUHC.types.UHCLoot.getChestLocation;
-import static com.stefancooper.EasyUHC.types.UHCLoot.isSameLocation;
+import static com.stefancooper.EasyUHC.uhcloot.UHCLoot.getChestLocation;
+import static com.stefancooper.EasyUHC.uhcloot.UHCLoot.isSameLocation;
 
 public class PerformanceEvents implements Listener {
 

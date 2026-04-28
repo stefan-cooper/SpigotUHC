@@ -1,4 +1,4 @@
-package com.stefancooper.EasyUHC;
+package com.stefancooper.EasyUHC.enchants;
 
 import io.papermc.paper.plugin.bootstrap.BootstrapContext;
 import io.papermc.paper.registry.RegistryKey;
@@ -6,25 +6,24 @@ import io.papermc.paper.registry.TypedKey;
 import io.papermc.paper.registry.data.EnchantmentRegistryEntry;
 import io.papermc.paper.registry.event.RegistryComposeEvent;
 import io.papermc.paper.registry.keys.EnchantmentKeys;
-import io.papermc.paper.registry.keys.tags.ItemTypeTagKeys;
 import io.papermc.paper.registry.set.RegistrySet;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.EquipmentSlotGroup;
-import static com.stefancooper.EasyUHC.utils.Constants.BLASTWAVE_ENCHANTMENT;
-import static com.stefancooper.EasyUHC.utils.Constants.NAMESPACE;
-import static com.stefancooper.EasyUHC.utils.Constants.QUICKBOOM_ENCHANTMENT;
-import static com.stefancooper.EasyUHC.utils.Constants.SHIELD_FIRE_ENCHANTMENT;
-import static com.stefancooper.EasyUHC.utils.Constants.SHIELD_JUMP_ENCHANTMENT;
-import static com.stefancooper.EasyUHC.utils.Constants.SHIELD_SLOWNESS_ENCHANTMENT;
-import static com.stefancooper.EasyUHC.utils.Constants.SHIELD_STRENGTH_ENCHANTMENT;
-import static com.stefancooper.EasyUHC.utils.Constants.SHIELD_SWIFTNESS_ENCHANTMENT;
-import static com.stefancooper.EasyUHC.utils.Constants.SHIELD_THUNDER_ENCHANTMENT;
-import static com.stefancooper.EasyUHC.utils.Constants.SHIELD_WATER_ENCHANTMENT;
-import static com.stefancooper.EasyUHC.utils.Constants.SHIELD_WEAKNESS_ENCHANTMENT;
-import static com.stefancooper.EasyUHC.utils.Constants.SHIELD_WIND_ENCHANTMENT;
+import static com.stefancooper.EasyUHC.enchants.Constants.BLASTWAVE_ENCHANTMENT;
+import static com.stefancooper.EasyUHC.base.Constants.NAMESPACE;
+import static com.stefancooper.EasyUHC.enchants.Constants.QUICKBOOM_ENCHANTMENT;
+import static com.stefancooper.EasyUHC.enchants.Constants.SHIELD_FIRE_ENCHANTMENT;
+import static com.stefancooper.EasyUHC.enchants.Constants.SHIELD_JUMP_ENCHANTMENT;
+import static com.stefancooper.EasyUHC.enchants.Constants.SHIELD_SLOWNESS_ENCHANTMENT;
+import static com.stefancooper.EasyUHC.enchants.Constants.SHIELD_STRENGTH_ENCHANTMENT;
+import static com.stefancooper.EasyUHC.enchants.Constants.SHIELD_SWIFTNESS_ENCHANTMENT;
+import static com.stefancooper.EasyUHC.enchants.Constants.SHIELD_THUNDER_ENCHANTMENT;
+import static com.stefancooper.EasyUHC.enchants.Constants.SHIELD_WATER_ENCHANTMENT;
+import static com.stefancooper.EasyUHC.enchants.Constants.SHIELD_WEAKNESS_ENCHANTMENT;
+import static com.stefancooper.EasyUHC.enchants.Constants.SHIELD_WIND_ENCHANTMENT;
 
 public class CustomEnchantsRegistry {
 

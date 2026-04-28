@@ -1,8 +1,8 @@
 package com.stefancooper.EasyUHC;
 
-import com.stefancooper.EasyUHC.enums.ConfigKey;
-import com.stefancooper.EasyUHC.utils.Configurable;
-import com.stefancooper.EasyUHC.types.Worlds;
+import com.stefancooper.EasyUHC.base.ConfigKey;
+import com.stefancooper.EasyUHC.base.records.Configurable;
+import com.stefancooper.EasyUHC.base.Worlds;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -14,11 +14,11 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.stream.Stream;
 
-import static com.stefancooper.EasyUHC.enums.ConfigKey.WORLD_NAME;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.WORLD_NAME_END;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.WORLD_NAME_NETHER;
-import static com.stefancooper.EasyUHC.enums.ConfigKey.fromString;
-import static com.stefancooper.EasyUHC.utils.Constants.CONFIG_LOCATION;
+import static com.stefancooper.EasyUHC.base.ConfigKey.WORLD_NAME;
+import static com.stefancooper.EasyUHC.base.ConfigKey.WORLD_NAME_END;
+import static com.stefancooper.EasyUHC.base.ConfigKey.WORLD_NAME_NETHER;
+import static com.stefancooper.EasyUHC.base.ConfigKey.fromString;
+import static com.stefancooper.EasyUHC.base.Constants.CONFIG_LOCATION;
 
 public class Config {
 

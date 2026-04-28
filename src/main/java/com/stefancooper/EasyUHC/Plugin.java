@@ -8,7 +8,7 @@ import com.stefancooper.EasyUHC.events.PerformanceEvents;
 import com.stefancooper.EasyUHC.events.ReviveEvents;
 import com.stefancooper.EasyUHC.events.TimestampEvents;
 import com.stefancooper.EasyUHC.events.UHCLootEvents;
-import com.stefancooper.EasyUHC.utils.Constants;
+import com.stefancooper.EasyUHC.base.Constants;
 import com.stefancooper.EasyUHC.events.WinEvents;
 import io.papermc.paper.registry.RegistryAccess;
 import io.papermc.paper.registry.RegistryKey;
@@ -51,7 +51,7 @@ public class Plugin extends JavaPlugin implements Listener {
 
     private void assertCustomEnchantmentsExist() {
         final Registry<Enchantment> enchantRegistry = RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT);
-        final Enchantment quickBoom = enchantRegistry.get(EnchantmentKeys.create(Key.key(String.format("%s:%s", Constants.NAMESPACE, Constants.QUICKBOOM_ENCHANTMENT))));
+        final Enchantment quickBoom = enchantRegistry.get(EnchantmentKeys.create(Key.key(String.format("%s:%s", Constants.NAMESPACE, com.stefancooper.EasyUHC.enchants.Constants.QUICKBOOM_ENCHANTMENT))));
 
         if (quickBoom == null) getLogger().warning("QuickBoom enchantment not found in registry!");
         else getLogger().fine("QuickBoom enchantment loaded successfully.");

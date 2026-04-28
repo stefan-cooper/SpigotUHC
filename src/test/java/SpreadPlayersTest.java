@@ -1,5 +1,5 @@
-import com.stefancooper.EasyUHC.types.Coordinate;
-import com.stefancooper.EasyUHC.utils.SpreadPlayers;
+import com.stefancooper.EasyUHC.base.records.Coordinate;
+import com.stefancooper.EasyUHC.base.SpreadPlayers;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

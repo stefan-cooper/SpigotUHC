@@ -1,6 +1,7 @@
 package com.stefancooper.EasyUHC.evolvingshield;
 
 import com.stefancooper.EasyUHC.Config;
+import com.stefancooper.EasyUHC.base.PerformanceTrackingEvent;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -317,7 +318,6 @@ public class EvolvingShieldUpgradeMenu {
         if (getShield.isPresent()) {
             final ItemStack shield = getShield.get();
 
-
             switch (type) {
                 case Constants.THORNS:
                     if (shield.getEnchantmentLevel(Enchantment.THORNS) > 0) {
@@ -500,6 +500,8 @@ public class EvolvingShieldUpgradeMenu {
             EvolvingShield.updateLore(config, shieldMeta, isUpgradeAvailable);
             shield.setItemMeta(shieldMeta);
             player.playSound(player.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1, 1);
+            config.getManagedResources().addTimestamp(String.format("[Evolving shield] %s selected the %s upgrade. Latest XP: %s", player.getName(), type, currentXP));
+            config.getManagedResources().addPerformanceTrackingEvent(PerformanceTrackingEvent.EVOLVING_SHIELD_UPGRADES, player.getName(), newStage);
         } else {
             config.getPlugin().getLogger().log(Level.WARNING, "Could not find shield to evolve");
         }

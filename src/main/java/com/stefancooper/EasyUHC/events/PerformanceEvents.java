@@ -1,7 +1,9 @@
 package com.stefancooper.EasyUHC.events;
 
 import com.stefancooper.EasyUHC.Config;
+import com.stefancooper.EasyUHC.Defaults;
 import com.stefancooper.EasyUHC.base.PerformanceTrackingEvent;
+import com.stefancooper.EasyUHC.evolvingshield.EvolvingShield;
 import com.stefancooper.EasyUHC.uhcloot.UHCLoot;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -18,8 +20,13 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
+
+import static com.stefancooper.EasyUHC.base.ConfigKey.ENABLE_EVOLVING_SHIELDS;
 import static com.stefancooper.EasyUHC.uhcloot.UHCLoot.getChestLocation;
 import static com.stefancooper.EasyUHC.uhcloot.UHCLoot.isSameLocation;
 
@@ -60,9 +67,22 @@ public class PerformanceEvents implements Listener {
             if (event.getPlayer().getGameMode().equals(GameMode.SURVIVAL) && UHCLoot.isConfigured(config) && getChestLocation(config).isPresent()) {
                 final Location chestLocation = event.getClickedBlock().getLocation();
                 if (isSameLocation(getChestLocation(config).get(), chestLocation) && !lootChestLocations.contains(chestLocation)) {
+                    final Player player = event.getPlayer();
                     lootChestLocations.add(chestLocation);
-                    config.getManagedResources().addPerformanceTrackingEvent(PerformanceTrackingEvent.LOOT_CHEST_CLAIMED, event.getPlayer().getName(), 1);
-                    config.getManagedResources().addTimestamp(String.format("[UHC Loot] Loot chest claimed by %s", event.getPlayer().getName()));
+                    config.getManagedResources().addPerformanceTrackingEvent(PerformanceTrackingEvent.LOOT_CHEST_CLAIMED, player.getName(), 1);
+                    config.getManagedResources().addTimestamp(String.format("[UHC Loot] Loot chest claimed by %s", player.getName()));
+                    if (config.getProperty(ENABLE_EVOLVING_SHIELDS, Defaults.ENABLE_EVOLVING_SHIELDS)) {
+                        final Optional<ItemStack> getShield = EvolvingShield.getEvolvingShieldFromPlayer(config, player);
+                        if (getShield.isPresent()) {
+                            final ItemStack shield = getShield.get();
+                            EvolvingShield.updateXP(
+                                    config,
+                                    shield,
+                                    player,
+                                    EvolvingShield.EvolvingShieldXPType.LOOT_CHEST
+                            );
+                        }
+                    }
                 }
             }
         }

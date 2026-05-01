@@ -206,7 +206,6 @@ public class EvolvingShieldEvents implements Listener {
                         config,
                         shield,
                         killer,
-                        1,
                         EvolvingShield.EvolvingShieldXPType.KILL
                 );
             }

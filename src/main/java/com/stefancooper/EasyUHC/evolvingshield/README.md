@@ -72,6 +72,17 @@ What this means in real-world terms is (for example):
 - Critting an unarmored player with a Golden Sword: 1200 EXP (3 hearts of damage)
 - Critting a player with full iron armor player with a Diamond Axe: 1800 EXP (4.5 hearts of damage)
 
+### Claiming a loot chest
+
+The first player to open the loot chest after it has moved location is awarded some EXP.
+
+Claiming a loot chest will give you a 200 EXP bonus.
+
+### Reviving a teammate
+
+Reviving a teammate will give you award you some EXP.
+
+After your teammate has been revive, you are awarded a 500 EXP bonus.
 
 ### Killing opponents
 

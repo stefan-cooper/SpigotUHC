@@ -69,6 +69,8 @@ public class EvolvingShield {
     public enum EvolvingShieldXPType {
         EXPERIENCE,
         DAMAGE_HEARTS,
+        LOOT_CHEST,
+        REVIVE,
         KILL
     }
 
@@ -76,6 +78,10 @@ public class EvolvingShield {
         return switch (type) {
             case KILL:
                 yield 250;
+            case REVIVE:
+                yield 500;
+            case LOOT_CHEST:
+                yield 200;
             case DAMAGE_HEARTS:
                 yield toAdd * 200;
             case EXPERIENCE:
@@ -228,7 +234,9 @@ public class EvolvingShield {
         shield.setItemMeta(shieldMeta);
     }
 
-
+    public static void updateXP(final Config config, final ItemStack shield, final Player player, final EvolvingShieldXPType type) {
+        updateXP(config, shield, player, 0, type);
+    }
 
     public static boolean isEvolvingShield(final Config config, final ItemStack item) {
         if (item == null || !item.hasItemMeta()) return false;

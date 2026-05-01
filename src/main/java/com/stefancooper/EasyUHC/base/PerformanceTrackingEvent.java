@@ -8,6 +8,7 @@ public enum PerformanceTrackingEvent {
     GOLD_ORE_MINED("gold_ore_mined"),
     LOOT_CHEST_CLAIMED("loot_chests_claimed"),
     REVIVE("revives"),
+    EVOLVING_SHIELD_UPGRADES("evolving_shield_upgrades"),
     RANKING("ranking");
 
     public final String name;

@@ -13,6 +13,9 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Optional;
 
 import static com.stefancooper.EasyUHC.base.ConfigKey.ENABLE_EVOLVING_SHIELDS;
 import static com.stefancooper.EasyUHC.base.ConfigKey.REVIVE_HP;
@@ -86,6 +89,19 @@ public class InstantRevive {
 
         armorStand.setVisible(false);
         armorStand.setHealth(0);
+
+        if (config.getProperty(ENABLE_EVOLVING_SHIELDS, Defaults.ENABLE_EVOLVING_SHIELDS)) {
+            final Optional<ItemStack> getShield = EvolvingShield.getEvolvingShieldFromPlayer(config, reviver);
+            if (getShield.isPresent()) {
+                final ItemStack shield = getShield.get();
+                EvolvingShield.updateXP(
+                        config,
+                        shield,
+                        reviver,
+                        EvolvingShield.EvolvingShieldXPType.REVIVE
+                );
+            }
+        }
     }
 
 

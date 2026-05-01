@@ -187,6 +187,7 @@ public class ManagedResources {
             .put(PerformanceTrackingEvent.GOLD_ORE_MINED.name, 0)
             .put(PerformanceTrackingEvent.KILL.name, 0)
             .put(PerformanceTrackingEvent.LOOT_CHEST_CLAIMED.name, 0)
+            .put(PerformanceTrackingEvent.EVOLVING_SHIELD_UPGRADES.name, 0)
             .put(PerformanceTrackingEvent.RANKING.name, 0);
 
     public void addPerformanceTrackingEvent(final PerformanceTrackingEvent event, final String player, final int value) {

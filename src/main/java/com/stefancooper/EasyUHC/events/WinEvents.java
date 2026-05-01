@@ -59,8 +59,7 @@ public class WinEvents implements Listener {
 
             // cancel timers that might have been running
             config.getManagedResources().cancelTimer();
-
-            config.getManagedResources().runTaskLater(() -> config.getPlugin().setUHCLive(false), 61);
+            config.getPlugin().setUHCLive(false);
 
             config.getManagedResources().runTaskLater(() -> {
                 for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {

@@ -41,6 +41,7 @@ public class PerformanceEvents implements Listener {
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
+        if (!config.getPlugin().isUHCLive()) return;
         final Player player = event.getEntity();
         config.getManagedResources().addPerformanceTrackingEvent(PerformanceTrackingEvent.DEATH, player.getName(), 1);
         if (event.getEntity().getLastDamageCause() != null &&
@@ -55,6 +56,7 @@ public class PerformanceEvents implements Listener {
 
     @EventHandler
     public void onGoldOreBreak(BlockBreakEvent event) {
+        if (!config.getPlugin().isUHCLive()) return;
         if (event.getBlock().getType().equals(Material.GOLD_ORE) || event.getBlock().getType().equals(Material.DEEPSLATE_GOLD_ORE)) {
             final Player player = event.getPlayer();
             config.getManagedResources().addPerformanceTrackingEvent(PerformanceTrackingEvent.GOLD_ORE_MINED, player.getName(), 1);
@@ -63,6 +65,7 @@ public class PerformanceEvents implements Listener {
 
     @EventHandler
     public void onLootChestOpenEvent(PlayerInteractEvent event) {
+        if (!config.getPlugin().isUHCLive()) return;
         if (event.getClickedBlock() != null && event.getClickedBlock().getType().equals(Material.CHEST)) {
             if (event.getPlayer().getGameMode().equals(GameMode.SURVIVAL) && UHCLoot.isConfigured(config) && getChestLocation(config).isPresent()) {
                 final Location chestLocation = event.getClickedBlock().getLocation();
@@ -90,6 +93,7 @@ public class PerformanceEvents implements Listener {
 
     @EventHandler
     public void onPVEDamage(EntityDamageEvent event) {
+        if (!config.getPlugin().isUHCLive()) return;
         // if damage is thorns, ignore
         if (event.getDamageSource().getDamageType() == DamageType.THORNS) {
             return;
@@ -101,6 +105,7 @@ public class PerformanceEvents implements Listener {
 
     @EventHandler
     public void onPlayerDamage(EntityDamageByEntityEvent event) {
+        if (!config.getPlugin().isUHCLive()) return;
         // if damage is thorns, ignore
         if (event.getDamageSource().getDamageType() == DamageType.THORNS) {
             return;

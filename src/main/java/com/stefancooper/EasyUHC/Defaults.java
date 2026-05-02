@@ -28,6 +28,7 @@ public class Defaults {
     public static String NETHER_WORLD_NAME = "world_nether";
     public static String END_WORLD_NAME = "world_the_end";
     public static int WORLD_BORDER_INITIAL_SIZE = 2000;
+    public static int WORLD_BORDER_SPAWN_PADDING = 1;
     public static int WORLD_BORDER_FINAL_SIZE = 150;
     public static int WORLD_BORDER_SHRINKING_PERIOD = 7200;
     public static int WORLD_BORDER_GRACE_PERIOD = 1800;

@@ -50,6 +50,7 @@ public enum ConfigKey {
     DISABLE_ENDER_PEARL_DAMAGE("disable.ender.pearl.damage"), // disable ender pearl damage
     ENABLE_AUTOSMELT("enable.autosmelt"), // enable autosmelt for iron and copper
     SPLIT_WITHIN_TEAMS_SIZE("split.within.teams.size"), // when we spread the players at the beginning of a UHC, should the team be split up? if so, this is the size of the split (default = -1 (no split))
+    WORLD_BORDER_SPAWN_PADDING("world.border.spawn.padding"), // How many blocks you would like the players to have spawn away from the border by at least on uhc start
 
     // Revive config
     REVIVE_ENABLED("revive.enabled"), // Enable revive

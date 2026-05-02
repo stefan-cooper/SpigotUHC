@@ -70,6 +70,7 @@ import static com.stefancooper.EasyUHC.base.ConfigKey.WORLD_BORDER_GRACE_PERIOD;
 import static com.stefancooper.EasyUHC.base.ConfigKey.WORLD_BORDER_INITIAL_SIZE;
 import static com.stefancooper.EasyUHC.base.ConfigKey.WORLD_BORDER_IN_BOSSBAR;
 import static com.stefancooper.EasyUHC.base.ConfigKey.WORLD_BORDER_SHRINKING_PERIOD;
+import static com.stefancooper.EasyUHC.base.ConfigKey.WORLD_BORDER_SPAWN_PADDING;
 import static com.stefancooper.EasyUHC.base.ConfigKey.WORLD_BORDER_Y_SHRINKING_PERIOD;
 import static com.stefancooper.EasyUHC.base.ConfigKey.WORLD_NAME;
 import static com.stefancooper.EasyUHC.base.ConfigKey.WORLD_NAME_END;
@@ -101,6 +102,7 @@ public class ConfigParser {
             case WORLD_BORDER_CENTER_X -> new Configurable<>(WORLD_BORDER_CENTER_X, Integer.parseInt(value));
             case WORLD_BORDER_CENTER_Z -> new Configurable<>(WORLD_BORDER_CENTER_Z, Integer.parseInt(value));
             case WORLD_BORDER_FINAL_Y -> new Configurable<>(WORLD_BORDER_FINAL_Y, Integer.parseInt(value));
+            case WORLD_BORDER_SPAWN_PADDING -> new Configurable<>(WORLD_BORDER_SPAWN_PADDING, Integer.parseInt(value));
             case WORLD_BORDER_Y_SHRINKING_PERIOD -> new Configurable<>(WORLD_BORDER_Y_SHRINKING_PERIOD, Integer.parseInt(value));
             case TEAM_RED -> new Configurable<>(TEAM_RED, value);
             case TEAM_YELLOW -> new Configurable<>(TEAM_YELLOW, value);

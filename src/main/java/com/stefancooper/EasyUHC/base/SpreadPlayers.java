@@ -18,6 +18,7 @@ import static com.stefancooper.EasyUHC.base.ConfigKey.SPLIT_WITHIN_TEAMS_SIZE;
 import static com.stefancooper.EasyUHC.base.ConfigKey.WORLD_BORDER_CENTER_X;
 import static com.stefancooper.EasyUHC.base.ConfigKey.WORLD_BORDER_CENTER_Z;
 import static com.stefancooper.EasyUHC.base.ConfigKey.WORLD_BORDER_INITIAL_SIZE;
+import static com.stefancooper.EasyUHC.base.ConfigKey.WORLD_BORDER_SPAWN_PADDING;
 
 public class SpreadPlayers {
 
@@ -32,6 +33,7 @@ public class SpreadPlayers {
         final int centerX = config.getProperty(WORLD_BORDER_CENTER_X, Defaults.WORLD_BORDER_CENTER_X);
         final int centerZ = config.getProperty(WORLD_BORDER_CENTER_Z, Defaults.WORLD_BORDER_CENTER_Z);
         final int diameter = config.getProperty(WORLD_BORDER_INITIAL_SIZE, Defaults.WORLD_BORDER_INITIAL_SIZE);
+        final int splitPadding = config.getProperty(WORLD_BORDER_SPAWN_PADDING, Defaults.WORLD_BORDER_SPAWN_PADDING);
         final int splitSize = config.getProperty(SPLIT_WITHIN_TEAMS_SIZE, Defaults.SPLIT_WITHIN_TEAMS_SIZE);
         final World overworld = config.getWorlds().getOverworld();
         List<List<Player>> groups = getAllTeams();
@@ -50,7 +52,8 @@ public class SpreadPlayers {
             gridSize = root * root;
         }
 
-        final List<Coordinate> coordinatesToTeleportTo = splitEvenly(centerX, centerZ, diameter, gridSize);
+        final List<Coordinate> coordinatesToTeleportTo = splitEvenly(centerX, centerZ, diameter - splitPadding, gridSize);
+
         final List<Coordinate> notIdealCoordinates = new ArrayList<>();
         for (final Coordinate startingLocation : coordinatesToTeleportTo) {
             final Block startingBlock = overworld.getHighestBlockAt((int) startingLocation.x(), (int) startingLocation.z());
@@ -126,7 +129,7 @@ public class SpreadPlayers {
         final int cols = (int) Math.ceil(Math.sqrt(totalGroups));
         final int rows = (int) Math.ceil((double) totalGroups / cols);
 
-        final double padding = 1.0;
+        final double padding = 0;
         final double usableDiameter = diameter - (2 * padding);
 
         final double colSpacing = (cols > 1) ? usableDiameter / (cols - 1) : 0;
@@ -140,6 +143,7 @@ public class SpreadPlayers {
             for (int col = 0; col < cols && coordinatesAdded < totalGroups; col++) {
                 final double x = startX + (col * colSpacing);
                 final double z = startZ + (row * rowSpacing);
+
                 coordinates.add(new Coordinate(x,z));
                 coordinatesAdded++;
             }

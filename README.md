@@ -41,6 +41,8 @@ grace.period.timer=600
 world.border.center.x=0
 # World border center Z coord
 world.border.center.z=0
+# On /uhc start, use this value to determine a minimum 'padding' that players will spawn away from the border
+world.border.spawn.padding=1
 # Final size of the world border at the end of the UHC
 world.border.final.size=150
 # Grace period time (in seconds) before the border will begin to shrink
